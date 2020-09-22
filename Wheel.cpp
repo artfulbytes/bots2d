@@ -1,4 +1,8 @@
 #include "Wheel.h"
+// TODO: Should I use iostream?
+#include <iostream>
+#include <chrono>
+#include <ctime>
 
 Wheel::Wheel(b2World* world, Type type, float width, float length, float weight)
 {
@@ -37,10 +41,29 @@ b2Vec2 Wheel::getForwardVelocity()
     return b2Dot(currentForwardNormal, m_body->GetLinearVelocity()) * currentForwardNormal;
 }
 
+// TODO: Test function, remove?
+float Wheel::getAcceleration(float speed)
+{
+    static auto startTime = std::chrono::system_clock::now();
+    auto endTime = std::chrono::system_clock::now();
+    std::chrono::duration<float> timeElapsed;
+    static float lastSpeed = 0.0f;
+    static float acceleration = 0.0f;
+
+    timeElapsed = endTime-startTime;
+
+    if (timeElapsed.count() > 1) {
+        acceleration = (speed - lastSpeed) / timeElapsed.count();
+        startTime = std::chrono::system_clock::now();
+        lastSpeed = speed;
+    }
+
+    return acceleration;
+}
+
 // Make the body act like a wheel
 void Wheel::updateFriction()
 {
-    return;
     // Allow some skidding
     //float maxLateralImpulse = 10.5f; // Tweaked
     b2Vec2 impulse = m_body->GetMass() * -getLateralVelocity();
@@ -57,10 +80,11 @@ void Wheel::updateFriction()
     // Add drag force to the wheel so it doesn't roll forever
     b2Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.Normalize();
-    float dragFactor = 2; // Tweaked
+    float dragFactor = 100; // Tweaked
     float dragForceMagnitude = -dragFactor * currentForwardSpeed;
     m_body->ApplyForce(dragForceMagnitude * currentForwardNormal, m_body->GetWorldCenter(), true);
 }
+
 
 // Currently: Just apply max forward / backward speed (force)
 void Wheel::updateDrive(const Drive drive)
@@ -79,6 +103,9 @@ void Wheel::updateDrive(const Drive drive)
 
     b2Vec2 currentForwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
     float currentForwardSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
+    //std::cout << "Acc: " << getAcceleration(currentForwardSpeed) << "\n";
+
+    updateTurn(Turn::Left);
 
     float forceToApply = 0;
     // TODO: What about backward speed here?
@@ -87,7 +114,8 @@ void Wheel::updateDrive(const Drive drive)
     else if (desiredSpeed < currentForwardSpeed)
         forceToApply = -m_maxDriveForce;
     else
-        return;
+        forceToApply = 0;
+    // TODO: Scale here or scale m_maxDriveForce?
     m_body->ApplyForce(forceToApply * currentForwardNormal, m_body->GetWorldCenter(), true);
 }
 

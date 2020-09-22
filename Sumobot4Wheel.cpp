@@ -1,5 +1,6 @@
 #include "Sumobot4Wheel.h"
 #include "Wheel.h"
+#include <iostream>
 
 // TODO: Move to separate file?, should I ever use defs in c++?
 // TODO: pragma once?
@@ -142,7 +143,7 @@ void Sumobot4Wheel::createWheels(b2World* world)
 {
     const float scaledWheelWidth = (m_width * lengthScaleFactor * m_widthWheelsFactor) / 2.0f;
     const float scaledWheelLength = (m_length * lengthScaleFactor) / 4.0f;
-    const float scaledWheelWeight = (m_weight * weightScaleFactor) / 4.0f;
+    const float scaledWheelWeight = (m_weight * weightScaleFactor * m_weightWheelsFactor) / 4.0f;
     // TODO: FIx repeated code...
     const float scaledBodyWidth = m_width * lengthScaleFactor * m_widthBodyFactor;
     const float scaledBodyLength = m_length * lengthScaleFactor;
@@ -171,7 +172,7 @@ void Sumobot4Wheel::createWheels(b2World* world)
     float maxForcePerWheel = maxTotalForce / 4.0f;
     float scaledMaxForcePerWheel = forceScaleFactor * maxForcePerWheel;
     float scaledMaxForwardSpeed = m_maxForwardSpeed * speedScaleFactor;
-    float scaledMaxBackwardSpeed = m_maxForwardSpeed * speedScaleFactor;
+    float scaledMaxBackwardSpeed = m_maxBackwardSpeed * speedScaleFactor;
     // TODO: Pass params as struct?
 
     // TODO: When to use AUTO?

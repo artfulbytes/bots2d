@@ -26,6 +26,8 @@ public:
     Type getType() { return m_wheelType; }
 
 private:
+    float getAcceleration(float speed);
+
     b2Body* m_body;
     Type m_wheelType = Type::Left;
     float m_maxForwardSpeed = 0;
