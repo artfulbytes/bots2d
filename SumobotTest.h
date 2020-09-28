@@ -23,8 +23,11 @@ public:
 	    return new SumobotTest;
     }
 private:
+    void stepTestWheel(Sumobot4Wheel::Drive drive);
+
     unsigned int m_keysPressed;
-    Sumobot4Wheel* m_sumobot;
+    Sumobot4Wheel* m_sumobot = nullptr;
+    WheelMotor* m_testWheel = nullptr;
 };
 
 static int testIndex = RegisterTest("Benchmark", "Sumobot4Wheel", SumobotTest::Create);

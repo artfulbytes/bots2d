@@ -17,10 +17,10 @@ namespace constants
     inline constexpr float lengthScaleFactor { physScaleFactor };
     inline constexpr float speedScaleFactor { lengthScaleFactor };
     inline constexpr float accelerationFactor { speedScaleFactor };
-    inline constexpr float weightScaleFactor { physScaleFactor * physScaleFactor * physScaleFactor };
-    /* F = m*a so F_scaled = forceFactor * F = (wieghtFactor * m) * (accFactor * a) */
+    inline constexpr float massScaleFactor { physScaleFactor * physScaleFactor * physScaleFactor };
+    /* F = m*a so F_scaled = forceFactor * F = (massFactor * m) * (accFactor * a) */
     /* TODO: DOUBLE CHECK */
-    inline constexpr float forceScaleFactor { weightScaleFactor * accelerationFactor };
+    inline constexpr float forceScaleFactor { massScaleFactor * accelerationFactor };
     inline constexpr float maxWidthObject { 1.0f };
     inline constexpr float maxHeightObject { 0.01f };
 

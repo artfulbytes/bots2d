@@ -1,13 +1,17 @@
 #include "SumobotTest.h"
 #include "Sumobot4Wheel.h"
-#include "Wheel.h"
+#include "WheelMotor.h"
+#include "Dohyo.h"
 
 SumobotTest::SumobotTest()
 {
-    //TODO: Any other (better) way to do top-view than setting gravity to 0?
     //TODO: Where to initialize variables?
     m_world->SetGravity(b2Vec2(0,0));
     m_sumobot = new Sumobot4Wheel(m_world, 0.1f, 0.1f, 0.5f);
+    /*
+    m_testWheel = new Wheel(m_world, Wheel::Type::Left, 0.1f, 0.15f, 0.5f);
+    m_testWheel->setCharacteristics(10.0f, -10.0f, 100.0f, 0);
+    */
 
     m_keysPressed = 0;
 }
@@ -34,21 +38,38 @@ void SumobotTest::KeyboardUp(int key)
     }
 }
 
-// TODO: Why & here?
+void SumobotTest::stepTestWheel(Sumobot4Wheel::Drive drive)
+{
+    if (m_testWheel == nullptr) {
+        return;
+    }
+
+    WheelMotor::Drive wDrive;
+    switch (drive) {
+        case Sumobot4Wheel::Drive::Forward:
+            wDrive = WheelMotor::Drive::Forward;
+            break;
+        case Sumobot4Wheel::Drive::Backward:
+            wDrive = WheelMotor::Drive::Backward;
+            break;
+        case Sumobot4Wheel::Drive::None:
+            wDrive = WheelMotor::Drive::None;
+            break;
+    }
+    m_testWheel->updateFrictionTest(wDrive);
+}
+
 void SumobotTest::Step(Settings& settings)
 {
-    // TODO: These enums becomes so tedious (Define outside class? namespace? typedef?)
-    // Hmm, they don't become so tedious after all...
-    // Instead of SUMOBOT_DRIVE, I Can use Sumobot::Drive
     Sumobot4Wheel::Drive drive = Sumobot4Wheel::Drive::None;
     Sumobot4Wheel::Turn turn = Sumobot4Wheel::Turn::None;
-    
+
     if (m_keysPressed & static_cast<unsigned>(KeyPress::Right)) {
         turn = Sumobot4Wheel::Turn::Right;
     } else if (m_keysPressed & static_cast<unsigned>(KeyPress::Left)) {
         turn = Sumobot4Wheel::Turn::Left;
     }
-    
+
     if (m_keysPressed & static_cast<unsigned>(KeyPress::Up)) {
         drive = Sumobot4Wheel::Drive::Forward;
     } else if (m_keysPressed & static_cast<unsigned>(KeyPress::Down)) {
