@@ -3,6 +3,7 @@
 #include "WheelMotor.h"
 #include "Dohyo.h"
 #include "ContactListener.h"
+#include "BoxObstacle.h"
 
 
 SumobotTest::SumobotTest()
@@ -16,6 +17,7 @@ SumobotTest::SumobotTest()
     m_testWheel->setCharacteristics(10.0f, -10.0f, 100.0f, 0);
     */
     m_dohyo = new Dohyo(m_world, 0.0f, 0.0f, 0.77f, 0.8f);
+    m_boxObstacle = new BoxObstacle(m_world, 0.3f, 0.3f, 0.1f, 0.5f);
 
     m_keysPressed = 0;
 }

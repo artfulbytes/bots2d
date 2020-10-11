@@ -138,7 +138,7 @@ void Sumobot4Wheel::update(Drive drive, Turn turn) {
     }
     for (auto &wheel : m_wheels) {
         // TODO: Currently just applying 6 V
-        wheel->updateDrive(motionToWheelDrive(drive, turn, wheel->getType()), 6.0f);
+        wheel->updateDrive(motionToWheelDrive(drive, turn, wheel->getType()), 3.0f);
     }
 
     b2Vec2 currentForwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
@@ -169,7 +169,7 @@ void Sumobot4Wheel::createWheels(b2World* world)
     const float scaledWheelWeight = (m_mass * massScaleFactor * m_massWheelsFactor) / m_numWheels;
     const float scaledBodyWidth = m_width * lengthScaleFactor * m_widthBodyFactor;
     const float scaledBodyLength = m_length * lengthScaleFactor;
-    const float normalForce = 9.82 * m_mass * forceScaleFactor;
+    const float normalForce = gravitationConstant * m_mass * forceScaleFactor;
     const float maxFrictionForcePerWheel = normalForce * m_frictionCoefficient / m_numWheels;
 
     const float frontRightX = (scaledBodyWidth / 2.0f) + (scaledWheelRadius / 2.0f);

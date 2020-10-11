@@ -20,8 +20,9 @@ namespace constants
     /* F = m*a so F_scaled = forceFactor * F = (massFactor * m) * (accFactor * a) */
     /* TODO: DOUBLE CHECK */
     inline constexpr float forceScaleFactor { massScaleFactor * accelerationFactor };
+    inline constexpr float gravitationConstant { 9.82 };
     inline constexpr float maxWidthObject { 1.0f };
-    inline constexpr float maxHeightObject { 0.01f };
+    inline constexpr float minWidthObject { 0.01f };
 
     /*
      * TODO: FIX

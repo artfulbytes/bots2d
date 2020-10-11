@@ -1,6 +1,7 @@
 #include "test.h"
 #include "Sumobot4Wheel.h"
 #include "Dohyo.h"
+#include "BoxObstacle.h"
 
 // TODO: Include in header or in CPP file?
 class SumobotTest : public Test
@@ -29,6 +30,7 @@ private:
     Sumobot4Wheel* m_sumobot = nullptr;
     WheelMotor* m_testWheel = nullptr;
     Dohyo* m_dohyo = nullptr;
+    BoxObstacle* m_boxObstacle = nullptr;
 };
 
 static int testIndex = RegisterTest("Benchmark", "Sumobot4Wheel", SumobotTest::Create);
