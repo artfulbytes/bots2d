@@ -7,6 +7,7 @@
 // TODO: Forward declare?
 #include "WheelMotor.h"
 #include "RangeSensor.h"
+#include "LineDetector.h"
 
 class Sumobot4Wheel
 {
@@ -44,6 +45,10 @@ private:
     RangeSensor* m_rangeSensorFront = nullptr;
     RangeSensor* m_rangeSensorFrontRight = nullptr;
     RangeSensor* m_rangeSensorRight = nullptr;
+    LineDetector* m_lineDetectorFrontLeft = nullptr;
+    LineDetector* m_lineDetectorFrontRight = nullptr;
+    LineDetector* m_lineDetectorBackLeft = nullptr;
+    LineDetector* m_lineDetectorBackRight = nullptr;
 
     float m_width = 0;
     float m_length = 0;

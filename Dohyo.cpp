@@ -1,5 +1,6 @@
 #include "Dohyo.h"
 #include "Constants.h"
+#include "UserData.h"
 
 using namespace constants;
 
@@ -15,6 +16,10 @@ Dohyo::Dohyo(b2World* world, float x, float y, float innerRadius, float outerRad
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(x * lengthScaleFactor, y * lengthScaleFactor);
     m_body = world->CreateBody(&bodyDef);
+
+    UserData* userData = new UserData();
+    userData->bodyType = BodyType::DohyoBorder;
+    m_body->SetUserData(userData);
 
     createBorder();
 }

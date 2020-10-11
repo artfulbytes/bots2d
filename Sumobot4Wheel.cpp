@@ -7,6 +7,9 @@
 // TODO: Same here, need "" not <>
 #include "Constants.h"
 #include "draw.h"
+#include "UserData.h"
+
+#include "LineDetector.h"
 
 // TODO: Proper cleanup of bodies and fixtures
 
@@ -32,6 +35,11 @@ void Sumobot4Wheel::createSensors(b2World* world)
     m_rangeSensorFront = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.52f), 0.0f, 0.0f, 15.0f);
     m_rangeSensorFrontRight = new RangeSensor(world, m_body, b2Vec2(-0.15f, 0.52f), -0.10f, 0.0f, 15.0f);
     m_rangeSensorRight = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), pi / 2, 0.0f, 15.0f);
+
+    m_lineDetectorFrontLeft = new LineDetector(world, m_body, b2Vec2(-0.35f, 0.45f));
+    m_lineDetectorFrontRight = new LineDetector(world, m_body, b2Vec2(0.35f, 0.45f));
+    m_lineDetectorBackRight = new LineDetector(world, m_body, b2Vec2(0.35f, -0.45f));
+    m_lineDetectorBackLeft = new LineDetector(world, m_body, b2Vec2(-0.35f, -0.45f));
 }
 
 // TODO: Define m_width... or pass them as parameters?
@@ -64,9 +72,9 @@ void Sumobot4Wheel::createFrictionBody(b2World* world)
     b2FixtureDef fixtureDef;
     fixtureDef.isSensor = true;
     // Since the fixture is just an "invisible" sensor the
-    // exact shape doesn't matter, but it still needs a shape.
+    // exact shape doesn't matter, but it must have some shape.
     b2CircleShape circleShape;
-    circleShape.m_radius = 1.0f;
+    circleShape.m_radius = 0.0f;
     fixtureDef.shape = &circleShape;
     // TODO: Keep pointer to fixture?
     m_frictionBody->CreateFixture(&fixtureDef);
@@ -232,5 +240,9 @@ void Sumobot4Wheel::updateSensors()
     m_rangeSensorFront->getDistance();
     m_rangeSensorFrontRight->getDistance();
     m_rangeSensorRight->getDistance();
+    m_lineDetectorFrontLeft->detected();
+    m_lineDetectorFrontRight->detected();
+    m_lineDetectorBackLeft->detected();
+    m_lineDetectorBackRight->detected();
 }
 

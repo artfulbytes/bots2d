@@ -43,6 +43,10 @@ float RangeSensor::getDistance()
     float closestFraction = rayInput.maxFraction;
     b2Vec2 intersectionNormal(0,0);
     for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext()) {
+        if (b->GetFixtureList() && b->GetFixtureList()[0].IsSensor()) {
+            /* Don't detect non-collidable objects */
+            continue;
+        }
         for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
             if (!f->RayCast(&rayOutput, rayInput, 1)) {
                 continue;

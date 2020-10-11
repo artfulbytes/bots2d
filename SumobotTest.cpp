@@ -2,12 +2,14 @@
 #include "Sumobot4Wheel.h"
 #include "WheelMotor.h"
 #include "Dohyo.h"
+#include "ContactListener.h"
 
 
 SumobotTest::SumobotTest()
 {
     //TODO: Where to initialize variables?
     m_world->SetGravity(b2Vec2(0,0));
+    m_world->SetContactListener(new ContactListener());
     m_sumobot = new Sumobot4Wheel(m_world, 0.1f, 0.1f, 0.5f);
     /*
     m_testWheel = new Wheel(m_world, Wheel::Type::Left, 0.1f, 0.15f, 0.5f);
