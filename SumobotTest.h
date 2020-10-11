@@ -1,6 +1,6 @@
 #include "test.h"
 #include "Sumobot4Wheel.h"
-
+#include "Dohyo.h"
 
 // TODO: Include in header or in CPP file?
 class SumobotTest : public Test
@@ -28,6 +28,7 @@ private:
     unsigned int m_keysPressed;
     Sumobot4Wheel* m_sumobot = nullptr;
     WheelMotor* m_testWheel = nullptr;
+    Dohyo* m_dohyo = nullptr;
 };
 
 static int testIndex = RegisterTest("Benchmark", "Sumobot4Wheel", SumobotTest::Create);
