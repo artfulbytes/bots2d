@@ -42,7 +42,7 @@ private:
 
     // This determines the sideway friction
     // TODO: Move to vehicle instead
-    const float m_maxLateralCancelingImpulse = 20.5f;
+    const float m_maxLateralCancelingImpulse = 40.5f;
 
     // Simplified DC motor model
     // Tune these two constants to get different characteristics

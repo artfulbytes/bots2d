@@ -94,7 +94,7 @@ void WheelMotor::updateFriction(const Drive drive)
     // Convert torque to force (t = r * F => F = t / r)
     const float forceApplied = (torqueApplied / m_radius) - rollingFriction;
     m_body->ApplyForce(forceApplied * currentForwardNormal, m_body->GetWorldCenter(), true);
-    std::cout << m_voltageApplied <<  " " << forceApplied << " " << currentForwardSpeed << "\n";
+    //std::cout << m_voltageApplied <<  " " << forceApplied << " " << currentForwardSpeed << "\n";
 
     // Cancel lateral velocity to prevent wheel from moving sideways
     // (mimmicks sideway friction)

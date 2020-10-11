@@ -3,6 +3,7 @@
 #include "WheelMotor.h"
 #include "Dohyo.h"
 
+
 SumobotTest::SumobotTest()
 {
     //TODO: Where to initialize variables?

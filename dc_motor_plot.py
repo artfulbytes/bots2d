@@ -57,7 +57,7 @@ def plot_single_graph(name, xvals, yvals, xlabel, ylabel, color, show=True):
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['top'].set_visible(False)
     plt.plot(xvals, yvals, color=color)
-    plt.savefig(name+'.png', bbox_inches='tight', transparent=True)
+    plt.savefig(name+'.svg', bbox_inches='tight', transparent=True)
     if show:
         plt.show()
 

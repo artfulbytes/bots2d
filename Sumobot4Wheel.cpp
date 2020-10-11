@@ -6,20 +6,55 @@
 // TODO: pragma once?
 // TODO: Same here, need "" not <>
 #include "Constants.h"
+#include "draw.h"
 
 // TODO: Proper cleanup of bodies and fixtures
 
 using namespace constants;
 
 // TODO: Initializer list like this?
-Sumobot4Wheel::Sumobot4Wheel(b2World* world, float width, float length, float mass)
-    : m_width(width)
-    , m_length(length)
-    , m_mass(mass)
+Sumobot4Wheel::Sumobot4Wheel(b2World* world, float width, float length, float mass) :
+    m_width(width),
+    m_length(length),
+    m_mass(mass)
 {
     createBody(world);
     createFrictionBody(world);
     createWheels(world);
+    createSensors(world);
+}
+
+void Sumobot4Wheel::createSensors(b2World* world)
+{
+    // TODO: new here or create empty range sensor by default in header?
+    m_rangeSensorLeft = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), -pi / 2, 0.0f, 15.0f);
+    m_rangeSensorFrontLeft = new RangeSensor(world, m_body, b2Vec2(0.15f, 0.52f), 0.10f, 0.0f, 15.0f);
+    m_rangeSensorFront = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.52f), 0.0f, 0.0f, 15.0f);
+    m_rangeSensorFrontRight = new RangeSensor(world, m_body, b2Vec2(-0.15f, 0.52f), -0.10f, 0.0f, 15.0f);
+    m_rangeSensorRight = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), pi / 2, 0.0f, 15.0f);
+}
+
+// TODO: Define m_width... or pass them as parameters?
+void Sumobot4Wheel::createBody(b2World* world)
+{
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    m_body = world->CreateBody(&bodyDef);
+
+    const float scaledWidth = m_width * lengthScaleFactor * m_widthBodyFactor;
+    const float scaledLength = m_length * lengthScaleFactor;
+    const float scaledMass = m_mass * massScaleFactor * m_massBodyFactor;
+    const float density = scaledMass / (scaledWidth * scaledLength);
+
+    b2Vec2 vertices[4];
+    vertices[0].Set(scaledWidth / 2, scaledLength / 2);
+    vertices[1].Set(scaledWidth / 2, -scaledLength / 2);
+    vertices[2].Set(-scaledWidth / 2, -scaledLength / 2);
+    vertices[3].Set(-scaledWidth / 2, scaledLength / 2);
+    b2PolygonShape polygonShape;
+    polygonShape.Set(vertices, 4);
+
+    m_body->CreateFixture(&polygonShape, density);
 }
 
 void Sumobot4Wheel::createFrictionBody(b2World* world)
@@ -100,32 +135,11 @@ void Sumobot4Wheel::update(Drive drive, Turn turn) {
 
     b2Vec2 currentForwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
     float currentSpeed = b2Dot(currentForwardNormal, m_body->GetLinearVelocity());
-    float angularDamping = 0.3f; // Tweaked
+    //TODO: Add angular friction like this or some other way?
+    float angularDamping = 1.0f; // Tweaked
     m_body->ApplyAngularImpulse(angularDamping * m_body->GetInertia() * -m_body->GetAngularVelocity(), true);
-}
 
-// TODO: Define m_width... or pass them as parameters?
-void Sumobot4Wheel::createBody(b2World* world)
-{
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    m_body = world->CreateBody(&bodyDef);
-    //m_body->SetAngularDamping(10000); //TODO: Add angular friction like this or some other way?
-
-    const float scaledWidth = m_width * lengthScaleFactor * m_widthBodyFactor;
-    const float scaledLength = m_length * lengthScaleFactor;
-    const float scaledMass = m_mass * massScaleFactor * m_massBodyFactor;
-    const float density = scaledMass / (scaledWidth * scaledLength);
-
-    b2Vec2 vertices[4];
-    vertices[0].Set(scaledWidth / 2, scaledLength / 2);
-    vertices[1].Set(scaledWidth / 2, -scaledLength / 2);
-    vertices[2].Set(-scaledWidth / 2, -scaledLength / 2);
-    vertices[3].Set(-scaledWidth / 2, scaledLength / 2);
-    b2PolygonShape polygonShape;
-    polygonShape.Set(vertices, 4);
-
-    m_body->CreateFixture(&polygonShape, density);
+    updateSensors();
 }
 
 void Sumobot4Wheel::addFriction(b2World* world, b2Body* body, float maxFrictionForce)
@@ -204,3 +218,19 @@ void Sumobot4Wheel::createWheels(b2World* world)
         addFriction(world, wheel->getBody(), maxFrictionForcePerWheel);
     }
 }
+
+void Sumobot4Wheel::updateSensors()
+{
+    // TODO: Make an array to hold all sensors like the wheels...
+    m_rangeSensorLeft->update();
+    m_rangeSensorFrontLeft->update();
+    m_rangeSensorFront->update();
+    m_rangeSensorFrontRight->update();
+    m_rangeSensorRight->update();
+    m_rangeSensorLeft->getDistance();
+    m_rangeSensorFrontLeft->getDistance();
+    m_rangeSensorFront->getDistance();
+    m_rangeSensorFrontRight->getDistance();
+    m_rangeSensorRight->getDistance();
+}
+
