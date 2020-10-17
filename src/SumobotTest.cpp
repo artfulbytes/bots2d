@@ -9,6 +9,8 @@
 SumobotTest::SumobotTest()
 {
     //TODO: Where to initialize variables?
+    const b2Vec2 gravity = b2Vec2(0,0);
+    m_world = new b2World(gravity);
     m_world->SetGravity(b2Vec2(0,0));
     m_world->SetContactListener(new ContactListener());
     m_sumobot = new Sumobot4Wheel(m_world, 0.1f, 0.1f, 0.5f);
@@ -16,7 +18,7 @@ SumobotTest::SumobotTest()
     m_testWheel = new Wheel(m_world, Wheel::Type::Left, 0.1f, 0.15f, 0.5f);
     m_testWheel->setCharacteristics(10.0f, -10.0f, 100.0f, 0);
     */
-    m_dohyo = new Dohyo(m_world, 0.0f, 0.0f, 0.77f, 0.8f);
+    m_dohyo = new Dohyo(m_world, 0.0f, 0.0f, 0.385f, 0.4f);
     m_boxObstacle = new BoxObstacle(m_world, 0.3f, 0.3f, 0.1f, 0.5f);
 
     m_keysPressed = 0;
@@ -24,6 +26,7 @@ SumobotTest::SumobotTest()
 
 void SumobotTest::Keyboard(int key)
 {
+    /*
     switch (key) {
     case 65: m_keysPressed |= static_cast<unsigned>(KeyPress::Left); break;
     case 68: m_keysPressed |= static_cast<unsigned>(KeyPress::Right); break;
@@ -31,10 +34,13 @@ void SumobotTest::Keyboard(int key)
     case 83: m_keysPressed |= static_cast<unsigned>(KeyPress::Down); break;
     default: Test::Keyboard(key);
     }
+    */
+    (void)key;
 }
 
 void SumobotTest::KeyboardUp(int key)
 {
+        /*
     switch (key) {
     case 65: m_keysPressed &= ~static_cast<unsigned>(KeyPress::Left); break;
     case 68: m_keysPressed &= ~static_cast<unsigned>(KeyPress::Right); break;
@@ -42,6 +48,8 @@ void SumobotTest::KeyboardUp(int key)
     case 83: m_keysPressed &= ~static_cast<unsigned>(KeyPress::Down); break;
     default: Test::Keyboard(key);
     }
+    */
+    (void)key;
 }
 
 void SumobotTest::stepTestWheel(Sumobot4Wheel::Drive drive)
@@ -65,7 +73,7 @@ void SumobotTest::stepTestWheel(Sumobot4Wheel::Drive drive)
     m_testWheel->updateFrictionTest(wDrive);
 }
 
-void SumobotTest::Step(Settings& settings)
+void SumobotTest::Step()
 {
     Sumobot4Wheel::Drive drive = Sumobot4Wheel::Drive::None;
     Sumobot4Wheel::Turn turn = Sumobot4Wheel::Turn::None;
@@ -84,9 +92,9 @@ void SumobotTest::Step(Settings& settings)
 
     m_sumobot->update(drive, turn);
 
-    Test::Step(settings);
-    g_debugDraw.DrawString(5, m_textLine, "Press w/a/s/d to control the sumobot");
-    m_textLine += 15;
+    //Test::Step(settings);
+    //g_debugDraw.DrawString(5, m_textLine, "Press w/a/s/d to control the sumobot");
+    //m_textLine += 15;
 }
 
 

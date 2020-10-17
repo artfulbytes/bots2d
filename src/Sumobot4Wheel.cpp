@@ -6,7 +6,6 @@
 // TODO: pragma once?
 // TODO: Same here, need "" not <>
 #include "Constants.h"
-#include "draw.h"
 #include "UserData.h"
 
 #include "LineDetector.h"
@@ -30,11 +29,11 @@ Sumobot4Wheel::Sumobot4Wheel(b2World* world, float width, float length, float ma
 void Sumobot4Wheel::createSensors(b2World* world)
 {
     // TODO: new here or create empty range sensor by default in header?
-    m_rangeSensorLeft = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), -pi / 2, 0.0f, 15.0f);
-    m_rangeSensorFrontLeft = new RangeSensor(world, m_body, b2Vec2(0.15f, 0.52f), 0.10f, 0.0f, 15.0f);
-    m_rangeSensorFront = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.52f), 0.0f, 0.0f, 15.0f);
-    m_rangeSensorFrontRight = new RangeSensor(world, m_body, b2Vec2(-0.15f, 0.52f), -0.10f, 0.0f, 15.0f);
-    m_rangeSensorRight = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), pi / 2, 0.0f, 15.0f);
+    //m_rangeSensorLeft = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), -pi / 2, 0.0f, 15.0f);
+    //m_rangeSensorFrontLeft = new RangeSensor(world, m_body, b2Vec2(0.15f, 0.52f), 0.10f, 0.0f, 15.0f);
+    //m_rangeSensorFront = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.52f), 0.0f, 0.0f, 15.0f);
+    //m_rangeSensorFrontRight = new RangeSensor(world, m_body, b2Vec2(-0.15f, 0.52f), -0.10f, 0.0f, 15.0f);
+    //m_rangeSensorRight = new RangeSensor(world, m_body, b2Vec2(0.0f, 0.4f), pi / 2, 0.0f, 15.0f);
 
     m_lineDetectorFrontLeft = new LineDetector(world, m_body, b2Vec2(-0.35f, 0.45f));
     m_lineDetectorFrontRight = new LineDetector(world, m_body, b2Vec2(0.35f, 0.45f));
@@ -230,16 +229,16 @@ void Sumobot4Wheel::createWheels(b2World* world)
 void Sumobot4Wheel::updateSensors()
 {
     // TODO: Make an array to hold all sensors like the wheels...
-    m_rangeSensorLeft->update();
-    m_rangeSensorFrontLeft->update();
-    m_rangeSensorFront->update();
-    m_rangeSensorFrontRight->update();
-    m_rangeSensorRight->update();
-    m_rangeSensorLeft->getDistance();
-    m_rangeSensorFrontLeft->getDistance();
-    m_rangeSensorFront->getDistance();
-    m_rangeSensorFrontRight->getDistance();
-    m_rangeSensorRight->getDistance();
+    //m_rangeSensorLeft->update();
+    //m_rangeSensorFrontLeft->update();
+    //m_rangeSensorFront->update();
+    //m_rangeSensorFrontRight->update();
+    //m_rangeSensorRight->update();
+    //m_rangeSensorLeft->getDistance();
+    //m_rangeSensorFrontLeft->getDistance();
+    //m_rangeSensorFront->getDistance();
+    //m_rangeSensorFrontRight->getDistance();
+    //m_rangeSensorRight->getDistance();
     m_lineDetectorFrontLeft->detected();
     m_lineDetectorFrontRight->detected();
     m_lineDetectorBackLeft->detected();

@@ -19,7 +19,7 @@ Dohyo::Dohyo(b2World* world, float x, float y, float innerRadius, float outerRad
 
     UserData* userData = new UserData();
     userData->bodyType = BodyType::DohyoBorder;
-    m_body->SetUserData(userData);
+    m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
 
     createBorder();
 }

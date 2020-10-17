@@ -1,10 +1,8 @@
-#include "test.h"
 #include "Sumobot4Wheel.h"
 #include "Dohyo.h"
 #include "BoxObstacle.h"
 
-// TODO: Include in header or in CPP file?
-class SumobotTest : public Test
+class SumobotTest
 {
 public:
     enum class KeyPress : unsigned
@@ -15,22 +13,17 @@ public:
         Right = 0x08
     };
     SumobotTest();
-    // TODO: Do you define overridden methods in header?
-    void Keyboard(int key) override;
-    void KeyboardUp(int key) override;
-    void Step(Settings& settings) override;
-    static Test* Create()
-    {
-	    return new SumobotTest;
-    }
+    void Keyboard(int key);
+    void KeyboardUp(int key);
+    void Step();
 private:
     void stepTestWheel(Sumobot4Wheel::Drive drive);
 
     unsigned int m_keysPressed;
+    b2World *m_world = nullptr; /* TODO: How to create ? */
     Sumobot4Wheel* m_sumobot = nullptr;
     WheelMotor* m_testWheel = nullptr;
     Dohyo* m_dohyo = nullptr;
     BoxObstacle* m_boxObstacle = nullptr;
 };
 
-static int testIndex = RegisterTest("Benchmark", "Sumobot4Wheel", SumobotTest::Create);

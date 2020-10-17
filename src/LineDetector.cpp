@@ -1,7 +1,7 @@
 #include "LineDetector.h"
 #include "UserData.h"
-#include "draw.h"
 #include <iostream>
+#include <../external/Box2D/include/box2d/b2_body.h>
 
 #define DEBUG_DRAW
 
@@ -35,16 +35,17 @@ LineDetector::LineDetector(b2World* world, b2Body* ownerBody, b2Vec2 position) :
     /* User data */
     UserData* userData = new UserData();
     userData->bodyType = BodyType::LineDetector;
-    m_body->SetUserData(userData);
+    m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
 }
 
 bool LineDetector::detected()
 {
-    const bool detected = static_cast<UserData*>(m_body->GetUserData())->contactCount > 0;
+    /* TODO: Before we did static cast here and no &... */
+    const bool detected = reinterpret_cast<UserData*>(&m_body->GetUserData())->contactCount > 0;
 
 #ifdef DEBUG_DRAW
     if (detected) {
-        g_debugDraw.DrawCircle(m_body->GetPosition(), 0.4f, b2Color(0.7f, 0.4f, 0.4f));
+        //g_debugDraw.DrawCircle(m_body->GetPosition(), 0.4f, b2Color(0.7f, 0.4f, 0.4f));
     }
 #endif //DEBUG_DRAW
     return detected;

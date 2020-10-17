@@ -1,5 +1,4 @@
 #include "RangeSensor.h"
-#include "draw.h"
 #include <iostream>
 
 #define DEBUG_DRAW
@@ -64,8 +63,8 @@ float RangeSensor::getDistance()
     rayPoints[0] = m_rayStartPosition;
     rayPoints[1] = intersectionPoint;
     // TODO: Show debug draw???
-    g_debugDraw.DrawPolygon(rayPoints, 2,  b2Color(0.4f, 0.9f, 0.4f));
-    g_debugDraw.DrawCircle(rayPoints[1], 0.1f, b2Color(0.7f, 0.4f, 0.4f));
+    //g_debugDraw.DrawPolygon(rayPoints, 2,  b2Color(0.4f, 0.9f, 0.4f));
+    //g_debugDraw.DrawCircle(rayPoints[1], 0.1f, b2Color(0.7f, 0.4f, 0.4f));
 #endif //DEBUG_DRAW
 
     return closestFraction * m_maxDistance;
