@@ -1,19 +1,12 @@
-#include <SumobotTest.h>
-
+#include "Application.h"
 #define GLFW_INCLUDE_NONE
 /* TODO: Glad must be included before any openGL stuff */
 #include "Renderer.h"
 #include "ImGuiOverlay.h"
 #include "GLError.h"
 #include <GLFW/glfw3.h>
-
-#include "tests/Test.h"
-#include "tests/TestClearColor.h"
-#include "tests/TestDrawBasicShapes.h"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-
+#include <cassert>
+#include <iostream>
 
 /* TODO: Is this the callback we can use in place of GLError.h? */
 static void error_callback(int error, const char* description)
@@ -44,7 +37,6 @@ static void camera_handling(int key, int action)
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    std::cout << "Key callback" << key  << " " << action << std::endl;
     camera_handling(key, action);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         GLCall(glfwSetWindowShouldClose(window, GLFW_TRUE));
@@ -98,64 +90,40 @@ int init_opengl(GLFWwindow* window) {
     return 0;
 }
 
-
-int main() {
-    SumobotTest sumotest;
+Application::Application()
+{
     glfwSetErrorCallback(error_callback);
 
     if (!glfwInit()) {
-        return -1;
+        assert(false);
     }
 
-    GLFWwindow *window = glfwCreateWindow(800, 600, "Sumobot simulator", NULL, NULL);
-    if (init_opengl(window) == -1) {
-        return -1;
+    m_window = glfwCreateWindow(800, 600, "Sumobot simulator", NULL, NULL);
+    if (init_opengl(m_window) == -1) {
+        assert(false);
     }
-    assert(window != nullptr);
+    assert(m_window != nullptr);
 
-    ImGuiOverlay::init(window);
+    ImGuiOverlay::init(m_window);
     Renderer::init();
+}
 
-    Test *currentTest = nullptr;
-    TestMenu *testMenu = new TestMenu(currentTest);
-    currentTest = testMenu;
+Application::~Application()
+{
+    glfwDestroyWindow(m_window);
+    ImGuiOverlay::destroy();
+    glfwTerminate();
+}
 
-    testMenu->RegisterTest<TestClearColor>("Clear Color");
-    testMenu->RegisterTest<TestDrawBasicShapes>("Draw basic shapes");
-
-    /* Render loop */
-    while (!glfwWindowShouldClose(window))
+void Application::run()
+{
+    while (!glfwWindowShouldClose(m_window))
     {
         Renderer::clear();
         ImGuiOverlay::newFrame();
-        if (currentTest)
-        {
-            currentTest->OnUpdate(0.0f);
-            currentTest->OnRender();
-            ImGuiOverlay::begin("Test");
-            if (currentTest != testMenu && ImGuiOverlay::button("<-"))
-            {
-                delete currentTest;
-                currentTest = testMenu;
-            }
-            currentTest->OnImGuiRender();
-            ImGuiOverlay::end();
-        }
+        onUpdate();
         ImGuiOverlay::render();
-
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
-
-    /* Clean up */
-    delete currentTest;
-    if (currentTest != testMenu) {
-        delete testMenu;
-    }
-    glfwDestroyWindow(window);
-    ImGuiOverlay::destroy();
-    glfwTerminate();
-    return 0;
 }
-
-

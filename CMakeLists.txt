@@ -14,29 +14,35 @@ set(IMGUI_SOURCE_FILES
     external/imgui/backends/imgui_impl_glfw.cpp
 )
 
-# TODO: Divide this into more sets
-
 set (RENDERER_SOURCE_FILES
-    src/renderer/Renderer.cpp
-    src/renderer/GLError.cpp
-    src/renderer/VertexBuffer.cpp
-    src/renderer/IndexBuffer.cpp
-    src/renderer/VertexArray.cpp
-    src/renderer/Shader.cpp
-    src/renderer/ImGuiOverlay.cpp
-    src/renderer/stb_image.cpp
-    src/renderer/Texture.cpp
+    src/engine/renderer/Renderer.cpp
+    src/engine/renderer/GLError.cpp
+    src/engine/renderer/VertexBuffer.cpp
+    src/engine/renderer/IndexBuffer.cpp
+    src/engine/renderer/VertexArray.cpp
+    src/engine/renderer/Shader.cpp
+    src/engine/renderer/ImGuiOverlay.cpp
+    src/engine/renderer/stb_image.cpp
+    src/engine/renderer/Texture.cpp
 )
 
 set (PHYSICS_SOURCE_FILES
-    src/physics/SumobotTest.cpp
-    src/physics/Sumobot4Wheel.cpp
-    src/physics/WheelMotor.cpp
-    src/physics/Dohyo.cpp
-    src/physics/ContactListener.cpp
-    src/physics/RangeSensor.cpp
-    src/physics/LineDetector.cpp
-    src/physics/BoxObstacle.cpp
+    src/engine/physics/SumobotTest.cpp
+    src/engine/physics/Sumobot4Wheel.cpp
+    src/engine/physics/WheelMotor.cpp
+    src/engine/physics/Dohyo.cpp
+    src/engine/physics/ContactListener.cpp
+    src/engine/physics/RangeSensor.cpp
+    src/engine/physics/LineDetector.cpp
+    src/engine/physics/BoxObstacle.cpp
+)
+
+set (SIMULATOR_ENGINE_FILES
+    src/engine/core/Application.cpp
+    ${RENDERER_SOURCE_FILES}
+    ${PHYSICS_SOURCE_FILES}
+    ${GLAD_GL_SOURCE_FILES}
+    ${IMGUI_SOURCE_FILES}
 )
 
 set (TEST_SOURCE_FILES
@@ -46,21 +52,21 @@ set (TEST_SOURCE_FILES
 )
 
 set (SIMULATOR_SOURCE_FILES
-    src/Application.cpp
-    ${RENDERER_SOURCE_FILES}
-    ${PHYSICS_SOURCE_FILES}
+    ${SIMULATOR_ENGINE_FILES}
     ${TEST_SOURCE_FILES}
+    src/SimulatorApp.cpp
+    src/main.cpp
 )
 
 add_executable(sumobot_simulator
     ${SIMULATOR_SOURCE_FILES}
-    ${GLAD_GL_SOURCE_FILES}
-    ${IMGUI_SOURCE_FILES}
 )
 
 target_include_directories(sumobot_simulator PRIVATE include)
-target_include_directories(sumobot_simulator PRIVATE include/physics)
-target_include_directories(sumobot_simulator PRIVATE include/renderer)
+# TODO: Don't use full path for these?
+target_include_directories(sumobot_simulator PRIVATE include/engine/core)
+target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
+target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)
 target_include_directories(sumobot_simulator PRIVATE external/glm)
