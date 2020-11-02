@@ -39,23 +39,25 @@ set (PHYSICS_SOURCE_FILES
 
 set (SIMULATOR_ENGINE_FILES
     src/engine/core/Application.cpp
+    src/engine/scene/SceneObject.cpp
+    src/engine/scene/Scene.cpp
     ${RENDERER_SOURCE_FILES}
     ${PHYSICS_SOURCE_FILES}
     ${GLAD_GL_SOURCE_FILES}
     ${IMGUI_SOURCE_FILES}
 )
 
-set (TEST_SOURCE_FILES
-    src/tests/Test.cpp
-    src/tests/TestClearColor.cpp
-    src/tests/TestDrawBasicShapes.cpp
+set (SIMULATOR_APP_FILES
+    src/app/SimulatorApp.cpp
+    src/app/SceneMenu.cpp
+    src/app/scenes/AppScene.cpp
+    src/app/scenes/QuadRenderingTestScene.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES
-    ${SIMULATOR_ENGINE_FILES}
-    ${TEST_SOURCE_FILES}
-    src/SimulatorApp.cpp
     src/main.cpp
+    ${SIMULATOR_ENGINE_FILES}
+    ${SIMULATOR_APP_FILES}
 )
 
 add_executable(sumobot_simulator
@@ -64,9 +66,12 @@ add_executable(sumobot_simulator
 
 target_include_directories(sumobot_simulator PRIVATE include)
 # TODO: Don't use full path for these?
+target_include_directories(sumobot_simulator PRIVATE include/app)
+target_include_directories(sumobot_simulator PRIVATE include/app/scenes)
 target_include_directories(sumobot_simulator PRIVATE include/engine/core)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
+target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)
 target_include_directories(sumobot_simulator PRIVATE external/glm)

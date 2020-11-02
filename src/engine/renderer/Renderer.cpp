@@ -155,7 +155,7 @@ void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float 
     GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::drawCircle(float radius, const glm::vec3& position, const glm::vec4& color)
+void Renderer::drawCircle(const glm::vec3& position, float radius, const glm::vec4& color)
 {
     s_rendererData->solidColorShader->bind();
     s_rendererData->circleVertexArray->bind();

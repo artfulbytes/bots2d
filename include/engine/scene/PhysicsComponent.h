@@ -1,0 +1,3 @@
+class PhysicsComponent : public Component
+{
+};

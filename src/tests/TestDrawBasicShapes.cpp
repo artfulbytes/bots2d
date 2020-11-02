@@ -22,9 +22,9 @@ void TestDrawBasicShapes::OnRender()
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
     static float rotation = 0;
     const glm::vec4 colorCircleBorder(1.0f, 1.0f, 1.0f, 1.0f);
-    Renderer::drawCircle(100.0f, glm::vec3(700.0f, 200.0f, 0.0), colorCircleBorder);
+    Renderer::drawCircle(glm::vec3(700.0f, 200.0f, 0.0), 100.0f, colorCircleBorder);
     const glm::vec4 colorCircle(0.0f, 0.0f, 0.0f, 1.0f);
-    Renderer::drawCircle(90.0f, glm::vec3(700.0f, 200.0f, 0.0f), colorCircle);
+    Renderer::drawCircle(glm::vec3(700.0f, 200.0f, 0.0f), 90.0f, colorCircle);
     const glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
     rotation += 0.01f;
     Renderer::drawQuad(glm::vec3(1000.0f, 900.0f, 0.0f), glm::vec2(310.0f, 10.0f), rotation, color);

@@ -21,7 +21,7 @@ public:
     static void setCamera(const glm::vec3 camera);
     static void drawLine(const glm::vec2& start, const glm::vec2& end, float width, const glm::vec4& color);
     static void drawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
-    static void drawCircle(float radius, const glm::vec3& position, const glm::vec4& color);
+    static void drawCircle(const glm::vec3& position, float radius, const glm::vec4& color);
 };
 
 #endif /* RENDERER_H_ */
