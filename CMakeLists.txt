@@ -27,6 +27,7 @@ set (RENDERER_SOURCE_FILES
 )
 
 set (PHYSICS_SOURCE_FILES
+    src/engine/physics/PhysicsWorld.cpp
     src/engine/physics/SumobotTest.cpp
     src/engine/physics/Sumobot4Wheel.cpp
     src/engine/physics/WheelMotor.cpp
@@ -35,6 +36,7 @@ set (PHYSICS_SOURCE_FILES
     src/engine/physics/RangeSensor.cpp
     src/engine/physics/LineDetector.cpp
     src/engine/physics/BoxObstacle.cpp
+    src/engine/physics/Body2D.cpp
 )
 
 set (SIMULATOR_ENGINE_FILES
@@ -52,6 +54,7 @@ set (SIMULATOR_APP_FILES
     src/app/SceneMenu.cpp
     src/app/scenes/AppScene.cpp
     src/app/scenes/QuadRenderingTestScene.cpp
+    src/app/scenes/PhysicsBoxTestScene.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES

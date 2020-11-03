@@ -4,6 +4,7 @@
 #include <vector>
 
 class SceneObject;
+class PhysicsWorld;
 
 class Scene
 {
@@ -12,9 +13,13 @@ class Scene
         ~Scene();
         void onUpdate();
         void addObject(SceneObject *obj);
+        void setPhysicsWorld(PhysicsWorld *world);
 
     private:
         std::vector<SceneObject *> m_objects;
+
+    protected:
+        PhysicsWorld *m_physicsWorld;
 };
 
 #endif /* SCENE_H_ */

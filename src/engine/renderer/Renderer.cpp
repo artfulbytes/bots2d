@@ -24,6 +24,8 @@ struct RendererStorage
     Shader* solidColorShader;
     glm::mat4* projectionMatrix;
     glm::mat4* viewMatrix;
+    /* TODO: Make this depend on lengthScaleFactor */
+    float centimetersToPxScale = 10.0f;
 };
 
 static RendererStorage* s_rendererData;
@@ -141,13 +143,29 @@ void Renderer::drawLine(const glm::vec2& start, const glm::vec2& end, float widt
     drawQuad(location, size, angle, color);
 }
 
+/* TODO: Should this be part of the class? */
+/* Scale with pixel scale */
+static glm::mat4 scale2D(const glm::vec2 &size) {
+    return glm::scale(glm::mat4(1.0f), { size.x * s_rendererData->centimetersToPxScale,
+                                         size.y * s_rendererData->centimetersToPxScale,
+                                         1.0f });
+}
+
+/* Translate with pixel scale */
+static glm::mat4 translate2D(const glm::vec3 &position)
+{
+    return glm::translate(glm::mat4(1.0f), { position.x * s_rendererData->centimetersToPxScale,
+                                             position.y * s_rendererData->centimetersToPxScale,
+                                             position.z });
+}
+
 void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float angle, const glm::vec4& color)
 {
     s_rendererData->solidColorShader->bind();
     s_rendererData->quadVertexArray->bind();
     s_rendererData->quadIndexBuffer->bind();
-    glm::mat4 scale = glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), position);
+    glm::mat4 scale = scale2D(size);
+    glm::mat4 translate = translate2D(position);
     glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f });
     glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);

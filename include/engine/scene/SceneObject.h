@@ -15,6 +15,7 @@ class SceneObject
         inline TransformComponent *getTransform() { return m_transformComp; }
         /* TODO: Pass renderable component to scene instead? */
         void render();
+        void updatePhysics();
 
     private:
         /* TODO: Make this a general array of components instead? */

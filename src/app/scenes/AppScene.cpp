@@ -1,10 +1,9 @@
 #include "AppScene.h"
 #include <iostream>
 
-AppScene::AppScene()
+AppScene::AppScene() :
+    m_scene(new Scene())
 {
-    /* TODO: There might be cases where we don't ahve a scene? */
-    m_scene = new Scene();
 }
 
 AppScene::~AppScene()

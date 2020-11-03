@@ -38,3 +38,10 @@ void SceneObject::render()
         m_renderableComp->render();
     }
 }
+
+void SceneObject::updatePhysics()
+{
+    if (m_physicsComp) {
+        m_physicsComp->update();
+    }
+}

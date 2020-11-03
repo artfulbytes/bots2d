@@ -2,8 +2,10 @@
 #define APP_SCENE_H_
 
 #include "Scene.h"
+#include "PhysicsWorld.h"
 #include <string>
 
+/* TODO: Maybe AppScene should inherit scene? */
 class AppScene
 {
 public:
