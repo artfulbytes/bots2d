@@ -6,23 +6,21 @@ void Scene::onUpdate()
 {
     if (m_physicsWorld) {
         m_physicsWorld->step(0.01);
-        /* This is not cache friendly, optimally we should use an entity component
-        * system here, but since we render few components it's okay for now. */
         for (auto obj : m_objects) {
             obj->updatePhysics();
         }
     }
 
-    /* This is not cache friendly, optimally we should use an entity component
-    * system here, but since we render few components it's okay for now. */
     for (auto obj : m_objects) {
         obj->render();
     }
 }
 
-void Scene::addObject(SceneObject *obj)
+void Scene::createObject(TransformComponent *transformComp,
+                         RenderableComponent *renderableComp,
+                         PhysicsComponent *physicsComp)
 {
-    m_objects.push_back(obj);
+    m_objects.push_back(new SceneObject(*this, transformComp, renderableComp, physicsComp));
 }
 
 void Scene::setPhysicsWorld(PhysicsWorld *world) {

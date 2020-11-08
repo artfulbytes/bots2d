@@ -3,6 +3,13 @@
 
 class b2World;
 
+/* TODO: Move this */
+struct Vec2 {
+    Vec2(float x, float y) : x(x), y(y) {}
+    float x;
+    float y;
+};
+
 class PhysicsWorld
 {
 public:

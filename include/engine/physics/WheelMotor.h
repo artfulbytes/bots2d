@@ -6,7 +6,6 @@
 /*
  * WheelMotor simulates a wheel connected to a DC-motor
  */
-
 class WheelMotor
 {
 public:
@@ -15,18 +14,14 @@ public:
     enum class Type {Left, Right};
 
     WheelMotor(b2World* world, Type type, float width, float length, float weight);
-    // TODO: Is destructor needed?
     ~WheelMotor();
     void setCharacteristics(float maxDriveForce, float maxLateralImpulse);
     b2Vec2 getLateralVelocity();
     b2Vec2 getForwardVelocity();
-    // TODO: Do I need const if passing by value?
     void updateFriction(const Drive drive);
     void updateDrive(const Drive drive, const float voltageApplied);
     void updateTurn(const Turn turn);
-    // TODO: Any better way of doing this?
     b2Body* getBody() { return m_body; }
-    // TODO: Okay to have definition in header?
     Type getType() { return m_type; }
     void updateFrictionTest(const Drive drive);
 

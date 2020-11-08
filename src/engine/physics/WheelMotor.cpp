@@ -158,7 +158,6 @@ void WheelMotor::updateTurn(const Turn turn)
     m_body->ApplyTorque(desiredTorque, true);
 }
 
-// TODO: Where to place {?
 WheelMotor::~WheelMotor()
 {
     m_body->GetWorld()->DestroyBody(m_body);

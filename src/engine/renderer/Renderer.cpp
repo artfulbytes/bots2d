@@ -25,7 +25,7 @@ struct RendererStorage
     glm::mat4* projectionMatrix;
     glm::mat4* viewMatrix;
     /* TODO: Make this depend on lengthScaleFactor */
-    float centimetersToPxScale = 10.0f;
+    float centimetersToPxScale = 100.0f;
 };
 
 static RendererStorage* s_rendererData;

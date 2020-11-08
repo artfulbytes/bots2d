@@ -8,6 +8,7 @@ class b2Joint;
 class QuadTransform;
 class CircleTransform;
 
+
 /* TODO: Rename to Body2DComponent? */
 class Body2D : public PhysicsComponent
 {
@@ -15,6 +16,11 @@ public:
     Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass);
     ~Body2D();
     void update() override;
+    float getForwardSpeed() const;
+    Vec2 getLateralVelocity() const;
+    Vec2 getForwardNormal() const;
+    void setForce(const Vec2 &vec, float magnitude);
+    void setLinearImpulse(const Vec2 &vec, float magnitude);
 
 private:
     class QuadTransformTranslator : public PhysicsToTransformTranslator {

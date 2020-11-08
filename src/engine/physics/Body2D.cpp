@@ -70,6 +70,36 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
     }
 }
 
+float Body2D::getForwardSpeed() const
+{
+    b2Vec2 currentForwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
+    return b2Dot(currentForwardNormal, m_body->GetLinearVelocity());
+}
+
+Vec2 Body2D::getLateralVelocity() const
+{
+    b2Vec2 currentRightNormal = m_body->GetWorldVector( b2Vec2(1,0) );
+    b2Vec2 lateralVelocity = b2Dot(currentRightNormal, m_body->GetLinearVelocity()) * currentRightNormal;
+    return Vec2(lateralVelocity.x, lateralVelocity.y);
+}
+
+Vec2 Body2D::getForwardNormal() const
+{
+    const b2Vec2 forwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
+    return Vec2(forwardNormal.x, forwardNormal.y);
+}
+
+void Body2D::setForce(const Vec2 &vec, float magnitude)
+{
+    m_body->ApplyForce(magnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
+}
+
+void Body2D::setLinearImpulse(const Vec2 &vec, float magnitude)
+{
+    b2Vec2 box2DVec(vec.x, vec.y);
+    m_body->ApplyLinearImpulse(b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
+}
+
 void Body2D::update()
 {
     if (nullptr == m_translator) {
@@ -78,3 +108,10 @@ void Body2D::update()
     m_translator->translate();
 }
 
+Body2D::~Body2D()
+{
+    m_world->DestroyBody(m_body);
+    m_world->DestroyBody(m_frictionBody);
+    m_world->DestroyJoint(m_frictionJoint);
+    delete m_translator;
+}

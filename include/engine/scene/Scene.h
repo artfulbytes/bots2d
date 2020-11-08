@@ -3,23 +3,29 @@
 
 #include <vector>
 
-class SceneObject;
+class TransformComponent;
+class RenderableComponent;
+class PhysicsComponent;
 class PhysicsWorld;
+class SceneObject;
 
 class Scene
 {
-    public:
-        Scene();
-        ~Scene();
-        void onUpdate();
-        void addObject(SceneObject *obj);
-        void setPhysicsWorld(PhysicsWorld *world);
+public:
+    Scene();
+    ~Scene();
+    void onUpdate();
+    void createObject(TransformComponent *transformComp,
+                      RenderableComponent *renderableComp,
+                      PhysicsComponent *physicsComp);
+    void setPhysicsWorld(PhysicsWorld *world);
+    const PhysicsWorld *getPhysicsWorld() const { return m_physicsWorld; }
 
-    private:
-        std::vector<SceneObject *> m_objects;
+private:
+    std::vector<SceneObject *> m_objects;
 
-    protected:
-        PhysicsWorld *m_physicsWorld;
+protected:
+    PhysicsWorld *m_physicsWorld = nullptr;
 };
 
 #endif /* SCENE_H_ */

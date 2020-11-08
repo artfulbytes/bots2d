@@ -1,13 +1,16 @@
 #include "SceneObject.h"
+#include "Scene.h"
 #include "RenderableComponent.h"
 #include "PhysicsComponent.h"
 #include "Transforms.h"
 
 #include <cassert>
 
-SceneObject::SceneObject(TransformComponent *transformComp,
-               RenderableComponent *renderableComp,
-               PhysicsComponent *physicsComp):
+SceneObject::SceneObject(const Scene &scene,
+                         TransformComponent *transformComp,
+                         RenderableComponent *renderableComp,
+                         PhysicsComponent *physicsComp) :
+    m_scene(&scene),
     m_transformComp(transformComp),
     m_renderableComp(renderableComp),
     m_physicsComp(physicsComp)

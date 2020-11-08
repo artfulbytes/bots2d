@@ -55,6 +55,8 @@ set (SIMULATOR_APP_FILES
     src/app/scenes/AppScene.cpp
     src/app/scenes/QuadRenderingTestScene.cpp
     src/app/scenes/PhysicsBoxTestScene.cpp
+    src/app/scenes/WheelMotorTestScene.cpp
+    src/app/objects/TopViewWheelMotor.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES
@@ -71,6 +73,7 @@ target_include_directories(sumobot_simulator PRIVATE include)
 # TODO: Don't use full path for these?
 target_include_directories(sumobot_simulator PRIVATE include/app)
 target_include_directories(sumobot_simulator PRIVATE include/app/scenes)
+target_include_directories(sumobot_simulator PRIVATE include/app/objects)
 target_include_directories(sumobot_simulator PRIVATE include/engine/core)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)

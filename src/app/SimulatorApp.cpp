@@ -3,12 +3,14 @@
 #include "AppScene.h"
 #include "QuadRenderingTestScene.h"
 #include "PhysicsBoxTestScene.h"
+#include "WheelMotorTestScene.h"
 
 SimulatorApp::SimulatorApp()
 {
     m_sceneMenu = new SceneMenu(m_currentScene);
     m_sceneMenu->registerScene<QuadRenderingTestScene>("QuadTest");
     m_sceneMenu->registerScene<PhysicsBoxTestScene>("PhysicsBoxTest");
+    m_sceneMenu->registerScene<WheelMotorTestScene>("WheelMotorTest");
 }
 
 SimulatorApp::~SimulatorApp()
