@@ -13,6 +13,8 @@ class CircleTransform;
 class Body2D : public PhysicsComponent
 {
 public:
+    /* TODO: It's ugly to pass a transform here because this body should only have
+     * access to the parent scene object's transform */
     Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass);
     ~Body2D();
     void update() override;

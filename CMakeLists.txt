@@ -16,6 +16,7 @@ set(IMGUI_SOURCE_FILES
 
 set (RENDERER_SOURCE_FILES
     src/engine/renderer/Renderer.cpp
+    src/engine/renderer/Camera.cpp
     src/engine/renderer/GLError.cpp
     src/engine/renderer/VertexBuffer.cpp
     src/engine/renderer/IndexBuffer.cpp
@@ -39,12 +40,18 @@ set (PHYSICS_SOURCE_FILES
     src/engine/physics/Body2D.cpp
 )
 
+set (CONTROLLER_SOURCE_FILES
+    src/engine/controller/Microcontroller.cpp
+)
+
 set (SIMULATOR_ENGINE_FILES
     src/engine/core/Application.cpp
+    src/engine/core/Event.cpp
     src/engine/scene/SceneObject.cpp
     src/engine/scene/Scene.cpp
     ${RENDERER_SOURCE_FILES}
     ${PHYSICS_SOURCE_FILES}
+    ${CONTROLLER_SOURCE_FILES}
     ${GLAD_GL_SOURCE_FILES}
     ${IMGUI_SOURCE_FILES}
 )
@@ -75,8 +82,9 @@ target_include_directories(sumobot_simulator PRIVATE include/app)
 target_include_directories(sumobot_simulator PRIVATE include/app/scenes)
 target_include_directories(sumobot_simulator PRIVATE include/app/objects)
 target_include_directories(sumobot_simulator PRIVATE include/engine/core)
-target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
+target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
+target_include_directories(sumobot_simulator PRIVATE include/engine/controller)
 target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)

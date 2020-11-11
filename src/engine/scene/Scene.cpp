@@ -2,6 +2,15 @@
 #include "SceneObject.h"
 #include "PhysicsWorld.h"
 
+void Scene::onKeyEvent(const Event::Key &keyEvent)
+{
+    /* TODO: How to make this closer to callback (now it's like >5 nested function calls) */
+    /* TODO: Create an event list and process all press events between physics update and obj update */
+    for (auto obj : m_objects) {
+        obj->onKeyEvent(keyEvent);
+    }
+}
+
 void Scene::onUpdate()
 {
     if (m_physicsWorld) {
@@ -18,9 +27,10 @@ void Scene::onUpdate()
 
 void Scene::createObject(TransformComponent *transformComp,
                          RenderableComponent *renderableComp,
-                         PhysicsComponent *physicsComp)
+                         PhysicsComponent *physicsComp,
+                         ControllerComponent *controllerComp)
 {
-    m_objects.push_back(new SceneObject(*this, transformComp, renderableComp, physicsComp));
+    m_objects.push_back(new SceneObject(*this, transformComp, renderableComp, physicsComp, controllerComp));
 }
 
 void Scene::setPhysicsWorld(PhysicsWorld *world) {

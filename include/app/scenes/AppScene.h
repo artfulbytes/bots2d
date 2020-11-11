@@ -15,6 +15,7 @@ public:
 
     Scene *getScene() const { return m_scene; }
     void addObject(AppObject &appObject);
+    void onKeyEvent(const Event::Key &keyEvent);
     void update();
 
 protected:

@@ -11,6 +11,7 @@ class SimulatorApp : public Application
 public:
     SimulatorApp();
     ~SimulatorApp();
+    void onKeyEvent(const Event::Key &keyEvent) override;
     void onUpdate() override;
 
 private:

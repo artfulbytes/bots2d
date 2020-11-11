@@ -1,3 +1,6 @@
+#ifndef PHYSICS_COMPONENT_H
+#define PHYSICS_COMPONENT_H
+
 #include "PhysicsWorld.h"
 #include "Component.h"
 
@@ -20,3 +23,5 @@ protected:
     b2World *m_world = nullptr;
     PhysicsToTransformTranslator *m_translator = nullptr;
 };
+
+#endif /* PHYSICS_COMPONENT_H */

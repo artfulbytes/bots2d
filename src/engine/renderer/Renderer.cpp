@@ -30,6 +30,23 @@ struct RendererStorage
 
 static RendererStorage* s_rendererData;
 
+/* TODO: Should this be part of the class? */
+/* Scale with pixel scale */
+static glm::mat4 scale2D(const glm::vec2 &size) {
+    return glm::scale(glm::mat4(1.0f), { size.x * s_rendererData->centimetersToPxScale,
+                                         size.y * s_rendererData->centimetersToPxScale,
+                                         1.0f });
+}
+
+/* Translate with pixel scale */
+static glm::mat4 translate2D(const glm::vec3 &position)
+{
+    return glm::translate(glm::mat4(1.0f), { position.x * s_rendererData->centimetersToPxScale,
+                                             position.y * s_rendererData->centimetersToPxScale,
+                                             position.z });
+}
+
+
 static void initCircle()
 {
     const float radius = 0.5f;
@@ -98,14 +115,15 @@ void Renderer::init()
     initQuad();
 }
 
-void Renderer::setCamera(const glm::vec3 view)
+void Renderer::setCameraPosition(const glm::vec3 &position, float zoomFactor)
 {
-    *s_rendererData->viewMatrix = glm::translate(glm::mat4(1.0f), view);
+    *s_rendererData->viewMatrix = translate2D(position) * glm::scale(glm::mat4(1.0f), { zoomFactor, zoomFactor, 1.0f });
 }
 
-void Renderer::setWindowSize(int width, int height)
+void Renderer::setViewport(int x, int y, int width, int height)
 {
     *(s_rendererData->projectionMatrix) = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), -1.0f, 1.0f);
+    glViewport(x, y, width, height);
 }
 
 void Renderer::destroy()
@@ -142,23 +160,6 @@ void Renderer::drawLine(const glm::vec2& start, const glm::vec2& end, float widt
     const glm::vec2 size(glm::distance(start, end), width);
     drawQuad(location, size, angle, color);
 }
-
-/* TODO: Should this be part of the class? */
-/* Scale with pixel scale */
-static glm::mat4 scale2D(const glm::vec2 &size) {
-    return glm::scale(glm::mat4(1.0f), { size.x * s_rendererData->centimetersToPxScale,
-                                         size.y * s_rendererData->centimetersToPxScale,
-                                         1.0f });
-}
-
-/* Translate with pixel scale */
-static glm::mat4 translate2D(const glm::vec3 &position)
-{
-    return glm::translate(glm::mat4(1.0f), { position.x * s_rendererData->centimetersToPxScale,
-                                             position.y * s_rendererData->centimetersToPxScale,
-                                             position.z });
-}
-
 void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float angle, const glm::vec4& color)
 {
     s_rendererData->solidColorShader->bind();

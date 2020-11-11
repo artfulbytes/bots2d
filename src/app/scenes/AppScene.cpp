@@ -9,7 +9,7 @@ AppScene::AppScene() :
 
 AppScene::~AppScene()
 {
-    for (auto obj : m_appObjects) {
+    for (AppObject *obj : m_appObjects) {
         delete obj;
     }
     delete m_scene;
@@ -17,6 +17,11 @@ AppScene::~AppScene()
 
 void AppScene::addObject(AppObject &appObject) {
     m_appObjects.push_back(&appObject);
+}
+
+void AppScene::onKeyEvent(const Event::Key &keyEvent)
+{
+    m_scene->onKeyEvent(keyEvent);
 }
 
 void AppScene::update()

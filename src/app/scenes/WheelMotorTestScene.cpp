@@ -1,5 +1,36 @@
 #include "WheelMotorTestScene.h"
 #include "TopViewWheelMotor.h"
+#include "Transforms.h"
+#include "KeyboardController.h"
+
+namespace {
+    class WheelMotorController : public KeyboardController
+    {
+    public:
+        WheelMotorController(TopViewWheelMotor &wheelMotor) : m_wheelMotor(&wheelMotor) {}
+        void onKeyEvent(const Event::Key &keyEvent) override
+        {
+            if (keyEvent.code == Event::KeyCode::Up) {
+                if (keyEvent.action == Event::KeyAction::Press) {
+                    *m_wheelMotor->getVoltageLine() = 6.0f;
+                } else if (keyEvent.action == Event::KeyAction::Release) {
+                    *m_wheelMotor->getVoltageLine() = 0.0f;
+                }
+            } else if (keyEvent.code == Event::KeyCode::Down) {
+                if (keyEvent.action == Event::KeyAction::Press) {
+                    *m_wheelMotor->getVoltageLine() = -6.0f;
+                } else if (keyEvent.action == Event::KeyAction::Release) {
+                    *m_wheelMotor->getVoltageLine() = 0.0f;
+                }
+            }
+        }
+        void onUpdate() override
+        {
+        }
+    private:
+        TopViewWheelMotor *m_wheelMotor = nullptr;
+    };
+}
 
 WheelMotorTestScene::WheelMotorTestScene()
 {
@@ -14,6 +45,7 @@ WheelMotorTestScene::WheelMotorTestScene()
         .width = 0.015f,
         .mass = 0.5f
     };
-    auto topViewWheelMotor = new TopViewWheelMotor(*this, *world, spec, Vec2(0, 0));
-    topViewWheelMotor->setVoltageIn(6.0f);
+    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, spec, Vec2(0, 0));
+    WheelMotorController *controller = new WheelMotorController(*wheelMotor);
+    m_scene->createObject(nullptr, nullptr, nullptr, controller);
 }

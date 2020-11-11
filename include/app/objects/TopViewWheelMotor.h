@@ -7,7 +7,7 @@
 
 /* TopViewWheelMotor simulates a wheel connected to a DC-motor in a top-view
  * gravity physics world. */
-class TopViewWheelMotor : AppObject
+class TopViewWheelMotor : public AppObject
 {
 public:
     struct Specification {
@@ -31,12 +31,13 @@ public:
     void setVoltageIn(float voltage);
     void setDutyCycle(float dutyCycle);
     void update() override;
+    float *getVoltageLine();
 private:
     void updateForce();
     Body2D *m_body2D = nullptr;
     SceneObject *m_sceneObject = nullptr;
     Specification m_spec;
-    float m_voltageIn;
+    float m_voltageIn = 0.0f;
 };
 
 #endif /* TOP_VIEW_WHEEL_MOTOR_H_ */

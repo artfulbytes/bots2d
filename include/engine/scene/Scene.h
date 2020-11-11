@@ -1,11 +1,13 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
+#include "Event.h"
 #include <vector>
 
 class TransformComponent;
 class RenderableComponent;
 class PhysicsComponent;
+class ControllerComponent;
 class PhysicsWorld;
 class SceneObject;
 
@@ -15,9 +17,11 @@ public:
     Scene();
     ~Scene();
     void onUpdate();
+    void onKeyEvent(const Event::Key &keyEvent);
     void createObject(TransformComponent *transformComp,
                       RenderableComponent *renderableComp,
-                      PhysicsComponent *physicsComp);
+                      PhysicsComponent *physicsComp,
+                      ControllerComponent *controllerComp);
     void setPhysicsWorld(PhysicsWorld *world);
     const PhysicsWorld *getPhysicsWorld() const { return m_physicsWorld; }
 

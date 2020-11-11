@@ -110,8 +110,8 @@ void Body2D::update()
 
 Body2D::~Body2D()
 {
+    m_world->DestroyJoint(m_frictionJoint);
     m_world->DestroyBody(m_body);
     m_world->DestroyBody(m_frictionBody);
-    m_world->DestroyJoint(m_frictionJoint);
     delete m_translator;
 }

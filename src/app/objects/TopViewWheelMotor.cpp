@@ -20,7 +20,7 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
     QuadComponent *renderable = new QuadComponent(color);
     m_body2D = new Body2D(world, *transform, true, spec.mass);
     /* TODO: Make this access less ugly */
-    appScene.getScene()->createObject(transform, renderable, m_body2D);
+    appScene.getScene()->createObject(transform, renderable, m_body2D, nullptr);
 }
 
 void TopViewWheelMotor::setVoltageIn(float voltage)
@@ -28,6 +28,11 @@ void TopViewWheelMotor::setVoltageIn(float voltage)
     assert(abs(voltage) <= m_spec.maxVoltage);
     m_voltageIn = voltage;
     updateForce();
+}
+
+float *TopViewWheelMotor::getVoltageLine()
+{
+    return &m_voltageIn;
 }
 
 void TopViewWheelMotor::updateForce()
@@ -78,6 +83,5 @@ void TopViewWheelMotor::update()
 
 TopViewWheelMotor::~TopViewWheelMotor()
 {
-    delete m_body2D;
 }
 

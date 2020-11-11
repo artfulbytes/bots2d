@@ -19,7 +19,7 @@ PhysicsBoxTestScene::PhysicsBoxTestScene()
     transformBox->size.y = 0.05f;
     QuadComponent *boxComponent = new QuadComponent(color);
     auto fallingBody = new Body2D(*world, *transformBox, true, 1.0f);
-    m_scene->createObject(transformBox, boxComponent, fallingBody);
+    m_scene->createObject(transformBox, boxComponent, fallingBody, nullptr);
 
     QuadTransform *transformGround = new QuadTransform();
     transformGround->position.x = 1.03f;
@@ -31,5 +31,5 @@ PhysicsBoxTestScene::PhysicsBoxTestScene()
 
     QuadComponent *groundComponent = new QuadComponent(color);
     auto staticBody = new Body2D(*world, *transformGround, false, 1.0f);
-    m_scene->createObject(transformGround, groundComponent, staticBody);
+    m_scene->createObject(transformGround, groundComponent, staticBody, nullptr);
 }

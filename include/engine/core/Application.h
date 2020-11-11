@@ -1,6 +1,8 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
+#include "Event.h"
+
 class GLFWwindow;
 
 class Application
@@ -10,6 +12,7 @@ public:
     ~Application();
     void run();
 
+    virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
     virtual void onUpdate() = 0;
 
 private:

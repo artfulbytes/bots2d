@@ -17,7 +17,7 @@ QuadRenderingTestScene::QuadRenderingTestScene()
     transform->size.y = 0.5f;
     transform->rotation = 1.0f;
     QuadComponent *quadComponent = new QuadComponent(color);
-    m_scene->createObject(transform, quadComponent, nullptr);
+    m_scene->createObject(transform, quadComponent, nullptr, nullptr);
 
     LineTransform *transformLine = new LineTransform();
     transformLine->start.x = 1.0f;
@@ -26,12 +26,12 @@ QuadRenderingTestScene::QuadRenderingTestScene()
     transformLine->end.y = 2.0f;
     transformLine->width = 0.05f;
     LineComponent *lineComponent = new LineComponent(color);
-    m_scene->createObject(transformLine, lineComponent, nullptr);
+    m_scene->createObject(transformLine, lineComponent, nullptr, nullptr);
 
     CircleTransform *transformCircle = new CircleTransform();
     transformCircle->position.x = 0.0f;
     transformCircle->position.y = 0.0f;
     transformCircle->radius = 25.0f;
     CircleComponent *circleComponent = new CircleComponent(color);
-    m_scene->createObject(transformCircle, circleComponent, nullptr);
+    m_scene->createObject(transformCircle, circleComponent, nullptr, nullptr);
 }

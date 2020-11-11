@@ -4,6 +4,9 @@
 #include "Renderer.h"
 #include "ImGuiOverlay.h"
 #include "GLError.h"
+#include "Event.h"
+#include "Camera.h"
+
 #include <GLFW/glfw3.h>
 #include <cassert>
 #include <iostream>
@@ -14,40 +17,36 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void camera_handling(int key, int action)
-{
-    static glm::vec3 vec3;
-
-    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        if (key == GLFW_KEY_A) {
-            vec3.x += 40;
-        }
-        if (key == GLFW_KEY_D) {
-            vec3.x -= 40;
-        }
-        if (key == GLFW_KEY_W) {
-            vec3.y -= 40;
-        }
-        if (key == GLFW_KEY_S) {
-            vec3.y += 40;
-        }
-    }
-    Renderer::setCamera(vec3);
-}
-
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    camera_handling(key, action);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        GLCall(glfwSetWindowShouldClose(window, GLFW_TRUE));
+    const Event::Key keyEvent = { Event::GLFWKeyToKeyCode(key),
+                                  Event::GLFWActionToKeyAction(action) };
+    if (keyEvent.code == Event::KeyCode::Unhandled || keyEvent.action == Event::KeyAction::Unhandled) {
+        return;
     }
+
+    if (keyEvent.code == Event::KeyCode::Escape) {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+        return;
+    }
+
+    if (Camera::onKeyEvent(keyEvent)) {
+        /* Camera swallowed it */
+        return;
+    }
+
+    Application *app = (Application *)glfwGetWindowUserPointer(window);
+    app->onKeyEvent(keyEvent);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+     Camera::onScrollEvent({ xoffset, yoffset });
 }
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    Renderer::setWindowSize(width, height);
-    /* TODO: Move to renderer */
-    glViewport(0, 0, width, height);
+    Camera::onWindowEvent({ width, height });
 }
 
 int init_opengl(GLFWwindow* window) {
@@ -85,10 +84,13 @@ int init_opengl(GLFWwindow* window) {
 
     GLCall(glViewport(0, 0, 800, 600));
 
+    /* TODO: Define callback function as lambda right here instead? */
     glfwSetKeyCallback(window, key_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     return 0;
 }
+
 
 Application::Application()
 {
@@ -98,7 +100,10 @@ Application::Application()
         assert(false);
     }
 
+    /* TODO: Don't hard code name and size */
     m_window = glfwCreateWindow(800, 600, "Sumobot simulator", NULL, NULL);
+    /* To make Application object accessible from C-callback */
+    glfwSetWindowUserPointer(m_window, this);
     if (init_opengl(m_window) == -1) {
         assert(false);
     }

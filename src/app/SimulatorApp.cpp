@@ -19,10 +19,17 @@ SimulatorApp::~SimulatorApp()
     delete m_sceneMenu;
 }
 
-void SimulatorApp::onUpdate() {
+void SimulatorApp::onKeyEvent(const Event::Key &keyEvent)
+{
+    if (m_currentScene) {
+        m_currentScene->onKeyEvent(keyEvent);
+    }
+}
+
+void SimulatorApp::onUpdate()
+{
     m_sceneMenu->render();
-    if (m_currentScene)
-    {
+    if (m_currentScene) {
         m_currentScene->update();
     }
 }
