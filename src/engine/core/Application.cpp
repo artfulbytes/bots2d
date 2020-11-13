@@ -115,8 +115,9 @@ Application::Application()
 
 Application::~Application()
 {
-    glfwDestroyWindow(m_window);
+    Renderer::destroy();
     ImGuiOverlay::destroy();
+    glfwDestroyWindow(m_window);
     glfwTerminate();
 }
 

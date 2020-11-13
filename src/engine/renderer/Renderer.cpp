@@ -115,6 +115,20 @@ void Renderer::init()
     initQuad();
 }
 
+void Renderer::destroy()
+{
+    delete s_rendererData->quadVertexBuffer;
+    delete s_rendererData->quadVertexArray;
+    delete s_rendererData->quadIndexBuffer;
+    delete s_rendererData->circleVertexBuffer;
+    delete s_rendererData->circleVertexArray;
+    delete s_rendererData->circleIndexBuffer;
+    delete s_rendererData->solidColorShader;
+    delete s_rendererData->projectionMatrix;
+    delete s_rendererData->viewMatrix;
+    delete s_rendererData;
+}
+
 void Renderer::setCameraPosition(const glm::vec3 &position, float zoomFactor)
 {
     *s_rendererData->viewMatrix = translate2D(position) * glm::scale(glm::mat4(1.0f), { zoomFactor, zoomFactor, 1.0f });
@@ -124,11 +138,6 @@ void Renderer::setViewport(int x, int y, int width, int height)
 {
     *(s_rendererData->projectionMatrix) = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height), -1.0f, 1.0f);
     glViewport(x, y, width, height);
-}
-
-void Renderer::destroy()
-{
-    delete s_rendererData;
 }
 
 void Renderer::clear()
