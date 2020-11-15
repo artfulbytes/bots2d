@@ -33,6 +33,7 @@ public:
     void onFixedUpdate(double stepTime) override;
     float *getVoltageLine();
 private:
+    void scaleSpecs(Specification &spec);
     void updateForce();
     Body2D *m_body2D = nullptr;
     SceneObject *m_sceneObject = nullptr;

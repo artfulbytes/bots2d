@@ -8,19 +8,28 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
     m_spec(spec)
 {
     /* TODO: Make vecs passable via constructor on transforms */
-    QuadTransform *transform = new QuadTransform();
-    transform->position.x = startPos.x;
-    transform->position.y = startPos.y;
-    transform->position.z = 0.0f;
-    transform->size.x = spec.width;
-    transform->size.y = spec.diameter;
+    QuadTransform *transformBody = new QuadTransform();
+    transformBody->position.x = startPos.x;
+    transformBody->position.y = startPos.y;
+    transformBody->position.z = 0.0f;
+    transformBody->size.x = spec.width;
+    transformBody->size.y = spec.diameter;
     assert(m_spec.maxVoltage > 0);
 
     glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
-    m_body2D = new Body2D(world, *transform, true, spec.mass);
+    m_body2D = new Body2D(world, *transformBody, true, spec.mass);
     /* TODO: Make this access less ugly */
-    appScene.getScene()->createObject(transform, renderable, m_body2D, nullptr);
+    appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
+    scaleSpecs(m_spec);
+}
+
+void TopViewWheelMotor::scaleSpecs(Specification &spec)
+{
+    spec.diameter = PhysicsWorld::scaleLength(spec.diameter);
+    spec.width = PhysicsWorld::scaleLength(spec.width);
+    spec.mass = PhysicsWorld::scaleMass(spec.mass);
+    spec.maxDriveForce = PhysicsWorld::scaleForce(spec.maxDriveForce);
 }
 
 void TopViewWheelMotor::setVoltageIn(float voltage)

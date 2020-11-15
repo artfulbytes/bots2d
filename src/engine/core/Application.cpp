@@ -127,7 +127,7 @@ Application::~Application()
 }
 
 namespace {
-    const double framesPerSecond = 10.0;
+    const double framesPerSecond = 60.0;
     const double stepTime = 1.0 / framesPerSecond;
     double lastUpdateTime = 0;
 }

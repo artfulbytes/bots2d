@@ -38,32 +38,27 @@ void Body2D::addTopViewFriction(float normalForce) {
 Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass) :
     PhysicsComponent(world)
 {
-    /* TODO: Add common place for assert function (statics in PhysicsWorld?) */
-    assert(minWidthObject <= transform.size.x && transform.size.x <= maxWidthObject);
-    assert(minWidthObject <= transform.size.y && transform.size.y <= maxWidthObject);
-    /* TODO: Move scaling somewhere else (statics in transforms or in Physicsworld?) */
-    /* TODO: LengthScaleFactor should be physics namespace */
-    const float scaledWidth = transform.size.x * lengthScaleFactor;
-    const float scaledHeight = transform.size.y * lengthScaleFactor;
-    transform.size.x = scaledWidth;
-    transform.size.y = scaledHeight;
-    const float posX = transform.position.x * lengthScaleFactor;
-    const float posY = transform.position.y * lengthScaleFactor;
-    b2BodyDef bodyDef;
-    bodyDef.type = dynamic ? b2_dynamicBody : b2_staticBody;
-    bodyDef.position = b2Vec2(posX + scaledWidth / 2,
-                              posY + scaledHeight / 2);
-    bodyDef.angle = transform.rotation;
-    m_body = m_world->CreateBody(&bodyDef);
-    m_translator = new QuadTransformTranslator(transform, *m_body);
-    const float scaledMass = mass * massScaleFactor;
-    const float normalForce = gravitationConstant * mass * forceScaleFactor;
-    const float area = scaledWidth * scaledHeight;
+    transform.size.x = PhysicsWorld::scaleLength(transform.size.x);
+    transform.size.y = PhysicsWorld::scaleLength(transform.size.y);
+    transform.position.x = PhysicsWorld::scalePosition(transform.position.x);
+    transform.position.y = PhysicsWorld::scalePosition(transform.position.y);
+    const float scaledMass = PhysicsWorld::scaleMass(mass);
+    const float normalForce = PhysicsWorld::normalForce(mass);
+    const float area = transform.size.x * transform.size.y;
     const float density = scaledMass / area;
 
+    b2BodyDef bodyDef;
+    bodyDef.type = dynamic ? b2_dynamicBody : b2_staticBody;
+    bodyDef.position = b2Vec2(transform.position.x + transform.size.x / 2,
+                              transform.position.y + transform.size.y / 2);
+    bodyDef.angle = transform.rotation;
+    m_body = m_world->CreateBody(&bodyDef);
+
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(scaledWidth / 2, scaledHeight / 2);
+    polygonShape.SetAsBox(transform.size.x / 2, transform.size.y / 2);
     m_body->CreateFixture(&polygonShape, density);
+
+    m_translator = new QuadTransformTranslator(transform, *m_body);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
         addTopViewFriction(normalForce);

@@ -29,14 +29,14 @@ set (RENDERER_SOURCE_FILES
 
 set (PHYSICS_SOURCE_FILES
     src/engine/physics/PhysicsWorld.cpp
-    src/engine/physics/SumobotTest.cpp
-    src/engine/physics/Sumobot4Wheel.cpp
-    src/engine/physics/WheelMotor.cpp
-    src/engine/physics/Dohyo.cpp
-    src/engine/physics/ContactListener.cpp
-    src/engine/physics/RangeSensor.cpp
-    src/engine/physics/LineDetector.cpp
-    src/engine/physics/BoxObstacle.cpp
+    #src/engine/physics/SumobotTest.cpp
+    #src/engine/physics/Sumobot4Wheel.cpp
+    #src/engine/physics/WheelMotor.cpp
+    #src/engine/physics/Dohyo.cpp
+    #src/engine/physics/ContactListener.cpp
+    #src/engine/physics/RangeSensor.cpp
+    #src/engine/physics/LineDetector.cpp
+    #src/engine/physics/BoxObstacle.cpp
     src/engine/physics/Body2D.cpp
 )
 

@@ -12,13 +12,13 @@ namespace {
         {
             if (keyEvent.code == Event::KeyCode::Up) {
                 if (keyEvent.action == Event::KeyAction::Press) {
-                    *m_wheelMotor->getVoltageLine() = 6.0f;
+                    *m_wheelMotor->getVoltageLine() = 3.0f;
                 } else if (keyEvent.action == Event::KeyAction::Release) {
                     *m_wheelMotor->getVoltageLine() = 0.0f;
                 }
             } else if (keyEvent.code == Event::KeyCode::Down) {
                 if (keyEvent.action == Event::KeyAction::Press) {
-                    *m_wheelMotor->getVoltageLine() = -6.0f;
+                    *m_wheelMotor->getVoltageLine() = -3.0f;
                 } else if (keyEvent.action == Event::KeyAction::Release) {
                     *m_wheelMotor->getVoltageLine() = 0.0f;
                 }
