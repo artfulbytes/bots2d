@@ -1,6 +1,8 @@
 #ifndef PHYSICS_WORLD_H_
 #define PHYSICS_WORLD_H_
 
+#include <glm/glm.hpp>
+
 class b2World;
 
 /* TODO: Move this */
@@ -8,6 +10,9 @@ struct Vec2 {
     Vec2(float x, float y) : x(x), y(y) {}
     float x;
     float y;
+    inline float length() {
+        return glm::sqrt(x*x + y*y);
+    }
 };
 
 class PhysicsWorld

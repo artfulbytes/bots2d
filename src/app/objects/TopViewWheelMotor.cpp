@@ -2,6 +2,7 @@
 #include "Transforms.h"
 #include "QuadComponent.h"
 #include <glm/glm.hpp>
+#include <iostream>
 
 TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
     AppObject(appScene),
@@ -33,7 +34,7 @@ TopViewWheelMotor::Specification TopViewWheelMotor::scaleSpec(const Specificatio
         .width = PhysicsWorld::scaleLength(unscaledSpec.width),
         .mass = PhysicsWorld::scaleMass(unscaledSpec.mass),
         .maxDriveForce = PhysicsWorld::scaleForce(unscaledSpec.maxDriveForce),
-        .maxLateralImpulse = unscaledSpec.maxLateralImpulse
+        .maxLateralCancelingImpulse = unscaledSpec.maxLateralCancelingImpulse
     };
     return scaledSpec;
 }
@@ -82,14 +83,20 @@ void TopViewWheelMotor::updateForce()
 
     // Cancel lateral velocity to prevent wheel from moving sideways
     // (mimmicks sideway friction)
-    //b2Vec2 lateralCancelingImpulse = m_body->GetMass() * -getLateralVelocity();
+    m_body2D->getLateralVelocity();
+    m_body2D->getMass();
+
+    Vec2 lateralCancelingImpulse = m_body2D->getLateralVelocity();
+    lateralCancelingImpulse.x *= -m_body2D->getMass();
+    lateralCancelingImpulse.y *= -m_body2D->getMass();
 
     // Allow some skidding
-    //if (lateralCancelingImpulse.Length() > m_maxLateralCancelingImpulse) {
-        //std::cout << "Skidding\n";
-        //lateralCancelingImpulse *= m_maxLateralCancelingImpulse / lateralCancelingImpulse.Length();
-    //}
-    //m_body->ApplyLinearImpulse(lateralCancelingImpulse, m_body->GetWorldCenter(), true);
+    if (lateralCancelingImpulse.length() > m_scaledSpec.maxLateralCancelingImpulse) {
+        std::cout << "Skidding" << std::endl;
+        lateralCancelingImpulse.x *= m_scaledSpec.maxLateralCancelingImpulse / lateralCancelingImpulse.length();
+        lateralCancelingImpulse.y *= m_scaledSpec.maxLateralCancelingImpulse / lateralCancelingImpulse.length();
+    }
+    m_body2D->setLinearImpulse(lateralCancelingImpulse);
 }
 
 void TopViewWheelMotor::onFixedUpdate(double stepTime)

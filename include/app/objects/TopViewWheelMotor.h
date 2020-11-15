@@ -22,7 +22,9 @@ public:
         const float width;
         const float mass;
         const float maxDriveForce;
-        const float maxLateralImpulse;
+        // This determines the sideway friction
+        // TODO: Move to vehicle instead
+        const float maxLateralCancelingImpulse = 40.5f;
     };
 
     TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);

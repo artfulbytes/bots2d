@@ -59,12 +59,6 @@ void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWo
 
     m_backLeftWheelMotor = new TopViewWheelMotor(appScene, world, unscaledWheelSpec, backLeftStartPos);
     m_body2D->attachBodyWithRevoluteJoint(backLeftStartPos, *m_backLeftWheelMotor->getBody());
-
-    /* TODO: Fix friction
-    for (auto &wheel : m_wheels) {
-        addFriction(world, wheel->getBody(), maxFrictionForcePerWheel);
-    }
-    */
 }
 
 float *TopViewSumobot4Wheel::getFrontLeftMotorVoltageLine()

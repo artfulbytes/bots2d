@@ -74,7 +74,7 @@ static int init_opengl(GLFWwindow* window) {
     glfwMakeContextCurrent(window);
 
     /* Control rendering time yourself instead */
-    enable_vsync(false);
+    enable_vsync(true);
 
     /* Initialize extension loader library (GLAD in this case)
      * GLAD (alternatively you can use GLEW or GL3W)
@@ -126,21 +126,31 @@ Application::~Application()
     glfwTerminate();
 }
 
+/* Using VSYNC for now
 namespace {
     const double framesPerSecond = 60.0;
     const double stepTime = 1.0 / framesPerSecond;
     double lastUpdateTime = 0;
 }
 
+#include <chrono>
+#include <thread>
+*/
+
 /* TODO: Separate rendering freq from physics update freq. */
 void Application::run()
 {
     while (!glfwWindowShouldClose(m_window))
     {
+        /* This create intermittent lag..
         const double currentTime = glfwGetTime();
-        if ((currentTime - lastUpdateTime) < stepTime) {
+        const double timeSinceLastUpdate = currentTime - lastUpdateTime;
+
+        if (timeSinceLastUpdate < stepTime) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
         }
+        */
 
         glfwPollEvents();
         Renderer::clear();

@@ -24,7 +24,8 @@ public:
     Vec2 getLateralVelocity() const;
     Vec2 getForwardNormal() const;
     void setForce(const Vec2 &vec, float magnitude);
-    void setLinearImpulse(const Vec2 &vec, float magnitude);
+    void setLinearImpulse(const Vec2 &vec);
+    float getMass() const;
 
 private:
     class QuadTransformTranslator : public PhysicsToTransformTranslator {

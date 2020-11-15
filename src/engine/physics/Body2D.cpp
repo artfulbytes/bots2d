@@ -89,10 +89,16 @@ void Body2D::setForce(const Vec2 &vec, float magnitude)
     m_body->ApplyForce(magnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
 }
 
-void Body2D::setLinearImpulse(const Vec2 &vec, float magnitude)
+void Body2D::setLinearImpulse(const Vec2 &vec)
 {
     b2Vec2 box2DVec(vec.x, vec.y);
     m_body->ApplyLinearImpulse(b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
+}
+
+float Body2D::getMass() const
+{
+    assert(m_body);
+    return m_body->GetMass();
 }
 
 void Body2D::update()
