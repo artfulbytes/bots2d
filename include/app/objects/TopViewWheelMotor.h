@@ -30,7 +30,7 @@ public:
 
     void setVoltageIn(float voltage);
     void setDutyCycle(float dutyCycle);
-    void update() override;
+    void onFixedUpdate(double stepTime) override;
     float *getVoltageLine();
 private:
     void updateForce();

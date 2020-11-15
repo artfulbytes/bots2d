@@ -18,7 +18,7 @@ public:
     PhysicsWorld(float gravityX, float gravityY);
     ~PhysicsWorld();
 
-    void step(float timeStep);
+    void step(double stepTime);
     inline Gravity getGravityType() const { return m_gravityType; }
 
     /* We want physics components to have access to b2World */

@@ -39,7 +39,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     app->onKeyEvent(keyEvent);
 }
 
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
      Camera::onScrollEvent({ xoffset, yoffset });
 }
@@ -49,7 +49,12 @@ static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     Camera::onWindowEvent({ width, height });
 }
 
-int init_opengl(GLFWwindow* window) {
+static void enable_vsync(bool enabled)
+{
+    glfwSwapInterval(enabled ? 1 : 0);
+}
+
+static int init_opengl(GLFWwindow* window) {
     if (!window) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -68,8 +73,8 @@ int init_opengl(GLFWwindow* window) {
 
     glfwMakeContextCurrent(window);
 
-    /* Synch FPS with vsync (FPS consistent with display) */
-    glfwSwapInterval(1);
+    /* Control rendering time yourself instead */
+    enable_vsync(false);
 
     /* Initialize extension loader library (GLAD in this case)
      * GLAD (alternatively you can use GLEW or GL3W)
@@ -121,15 +126,28 @@ Application::~Application()
     glfwTerminate();
 }
 
+namespace {
+    const double framesPerSecond = 10.0;
+    const double stepTime = 1.0 / framesPerSecond;
+    double lastUpdateTime = 0;
+}
+
+/* TODO: Separate rendering freq from physics update freq. */
 void Application::run()
 {
     while (!glfwWindowShouldClose(m_window))
     {
+        const double currentTime = glfwGetTime();
+        if ((currentTime - lastUpdateTime) < stepTime) {
+            continue;
+        }
+
+        glfwPollEvents();
         Renderer::clear();
         ImGuiOverlay::newFrame();
-        onUpdate();
+        onFixedUpdate(stepTime);
         ImGuiOverlay::render();
         glfwSwapBuffers(m_window);
-        glfwPollEvents();
+        lastUpdateTime = currentTime;
     }
 }

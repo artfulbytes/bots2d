@@ -22,8 +22,8 @@ class SceneObject
         inline TransformComponent *getTransform() { return m_transformComp; }
         /* TODO: Pass renderable component to scene instead? */
         void render();
-        void updatePhysics();
-        void updateController();
+        void updatePhysics(double stepTime);
+        void updateController(double stepTime);
         void onKeyEvent(const Event::Key &keyEvent);
 
     private:

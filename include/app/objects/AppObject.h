@@ -19,7 +19,7 @@ public:
      *
      * NOTE: If this object has a parent, this must be called explicitly
      *       by its parent. */
-    virtual void update() = 0;
+    virtual void onFixedUpdate(double stepTime) = 0;
 
     virtual void setParent(AppObject &parent) final { m_parent = &parent; };
     virtual const AppObject *getParent() final { return m_parent; };

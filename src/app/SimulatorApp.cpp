@@ -26,11 +26,11 @@ void SimulatorApp::onKeyEvent(const Event::Key &keyEvent)
     }
 }
 
-void SimulatorApp::onUpdate()
+void SimulatorApp::onFixedUpdate(double stepTime)
 {
     m_sceneMenu->render();
     if (m_currentScene) {
-        m_currentScene->update();
+        m_currentScene->onFixedUpdate(stepTime);
     }
 }
 

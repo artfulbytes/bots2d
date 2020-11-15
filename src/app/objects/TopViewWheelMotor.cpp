@@ -61,6 +61,7 @@ void TopViewWheelMotor::updateForce()
 
     // Convert torque to force (t = r * F => F = t / r)
     const float forceToApply = (torqueApplied / (m_spec.diameter / 2)) - rollingFriction;
+
     m_body2D->setForce(currentForwardNormal, forceToApply);
     //std::cout << m_voltageApplied <<  " " << forceApplied << " " << currentForwardSpeed << "\n";
 
@@ -76,7 +77,7 @@ void TopViewWheelMotor::updateForce()
     //m_body->ApplyLinearImpulse(lateralCancelingImpulse, m_body->GetWorldCenter(), true);
 }
 
-void TopViewWheelMotor::update()
+void TopViewWheelMotor::onFixedUpdate(double stepTime)
 {
     updateForce();
 }

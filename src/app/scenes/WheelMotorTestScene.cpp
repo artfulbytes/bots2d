@@ -24,7 +24,7 @@ namespace {
                 }
             }
         }
-        void onUpdate() override
+        void onFixedUpdate(double stepTime) override
         {
         }
     private:
@@ -43,7 +43,7 @@ WheelMotorTestScene::WheelMotorTestScene()
         .maxVoltage = 6.0f,
         .diameter = 0.03f,
         .width = 0.015f,
-        .mass = 0.5f
+        .mass = 0.05f
     };
     TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, spec, Vec2(0, 0));
     WheelMotorController *controller = new WheelMotorController(*wheelMotor);

@@ -24,13 +24,13 @@ void AppScene::onKeyEvent(const Event::Key &keyEvent)
     m_scene->onKeyEvent(keyEvent);
 }
 
-void AppScene::update()
+void AppScene::onFixedUpdate(double stepTime)
 {
     for (auto obj : m_appObjects) {
         /* Only call update on objects without parent (the parent should update its child objects) */
         if (nullptr == obj->getParent()) {
-            obj->update();
+            obj->onFixedUpdate(stepTime);
         }
     }
-    m_scene->onUpdate();
+    m_scene->onFixedUpdate(stepTime);
 }

@@ -38,7 +38,9 @@ PhysicsWorld::~PhysicsWorld()
     delete m_world;
 }
 
-void PhysicsWorld::step(float timeStep)
+void PhysicsWorld::step(double stepTime)
 {
-    m_world->Step(timeStep, 6, 2);
+    /* The iteration values 6 and 2 are recommended value taken from elsewhere.
+       They matter when calculating collision. */
+    m_world->Step(stepTime, 6, 2);
 }

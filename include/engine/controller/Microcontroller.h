@@ -19,7 +19,7 @@ public:
     };
 
     virtual void onKeyEvent(const Event::Key &keyEvent);
-    virtual void onUpdate() = 0;
+    virtual void onFixedUpdate(double stepTime) = 0;
     void setVoltageLine(VoltageLine line, const VoltageLineConfig &config);
 
 protected:

@@ -16,7 +16,7 @@ class Scene
 public:
     Scene();
     ~Scene();
-    void onUpdate();
+    void onFixedUpdate(double stepTime);
     void onKeyEvent(const Event::Key &keyEvent);
     void createObject(TransformComponent *transformComp,
                       RenderableComponent *renderableComp,

@@ -13,7 +13,7 @@ public:
     void run();
 
     virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
-    virtual void onUpdate() = 0;
+    virtual void onFixedUpdate(double stepTime) = 0;
 
 private:
     GLFWwindow *m_window;

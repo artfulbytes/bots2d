@@ -7,7 +7,7 @@ class ControllerComponent : public Component
 {
 public:
     virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
-    virtual void onUpdate() = 0;
+    virtual void onFixedUpdate(double stepTime) = 0;
 };
 
 #endif /* CONTROLLER_COMPONENT_H_ */

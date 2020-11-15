@@ -53,7 +53,7 @@ void SceneObject::render()
     }
 }
 
-void SceneObject::updatePhysics()
+void SceneObject::updatePhysics(double stepTime)
 {
     if (m_physicsComp) {
         /* TODO: Change to onUpdate? */
@@ -61,10 +61,10 @@ void SceneObject::updatePhysics()
     }
 }
 
-void SceneObject::updateController()
+void SceneObject::updateController(double stepTime)
 {
     if (m_controllerComp) {
-        m_controllerComp->onUpdate();
+        m_controllerComp->onFixedUpdate(stepTime);
     }
 }
 
