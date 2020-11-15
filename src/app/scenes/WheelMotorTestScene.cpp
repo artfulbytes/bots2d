@@ -37,7 +37,7 @@ WheelMotorTestScene::WheelMotorTestScene()
     PhysicsWorld *world = new PhysicsWorld(PhysicsWorld::Gravity::TopView);
     m_scene->setPhysicsWorld(world);
 
-    TopViewWheelMotor::Specification spec = {
+    TopViewWheelMotor::Specification unscaledSpec = {
         .voltageInConstant = 314.0f,
         .angularSpeedConstant = 89.0f,
         .maxVoltage = 6.0f,
@@ -45,7 +45,7 @@ WheelMotorTestScene::WheelMotorTestScene()
         .width = 0.015f,
         .mass = 0.05f
     };
-    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, spec, Vec2(0, 0));
+    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, unscaledSpec, Vec2(0, 0));
     WheelMotorController *controller = new WheelMotorController(*wheelMotor);
     m_scene->createObject(nullptr, nullptr, nullptr, controller);
 }

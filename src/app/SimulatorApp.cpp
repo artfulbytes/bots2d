@@ -1,16 +1,18 @@
 #include "SimulatorApp.h"
 #include "SceneMenu.h"
 #include "AppScene.h"
-#include "QuadRenderingTestScene.h"
+#include "DrawTestScene.h"
 #include "PhysicsBoxTestScene.h"
 #include "WheelMotorTestScene.h"
+#include "Sumobot4WheelTestScene.h"
 
 SimulatorApp::SimulatorApp()
 {
     m_sceneMenu = new SceneMenu(m_currentScene);
-    m_sceneMenu->registerScene<QuadRenderingTestScene>("QuadTest");
+    m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
     m_sceneMenu->registerScene<PhysicsBoxTestScene>("PhysicsBoxTest");
     m_sceneMenu->registerScene<WheelMotorTestScene>("WheelMotorTest");
+    m_sceneMenu->registerScene<Sumobot4WheelTestScene>("Sumobot4WheelTest");
 }
 
 SimulatorApp::~SimulatorApp()

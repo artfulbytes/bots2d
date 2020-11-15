@@ -2,6 +2,7 @@
 #define BODY_2D_H_
 
 #include "PhysicsComponent.h"
+#include <vector>
 
 class b2Body;
 class b2Joint;
@@ -17,6 +18,7 @@ public:
      * access to the parent scene object's transform */
     Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass);
     ~Body2D();
+    void attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body);
     void update() override;
     float getForwardSpeed() const;
     Vec2 getLateralVelocity() const;
@@ -49,7 +51,7 @@ private:
 
     b2Body *m_body = nullptr;
     b2Body *m_frictionBody = nullptr;
-    b2Joint *m_frictionJoint = nullptr;
+    std::vector<b2Joint *> m_joints;
 
     /* TODO: Pass as argument? */
     constexpr static float frictionCoefficient = 0.1f;

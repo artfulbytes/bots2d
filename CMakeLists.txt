@@ -60,10 +60,12 @@ set (SIMULATOR_APP_FILES
     src/app/SimulatorApp.cpp
     src/app/SceneMenu.cpp
     src/app/scenes/AppScene.cpp
-    src/app/scenes/QuadRenderingTestScene.cpp
+    src/app/scenes/DrawTestScene.cpp
     src/app/scenes/PhysicsBoxTestScene.cpp
     src/app/scenes/WheelMotorTestScene.cpp
+    src/app/scenes/Sumobot4WheelTestScene.cpp
     src/app/objects/TopViewWheelMotor.cpp
+    src/app/objects/TopViewSumobot4Wheel.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES

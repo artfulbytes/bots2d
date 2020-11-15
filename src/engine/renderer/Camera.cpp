@@ -14,7 +14,6 @@ namespace {
 
 bool Camera::onKeyEvent(const Event::Key &keyEvent)
 {
-    bool changed = false;
     if (keyEvent.action == Event::KeyAction::Press || keyEvent.action == Event::KeyAction::Repeat) {
         switch (keyEvent.code)
         {
@@ -33,13 +32,10 @@ bool Camera::onKeyEvent(const Event::Key &keyEvent)
         default:
             return false;
         }
-        changed = true;
-    }
-
-    if (changed) {
         Renderer::setCameraPosition(cameraPosition, zoomFactor);
         return true;
     }
+    return false;
 }
 
 void Camera::onScrollEvent(const Event::Scroll &scrollEvent)

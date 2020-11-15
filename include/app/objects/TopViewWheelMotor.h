@@ -14,30 +14,31 @@ public:
         /* Simplified DC motor model
          * Tune these two constants to get different characteristics
          * (Torque constant * Voltage constant) / Motor resistance */
-        float voltageInConstant;
+        const float voltageInConstant;
         /* Torque constant / Motor resistance */
-        float angularSpeedConstant;
-        float maxVoltage;
-        float diameter;
-        float width;
-        float mass;
-        float maxDriveForce;
-        float maxLateralImpulse;
+        const float angularSpeedConstant;
+        const float maxVoltage;
+        const float diameter;
+        const float width;
+        const float mass;
+        const float maxDriveForce;
+        const float maxLateralImpulse;
     };
 
-    TopViewWheelMotor(AppScene &scene, const PhysicsWorld &world, const Specification &spec, Vec2 startPos);
+    TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
     ~TopViewWheelMotor();
 
     void setVoltageIn(float voltage);
     void setDutyCycle(float dutyCycle);
     void onFixedUpdate(double stepTime) override;
     float *getVoltageLine();
+    const Body2D *getBody() const { return m_body2D; }
 private:
-    void scaleSpecs(Specification &spec);
+    static Specification scaleSpec(const Specification &unscaledSpec);
+
     void updateForce();
     Body2D *m_body2D = nullptr;
-    SceneObject *m_sceneObject = nullptr;
-    Specification m_spec;
+    Specification m_scaledSpec;
     float m_voltageIn = 0.0f;
 };
 

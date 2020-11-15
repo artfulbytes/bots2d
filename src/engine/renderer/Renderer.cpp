@@ -169,6 +169,7 @@ void Renderer::drawLine(const glm::vec2& start, const glm::vec2& end, float widt
     const glm::vec2 size(glm::distance(start, end), width);
     drawQuad(location, size, angle, color);
 }
+
 void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float angle, const glm::vec4& color)
 {
     s_rendererData->solidColorShader->bind();

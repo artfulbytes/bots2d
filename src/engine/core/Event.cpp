@@ -11,6 +11,8 @@ Event::KeyCode Event::GLFWKeyToKeyCode(int GLFWKey) {
         case GLFW_KEY_W: return Event::KeyCode::W;
         case GLFW_KEY_UP: return Event::KeyCode::Up;
         case GLFW_KEY_DOWN: return Event::KeyCode::Down;
+        case GLFW_KEY_LEFT: return Event::KeyCode::Left;
+        case GLFW_KEY_RIGHT: return Event::KeyCode::Right;
         case GLFW_KEY_SPACE: return Event::KeyCode::Space;
         case GLFW_KEY_ESCAPE: return Event::KeyCode::Escape;
     }

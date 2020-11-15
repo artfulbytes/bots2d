@@ -27,6 +27,8 @@ public:
         Space,
         Up,
         Down,
+        Left,
+        Right,
         Unhandled
     };
     enum class KeyAction

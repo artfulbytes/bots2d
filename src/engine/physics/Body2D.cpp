@@ -32,7 +32,7 @@ void Body2D::addTopViewFriction(float normalForce) {
     jointDef.maxForce = normalForce * frictionCoefficient;
     /* Setting maxTorque to same as maxForce might not be realistic... (but works for now) */
     jointDef.maxTorque = normalForce * frictionCoefficient;
-    m_frictionJoint = m_world->CreateJoint(&jointDef);
+    m_joints.push_back(m_world->CreateJoint(&jointDef));
 }
 
 Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass) :
@@ -49,8 +49,8 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
 
     b2BodyDef bodyDef;
     bodyDef.type = dynamic ? b2_dynamicBody : b2_staticBody;
-    bodyDef.position = b2Vec2(transform.position.x + transform.size.x / 2,
-                              transform.position.y + transform.size.y / 2);
+    bodyDef.position = b2Vec2(transform.position.x,
+                              transform.position.y);
     bodyDef.angle = transform.rotation;
     m_body = m_world->CreateBody(&bodyDef);
 
@@ -103,9 +103,26 @@ void Body2D::update()
     m_translator->translate();
 }
 
+void Body2D::attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body)
+{
+    b2RevoluteJointDef jointDef;
+    jointDef.bodyA = m_body;
+    jointDef.enableLimit = true;
+    jointDef.lowerAngle = 0;
+    jointDef.upperAngle = 0;
+    /* Center of the body to be attached */
+    jointDef.localAnchorB.SetZero();
+    jointDef.bodyB = body.m_body;
+    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(unscaledAttachPos.x),
+                              PhysicsWorld::scalePosition(unscaledAttachPos.y));
+    m_joints.push_back(m_world->CreateJoint(&jointDef));
+}
+
 Body2D::~Body2D()
 {
-    m_world->DestroyJoint(m_frictionJoint);
+    for (auto joint : m_joints) {
+        m_world->DestroyJoint(joint);
+    }
     m_world->DestroyBody(m_body);
     m_world->DestroyBody(m_frictionBody);
     delete m_translator;

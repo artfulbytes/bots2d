@@ -1,4 +1,4 @@
-#include "QuadRenderingTestScene.h"
+#include "DrawTestScene.h"
 #include "Transforms.h"
 #include "QuadComponent.h"
 #include "LineComponent.h"
@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-QuadRenderingTestScene::QuadRenderingTestScene()
+DrawTestScene::DrawTestScene()
 {
     glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
     QuadTransform *transform = new QuadTransform();
