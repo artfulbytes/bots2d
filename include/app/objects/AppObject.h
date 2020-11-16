@@ -12,7 +12,7 @@ class AppObject {
 public:
     /* Force app objects to be part of an app scene */
     AppObject(AppScene &appScene) { appScene.addObject(*this); };
-    /* TODO: Is this needed? */
+    /* TODO: Is this needed? It forces inheritors to define unused destructor... */
     virtual ~AppObject() {};
 
     /* Called each update iteration before scene objects are updated.

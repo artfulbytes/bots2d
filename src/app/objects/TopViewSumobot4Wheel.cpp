@@ -9,6 +9,7 @@ TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorl
     AppObject(appScene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
+    assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     createBody(appScene, world, unscaledSpec, unscaledStartPos);
     createWheelMotors(appScene, world, unscaledSpec, unscaledStartPos);
 }
@@ -22,7 +23,7 @@ void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &wo
     transformBody->size.x = unscaledSpec.width * widthBodyFactor;
     transformBody->size.y = unscaledSpec.length;
 
-    glm::vec4 color(1.0f, 1.0f, 1.0f, 0.2f);
+    glm::vec4 color(1.0f, 0.0f, 1.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
     m_body2D = new Body2D(world, *transformBody, true, unscaledSpec.mass * massBodyFactor);
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);

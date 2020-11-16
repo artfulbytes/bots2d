@@ -3,6 +3,8 @@
 #include "Transforms.h"
 #include "KeyboardController.h"
 
+#include "TopViewDohyo.h"
+
 namespace {
     class Sumobot4WheelController : public KeyboardController
     {
@@ -73,6 +75,13 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     PhysicsWorld *world = new PhysicsWorld(PhysicsWorld::Gravity::TopView);
     m_scene->setPhysicsWorld(world);
 
+    TopViewDohyo::Specification unscaledSpecDohyo = {
+        .innerRadius = 0.35f,
+        .outerRadius = 0.37f
+    };
+
+    TopViewDohyo *dohyo = new TopViewDohyo(*this, *world, unscaledSpecDohyo, Vec2(0, 0));
+
     TopViewSumobot4Wheel::Specification unscaledSpec = {
         .length = 0.1f,
         .width = 0.1f,
@@ -81,4 +90,5 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     TopViewSumobot4Wheel *sumobot4Wheel = new TopViewSumobot4Wheel(*this, *world, unscaledSpec, Vec2(0, 0));
     Sumobot4WheelController *controller = new Sumobot4WheelController(*sumobot4Wheel);
     m_scene->createObject(nullptr, nullptr, nullptr, controller);
+
 }

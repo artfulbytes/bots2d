@@ -8,6 +8,7 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
     AppObject(appScene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
+    assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(unscaledSpec.maxVoltage > 0);
     /* TODO: Make vecs passable via constructor on transforms */
     QuadTransform *transformBody = new QuadTransform();

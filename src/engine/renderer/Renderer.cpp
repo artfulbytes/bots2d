@@ -189,9 +189,9 @@ void Renderer::drawCircle(const glm::vec3& position, float radius, const glm::ve
     s_rendererData->solidColorShader->bind();
     s_rendererData->circleVertexArray->bind();
     s_rendererData->circleIndexBuffer->bind();
-    glm::mat4 scale = glm::scale(glm::mat4(1.0f), { 2 * radius, 2 * radius, 1.0f });
-    glm::mat4 transform = glm::translate(glm::mat4(1.0f), position);
-    glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * transform * scale;
+    glm::mat4 scale = scale2D({2 * radius, 2 * radius });
+    glm::mat4 translate = translate2D(position);
+    glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * scale;
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
     s_rendererData->solidColorShader->setUniform4f("u_Color", color[0], color[1], color[2], color[3]);
     GLCall(glDrawElements(GL_TRIANGLE_FAN, s_rendererData->circleIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));

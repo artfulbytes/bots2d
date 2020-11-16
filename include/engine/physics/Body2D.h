@@ -8,6 +8,7 @@ class b2Body;
 class b2Joint;
 class QuadTransform;
 class CircleTransform;
+class HollowCircleTransform;
 
 
 /* TODO: Rename to Body2DComponent? */
@@ -17,6 +18,7 @@ public:
     /* TODO: It's ugly to pass a transform here because this body should only have
      * access to the parent scene object's transform */
     Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass);
+    Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, float mass);
     ~Body2D();
     void attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body);
     void update() override;

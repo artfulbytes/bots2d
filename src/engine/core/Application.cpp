@@ -126,13 +126,13 @@ Application::~Application()
     glfwTerminate();
 }
 
-/* Using VSYNC for now
 namespace {
     const double framesPerSecond = 60.0;
     const double stepTime = 1.0 / framesPerSecond;
     double lastUpdateTime = 0;
 }
 
+/* Using VSYNC for now
 #include <chrono>
 #include <thread>
 */
@@ -158,6 +158,7 @@ void Application::run()
         onFixedUpdate(stepTime);
         ImGuiOverlay::render();
         glfwSwapBuffers(m_window);
-        lastUpdateTime = currentTime;
+
+        /* lastUpdateTime = currentTime; */
     }
 }

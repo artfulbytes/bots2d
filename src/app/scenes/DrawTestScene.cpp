@@ -31,7 +31,7 @@ DrawTestScene::DrawTestScene()
     CircleTransform *transformCircle = new CircleTransform();
     transformCircle->position.x = 0.0f;
     transformCircle->position.y = 0.0f;
-    transformCircle->radius = 25.0f;
+    transformCircle->radius = 1.0f;
     CircleComponent *circleComponent = new CircleComponent(color);
     m_scene->createObject(transformCircle, circleComponent, nullptr, nullptr);
 }

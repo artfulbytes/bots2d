@@ -66,6 +66,7 @@ set (SIMULATOR_APP_FILES
     src/app/scenes/Sumobot4WheelTestScene.cpp
     src/app/objects/TopViewWheelMotor.cpp
     src/app/objects/TopViewSumobot4Wheel.cpp
+    src/app/objects/TopViewDohyo.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES

@@ -49,8 +49,7 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
 
     b2BodyDef bodyDef;
     bodyDef.type = dynamic ? b2_dynamicBody : b2_staticBody;
-    bodyDef.position = b2Vec2(transform.position.x,
-                              transform.position.y);
+    bodyDef.position = b2Vec2(transform.position.x, transform.position.y);
     bodyDef.angle = transform.rotation;
     m_body = m_world->CreateBody(&bodyDef);
 
@@ -63,6 +62,48 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
         addTopViewFriction(normalForce);
     }
+}
+
+constexpr static int totalVertexCount = 180;
+constexpr static float anglePerVertex = 2 * constants::pi / static_cast<float>(totalVertexCount);
+constexpr static int trapezoidVertexCount = 4;
+Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, float mass) :
+    PhysicsComponent(world)
+{
+    /* Only support static for now */
+    assert(!dynamic);
+    assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
+    assert(transform.outerRadius > transform.innerRadius);
+    transform.innerRadius = PhysicsWorld::scaleLength(transform.innerRadius);
+    transform.outerRadius = PhysicsWorld::scaleLength(transform.outerRadius);
+    transform.position.x = PhysicsWorld::scalePosition(transform.position.x);
+    transform.position.y = PhysicsWorld::scalePosition(transform.position.y);
+
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_staticBody;
+    bodyDef.position = b2Vec2(transform.position.x, transform.position.y);
+
+    m_body = m_world->CreateBody(&bodyDef);
+    b2PolygonShape shape;
+    b2Vec2 trapezoidVertices[trapezoidVertexCount];
+    float angle=0;
+    for (int cornerIdx=0; cornerIdx < totalVertexCount; cornerIdx++) {
+        angle = cornerIdx * anglePerVertex;
+        trapezoidVertices[0].Set(transform.innerRadius * cosf(angle), transform.innerRadius * sinf(angle));
+        trapezoidVertices[1].Set(transform.outerRadius * cosf(angle), transform.outerRadius * sinf(angle));
+        angle += anglePerVertex;
+        trapezoidVertices[2].Set(transform.outerRadius * cosf(angle), transform.outerRadius * sinf(angle));
+        trapezoidVertices[3].Set(transform.innerRadius * cosf(angle), transform.innerRadius * sinf(angle));
+        shape.Set(trapezoidVertices, trapezoidVertexCount);
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &shape;
+        /* Disable collision */
+        fixtureDef.isSensor = true;
+        m_body->CreateFixture(&fixtureDef);
+    }
+
+    /* Only static so no translation needed for now */
+    m_translator = nullptr;
 }
 
 float Body2D::getForwardSpeed() const

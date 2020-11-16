@@ -29,6 +29,7 @@ public:
         const float length;
         const float width;
         const float mass;
+        /* TODO: This is unused? Move to Body? */
         const float frictionCoefficient = 0.05f;
     };
 

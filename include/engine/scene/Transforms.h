@@ -32,4 +32,11 @@ struct CircleTransform : TransformComponent
     float radius;
 };
 
+struct HollowCircleTransform : TransformComponent
+{
+    glm::vec3 position;
+    float innerRadius;
+    float outerRadius;
+};
+
 #endif /* TRANSFORMS_H_ */
