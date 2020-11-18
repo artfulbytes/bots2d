@@ -38,6 +38,7 @@ set (PHYSICS_SOURCE_FILES
     #src/engine/physics/LineDetector.cpp
     #src/engine/physics/BoxObstacle.cpp
     src/engine/physics/Body2D.cpp
+    src/engine/physics/RangeSensor.cpp
 )
 
 set (CONTROLLER_SOURCE_FILES
@@ -67,6 +68,7 @@ set (SIMULATOR_APP_FILES
     src/app/objects/TopViewWheelMotor.cpp
     src/app/objects/TopViewSumobot4Wheel.cpp
     src/app/objects/TopViewDohyo.cpp
+    src/app/objects/RangeSensorObject.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES

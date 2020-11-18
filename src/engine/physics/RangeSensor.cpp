@@ -1,52 +1,65 @@
 #include "RangeSensor.h"
-#include <iostream>
+#include "Body2D.h"
+#include "Transforms.h"
 
-#define DEBUG_DRAW
+#include "box2d/box2d.h"
 
-RangeSensor::RangeSensor(b2World* world, b2Body* body, b2Vec2 position, float angle, float minDistance, float maxDistance) :
-    m_world(world),
-    m_body(body),
-    m_position(position),
-    m_angle(angle),
-    m_minDistance(minDistance),
-    m_maxDistance(maxDistance)
-{
+namespace {
+    static const float debugDrawWidth = 0.002f;
 }
 
-void RangeSensor::update(void)
+RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform &transform, const Body2D &body,
+                         const Vec2 &position, float angle, float minDistance, float maxDistance) :
+    PhysicsComponent(world),
+    m_lineTransform(&transform),
+    m_parentBody(&body),
+    m_relativePosition(PhysicsWorld::scalePosition(position)),
+    m_relativeAngle(angle),
+    m_minDistance(PhysicsWorld::scalePosition(minDistance)),
+    m_maxDistance(PhysicsWorld::scaleLength(maxDistance)),
+    m_detectedDistance(m_maxDistance)
 {
-    const float rayAngle = m_angle - m_body->GetAngle();
-    const b2Vec2 bodyPosition = m_body->GetPosition();
-
-    /* Calculate new sensor position (start of ray) after body rotation */
-    const float sinAngle = sinf(-rayAngle);
-    const float cosAngle = cosf(-rayAngle);
-    m_rayStartPosition = m_position;
-    m_rayStartPosition.x = m_position.x * cosAngle - m_position.y * sinAngle;
-    m_rayStartPosition.y = m_position.x * sinAngle + m_position.y * cosAngle;
-    m_rayStartPosition.x += bodyPosition.x;
-    m_rayStartPosition.y += bodyPosition.y;
-
-    /* The sensor casts a straight ray, calculate the ray's end position */
-    m_rayEndPosition = m_rayStartPosition + m_maxDistance * b2Vec2(sinf(rayAngle), cosf(rayAngle));
+    m_lineTransform->width = PhysicsWorld::scalePosition(debugDrawWidth);
 }
 
-float RangeSensor::getDistance()
+void RangeSensor::onFixedUpdate(double stepTime)
+{
+    const float rayAngleStart = -m_parentBody->getAngle();
+    const float rayAngleEnd = m_relativeAngle - m_parentBody->getAngle();
+    const Vec2 bodyPosition = m_parentBody->getPosition();
+
+    /* Recalculate the casted ray after parent body rotation */
+    const float sinAngle = sinf(-rayAngleStart);
+    const float cosAngle = cosf(-rayAngleStart);
+    const Vec2 rayStartPosition = { (m_relativePosition.x * cosAngle - m_relativePosition.y * sinAngle) + bodyPosition.x,
+                                    (m_relativePosition.x * sinAngle + m_relativePosition.y * cosAngle) + bodyPosition.y };
+    const Vec2 rayEndPosition = rayStartPosition + Vec2(sinf(rayAngleEnd), cosf(rayAngleEnd)) * m_maxDistance;
+    updateDetectedDistance(rayStartPosition, rayEndPosition);
+    const Vec2 detectedEndPosition = rayStartPosition + Vec2(sinf(rayAngleEnd), cosf(rayAngleEnd)) * m_detectedDistance;
+
+    m_lineTransform->start = { rayStartPosition.x, rayStartPosition.y };
+    m_lineTransform->end = { detectedEndPosition.x, detectedEndPosition.y };
+    updateVoltage();
+}
+
+void RangeSensor::updateDetectedDistance(const Vec2 &start, const Vec2 &end)
 {
     b2RayCastInput rayInput;
     b2RayCastOutput rayOutput;
-    rayInput.p1 = m_rayStartPosition;
-    rayInput.p2 = m_rayEndPosition;
+    rayInput.p1.x = start.x;
+    rayInput.p1.y = start.y;
+    rayInput.p2.x = end.x;
+    rayInput.p2.y = end.y;
     rayInput.maxFraction = 1.0f;
 
     float closestFraction = rayInput.maxFraction;
     b2Vec2 intersectionNormal(0,0);
-    for (b2Body* b = m_world->GetBodyList(); b; b = b->GetNext()) {
+    for (b2Body *b = m_world->GetBodyList(); b; b = b->GetNext()) {
         if (b->GetFixtureList() && b->GetFixtureList()[0].IsSensor()) {
             /* Don't detect non-collidable objects */
             continue;
         }
-        for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext()) {
+        for (b2Fixture *f = b->GetFixtureList(); f; f = f->GetNext()) {
             if (!f->RayCast(&rayOutput, rayInput, 1)) {
                 continue;
             }
@@ -57,15 +70,20 @@ float RangeSensor::getDistance()
         }
     }
 
-#ifdef DEBUG_DRAW
-    const b2Vec2 intersectionPoint = m_rayStartPosition + closestFraction * (m_rayEndPosition - m_rayStartPosition);
-    b2Vec2 rayPoints[2];
-    rayPoints[0] = m_rayStartPosition;
-    rayPoints[1] = intersectionPoint;
-    // TODO: Show debug draw???
-    //g_debugDraw.DrawPolygon(rayPoints, 2,  b2Color(0.4f, 0.9f, 0.4f));
-    //g_debugDraw.DrawCircle(rayPoints[1], 0.1f, b2Color(0.7f, 0.4f, 0.4f));
-#endif //DEBUG_DRAW
+    m_detectedDistance = closestFraction * m_maxDistance;
+}
 
-    return closestFraction * m_maxDistance;
+float RangeSensor::getDistance() const
+{
+    return m_detectedDistance;
+}
+
+void RangeSensor::updateVoltage()
+{
+    m_distanceVoltage = m_detectedDistance / m_maxDistance;
+}
+
+const float *RangeSensor::getVoltageLine() const
+{
+    return &m_distanceVoltage;
 }

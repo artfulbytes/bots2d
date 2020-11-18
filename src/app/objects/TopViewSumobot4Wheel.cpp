@@ -3,6 +3,8 @@
 #include "Body2D.h"
 #include "Transforms.h"
 #include "QuadComponent.h"
+#include "LineComponent.h"
+#include "RangeSensorObject.h"
 #include <glm/glm.hpp>
 
 TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
@@ -12,6 +14,31 @@ TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorl
     assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     createBody(appScene, world, unscaledSpec, unscaledStartPos);
     createWheelMotors(appScene, world, unscaledSpec, unscaledStartPos);
+    createSensors(appScene, world);
+}
+
+void TopViewSumobot4Wheel::createSensors(AppScene &appScene, const PhysicsWorld &world)
+{
+    m_LeftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { -0.04f, 0.0f },
+                                                                            .relativeAngle = -1.57f,
+                                                                            .minDistance = 0.0f,
+                                                                            .maxDistance = 0.8f });
+    m_frontLeftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { -0.03f, 0.047f },
+                                                                                 .relativeAngle = -0.3f,
+                                                                                 .minDistance = 0.0f,
+                                                                                 .maxDistance = 0.8f });
+    m_frontRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.0f, 0.047f },
+                                                                             .relativeAngle = 0.0f,
+                                                                             .minDistance = 0.0f,
+                                                                             .maxDistance = 0.8f });
+    m_frontRightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.03f, 0.047f },
+                                                                                  .relativeAngle = 0.3f,
+                                                                                  .minDistance = 0.0f,
+                                                                                  .maxDistance = 0.8f });
+    m_RightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.04f, 0.0f },
+                                                                             .relativeAngle = 1.57f,
+                                                                             .minDistance = 0.0f,
+                                                                             .maxDistance = 0.8f });
 }
 
 void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos)
@@ -23,7 +50,7 @@ void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &wo
     transformBody->size.x = unscaledSpec.width * widthBodyFactor;
     transformBody->size.y = unscaledSpec.length;
 
-    glm::vec4 color(1.0f, 0.0f, 1.0f, 1.0f);
+    glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
     m_body2D = new Body2D(world, *transformBody, true, unscaledSpec.mass * massBodyFactor);
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
@@ -60,6 +87,12 @@ void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWo
 
     m_backLeftWheelMotor = new TopViewWheelMotor(appScene, world, unscaledWheelSpec, backLeftStartPos);
     m_body2D->attachBodyWithRevoluteJoint(backLeftStartPos, *m_backLeftWheelMotor->getBody());
+}
+
+const float *TopViewSumobot4Wheel::getFrontRightRangeSensorVoltageLine() const
+{
+    assert(m_frontRightRangeSensor);
+    return m_frontRightRangeSensor->getVoltageLine();
 }
 
 float *TopViewSumobot4Wheel::getFrontLeftMotorVoltageLine()

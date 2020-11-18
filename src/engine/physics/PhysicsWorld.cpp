@@ -38,6 +38,11 @@ float PhysicsWorld::scaleLength(float length)
     return length * lengthScaleFactor;
 }
 
+Vec2 PhysicsWorld::scalePosition(const Vec2 &vec)
+{
+    return { scalePosition(vec.x), scalePosition(vec.y) };
+}
+
 float PhysicsWorld::scalePosition(float position)
 {
     /* No dimension limitation for position x or y */

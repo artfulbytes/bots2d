@@ -140,8 +140,9 @@ void Renderer::setViewport(int x, int y, int width, int height)
     glViewport(x, y, width, height);
 }
 
-void Renderer::clear()
+void Renderer::clear(const glm::vec4 &color)
 {
+    GLCall(glClearColor(color[0], color[1], color[2], color[3]));
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 

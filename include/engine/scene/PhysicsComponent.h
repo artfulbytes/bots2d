@@ -12,7 +12,7 @@ public:
     ~PhysicsComponent() {
         delete m_translator;
     }
-    virtual void update() = 0;
+    virtual void onFixedUpdate(double stepTime) = 0;
 
 protected:
     /* TODO: Is there a cleaner way than introducinga translator class here? */

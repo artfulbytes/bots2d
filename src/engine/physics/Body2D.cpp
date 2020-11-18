@@ -4,7 +4,6 @@
 #include "PhysicsWorld.h"
 
 #include "box2d/box2d.h"
-#include <iostream>
 
 using namespace constants;
 
@@ -105,6 +104,15 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool
     /* Only static so no translation needed for now */
     m_translator = nullptr;
 }
+Vec2 Body2D::getPosition() const
+{
+    auto position = m_body->GetPosition();
+    return { position.x, position.y };
+}
+float Body2D::getAngle() const
+{
+    return m_body->GetAngle();
+}
 
 float Body2D::getForwardSpeed() const
 {
@@ -142,7 +150,7 @@ float Body2D::getMass() const
     return m_body->GetMass();
 }
 
-void Body2D::update()
+void Body2D::onFixedUpdate(double stepTime)
 {
     if (nullptr == m_translator) {
         return;

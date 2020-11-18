@@ -10,8 +10,23 @@ struct Vec2 {
     Vec2(float x, float y) : x(x), y(y) {}
     float x;
     float y;
-    inline float length() {
+    inline float length() const {
         return glm::sqrt(x*x + y*y);
+    }
+
+    Vec2 operator+(const Vec2 &vec) const {
+        return Vec2(this->x + vec.x, this->y + vec.y);
+    }
+
+    Vec2 operator*(float multiplier) {
+        this->x *= multiplier;
+        this->y *= multiplier;
+        return *this;
+    }
+
+    void operator=(const Vec2 &vec) {
+        this->x = vec.x;
+        this->y = vec.y;
     }
 };
 
@@ -28,6 +43,7 @@ public:
 
     static void assertDimensions(float length);
     static float scaleLength(float length);
+    static Vec2 scalePosition(const Vec2 &vec);
     static float scalePosition(float position);
     static float scaleSpeed(float speed);
     static float scaleAcceleration(float acceleration);

@@ -12,6 +12,7 @@ class LineComponent : public RenderableComponent
         LineComponent(const glm::vec4& color) :
             RenderableComponent(color) {}
         /* TODO: Template this? */
+        /* TODO: const? */
         void render() {
             LineTransform *transform = dynamic_cast<LineTransform*>(m_parent->getTransform());
             /* Transform of parent must be a line transform! */

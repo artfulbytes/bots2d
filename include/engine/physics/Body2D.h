@@ -21,10 +21,12 @@ public:
     Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, float mass);
     ~Body2D();
     void attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body);
-    void update() override;
+    void onFixedUpdate(double stepTime) override;
     float getForwardSpeed() const;
     Vec2 getLateralVelocity() const;
     Vec2 getForwardNormal() const;
+    Vec2 getPosition() const;
+    float getAngle() const;
     void setForce(const Vec2 &vec, float magnitude);
     void setLinearImpulse(const Vec2 &vec);
     float getMass() const;

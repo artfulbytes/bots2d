@@ -29,6 +29,11 @@ bool Camera::onKeyEvent(const Event::Key &keyEvent)
         case Event::KeyCode::W:
             cameraPosition.y -= positionStepSize;
             break;
+        case Event::KeyCode::R:
+            cameraPosition.x = 0;
+            cameraPosition.y = 0;
+            zoomFactor = 1.0f;
+            break;
         default:
             return false;
         }

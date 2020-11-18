@@ -130,6 +130,7 @@ namespace {
     const double framesPerSecond = 60.0;
     const double stepTime = 1.0 / framesPerSecond;
     double lastUpdateTime = 0;
+    glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
 }
 
 /* Using VSYNC for now
@@ -153,7 +154,7 @@ void Application::run()
         */
 
         glfwPollEvents();
-        Renderer::clear();
+        Renderer::clear(defaultBgColor);
         ImGuiOverlay::newFrame();
         onFixedUpdate(stepTime);
         ImGuiOverlay::render();

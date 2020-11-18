@@ -23,6 +23,7 @@ public:
         S,
         D,
         W,
+        R,
         Escape,
         Space,
         Up,

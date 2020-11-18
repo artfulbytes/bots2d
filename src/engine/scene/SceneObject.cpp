@@ -57,7 +57,7 @@ void SceneObject::updatePhysics(double stepTime)
 {
     if (m_physicsComp) {
         /* TODO: Change to onUpdate? */
-        m_physicsComp->update();
+        m_physicsComp->onFixedUpdate(stepTime);
     }
 }
 

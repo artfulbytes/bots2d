@@ -6,6 +6,7 @@
 
 class Body2D;
 class TopViewWheelMotor;
+class RangeSensorObject;
 
 /* TopViewSumobot4Wheel simulates a sumo robot with four DC motors in a
  * top-view gravity physics world
@@ -40,6 +41,8 @@ public:
     float *getBackLeftMotorVoltageLine();
     float *getBackRightWheelVoltageLine();
 
+    const float *getFrontRightRangeSensorVoltageLine() const;
+
     void onFixedUpdate(double stepTime) override;
 private:
     /* TODO: Move these to spec, and add assert to ensure factors add up to 1.0f? */
@@ -50,6 +53,7 @@ private:
 
     void createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
     void createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos);
+    void createSensors(AppScene &appScene, const PhysicsWorld &world);
     static Specification scaleSpec(const Specification &unscaledSpec);
     Body2D *m_body2D = nullptr;
     Specification m_scaledSpec;
@@ -58,6 +62,12 @@ private:
     TopViewWheelMotor *m_frontLeftWheelMotor = nullptr;
     TopViewWheelMotor *m_backRightWheelMotor = nullptr;
     TopViewWheelMotor *m_backLeftWheelMotor = nullptr;
+
+    RangeSensorObject *m_LeftRangeSensor = nullptr;
+    RangeSensorObject *m_frontLeftRangeSensor = nullptr;
+    RangeSensorObject *m_frontRangeSensor = nullptr;
+    RangeSensorObject *m_frontRightRangeSensor = nullptr;
+    RangeSensorObject *m_RightRangeSensor = nullptr;
 };
 
 #endif /* TOP_VIEW_SUMOBOT_4_WHEEL_H_ */

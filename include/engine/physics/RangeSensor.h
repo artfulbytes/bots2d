@@ -1,30 +1,34 @@
 #ifndef RANGE_SENSOR_H_
 #define RANGE_SENSOR_H_
 
-#include <box2d/box2d.h>
+#include "PhysicsComponent.h"
 
-class RangeSensor
+class Body2D;
+class LineTransform;
+
+class RangeSensor : public PhysicsComponent
 {
 public:
-    RangeSensor(b2World* world, b2Body* body, b2Vec2 position, float angle, float minDistance, float maxDistance);
-    float getDistance(void);
-    void update(void);
+    RangeSensor(const PhysicsWorld &world, LineTransform &transform, const Body2D &body,
+                const Vec2 &position, float angle, float minDistance, float maxDistance);
+    ~RangeSensor();
+    void onFixedUpdate(double stepTime) override;
+    float getDistance() const;
+    const float *getVoltageLine() const;
 
 private:
-    b2World* m_world;
-    b2Body* m_body;
-    float m_angle = 0.0f;
-    float m_x = 0.0f;
-    float m_y = 0.0f;
-    float m_minDistance = 0.0f;
-    float m_maxDistance = 0.0f;
-    b2Vec2 m_rayPoints[2];
+    void updateVoltage();
+    void updateDetectedDistance(const Vec2 &start, const Vec2 &end);
 
-    /* Relative position to the body that owns the sensor */
-    b2Vec2 m_position;
+    const float m_minDistance = 0.0f;
+    const float m_maxDistance = 0.0f;
+    const float m_relativeAngle = 0.0f;
+    const Vec2 m_relativePosition;
+    const Body2D *m_parentBody = nullptr;
 
-    b2Vec2 m_rayStartPosition;
-    b2Vec2 m_rayEndPosition;
+    LineTransform *m_lineTransform = nullptr;
+    float m_distanceVoltage = 0.0f;
+    float m_detectedDistance = 0.0f;
 };
 
-#endif
+#endif /* RANGE_SENSOR_H_ */

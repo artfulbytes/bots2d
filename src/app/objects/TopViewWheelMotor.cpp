@@ -18,7 +18,7 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
     transformBody->size.x = unscaledSpec.width;
     transformBody->size.y = unscaledSpec.diameter;
 
-    glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
+    glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
     m_body2D = new Body2D(world, *transformBody, true, unscaledSpec.mass);
     /* TODO: Make this access less ugly */

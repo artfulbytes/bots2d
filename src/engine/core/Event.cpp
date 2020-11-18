@@ -9,6 +9,7 @@ Event::KeyCode Event::GLFWKeyToKeyCode(int GLFWKey) {
         case GLFW_KEY_S: return Event::KeyCode::S;
         case GLFW_KEY_D: return Event::KeyCode::D;
         case GLFW_KEY_W: return Event::KeyCode::W;
+        case GLFW_KEY_R: return Event::KeyCode::R;
         case GLFW_KEY_UP: return Event::KeyCode::Up;
         case GLFW_KEY_DOWN: return Event::KeyCode::Down;
         case GLFW_KEY_LEFT: return Event::KeyCode::Left;
