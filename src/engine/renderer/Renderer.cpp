@@ -149,7 +149,7 @@ void Renderer::clear()
 static float angleToXAxis(const glm::vec2& start, const glm::vec2& end) {
     const float x = end.x - start.x;
     const float y = end.y - start.y;
-    float angle = glm::atan(x, y);
+    float angle = glm::atan(y, x);
     if (x > 0 && y > 0) {
     } else if (x < 0 && y > 0) {
         angle += glm::pi<float>();
