@@ -5,13 +5,13 @@
 #include "box2d/box2d.h"
 
 namespace {
-    static const float debugDrawWidth = 0.002f;
+    static const float drawWidth = 0.01f;
 }
 
-RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform &transform, const Body2D &body,
+RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform, const Body2D &body,
                          const Vec2 &position, float angle, float minDistance, float maxDistance) :
     PhysicsComponent(world),
-    m_lineTransform(&transform),
+    m_lineTransform(transform),
     m_parentBody(&body),
     m_relativePosition(PhysicsWorld::scalePosition(position)),
     m_relativeAngle(angle),
@@ -19,7 +19,9 @@ RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform &transform, co
     m_maxDistance(PhysicsWorld::scaleLength(maxDistance)),
     m_detectedDistance(m_maxDistance)
 {
-    m_lineTransform->width = PhysicsWorld::scalePosition(debugDrawWidth);
+    if (m_lineTransform) {
+        m_lineTransform->width = drawWidth;
+    }
 }
 
 void RangeSensor::onFixedUpdate(double stepTime)
@@ -37,8 +39,10 @@ void RangeSensor::onFixedUpdate(double stepTime)
     updateDetectedDistance(rayStartPosition, rayEndPosition);
     const Vec2 detectedEndPosition = rayStartPosition + Vec2(sinf(rayAngleEnd), cosf(rayAngleEnd)) * m_detectedDistance;
 
-    m_lineTransform->start = { rayStartPosition.x, rayStartPosition.y };
-    m_lineTransform->end = { detectedEndPosition.x, detectedEndPosition.y };
+    if (m_lineTransform) {
+        m_lineTransform->start = { rayStartPosition.x, rayStartPosition.y };
+        m_lineTransform->end = { detectedEndPosition.x, detectedEndPosition.y };
+    }
     updateVoltage();
 }
 

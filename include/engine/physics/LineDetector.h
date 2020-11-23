@@ -1,20 +1,26 @@
 #ifndef LINE_DETECTOR_H_
 #define LINE_DETECTOR_H_
 
-#include <box2d/box2d.h>
+#include "PhysicsComponent.h"
+#include "Body2DUserData.h"
 
-class LineDetector
+class Body2D;
+class b2Body;
+class CircleTransform;
+
+class LineDetector : public PhysicsComponent
 {
 public:
-    LineDetector(b2World* world, b2Body* ownerBody, b2Vec2 position);
-    bool detected(void);
+    LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2 &relativePosition);
+    ~LineDetector();
+    void onFixedUpdate(double stepTime) override;
+    const float *getVoltageLine() const;
 
 private:
-    b2World* m_world = nullptr;
-    b2Body* m_body = nullptr;
-    b2Body* m_ownerBody = nullptr;
-    b2Joint* m_joint = nullptr;
-    b2Vec2 m_position;
+    b2Body *m_body = nullptr;
+    Body2DUserData m_userData = { 0, 0, BodyId::LineDetector };
+    CircleTransform * const m_transform = nullptr;
+    float m_detectVoltage = 0.0f;
 };
 
-#endif /* LINE_DETECTOR_H */
+#endif /* LINE_DETECTOR_H_ */

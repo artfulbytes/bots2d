@@ -37,6 +37,7 @@ public:
     PhysicsWorld(Gravity gravity);
     PhysicsWorld(float gravityX, float gravityY);
     ~PhysicsWorld();
+    void init();
 
     void step(double stepTime);
     inline Gravity getGravityType() const { return m_gravityType; }

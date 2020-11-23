@@ -17,7 +17,7 @@ public:
         const float minDistance = 0.0f;
         const float maxDistance = 0.0f;
     };
-    RangeSensorObject(AppScene &appScene, const PhysicsWorld &world, const Body2D &parentBody, const Specification &unscaledSpec);
+    RangeSensorObject(AppScene &appScene, const PhysicsWorld &world, const Body2D &parentBody, bool show, const Specification &unscaledSpec);
     ~RangeSensorObject();
     void onFixedUpdate(double stepTime) override;
     const float *getVoltageLine() const;

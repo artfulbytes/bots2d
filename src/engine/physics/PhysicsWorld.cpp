@@ -1,5 +1,6 @@
 #include "PhysicsWorld.h"
 #include "Constants.h"
+#include "ContactListener.h"
 
 #include "box2d/box2d.h"
 #include <cassert>
@@ -74,7 +75,13 @@ float PhysicsWorld::normalForce(float mass)
     return mass * gravitationConstant * forceScaleFactor;
 }
 
-PhysicsWorld::PhysicsWorld(Gravity gravity)
+void PhysicsWorld::init()
+{
+    m_world->SetContactListener(new ContactListener());
+}
+
+PhysicsWorld::PhysicsWorld(Gravity gravity) :
+    m_gravityType(gravity)
 {
     switch (gravity)
     {
@@ -92,14 +99,16 @@ PhysicsWorld::PhysicsWorld(Gravity gravity)
         assert(false);
     }
     m_gravityType = gravity;
+    init();
 }
 
 PhysicsWorld::PhysicsWorld(float gravityX, float gravityY) :
     m_world(new b2World(b2Vec2(gravityX, gravityY))),
     m_gravityType(Gravity::Custom)
 {
-    //s_physicsData->world->SetContactListener(new ContactListener());
+    init();
 }
+
 
 PhysicsWorld::~PhysicsWorld()
 {

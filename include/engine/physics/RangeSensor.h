@@ -9,7 +9,7 @@ class LineTransform;
 class RangeSensor : public PhysicsComponent
 {
 public:
-    RangeSensor(const PhysicsWorld &world, LineTransform &transform, const Body2D &body,
+    RangeSensor(const PhysicsWorld &world, LineTransform *transform, const Body2D &body,
                 const Vec2 &position, float angle, float minDistance, float maxDistance);
     ~RangeSensor();
     void onFixedUpdate(double stepTime) override;
@@ -26,7 +26,7 @@ private:
     const Vec2 m_relativePosition;
     const Body2D *m_parentBody = nullptr;
 
-    LineTransform *m_lineTransform = nullptr;
+    LineTransform * const m_lineTransform = nullptr;
     float m_distanceVoltage = 0.0f;
     float m_detectedDistance = 0.0f;
 };

@@ -28,7 +28,6 @@ SceneObject::SceneObject(const Scene &scene,
     }
 
     if (m_physicsComp) {
-        assert(m_transformComp);
         m_physicsComp->m_parent = this;
     }
 
@@ -56,7 +55,6 @@ void SceneObject::render()
 void SceneObject::updatePhysics(double stepTime)
 {
     if (m_physicsComp) {
-        /* TODO: Change to onUpdate? */
         m_physicsComp->onFixedUpdate(stepTime);
     }
 }

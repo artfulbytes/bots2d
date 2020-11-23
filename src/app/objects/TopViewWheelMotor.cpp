@@ -20,7 +20,7 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
 
     glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
-    m_body2D = new Body2D(world, *transformBody, true, unscaledSpec.mass);
+    m_body2D = new Body2D(world, *transformBody, true, true, unscaledSpec.mass);
     /* TODO: Make this access less ugly */
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
 }

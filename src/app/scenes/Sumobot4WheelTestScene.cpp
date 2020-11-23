@@ -84,7 +84,7 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     transformBox->position = { 0.2f, 0.2f, 0.0f };
     transformBox->size = { 0.07f, 0.07f };
     QuadComponent *boxComponent = new QuadComponent(color);
-    auto boxBody = new Body2D(*world, *transformBox, true, 1.0f);
+    auto boxBody = new Body2D(*world, *transformBox, true, true, 1.0f);
     m_scene->createObject(transformBox, boxComponent, boxBody, nullptr);
 
     TopViewSumobot4Wheel *sumobot4Wheel = new TopViewSumobot4Wheel(*this, *world, { .length = 0.1f, .width = 0.1f, .mass = 0.5f} , Vec2(0, 0));

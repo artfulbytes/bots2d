@@ -3,6 +3,7 @@
 
 #include "AppObject.h"
 #include "PhysicsWorld.h"
+#include "Body2DUserData.h"
 
 class Body2D;
 
@@ -20,6 +21,7 @@ public:
 private:
     Specification scaleSpec(const Specification &unscaledSpec);
     Body2D *m_body2D = nullptr;
+    Body2DUserData m_userData = { 0, 0, BodyId::DohyoBorder };
     Specification m_scaledSpec;
 };
 

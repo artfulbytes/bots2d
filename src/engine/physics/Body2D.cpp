@@ -2,6 +2,7 @@
 #include "Transforms.h"
 #include "Constants.h"
 #include "PhysicsWorld.h"
+#include "Body2DUserData.h"
 
 #include "box2d/box2d.h"
 
@@ -34,7 +35,7 @@ void Body2D::addTopViewFriction(float normalForce) {
     m_joints.push_back(m_world->CreateJoint(&jointDef));
 }
 
-Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, float mass) :
+Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, bool collision, float mass) :
     PhysicsComponent(world)
 {
     transform.size.x = PhysicsWorld::scaleLength(transform.size.x);
@@ -52,9 +53,13 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
     bodyDef.angle = transform.rotation;
     m_body = m_world->CreateBody(&bodyDef);
 
+    b2FixtureDef fixtureDef;
     b2PolygonShape polygonShape;
     polygonShape.SetAsBox(transform.size.x / 2, transform.size.y / 2);
-    m_body->CreateFixture(&polygonShape, density);
+    fixtureDef.shape = &polygonShape;
+    fixtureDef.isSensor = !collision;
+    fixtureDef.density = density;
+    m_body->CreateFixture(&fixtureDef);
 
     m_translator = new QuadTransformTranslator(transform, *m_body);
 
@@ -66,7 +71,7 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic
 constexpr static int totalVertexCount = 180;
 constexpr static float anglePerVertex = 2 * constants::pi / static_cast<float>(totalVertexCount);
 constexpr static int trapezoidVertexCount = 4;
-Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, float mass) :
+Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, bool collision, float mass) :
     PhysicsComponent(world)
 {
     /* Only support static for now */
@@ -96,19 +101,24 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool
         shape.Set(trapezoidVertices, trapezoidVertexCount);
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &shape;
-        /* Disable collision */
-        fixtureDef.isSensor = true;
+        fixtureDef.isSensor = !collision;
         m_body->CreateFixture(&fixtureDef);
     }
 
     /* Only static so no translation needed for now */
     m_translator = nullptr;
 }
+
+void Body2D::setUserData(Body2DUserData *userData) {
+    m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
+}
+
 Vec2 Body2D::getPosition() const
 {
     auto position = m_body->GetPosition();
     return { position.x, position.y };
 }
+
 float Body2D::getAngle() const
 {
     return m_body->GetAngle();
@@ -170,6 +180,17 @@ void Body2D::attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Bo
     jointDef.bodyB = body.m_body;
     jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(unscaledAttachPos.x),
                               PhysicsWorld::scalePosition(unscaledAttachPos.y));
+    m_joints.push_back(m_world->CreateJoint(&jointDef));
+}
+
+void Body2D::attachBodyWithWeldJoint(const Vec2 &unscaledAttachPos, const Body2D &body)
+{
+    b2WeldJointDef jointDef;
+    jointDef.bodyA = m_body;
+    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(unscaledAttachPos.x),
+                              PhysicsWorld::scalePosition(unscaledAttachPos.y));
+    jointDef.localAnchorB.SetZero();
+    jointDef.bodyB = body.m_body;
     m_joints.push_back(m_world->CreateJoint(&jointDef));
 }
 

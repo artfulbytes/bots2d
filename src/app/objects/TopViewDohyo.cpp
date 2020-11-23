@@ -14,7 +14,8 @@ TopViewDohyo::TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const 
     transformBody->position.z = 0.0f;
     transformBody->innerRadius = unscaledSpec.innerRadius;
     transformBody->outerRadius = unscaledSpec.outerRadius;
-    m_body2D = new Body2D(world, *transformBody, false, 0.0f);
+    m_body2D = new Body2D(world, *transformBody, false, false, 0.0f);
+    m_body2D->setUserData(&m_userData);
 
     /* For simplicity create two overlapping circles */
     /* Big circle */

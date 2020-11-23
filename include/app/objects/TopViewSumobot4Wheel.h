@@ -7,6 +7,7 @@
 class Body2D;
 class TopViewWheelMotor;
 class RangeSensorObject;
+class LineDetectorObject;
 
 /* TopViewSumobot4Wheel simulates a sumo robot with four DC motors in a
  * top-view gravity physics world
@@ -63,11 +64,16 @@ private:
     TopViewWheelMotor *m_backRightWheelMotor = nullptr;
     TopViewWheelMotor *m_backLeftWheelMotor = nullptr;
 
-    RangeSensorObject *m_LeftRangeSensor = nullptr;
+    RangeSensorObject *m_leftRangeSensor = nullptr;
     RangeSensorObject *m_frontLeftRangeSensor = nullptr;
     RangeSensorObject *m_frontRangeSensor = nullptr;
     RangeSensorObject *m_frontRightRangeSensor = nullptr;
-    RangeSensorObject *m_RightRangeSensor = nullptr;
+    RangeSensorObject *m_rightRangeSensor = nullptr;
+
+    LineDetectorObject *m_frontLeftLineDetector = nullptr;
+    LineDetectorObject *m_frontRightLineDetector = nullptr;
+    LineDetectorObject *m_backLeftLineDetector = nullptr;
+    LineDetectorObject *m_backRightLineDetector = nullptr;
 };
 
 #endif /* TOP_VIEW_SUMOBOT_4_WHEEL_H_ */

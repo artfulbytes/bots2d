@@ -1,54 +1,61 @@
 #include "LineDetector.h"
-#include "UserData.h"
-#include <iostream>
-#include <../external/Box2D/include/box2d/b2_body.h>
+#include "Body2D.h"
+#include "box2d/box2d.h"
+#include "Transforms.h"
 
-#define DEBUG_DRAW
+namespace {
+    constexpr float radius = 0.005f;
+}
 
-LineDetector::LineDetector(b2World* world, b2Body* ownerBody, b2Vec2 position) :
-    m_world(world),
-    m_ownerBody(ownerBody),
-    m_position(position)
+LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2 &relativePosition) :
+    PhysicsComponent(world),
+    m_transform(transform)
 {
-    /* Body */
+    const auto scaledRelativePosition = PhysicsWorld::scalePosition(relativePosition);
+    if (m_transform) {
+        m_transform->position = { scaledRelativePosition.x, scaledRelativePosition.y, 0.0f};
+        m_transform->radius = radius;
+    }
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    m_body = world->CreateBody(&bodyDef);
+    bodyDef.angle = 0.0f;
+    m_body = m_world->CreateBody(&bodyDef);
+    m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(&m_userData);
 
     /* Fixture (tiny circle) */
     b2CircleShape circleShape;
-    circleShape.m_radius = 0.01f;
+    circleShape.m_radius = radius;
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &circleShape;
     fixtureDef.isSensor = true;
     fixtureDef.density = 0.01f;
     m_body->CreateFixture(&fixtureDef);
 
-    /* Joint */
     b2WeldJointDef jointDef;
-    jointDef.bodyA = m_ownerBody;
-    jointDef.localAnchorA.Set(m_position.x, m_position.y);
+    jointDef.bodyA = parentBody.m_body;
+    jointDef.localAnchorA.Set(scaledRelativePosition.x,
+                              scaledRelativePosition.y);
     jointDef.localAnchorB.SetZero();
     jointDef.bodyB = m_body;
-    m_joint = world->CreateJoint(&jointDef);
-
-    /* User data */
-    UserData* userData = new UserData();
-    userData->bodyType = BodyType::LineDetector;
-    m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
+    m_world->CreateJoint(&jointDef);
 }
 
-bool LineDetector::detected()
+LineDetector::~LineDetector()
 {
-    /* TODO: Before we did static cast here and no &... */
-    const bool detected = reinterpret_cast<UserData*>(&m_body->GetUserData())->contactCount > 0;
-
-#ifdef DEBUG_DRAW
-    if (detected) {
-        //g_debugDraw.DrawCircle(m_body->GetPosition(), 0.4f, b2Color(0.7f, 0.4f, 0.4f));
-    }
-#endif //DEBUG_DRAW
-    return detected;
 }
 
-/* TODO: Add destructor (freeing body, joint, userdata) */
+const float * LineDetector::getVoltageLine() const
+{
+    return &m_detectVoltage;
+}
+
+void LineDetector::onFixedUpdate(double stepTime)
+{
+    const bool detected = m_userData.contactCount > 0;
+    m_detectVoltage = detected ? 3.3f : 0.0f;
+    if (m_transform) {
+        const auto position = m_body->GetPosition();
+        m_transform->position = { position.x, position.y, 0.0f};
+        m_transform->radius = detected ? 50.0f * radius : radius;
+    }
+}

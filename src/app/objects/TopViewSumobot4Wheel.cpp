@@ -3,8 +3,10 @@
 #include "Body2D.h"
 #include "Transforms.h"
 #include "QuadComponent.h"
+#include "CircleComponent.h"
 #include "LineComponent.h"
 #include "RangeSensorObject.h"
+#include "LineDetectorObject.h"
 #include <glm/glm.hpp>
 
 TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
@@ -19,26 +21,36 @@ TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorl
 
 void TopViewSumobot4Wheel::createSensors(AppScene &appScene, const PhysicsWorld &world)
 {
-    m_LeftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { -0.04f, 0.0f },
-                                                                            .relativeAngle = -1.57f,
-                                                                            .minDistance = 0.0f,
-                                                                            .maxDistance = 0.8f });
-    m_frontLeftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { -0.03f, 0.047f },
-                                                                                 .relativeAngle = -0.3f,
-                                                                                 .minDistance = 0.0f,
-                                                                                 .maxDistance = 0.8f });
-    m_frontRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.0f, 0.047f },
-                                                                             .relativeAngle = 0.0f,
-                                                                             .minDistance = 0.0f,
-                                                                             .maxDistance = 0.8f });
-    m_frontRightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.03f, 0.047f },
-                                                                                  .relativeAngle = 0.3f,
-                                                                                  .minDistance = 0.0f,
-                                                                                  .maxDistance = 0.8f });
-    m_RightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, { .relativePosition = { 0.04f, 0.0f },
-                                                                             .relativeAngle = 1.57f,
-                                                                             .minDistance = 0.0f,
-                                                                             .maxDistance = 0.8f });
+    m_leftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, true,
+                                              { .relativePosition = { -0.04f, 0.0f },
+                                                .relativeAngle = -1.57f,
+                                                .minDistance = 0.0f,
+                                                .maxDistance = 0.8f });
+    m_frontLeftRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, true,
+                                                   { .relativePosition = { -0.03f, 0.05f },
+                                                     .relativeAngle = -0.3f,
+                                                     .minDistance = 0.0f,
+                                                     .maxDistance = 0.8f });
+    m_frontRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, true,
+                                               { .relativePosition = { 0.0f, 0.05f },
+                                                 .relativeAngle = 0.0f,
+                                                 .minDistance = 0.0f,
+                                                 .maxDistance = 0.8f });
+    m_frontRightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, true,
+                                                    { .relativePosition = { 0.03f, 0.05f },
+                                                      .relativeAngle = 0.3f,
+                                                      .minDistance = 0.0f,
+                                                      .maxDistance = 0.8f });
+    m_rightRangeSensor = new RangeSensorObject(appScene, world, *m_body2D, true,
+                                               { .relativePosition = { 0.04f, 0.0f },
+                                                 .relativeAngle = 1.57f,
+                                                 .minDistance = 0.0f,
+                                                 .maxDistance = 0.8f });
+
+    m_frontLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {-0.035f, 0.045f});
+    m_frontRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {0.035f, 0.045f});
+    m_backLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {-0.035f, -0.045f});
+    m_backRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {0.035f, -0.045f});
 }
 
 void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos)
@@ -52,7 +64,7 @@ void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &wo
 
     glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
-    m_body2D = new Body2D(world, *transformBody, true, unscaledSpec.mass * massBodyFactor);
+    m_body2D = new Body2D(world, *transformBody, true, true, unscaledSpec.mass * massBodyFactor);
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
 }
 
@@ -131,7 +143,6 @@ TopViewSumobot4Wheel::Specification TopViewSumobot4Wheel::scaleSpec(const Specif
 
 void TopViewSumobot4Wheel::onFixedUpdate(double stepTime)
 {
-    m_frontRightWheelMotor->onFixedUpdate(stepTime);
 }
 
 TopViewSumobot4Wheel::~TopViewSumobot4Wheel()
