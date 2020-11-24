@@ -2,29 +2,41 @@
 #define MICROCONTROLLER_H_
 
 #include "ControllerComponent.h"
+#include <array>
 
 class Microcontroller : public ControllerComponent
 {
 public:
-    enum class LineType { Input, Output };
-    enum class VoltageLine {
-        A0 = 0, A1, A2, A3, A4, A5, A6, A7,
-        B0,     B1, B2, B3, B4, B5, B6, B7,
-        Count
+    enum VoltageLine {
+        VOLTAGE_LINE_A0 = 0,
+        VOLTAGE_LINE_A1,
+        VOLTAGE_LINE_A2,
+        VOLTAGE_LINE_A3,
+        VOLTAGE_LINE_A4,
+        VOLTAGE_LINE_A5,
+        VOLTAGE_LINE_A6,
+        VOLTAGE_LINE_A7,
+        VOLTAGE_LINE_B0,
+        VOLTAGE_LINE_B1,
+        VOLTAGE_LINE_B2,
+        VOLTAGE_LINE_B3,
+        VOLTAGE_LINE_B4,
+        VOLTAGE_LINE_B5,
+        VOLTAGE_LINE_B6,
+        VOLTAGE_LINE_B7,
+        VOLTAGE_LINE_COUNT
     };
-    struct VoltageLineConfig
-    {
-        LineType type;
-        float *level;
-    };
+    typedef std::array<float *, Microcontroller::VOLTAGE_LINE_COUNT> VoltageLineArray;
 
+    /* Must keep track of voltage line index to ensure they match with controller code */
+    Microcontroller(VoltageLineArray &voltageLines);
     virtual void onKeyEvent(const Event::Key &keyEvent);
     virtual void onFixedUpdate(double stepTime) = 0;
-    void setVoltageLine(VoltageLine line, const VoltageLineConfig &config);
 
 protected:
-    VoltageLineConfig voltageLines[static_cast<int>(VoltageLine::Count)];
+    VoltageLineArray m_voltageLines;
 
 };
+
 
 #endif /* MICROCONTROLLER_H_ */

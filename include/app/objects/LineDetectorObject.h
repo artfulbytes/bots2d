@@ -15,7 +15,7 @@ public:
                        bool show, const Vec2 &unscaledRelativePosition);
     ~LineDetectorObject();
     void onFixedUpdate(double stepTime) override;
-    const float *getVoltageLine() const;
+    float *getVoltageLine() const;
 
 private:
     LineDetector *m_lineDetector = nullptr;

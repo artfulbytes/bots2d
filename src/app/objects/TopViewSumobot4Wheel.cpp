@@ -17,6 +17,20 @@ TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorl
     createBody(appScene, world, unscaledSpec, unscaledStartPos);
     createWheelMotors(appScene, world, unscaledSpec, unscaledStartPos);
     createSensors(appScene, world);
+
+    assert(m_frontRightWheelMotor);
+    assert(m_frontLeftWheelMotor);
+    assert(m_backRightWheelMotor);
+    assert(m_backLeftWheelMotor);
+    assert(m_leftRangeSensor);
+    assert(m_frontLeftRangeSensor);
+    assert(m_frontRangeSensor);
+    assert(m_frontRightRangeSensor);
+    assert(m_rightRangeSensor);
+    assert(m_frontLeftLineDetector);
+    assert(m_frontRightLineDetector);
+    assert(m_backLeftLineDetector);
+    assert(m_backRightLineDetector);
 }
 
 void TopViewSumobot4Wheel::createSensors(AppScene &appScene, const PhysicsWorld &world)
@@ -101,34 +115,26 @@ void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWo
     m_body2D->attachBodyWithRevoluteJoint(backLeftStartPos, *m_backLeftWheelMotor->getBody());
 }
 
-const float *TopViewSumobot4Wheel::getFrontRightRangeSensorVoltageLine() const
+float *TopViewSumobot4Wheel::getVoltageLine(TopViewSumobot4Wheel::VoltageLine line) const
 {
-    assert(m_frontRightRangeSensor);
-    return m_frontRightRangeSensor->getVoltageLine();
-}
-
-float *TopViewSumobot4Wheel::getFrontLeftMotorVoltageLine()
-{
-    assert(m_frontLeftWheelMotor);
-    return m_frontLeftWheelMotor->getVoltageLine();
-}
-
-float *TopViewSumobot4Wheel::getFrontRightMotorVoltageLine()
-{
-    assert(m_frontRightWheelMotor);
-    return m_frontRightWheelMotor->getVoltageLine();
-}
-
-float *TopViewSumobot4Wheel::getBackLeftMotorVoltageLine()
-{
-    assert(m_backLeftWheelMotor);
-    return m_backLeftWheelMotor->getVoltageLine();
-}
-
-float *TopViewSumobot4Wheel::getBackRightWheelVoltageLine()
-{
-    assert(m_backRightWheelMotor);
-    return m_backRightWheelMotor->getVoltageLine();
+    switch (line) {
+    case TopViewSumobot4Wheel::VoltageLine::FrontLeftMotor: return m_frontLeftWheelMotor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::BackLeftMotor: return m_backLeftWheelMotor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontRightMotor: return m_frontRightWheelMotor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::BackRightMotor: return m_backRightWheelMotor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::LeftRangeSensor: return m_leftRangeSensor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontLeftRangeSensor: return m_frontLeftRangeSensor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontRangeSensor: return m_frontRangeSensor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontRightRangeSensor: return m_frontRightRangeSensor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::RightRangeSensor: return m_rightRangeSensor->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontLeftLineDetector: return m_frontLeftLineDetector->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::BackLeftLineDetector: return m_backLeftLineDetector->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::FrontRightLineDetector: return m_frontRightLineDetector->getVoltageLine();
+    case TopViewSumobot4Wheel::VoltageLine::BackRightLineDetector: return m_backRightLineDetector->getVoltageLine();
+    }
+    assert(0);
+    /* Can't happen, but we need return value to avoid compiler error */
+    return nullptr;
 }
 
 TopViewSumobot4Wheel::Specification TopViewSumobot4Wheel::scaleSpec(const Specification &unscaledSpec)

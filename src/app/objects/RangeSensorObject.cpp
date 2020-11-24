@@ -20,7 +20,7 @@ RangeSensorObject::RangeSensorObject(AppScene &appScene, const PhysicsWorld &wor
     appScene.getScene()->createObject(transform, renderable, m_rangeSensor, nullptr);
 }
 
-const float *RangeSensorObject::getVoltageLine() const
+float *RangeSensorObject::getVoltageLine() const
 {
     return m_rangeSensor->getVoltageLine();
 }

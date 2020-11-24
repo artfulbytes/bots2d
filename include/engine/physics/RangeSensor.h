@@ -14,7 +14,7 @@ public:
     ~RangeSensor();
     void onFixedUpdate(double stepTime) override;
     float getDistance() const;
-    const float *getVoltageLine() const;
+    float *getVoltageLine();
 
 private:
     void updateVoltage();

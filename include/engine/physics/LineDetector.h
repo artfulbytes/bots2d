@@ -14,7 +14,7 @@ public:
     LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2 &relativePosition);
     ~LineDetector();
     void onFixedUpdate(double stepTime) override;
-    const float *getVoltageLine() const;
+    float *getVoltageLine();
 
 private:
     b2Body *m_body = nullptr;

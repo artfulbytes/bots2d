@@ -44,6 +44,7 @@ set (PHYSICS_SOURCE_FILES
 
 set (CONTROLLER_SOURCE_FILES
     src/engine/controller/Microcontroller.cpp
+    src/engine/controller/MicrocontrollerCBinding.cpp
 )
 
 set (SIMULATOR_ENGINE_FILES
@@ -71,6 +72,8 @@ set (SIMULATOR_APP_FILES
     src/app/objects/TopViewDohyo.cpp
     src/app/objects/RangeSensorObject.cpp
     src/app/objects/LineDetectorObject.cpp
+    src/app/objects/controllers/sumobot4wheelexample/main.c
+    src/app/objects/controllers/sumobot4wheelexample/MicrocontrollerSumobot4WheelExample.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES
@@ -93,6 +96,8 @@ target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/controller)
 target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
+# TODO: Shouldn't have header files inside src
+target_include_directories(sumobot_simulator PRIVATE src/app/objects/controllers)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)
 target_include_directories(sumobot_simulator PRIVATE external/glm)

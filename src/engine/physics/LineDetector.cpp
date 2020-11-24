@@ -44,7 +44,7 @@ LineDetector::~LineDetector()
 {
 }
 
-const float * LineDetector::getVoltageLine() const
+float *LineDetector::getVoltageLine()
 {
     return &m_detectVoltage;
 }

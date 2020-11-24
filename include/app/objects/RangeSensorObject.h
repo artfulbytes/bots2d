@@ -20,7 +20,7 @@ public:
     RangeSensorObject(AppScene &appScene, const PhysicsWorld &world, const Body2D &parentBody, bool show, const Specification &unscaledSpec);
     ~RangeSensorObject();
     void onFixedUpdate(double stepTime) override;
-    const float *getVoltageLine() const;
+    float *getVoltageLine() const;
 
 private:
     RangeSensor *m_rangeSensor = nullptr;

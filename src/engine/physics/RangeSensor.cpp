@@ -87,7 +87,7 @@ void RangeSensor::updateVoltage()
     m_distanceVoltage = m_detectedDistance / m_maxDistance;
 }
 
-const float *RangeSensor::getVoltageLine() const
+float *RangeSensor::getVoltageLine()
 {
     return &m_distanceVoltage;
 }

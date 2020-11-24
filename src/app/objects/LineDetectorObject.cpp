@@ -22,7 +22,7 @@ LineDetectorObject::LineDetectorObject(AppScene &appScene, const PhysicsWorld &w
     appScene.getScene()->createObject(transform, renderable, m_lineDetector, nullptr);
 }
 
-const float *LineDetectorObject::getVoltageLine() const
+float *LineDetectorObject::getVoltageLine() const
 {
     return m_lineDetector->getVoltageLine();
 }

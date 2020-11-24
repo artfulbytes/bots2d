@@ -37,12 +37,11 @@ public:
 
     TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
     ~TopViewSumobot4Wheel();
-    float *getFrontLeftMotorVoltageLine();
-    float *getFrontRightMotorVoltageLine();
-    float *getBackLeftMotorVoltageLine();
-    float *getBackRightWheelVoltageLine();
 
-    const float *getFrontRightRangeSensorVoltageLine() const;
+    enum class VoltageLine { FrontLeftMotor, BackLeftMotor, FrontRightMotor, BackRightMotor,
+                             LeftRangeSensor, FrontLeftRangeSensor, FrontRangeSensor, FrontRightRangeSensor, RightRangeSensor,
+                             FrontLeftLineDetector, BackLeftLineDetector, FrontRightLineDetector, BackRightLineDetector };
+    float *getVoltageLine(VoltageLine line) const;
 
     void onFixedUpdate(double stepTime) override;
 private:

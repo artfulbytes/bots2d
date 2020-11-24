@@ -2,6 +2,11 @@
 
 #include <cassert>
 
+Microcontroller::Microcontroller(Microcontroller::VoltageLineArray &voltageLines) :
+    m_voltageLines(voltageLines)
+{
+}
+
 void Microcontroller::onKeyEvent(const Event::Key &keyEvent)
 {
     /* Microcontroller should typically not handle key events,
@@ -9,8 +14,3 @@ void Microcontroller::onKeyEvent(const Event::Key &keyEvent)
      * useful to override it when testing */
 }
 
-void Microcontroller::setVoltageLine(VoltageLine line, const VoltageLineConfig &config)
-{
-    assert(line != VoltageLine::Count);
-    voltageLines[static_cast<int>(line)] = config;
-}
