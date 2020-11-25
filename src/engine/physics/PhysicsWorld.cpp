@@ -5,17 +5,11 @@
 #include "box2d/box2d.h"
 #include <cassert>
 
-// TODO: Fix inline variables warning
-// TODO: Should they be inline constexpr?
-// TODO: Namespace?
-
-/*
-* Box2D uses metric units and recommends sizing objects
-* between 0.1-10 m. In this simulation tool we want
-* sizes as small as 0.01 m. Therefore, introduce
-* a scale factor of 10, which converts 1 meter in Box2D
-* 10 cm, giving us a range between 0.01-1 m for our objects.
-*/
+/* Box2D uses metric units and recommends sizing objects
+ * between 0.1-10 m. In this simulation tool we want
+ * sizes as small as 0.01 m. Therefore, introduce
+ * a scale factor of 10, which converts 1 meter in Box2D
+ * 10 cm, giving us a range between 0.01-1 m for our objects. */
 inline constexpr float maxWidthObject { 1.0f };
 inline constexpr float minWidthObject { 0.01f };
 inline constexpr float physScaleFactor { 10.0f };
@@ -95,7 +89,7 @@ PhysicsWorld::PhysicsWorld(Gravity gravity) :
         m_world = new b2World(b2Vec2(0, 0));
         break;
     case Gravity::Custom:
-        /* Should use the other constructor */
+        /* If you end up here, you have used the wrong constructor, use the other one */
         assert(false);
     }
     m_gravityType = gravity;
@@ -112,8 +106,6 @@ PhysicsWorld::PhysicsWorld(float gravityX, float gravityY) :
 
 PhysicsWorld::~PhysicsWorld()
 {
-    /* TODO: Implement smart ptrs */
-    /* TODO: Delete b2 objects? */
     delete m_world;
 }
 

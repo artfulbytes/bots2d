@@ -10,9 +10,7 @@ class RangeSensorObject;
 class LineDetectorObject;
 
 /* TopViewSumobot4Wheel simulates a sumo robot with four DC motors in a
- * top-view gravity physics world
- *
- */
+ * top-view gravity physics world */
 class TopViewSumobot4Wheel : public AppObject
 {
 public:
@@ -31,7 +29,6 @@ public:
         const float length;
         const float width;
         const float mass;
-        /* TODO: This is unused? Move to Body? */
         const float frictionCoefficient = 0.05f;
     };
 
@@ -45,7 +42,6 @@ public:
 
     void onFixedUpdate(double stepTime) override;
 private:
-    /* TODO: Move these to spec, and add assert to ensure factors add up to 1.0f? */
     static constexpr float massBodyFactor = 0.9f;
     static constexpr float massWheelFactor = 1.0f - massBodyFactor;
     static constexpr float widthBodyFactor = 0.8f;

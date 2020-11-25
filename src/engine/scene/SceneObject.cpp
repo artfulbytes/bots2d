@@ -44,10 +44,9 @@ SceneObject::~SceneObject()
     delete m_controllerComp;
 }
 
-void SceneObject::render()
+void SceneObject::render() const
 {
     if (m_renderableComp) {
-        /* TODO: Change to onUpdate? */
         m_renderableComp->render();
     }
 }

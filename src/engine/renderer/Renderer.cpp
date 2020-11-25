@@ -10,7 +10,6 @@
 #include <cassert>
 #include <memory>
 
-/* TODO: Use smart pointer so delete removes inner objects too */
 struct RendererStorage
 {
     VertexBuffer* quadVertexBuffer;
@@ -24,13 +23,11 @@ struct RendererStorage
     Shader* solidColorShader;
     glm::mat4* projectionMatrix;
     glm::mat4* viewMatrix;
-    /* TODO: Make this depend on lengthScaleFactor */
     float centimetersToPxScale = 100.0f;
 };
 
 static RendererStorage* s_rendererData;
 
-/* TODO: Should this be part of the class? */
 /* Scale with pixel scale */
 static glm::mat4 scale2D(const glm::vec2 &size) {
     return glm::scale(glm::mat4(1.0f), { size.x * s_rendererData->centimetersToPxScale,
@@ -107,7 +104,6 @@ void Renderer::init()
     s_rendererData = new RendererStorage();
     enableBlending();
 
-    /* TODO: Remove default window size 800x600 */
     s_rendererData->projectionMatrix = new glm::mat4(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f));
     s_rendererData->viewMatrix = new glm::mat4(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)));
     s_rendererData->solidColorShader = new Shader("../resources/shaders/solid_color.shader");
@@ -146,7 +142,6 @@ void Renderer::clear(const glm::vec4 &color)
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-/* TODO: Improve this inefficient function */
 static float angleToXAxis(const glm::vec2& start, const glm::vec2& end) {
     const float x = end.x - start.x;
     const float y = end.y - start.y;
@@ -181,7 +176,7 @@ void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float 
     glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f });
     glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
-    s_rendererData->solidColorShader->setUniform4f("u_Color", color[0], color[1], color[2], color[3]);
+    s_rendererData->solidColorShader->setUniform4f("u_Color", color);
     GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
@@ -194,6 +189,6 @@ void Renderer::drawCircle(const glm::vec3& position, float radius, const glm::ve
     glm::mat4 translate = translate2D(position);
     glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * scale;
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
-    s_rendererData->solidColorShader->setUniform4f("u_Color", color[0], color[1], color[2], color[3]);
+    s_rendererData->solidColorShader->setUniform4f("u_Color", color);
     GLCall(glDrawElements(GL_TRIANGLE_FAN, s_rendererData->circleIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
 }

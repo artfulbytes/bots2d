@@ -1,6 +1,6 @@
 #include "Application.h"
+/* Note, Glad must be included before any OpenGL stuff */
 #define GLFW_INCLUDE_NONE
-/* TODO: Glad must be included before any openGL stuff */
 #include "Renderer.h"
 #include "ImGuiOverlay.h"
 #include "GLError.h"
@@ -11,7 +11,6 @@
 #include <cassert>
 #include <iostream>
 
-/* TODO: Is this the callback we can use in place of GLError.h? */
 static void error_callback(int error, const char* description)
 {
     fprintf(stderr, "Error: %s\n", description);
@@ -64,20 +63,17 @@ static int init_opengl(GLFWwindow* window) {
     }
 
     /* Set OpenGL version
-     * Seems to not have an effect on my system. I need to export
-     * MESA_GL_VERSION_OVERRIDE=3.3 for some reason
-     * TODO: Make this choose core profile */
+     * Might need to export MESA_GL_VERSION_OVERRIDE=3.3 for it to work */
     glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
     glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
     glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
     glfwMakeContextCurrent(window);
 
-    /* Control rendering time yourself instead */
+    /* Sync rendering with the monitor's frame rate */
     enable_vsync(true);
 
     /* Initialize extension loader library (GLAD in this case)
-     * GLAD (alternatively you can use GLEW or GL3W)
      * This is required to call functions beyond OpenGL 1.1
      * (i.e. to use the functions that are part of the GPU driver) */
     if (!gladLoadGL(glfwGetProcAddress)) {
@@ -89,7 +85,6 @@ static int init_opengl(GLFWwindow* window) {
 
     GLCall(glViewport(0, 0, 800, 600));
 
-    /* TODO: Define callback function as lambda right here instead? */
     glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -105,9 +100,9 @@ Application::Application()
         assert(false);
     }
 
-    /* TODO: Don't hard code name and size */
     m_window = glfwCreateWindow(800, 600, "Sumobot simulator", NULL, NULL);
-    /* To make Application object accessible from C-callback */
+
+    /* Makes Application object accessible from C-callback */
     glfwSetWindowUserPointer(m_window, this);
     if (init_opengl(m_window) == -1) {
         assert(false);
@@ -127,6 +122,7 @@ Application::~Application()
 }
 
 namespace {
+    /* We rely on 60 FPS monitor atm, physics engine will be out of sync for other Hz monitors */
     const double framesPerSecond = 60.0;
     const double stepTime = 1.0 / framesPerSecond;
     double lastUpdateTime = 0;
@@ -138,7 +134,6 @@ namespace {
 #include <thread>
 */
 
-/* TODO: Separate rendering freq from physics update freq. */
 void Application::run()
 {
     while (!glfwWindowShouldClose(m_window))

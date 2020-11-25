@@ -1,6 +1,5 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
-/* TODO: Should we include GL some other way? */
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,13 +8,11 @@ class VertexArray;
 class IndexBuffer;
 class Shader;
 
-/* TODO: Make it singleton? */
 class Renderer
 {
 public:
     static void init();
     static void destroy();
-
     static void clear(const glm::vec4 &color);
     static void setViewport(int x, int y, int width, int height);
     static void setCameraPosition(const glm::vec3 &position, float zoomFactor);

@@ -1,7 +1,6 @@
 #include "Camera.h"
 #include "Renderer.h"
 
-/* TODO: Init static variables like this? */
 namespace {
     const float positionStepSize = 1.0f;
     const float zoomStepSize = 1.25f;

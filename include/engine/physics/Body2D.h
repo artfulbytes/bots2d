@@ -11,12 +11,9 @@ class CircleTransform;
 class HollowCircleTransform;
 class Body2DUserData;
 
-/* TODO: Rename to Body2DComponent? */
 class Body2D : public PhysicsComponent
 {
 public:
-    /* TODO: It's ugly to pass a transform here because this body should only have
-     * access to the parent scene object's transform */
     Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, bool collision, float mass);
     Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, bool collision, float mass);
     ~Body2D();
@@ -62,7 +59,6 @@ private:
     b2Body *m_frictionBody = nullptr;
     std::vector<b2Joint *> m_joints;
 
-    /* TODO: Pass as argument? */
     constexpr static float frictionCoefficient = 0.1f;
 };
 

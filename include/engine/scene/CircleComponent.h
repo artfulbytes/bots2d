@@ -9,11 +9,9 @@
 class CircleComponent : public RenderableComponent
 {
     public:
-        /* TODO: Const ptr to obj ? */
         CircleComponent(const glm::vec4& color) :
             RenderableComponent(color) {}
-        /* TODO: Template this? */
-        void render() {
+        void render() const override {
             CircleTransform *transform = dynamic_cast<CircleTransform*>(m_parent->getTransform());
             /* Transform of parent must be a circle transform! */
             assert(transform != nullptr);

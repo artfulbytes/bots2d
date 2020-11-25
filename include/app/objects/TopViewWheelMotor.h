@@ -22,8 +22,7 @@ public:
         const float width;
         const float mass;
         const float maxDriveForce;
-        // This determines the sideway friction
-        // TODO: Move to vehicle instead
+        /* This determines the sideway friction */
         const float maxLateralCancelingImpulse = 40.5f;
     };
 

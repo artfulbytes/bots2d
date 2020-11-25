@@ -15,7 +15,6 @@ public:
     virtual void onFixedUpdate(double stepTime) = 0;
 
 protected:
-    /* TODO: Is there a cleaner way than introducinga translator class here? */
     class PhysicsToTransformTranslator
     {
         public: virtual void translate() = 0;

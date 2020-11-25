@@ -29,13 +29,6 @@ set (RENDERER_SOURCE_FILES
 
 set (PHYSICS_SOURCE_FILES
     src/engine/physics/PhysicsWorld.cpp
-    #src/engine/physics/SumobotTest.cpp
-    #src/engine/physics/Sumobot4Wheel.cpp
-    #src/engine/physics/WheelMotor.cpp
-    #src/engine/physics/Dohyo.cpp
-    #src/engine/physics/RangeSensor.cpp
-    #src/engine/physics/LineDetector.cpp
-    #src/engine/physics/BoxObstacle.cpp
     src/engine/physics/Body2D.cpp
     src/engine/physics/RangeSensor.cpp
     src/engine/physics/LineDetector.cpp
@@ -87,7 +80,6 @@ add_executable(sumobot_simulator
 )
 
 target_include_directories(sumobot_simulator PRIVATE include)
-# TODO: Don't use full path for these?
 target_include_directories(sumobot_simulator PRIVATE include/app)
 target_include_directories(sumobot_simulator PRIVATE include/app/scenes)
 target_include_directories(sumobot_simulator PRIVATE include/app/objects)
@@ -96,7 +88,6 @@ target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/controller)
 target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
-# TODO: Shouldn't have header files inside src
 target_include_directories(sumobot_simulator PRIVATE src/app/objects/controllers)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)

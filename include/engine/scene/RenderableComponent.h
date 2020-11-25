@@ -9,7 +9,7 @@ class RenderableComponent : public Component
     public:
         RenderableComponent(const glm::vec4& color) :
             m_color(color) {}
-        virtual void render() = 0;
+        virtual void render() const = 0;
     protected:
         glm::vec4 m_color;
 };

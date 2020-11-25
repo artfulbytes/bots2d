@@ -9,7 +9,6 @@
 #include "TopViewDohyo.h"
 
 namespace {
-     /* TODO: Move to new class file in separate folder? */
     class Sumobot4WheelController : public KeyboardController
     {
     public:
@@ -80,7 +79,6 @@ namespace {
     };
 }
 
-/* TODO: Divide into several smaller tests */
 Sumobot4WheelTestScene::Sumobot4WheelTestScene()
 {
     PhysicsWorld *world = new PhysicsWorld(PhysicsWorld::Gravity::TopView);

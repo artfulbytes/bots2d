@@ -5,8 +5,6 @@
 #include "PhysicsWorld.h"
 
 class AppObject;
-/* TODO: Maybe AppScene should inherit scene? */
-/* TODO: Or we can remove AppScene and just use Scene? */
 class AppScene
 {
 public:

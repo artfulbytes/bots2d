@@ -12,13 +12,10 @@ class Shader
 public:
     Shader(const std::string& filepath);
     ~Shader();
-
     void bind() const;
     void unbind() const;
-
     void setUniform1i(const std::string& name, int value);
-    /* TODO: Use vector 4 */
-    void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void setUniform4f(const std::string& name, const glm::vec4& color);
     void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 private:

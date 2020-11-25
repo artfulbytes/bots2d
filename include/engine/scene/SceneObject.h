@@ -20,18 +20,14 @@ class SceneObject
                     ControllerComponent *controllerComp);
         ~SceneObject();
         inline TransformComponent *getTransform() { return m_transformComp; }
-        /* TODO: Pass renderable component to scene instead? */
-        void render();
+        void render() const;
         void updatePhysics(double stepTime);
         void updateController(double stepTime);
         void onKeyEvent(const Event::Key &keyEvent);
 
     private:
         const Scene *m_scene;
-        /* TODO: Make this a general array of components instead. Passing all components
-         * Or create a struct you pass
-         * via constructor is getting out of hand.
-         * This is not cache friendly, it would be more optimal to use an entity component system.
+        /* This is not cache friendly, it would be more optimal to use an entity component system.
          * But the simulations are still simple so let's not over-engineer it. */
         TransformComponent *m_transformComp = nullptr;
         RenderableComponent *m_renderableComp = nullptr;

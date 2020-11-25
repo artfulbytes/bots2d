@@ -2,7 +2,6 @@
 #define CONTROLLER_COMPONENT_H_
 
 #include "Component.h"
-/* TODO: Move to scene folder? */
 class ControllerComponent : public Component
 {
 public:

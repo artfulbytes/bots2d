@@ -5,7 +5,6 @@
 
 class b2World;
 
-/* TODO: Move this */
 struct Vec2 {
     Vec2(float x, float y) : x(x), y(y) {}
     float x;
@@ -57,8 +56,6 @@ public:
 private:
     b2World *m_world;
     Gravity m_gravityType = Gravity::SideView;
-
-    /* TODO: Move scaling here (and make it adjustable?) */
 };
 
 #endif /* PHYSICS_WORLD_H_ */

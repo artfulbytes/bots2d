@@ -7,7 +7,6 @@
 class LineDetector;
 class Body2D;
 
-/* TODO: Rename? */
 class LineDetectorObject : public AppObject
 {
 public:

@@ -7,7 +7,6 @@
 class RangeSensor;
 class Body2D;
 
-/* TODO: Rename? */
 class RangeSensorObject : public AppObject
 {
 public:

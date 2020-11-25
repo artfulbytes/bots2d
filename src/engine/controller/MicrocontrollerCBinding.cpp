@@ -13,7 +13,6 @@ MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLineArr
 
 void MicrocontrollerCBinding::onFixedUpdate(double stepTime)
 {
-    /* TODO: Make this a separate thread and put mutex during update in engine */
     m_loopFcn();
 }
 

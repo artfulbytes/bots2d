@@ -10,7 +10,6 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
 {
     assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(unscaledSpec.maxVoltage > 0);
-    /* TODO: Make vecs passable via constructor on transforms */
     QuadTransform *transformBody = new QuadTransform();
     transformBody->position.x = unscaledStartPos.x;
     transformBody->position.y = unscaledStartPos.y;
@@ -21,7 +20,6 @@ TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &wor
     glm::vec4 color(1.0f, 0.0f, 0.0f, 1.0f);
     QuadComponent *renderable = new QuadComponent(color);
     m_body2D = new Body2D(world, *transformBody, true, true, unscaledSpec.mass);
-    /* TODO: Make this access less ugly */
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
 }
 
@@ -55,32 +53,17 @@ float *TopViewWheelMotor::getVoltageLine()
 void TopViewWheelMotor::updateForce()
 {
     const Vec2 currentForwardNormal = m_body2D->getForwardNormal();
-    const float currentForwardSpeed = m_body2D->getForwardSpeed(); // TODO: Compare with normalize forward vector
+    const float currentForwardSpeed = m_body2D->getForwardSpeed();
     const float angularSpeed = currentForwardSpeed / (3.14f * m_scaledSpec.diameter);
 
-    // Must stop completely before applying torque in the opposite direction
-    // To prevent the worst current spikes
-    /* TODO: Move to control logic instead
-    if ((currentForwardSpeed > m_minimumSpeed && m_voltageApplied < 0) || (currentForwardSpeed < -m_minimumSpeed && m_voltageApplied > 0)) {
-        m_voltageApplied = 0;
-    }
-    */
     const float torqueApplied = m_scaledSpec.voltageInConstant * m_voltageIn - m_scaledSpec.angularSpeedConstant * angularSpeed;
 
     const float rollingFriction = 0;
-    /* Add constant friction when no voltage applied and above minimum speed
-    bool belowMinimumSpeed = -m_minimumSpeed < currentForwardSpeed && currentForwardSpeed < m_minimumSpeed;
-    // Simplification: Only apply rolling friction when we don't apply any voltage
-    if (m_voltageApplied == 0 && !belowMinimumSpeed) {
-        rollingFriction = (currentForwardSpeed > 0) ?  1000 : -1000;
-    }
-    */
 
     // Convert torque to force (t = r * F => F = t / r)
     const float forceToApply = (torqueApplied / (m_scaledSpec.diameter / 2)) - rollingFriction;
 
     m_body2D->setForce(currentForwardNormal, forceToApply);
-    //std::cout << m_voltageApplied <<  " " << forceApplied << " " << currentForwardSpeed << "\n";
 
     // Cancel lateral velocity to prevent wheel from moving sideways
     // (mimmicks sideway friction)

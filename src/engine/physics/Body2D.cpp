@@ -8,7 +8,6 @@
 
 using namespace constants;
 
-/* TODO: Are these cleaned up properly? */
 void Body2D::QuadTransformTranslator::translate()
 {
     const b2Vec2 position = m_body->GetPosition();

@@ -4,8 +4,6 @@
 
 void Scene::onKeyEvent(const Event::Key &keyEvent)
 {
-    /* TODO: How to make this closer to callback (now it's like >5 nested function calls) */
-    /* TODO: Create an event list and process all press events between physics update and obj update */
     for (auto obj : m_objects) {
         obj->onKeyEvent(keyEvent);
     }
