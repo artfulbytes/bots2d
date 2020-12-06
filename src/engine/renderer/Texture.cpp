@@ -2,6 +2,7 @@
 #include "GLError.h"
 #include <glad/gl.h>
 #include "stb_image.h"
+#include <cassert>
 
 Texture::Texture(const std::string& filepath) :
     m_filepath(filepath)
@@ -12,18 +13,20 @@ Texture::Texture(const std::string& filepath) :
     /* 4 channels since RBGA */
     m_localBuffer = stbi_load(filepath.c_str(), &m_width, &m_height, &m_bpp, 4);
 
+    assert(m_localBuffer != nullptr);
+
     GLCall(glGenTextures(1, &m_id));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_id));
 
-    /* Resampling/scaling paramters filter etc... */
-    /* You MUST specify this otherwise you get black texture.. */
+    /* Resampling/scaling paramters filter etc...
+     * You MUST specify this otherwise you get black texture.. */
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-    /* Send the texture to OpenGl (allocate space on GPU) */
-    /* First format is how OpenGL stores it (GL_RGBA8)
+    /* Send the texture to OpenGl (allocate space on GPU)
+     * First format is how OpenGL stores it (GL_RGBA8)
      * Second format is the format of the data we supply (GL_RGBA) */
     GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localBuffer));
     unbind();
@@ -32,6 +35,7 @@ Texture::Texture(const std::string& filepath) :
         stbi_image_free(m_localBuffer);
     }
 }
+
 Texture::~Texture()
 {
     GLCall(glDeleteTextures(1, &m_id));

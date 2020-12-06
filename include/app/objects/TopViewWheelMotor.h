@@ -26,7 +26,7 @@ public:
         const float maxLateralCancelingImpulse = 40.5f;
     };
 
-    TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
+    TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
     ~TopViewWheelMotor();
 
     void setVoltageIn(float voltage);

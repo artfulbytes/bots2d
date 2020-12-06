@@ -45,7 +45,7 @@ WheelMotorTestScene::WheelMotorTestScene()
         .width = 0.015f,
         .mass = 0.05f
     };
-    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, unscaledSpec, Vec2(0, 0));
+    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, unscaledSpec, Vec2<float>(0, 0));
     WheelMotorController *controller = new WheelMotorController(*wheelMotor);
     m_scene->createObject(nullptr, nullptr, nullptr, controller);
 }

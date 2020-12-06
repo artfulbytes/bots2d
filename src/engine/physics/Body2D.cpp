@@ -112,7 +112,7 @@ void Body2D::setUserData(Body2DUserData *userData) {
     m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
 }
 
-Vec2 Body2D::getPosition() const
+Vec2<float> Body2D::getPosition() const
 {
     auto position = m_body->GetPosition();
     return { position.x, position.y };
@@ -129,25 +129,25 @@ float Body2D::getForwardSpeed() const
     return b2Dot(currentForwardNormal, m_body->GetLinearVelocity());
 }
 
-Vec2 Body2D::getLateralVelocity() const
+Vec2<float> Body2D::getLateralVelocity() const
 {
     b2Vec2 currentRightNormal = m_body->GetWorldVector( b2Vec2(1,0) );
     b2Vec2 lateralVelocity = b2Dot(currentRightNormal, m_body->GetLinearVelocity()) * currentRightNormal;
-    return Vec2(lateralVelocity.x, lateralVelocity.y);
+    return Vec2<float>(lateralVelocity.x, lateralVelocity.y);
 }
 
-Vec2 Body2D::getForwardNormal() const
+Vec2<float> Body2D::getForwardNormal() const
 {
     const b2Vec2 forwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
-    return Vec2(forwardNormal.x, forwardNormal.y);
+    return Vec2<float>(forwardNormal.x, forwardNormal.y);
 }
 
-void Body2D::setForce(const Vec2 &vec, float magnitude)
+void Body2D::setForce(const Vec2<float> &vec, float magnitude)
 {
     m_body->ApplyForce(magnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
 }
 
-void Body2D::setLinearImpulse(const Vec2 &vec)
+void Body2D::setLinearImpulse(const Vec2<float> &vec)
 {
     b2Vec2 box2DVec(vec.x, vec.y);
     m_body->ApplyLinearImpulse(b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
@@ -167,7 +167,7 @@ void Body2D::onFixedUpdate(double stepTime)
     m_translator->translate();
 }
 
-void Body2D::attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body)
+void Body2D::attachBodyWithRevoluteJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body)
 {
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = m_body;
@@ -182,7 +182,7 @@ void Body2D::attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Bo
     m_joints.push_back(m_world->CreateJoint(&jointDef));
 }
 
-void Body2D::attachBodyWithWeldJoint(const Vec2 &unscaledAttachPos, const Body2D &body)
+void Body2D::attachBodyWithWeldJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body)
 {
     b2WeldJointDef jointDef;
     jointDef.bodyA = m_body;

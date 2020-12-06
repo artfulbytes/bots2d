@@ -44,10 +44,10 @@ SceneObject::~SceneObject()
     delete m_controllerComp;
 }
 
-void SceneObject::render() const
+void SceneObject::updateRenderable()
 {
     if (m_renderableComp) {
-        m_renderableComp->render();
+        m_renderableComp->onFixedUpdate();
     }
 }
 

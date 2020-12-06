@@ -33,7 +33,7 @@ float PhysicsWorld::scaleLength(float length)
     return length * lengthScaleFactor;
 }
 
-Vec2 PhysicsWorld::scalePosition(const Vec2 &vec)
+Vec2<float> PhysicsWorld::scalePosition(const Vec2<float> &vec)
 {
     return { scalePosition(vec.x), scalePosition(vec.y) };
 }

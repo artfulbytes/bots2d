@@ -7,7 +7,7 @@ namespace {
     constexpr float radius = 0.005f;
 }
 
-LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2 &relativePosition) :
+LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2<float> &relativePosition) :
     PhysicsComponent(world),
     m_transform(transform)
 {

@@ -23,7 +23,7 @@ void Scene::onFixedUpdate(double stepTime)
     }
 
     for (auto obj : m_objects) {
-        obj->render();
+        obj->updateRenderable();
     }
 }
 

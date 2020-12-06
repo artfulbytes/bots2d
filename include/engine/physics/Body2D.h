@@ -18,16 +18,16 @@ public:
     Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, bool collision, float mass);
     ~Body2D();
     void setUserData(Body2DUserData *userData);
-    void attachBodyWithRevoluteJoint(const Vec2 &unscaledAttachPos, const Body2D &body);
-    void attachBodyWithWeldJoint(const Vec2 &unscaledAttachPos, const Body2D &body);
+    void attachBodyWithRevoluteJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body);
+    void attachBodyWithWeldJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body);
     void onFixedUpdate(double stepTime) override;
     float getForwardSpeed() const;
-    Vec2 getLateralVelocity() const;
-    Vec2 getForwardNormal() const;
-    Vec2 getPosition() const;
+    Vec2<float> getLateralVelocity() const;
+    Vec2<float> getForwardNormal() const;
+    Vec2<float> getPosition() const;
     float getAngle() const;
-    void setForce(const Vec2 &vec, float magnitude);
-    void setLinearImpulse(const Vec2 &vec);
+    void setForce(const Vec2<float> &vec, float magnitude);
+    void setLinearImpulse(const Vec2<float> &vec);
     float getMass() const;
 
     /* Give access to m_body so it can attach itself */

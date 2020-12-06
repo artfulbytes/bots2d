@@ -20,7 +20,7 @@ class SceneObject
                     ControllerComponent *controllerComp);
         ~SceneObject();
         inline TransformComponent *getTransform() { return m_transformComp; }
-        void render() const;
+        void updateRenderable();
         void updatePhysics(double stepTime);
         void updateController(double stepTime);
         void onKeyEvent(const Event::Key &keyEvent);

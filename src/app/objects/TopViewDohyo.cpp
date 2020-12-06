@@ -3,7 +3,7 @@
 #include "CircleComponent.h"
 #include "Body2D.h"
 
-TopViewDohyo::TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
+TopViewDohyo::TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos) :
     AppObject(appScene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {

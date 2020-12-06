@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
+TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos) :
     AppObject(appScene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
@@ -52,7 +52,7 @@ float *TopViewWheelMotor::getVoltageLine()
 
 void TopViewWheelMotor::updateForce()
 {
-    const Vec2 currentForwardNormal = m_body2D->getForwardNormal();
+    const Vec2<float> currentForwardNormal = m_body2D->getForwardNormal();
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
     const float angularSpeed = currentForwardSpeed / (3.14f * m_scaledSpec.diameter);
 
@@ -70,7 +70,7 @@ void TopViewWheelMotor::updateForce()
     m_body2D->getLateralVelocity();
     m_body2D->getMass();
 
-    Vec2 lateralCancelingImpulse = m_body2D->getLateralVelocity();
+    Vec2<float> lateralCancelingImpulse = m_body2D->getLateralVelocity();
     lateralCancelingImpulse.x *= -m_body2D->getMass();
     lateralCancelingImpulse.y *= -m_body2D->getMass();
 

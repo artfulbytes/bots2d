@@ -32,7 +32,7 @@ public:
         const float frictionCoefficient = 0.05f;
     };
 
-    TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
+    TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
     ~TopViewSumobot4Wheel();
 
     enum class VoltageLine { FrontLeftMotor, BackLeftMotor, FrontRightMotor, BackRightMotor,
@@ -47,8 +47,8 @@ private:
     static constexpr float widthBodyFactor = 0.8f;
     static constexpr float widthWheelsFactor = 1.0f - widthBodyFactor;
 
-    void createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
-    void createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos);
+    void createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
+    void createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledBodyStartPos);
     void createSensors(AppScene &appScene, const PhysicsWorld &world);
     static Specification scaleSpec(const Specification &unscaledSpec);
     Body2D *m_body2D = nullptr;

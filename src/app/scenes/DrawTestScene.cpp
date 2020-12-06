@@ -3,7 +3,6 @@
 #include "QuadComponent.h"
 #include "LineComponent.h"
 #include "CircleComponent.h"
-
 #include <glm/glm.hpp>
 
 DrawTestScene::DrawTestScene()
@@ -13,9 +12,9 @@ DrawTestScene::DrawTestScene()
     transform->position.x = 3.0f;
     transform->position.y = 3.0f;
     transform->position.z = 0.0f;
-    transform->size.x = 0.5f;
-    transform->size.y = 0.5f;
-    transform->rotation = 1.0f;
+    transform->size.x = 1.0f;
+    transform->size.y = 1.0f;
+    transform->rotation = 0.2f;
     QuadComponent *quadComponent = new QuadComponent(color);
     m_scene->createObject(transform, quadComponent, nullptr, nullptr);
 

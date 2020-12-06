@@ -2,22 +2,28 @@
 #define QUAD_COMPONENT_H_
 
 #include "RenderableComponent.h"
-#include "Transforms.h"
-#include "Renderer.h"
-#include <cassert>
+
+#include <glm/glm.hpp>
+#include <string>
+
+class TexCoords;
+class Texture;
+class SpriteAnimation;
 
 class QuadComponent : public RenderableComponent
 {
     public:
-        QuadComponent(const glm::vec4& color) :
-            RenderableComponent(color) {}
-        void render() const override {
-            TransformComponent *transformComp = m_parent->getTransform();
-            QuadTransform *transform = dynamic_cast<QuadTransform*>(transformComp);
-            /* Transform of parent must be a quad transform! */
-            assert(transform != nullptr);
-            Renderer::drawQuad(transform->position, transform->size, transform->rotation, m_color);
-        }
+        QuadComponent(const glm::vec4& color);
+        QuadComponent(const std::string& textureFilepath);
+        QuadComponent(const std::string &textureFilepath, SpriteAnimation &spriteAnimation);
+        ~QuadComponent();
+
+        void onFixedUpdate() override;
+    private:
+        glm::vec4 m_color;
+        Texture *const m_texture = nullptr;
+        TexCoords *const m_texCoords = nullptr;
+        SpriteAnimation *const m_spriteAnimation = nullptr;
 };
 
 #endif /* QUAD_COMPONENT_H_ */

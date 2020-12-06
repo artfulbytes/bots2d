@@ -5,15 +5,30 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "Texture.h"
+#include "TexCoords.h"
 
 #include <iostream>
 #include <cassert>
 #include <memory>
 
+namespace {
+    const unsigned int quadVertexBufferSize = 4 * 4 * sizeof(float);
+}
+
 struct RendererStorage
 {
-    VertexBuffer* quadVertexBuffer;
-    VertexArray* quadVertexArray;
+    float dynamicQuadVertices[16] = {
+        /* Position, texture coordinates */
+        -0.5f, -0.5f, 0.0f, 0.0f, /* Bottom left */
+         0.5f, -0.5f, 1.0f, 0.0f, /* Bottom right */
+         0.5f,  0.5f, 1.0f, 1.0f, /* Top right */
+        -0.5f,  0.5f, 0.0f, 1.0f  /* Top left */
+    };
+    VertexBuffer* quadDynamicVertexBuffer;
+    VertexArray* quadDynamicVertexArray;
+    VertexArray* quadStaticVertexArray;
+    VertexBuffer* quadStaticVertexBuffer;
     IndexBuffer* quadIndexBuffer;
 
     VertexBuffer* circleVertexBuffer;
@@ -21,6 +36,7 @@ struct RendererStorage
     IndexBuffer* circleIndexBuffer;
 
     Shader* solidColorShader;
+    Shader* textureShader;
     glm::mat4* projectionMatrix;
     glm::mat4* viewMatrix;
     float centimetersToPxScale = 100.0f;
@@ -43,7 +59,6 @@ static glm::mat4 translate2D(const glm::vec3 &position)
                                              position.z });
 }
 
-
 static void initCircle()
 {
     const float radius = 0.5f;
@@ -61,7 +76,7 @@ static void initCircle()
     for (int i = 0; i < cornerCount + 1; i++) {
         circleVertexIndices[i] = i % cornerCount;
     }
-    s_rendererData->circleVertexBuffer = new VertexBuffer(circleVertices, sizeof(circleVertices));
+    s_rendererData->circleVertexBuffer = new VertexBuffer(circleVertices, sizeof(circleVertices), VertexBuffer::DrawType::Static);
 
     s_rendererData->circleIndexBuffer = new IndexBuffer(circleVertexIndices, sizeof(circleVertexIndices) / sizeof(unsigned int));
     VertexBufferLayout layout;
@@ -72,31 +87,39 @@ static void initCircle()
 
 static void initQuad()
 {
-    float quadVertices[] = {
-         -0.5f, -0.5f, /* Bottom left */
-          0.5f, -0.5f, /* Bottom right */
-          0.5f,  0.5f, /* Top right */
-         -0.5f,  0.5f  /* Top left */
+    float staticQuadVertices[16] = {
+        /* Position, texture coordinates */
+        -0.5f, -0.5f, 0.0f, 0.0f, /* Bottom left */
+         0.5f, -0.5f, 1.0f, 0.0f, /* Bottom right */
+         0.5f,  0.5f, 1.0f, 1.0f, /* Top right */
+        -0.5f,  0.5f, 0.0f, 1.0f  /* Top left */
     };
     unsigned int quadVertexIndices[] = {
         0, 1, 2, /* First triangle */
         0, 2, 3  /* Second triangle */
     };
-    s_rendererData->quadVertexBuffer = new VertexBuffer(quadVertices, 4*2*sizeof(float));
     s_rendererData->quadIndexBuffer = new IndexBuffer(quadVertexIndices, 6);
-    s_rendererData->quadVertexArray = new VertexArray();
-
     VertexBufferLayout layout;
     layout.push<float>(2);
-    s_rendererData->quadVertexArray->addBuffer(*(s_rendererData->quadVertexBuffer), layout);
+    layout.push<float>(2);
+
+    s_rendererData->quadStaticVertexBuffer = new VertexBuffer(staticQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Static);
+    s_rendererData->quadStaticVertexArray = new VertexArray();
+    s_rendererData->quadStaticVertexArray->addBuffer(*(s_rendererData->quadStaticVertexBuffer), layout);
+
+    s_rendererData->quadDynamicVertexBuffer = new VertexBuffer(s_rendererData->dynamicQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Dynamic);
+    s_rendererData->quadDynamicVertexArray = new VertexArray();
+    s_rendererData->quadDynamicVertexArray->addBuffer(*(s_rendererData->quadDynamicVertexBuffer), layout);
 }
 
 static void enableBlending()
 {
+    glEnable(GL_MULTISAMPLE);
     /* Specify how colors should be blended together */
     /* alpha * src + (1 - alpha) * target */
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GLCall(glEnable(GL_BLEND));
+    //glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::init()
@@ -107,14 +130,17 @@ void Renderer::init()
     s_rendererData->projectionMatrix = new glm::mat4(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f));
     s_rendererData->viewMatrix = new glm::mat4(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)));
     s_rendererData->solidColorShader = new Shader("../resources/shaders/solid_color.shader");
+    s_rendererData->textureShader = new Shader("../resources/shaders/texture.shader");
     initCircle();
     initQuad();
 }
 
 void Renderer::destroy()
 {
-    delete s_rendererData->quadVertexBuffer;
-    delete s_rendererData->quadVertexArray;
+    delete s_rendererData->quadDynamicVertexBuffer;
+    delete s_rendererData->quadDynamicVertexArray;
+    delete s_rendererData->quadStaticVertexBuffer;
+    delete s_rendererData->quadStaticVertexArray;
     delete s_rendererData->quadIndexBuffer;
     delete s_rendererData->circleVertexBuffer;
     delete s_rendererData->circleVertexArray;
@@ -166,21 +192,58 @@ void Renderer::drawLine(const glm::vec2& start, const glm::vec2& end, float widt
     drawQuad(location, size, angle, color);
 }
 
-void Renderer::drawQuad(const glm::vec3& position, const glm::vec2& size, float angle, const glm::vec4& color)
+static glm::mat4 getQuadMvpMatrix(const glm::vec3& position, const glm::vec2& size, float angle)
 {
-    s_rendererData->solidColorShader->bind();
-    s_rendererData->quadVertexArray->bind();
-    s_rendererData->quadIndexBuffer->bind();
     glm::mat4 scale = scale2D(size);
     glm::mat4 translate = translate2D(position);
     glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f });
-    glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
+    return *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
+}
+
+void Renderer::drawQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, const glm::vec4 &color)
+{
+    s_rendererData->quadStaticVertexArray->bind();
+    s_rendererData->quadIndexBuffer->bind();
+    glm::mat4 mvpMatrix = getQuadMvpMatrix(position, size, rotation);
+
+    s_rendererData->solidColorShader->bind();
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
     s_rendererData->solidColorShader->setUniform4f("u_Color", color);
     GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::drawCircle(const glm::vec3& position, float radius, const glm::vec4& color)
+static void updateDynamicQuadVertices(const TexCoords &texCoords)
+{
+    const auto dynamicQuadVertices = s_rendererData->dynamicQuadVertices;
+    texCoords.assertLimits();
+    dynamicQuadVertices[2] = texCoords.BottomLeft.x;
+    dynamicQuadVertices[3] = texCoords.BottomLeft.y;
+    dynamicQuadVertices[6] = texCoords.BottomRight.x;
+    dynamicQuadVertices[7] = texCoords.BottomRight.y;
+    dynamicQuadVertices[10] = texCoords.TopRight.x;
+    dynamicQuadVertices[11] = texCoords.TopRight.y;
+    dynamicQuadVertices[14] = texCoords.TopLeft.x;
+    dynamicQuadVertices[15] = texCoords.TopLeft.y;
+}
+
+void Renderer::drawQuad(const glm::vec3 &position, const glm::vec2 &size, float rotation, const Texture &texture, const TexCoords *texCoords)
+{
+    if (texCoords != nullptr) {
+        updateDynamicQuadVertices(*texCoords);
+        s_rendererData->quadDynamicVertexBuffer->updateData(s_rendererData->dynamicQuadVertices, quadVertexBufferSize);
+    }
+    s_rendererData->quadDynamicVertexArray->bind();
+    s_rendererData->quadIndexBuffer->bind();
+    glm::mat4 mvpMatrix = getQuadMvpMatrix(position, size, rotation);
+
+    texture.bind(0);
+    s_rendererData->textureShader->bind();
+    s_rendererData->textureShader->setUniform1i("u_Texture", 0);
+    s_rendererData->textureShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
+    GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+void Renderer::drawCircle(const glm::vec3 &position, float radius, const glm::vec4 &color)
 {
     s_rendererData->solidColorShader->bind();
     s_rendererData->circleVertexArray->bind();

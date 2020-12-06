@@ -8,7 +8,7 @@
 
 
 LineDetectorObject::LineDetectorObject(AppScene &appScene, const PhysicsWorld &world, Body2D &parentBody,
-                                       bool show, const Vec2 &unscaledRelativePosition) :
+                                       bool show, const Vec2<float> &unscaledRelativePosition) :
     AppObject(appScene)
 {
     CircleTransform *transform = nullptr;

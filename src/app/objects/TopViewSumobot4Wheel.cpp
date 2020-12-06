@@ -9,7 +9,7 @@
 #include "LineDetectorObject.h"
 #include <glm/glm.hpp>
 
-TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos) :
+TopViewSumobot4Wheel::TopViewSumobot4Wheel(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos) :
     AppObject(appScene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
@@ -61,13 +61,13 @@ void TopViewSumobot4Wheel::createSensors(AppScene &appScene, const PhysicsWorld 
                                                  .minDistance = 0.0f,
                                                  .maxDistance = 0.8f });
 
-    m_frontLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {-0.035f, 0.045f});
-    m_frontRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {0.035f, 0.045f});
-    m_backLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {-0.035f, -0.045f});
-    m_backRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, {0.035f, -0.045f});
+    m_frontLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, Vec2<float>{-0.035f, 0.045f});
+    m_frontRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, Vec2<float>{0.035f, 0.045f});
+    m_backLeftLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, Vec2<float>{-0.035f, -0.045f});
+    m_backRightLineDetector = new LineDetectorObject(appScene, world, *m_body2D, true, Vec2<float>{0.035f, -0.045f});
 }
 
-void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos)
+void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledBodyStartPos)
 {
     QuadTransform *transformBody = new QuadTransform();
     transformBody->position.x = unscaledBodyStartPos.x;
@@ -82,7 +82,7 @@ void TopViewSumobot4Wheel::createBody(AppScene &appScene, const PhysicsWorld &wo
     appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
 }
 
-void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledBodyStartPos)
+void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledBodyStartPos)
 {
     assert(m_body2D);
 
@@ -96,11 +96,11 @@ void TopViewSumobot4Wheel::createWheelMotors(AppScene &appScene, const PhysicsWo
         .mass = 0.05f
     };
 
-    const Vec2 frontRightStartPos = { unscaledBodyStartPos.x + (unscaledBodyWidth / 2.0f) + (unscaledWheelSpec.width / 2.0f),
+    const Vec2<float> frontRightStartPos = { unscaledBodyStartPos.x + (unscaledBodyWidth / 2.0f) + (unscaledWheelSpec.width / 2.0f),
                                       unscaledBodyStartPos.y + unscaledSpec.length / 4.0f };
-    const Vec2 frontLeftStartPos = { -frontRightStartPos.x, frontRightStartPos.y };
-    const Vec2 backRightStartPos = { frontRightStartPos.x, -frontRightStartPos.y };
-    const Vec2 backLeftStartPos = { frontLeftStartPos.x, -frontLeftStartPos.y };
+    const Vec2<float> frontLeftStartPos = { -frontRightStartPos.x, frontRightStartPos.y };
+    const Vec2<float> backRightStartPos = { frontRightStartPos.x, -frontRightStartPos.y };
+    const Vec2<float> backLeftStartPos = { frontLeftStartPos.x, -frontLeftStartPos.y };
 
     m_frontRightWheelMotor = new TopViewWheelMotor(appScene, world, unscaledWheelSpec, frontRightStartPos);
     m_body2D->attachBodyWithRevoluteJoint(frontRightStartPos, *m_frontRightWheelMotor->getBody());

@@ -11,7 +11,7 @@ class RangeSensorObject : public AppObject
 {
 public:
     struct Specification {
-        const Vec2 relativePosition;
+        const Vec2<float> relativePosition;
         const float relativeAngle = 0.0f;
         const float minDistance = 0.0f;
         const float maxDistance = 0.0f;

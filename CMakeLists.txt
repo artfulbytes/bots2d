@@ -25,6 +25,7 @@ set (RENDERER_SOURCE_FILES
     src/engine/renderer/ImGuiOverlay.cpp
     src/engine/renderer/stb_image.cpp
     src/engine/renderer/Texture.cpp
+    src/engine/renderer/Texture.cpp
 )
 
 set (PHYSICS_SOURCE_FILES
@@ -45,6 +46,8 @@ set (SIMULATOR_ENGINE_FILES
     src/engine/core/Event.cpp
     src/engine/scene/SceneObject.cpp
     src/engine/scene/Scene.cpp
+    src/engine/scene/QuadComponent.cpp
+    src/engine/scene/SpriteAnimation.cpp
     ${RENDERER_SOURCE_FILES}
     ${PHYSICS_SOURCE_FILES}
     ${CONTROLLER_SOURCE_FILES}
@@ -57,6 +60,7 @@ set (SIMULATOR_APP_FILES
     src/app/SceneMenu.cpp
     src/app/scenes/AppScene.cpp
     src/app/scenes/DrawTestScene.cpp
+    src/app/scenes/SpriteAnimationTestScene.cpp
     src/app/scenes/PhysicsBoxTestScene.cpp
     src/app/scenes/WheelMotorTestScene.cpp
     src/app/scenes/Sumobot4WheelTestScene.cpp

@@ -14,7 +14,7 @@ public:
         const float innerRadius;
         const float outerRadius;
     };
-    TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2 &unscaledStartPos);
+    TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
     ~TopViewDohyo();
     void onFixedUpdate(double stepTime) override;
 

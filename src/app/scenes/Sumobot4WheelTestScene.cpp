@@ -84,7 +84,7 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     PhysicsWorld *world = new PhysicsWorld(PhysicsWorld::Gravity::TopView);
     m_scene->setPhysicsWorld(world);
 
-    TopViewDohyo *dohyo = new TopViewDohyo(*this, *world, { .innerRadius = 0.35f, .outerRadius = 0.37f }, Vec2(0, 0));
+    TopViewDohyo *dohyo = new TopViewDohyo(*this, *world, { .innerRadius = 0.35f, .outerRadius = 0.37f }, Vec2<float>(0, 0));
 
     glm::vec4 color(0.5f, 0.5f, 0.5f, 1.0f);
     QuadTransform *transformBox = new QuadTransform();
@@ -94,7 +94,7 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     auto boxBody = new Body2D(*world, *transformBox, true, true, 1.0f);
     m_scene->createObject(transformBox, boxComponent, boxBody, nullptr);
 
-    TopViewSumobot4Wheel *sumobot4Wheel = new TopViewSumobot4Wheel(*this, *world, { .length = 0.1f, .width = 0.1f, .mass = 0.5f} , Vec2(0, 0));
+    TopViewSumobot4Wheel *sumobot4Wheel = new TopViewSumobot4Wheel(*this, *world, { .length = 0.1f, .width = 0.1f, .mass = 0.5f} , Vec2<float>(0, 0));
     Sumobot4WheelController *controller = new Sumobot4WheelController(*sumobot4Wheel);
     m_scene->createObject(nullptr, nullptr, nullptr, controller);
 
