@@ -231,8 +231,10 @@ void Renderer::drawQuad(const glm::vec3 &position, const glm::vec2 &size, float 
     if (texCoords != nullptr) {
         updateDynamicQuadVertices(*texCoords);
         s_rendererData->quadDynamicVertexBuffer->updateData(s_rendererData->dynamicQuadVertices, quadVertexBufferSize);
+        s_rendererData->quadDynamicVertexArray->bind();
+    } else {
+        s_rendererData->quadStaticVertexArray->bind();
     }
-    s_rendererData->quadDynamicVertexArray->bind();
     s_rendererData->quadIndexBuffer->bind();
     glm::mat4 mvpMatrix = getQuadMvpMatrix(position, size, rotation);
 

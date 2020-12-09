@@ -6,7 +6,7 @@
 class MicrocontrollerSumobot4WheelExample : public MicrocontrollerCBinding
 {
 public:
-    MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLineArray &voltageLines);
+    MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLines &voltageLines);
     ~MicrocontrollerSumobot4WheelExample() {}
 };
 

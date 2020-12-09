@@ -8,18 +8,19 @@ typedef void (*loop_function)(void);
 
 /* Must be inherited and C functions setupFcn and loopFcn
  * must be provided inside the CPP of the inherited class
- * wrapped inside extern "C" */
+ * wrapped inside extern "C". */
 class MicrocontrollerCBinding : public Microcontroller
 {
 public:
-    MicrocontrollerCBinding(Microcontroller::VoltageLineArray &voltageLines, setup_function setupFcn, loop_function loopFcn);
-    void onFixedUpdate(double stepTime) override final;
-    /* Make class abstract */
+    /* loopFcn must NOT contain any long-winded calls such as endless loop or blocking */
+    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn);
+    /* Makes the class abstract */
     virtual ~MicrocontrollerCBinding() = 0;
 
 private:
+    void microcontrollerUpdate() override final;
     loop_function m_loopFcn = nullptr;
-    float *m_voltageLinesCArray[Microcontroller::VOLTAGE_LINE_COUNT];
+    float *m_voltageLinesCArray[VoltageLine::Idx::Count];
 };
 
 #endif /* MICROCONTROLLER_C_BINDING_H_ */

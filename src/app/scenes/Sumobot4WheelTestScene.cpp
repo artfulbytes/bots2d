@@ -98,21 +98,48 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene()
     Sumobot4WheelController *controller = new Sumobot4WheelController(*sumobot4Wheel);
     m_scene->createObject(nullptr, nullptr, nullptr, controller);
 
-    Microcontroller::VoltageLineArray voltageLines;
-    voltageLines[Microcontroller::VOLTAGE_LINE_A0] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftMotor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A1] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackLeftMotor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A2] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightMotor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A3] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackRightMotor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A4] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::LeftRangeSensor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A5] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftRangeSensor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A6] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRangeSensor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_A7] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightRangeSensor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_B0] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::RightRangeSensor);
-    voltageLines[Microcontroller::VOLTAGE_LINE_B1] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftLineDetector);
-    voltageLines[Microcontroller::VOLTAGE_LINE_B2] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackLeftLineDetector);
-    voltageLines[Microcontroller::VOLTAGE_LINE_B3] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightLineDetector);
-    voltageLines[Microcontroller::VOLTAGE_LINE_B4] = sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackRightLineDetector);
+    Microcontroller::VoltageLines voltageLines;
+    voltageLines[Microcontroller::VoltageLine::Idx::A0] =
+        { Microcontroller::VoltageLine::Type::Output,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftMotor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A1] =
+        { Microcontroller::VoltageLine::Type::Output,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackLeftMotor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A2] =
+        { Microcontroller::VoltageLine::Type::Output,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightMotor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A3] =
+        { Microcontroller::VoltageLine::Type::Output,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackRightMotor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A4] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::LeftRangeSensor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A5] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftRangeSensor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A6] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRangeSensor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::A7] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightRangeSensor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::B0] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::RightRangeSensor) };
+    voltageLines[Microcontroller::VoltageLine::Idx::B1] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontLeftLineDetector) };
+    voltageLines[Microcontroller::VoltageLine::Idx::B2] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackLeftLineDetector) };
+    voltageLines[Microcontroller::VoltageLine::Idx::B3] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::FrontRightLineDetector) };
+    voltageLines[Microcontroller::VoltageLine::Idx::B4] =
+        { Microcontroller::VoltageLine::Type::Input,
+          sumobot4Wheel->getVoltageLine(TopViewSumobot4Wheel::VoltageLine::BackRightLineDetector) };
     auto controllerCBinding = new MicrocontrollerSumobot4WheelExample(voltageLines);
+    controllerCBinding->start();
 
     m_scene->createObject(nullptr, nullptr, nullptr, controllerCBinding);
 }

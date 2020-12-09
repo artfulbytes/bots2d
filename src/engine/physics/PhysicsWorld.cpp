@@ -103,7 +103,6 @@ PhysicsWorld::PhysicsWorld(float gravityX, float gravityY) :
     init();
 }
 
-
 PhysicsWorld::~PhysicsWorld()
 {
     delete m_world;

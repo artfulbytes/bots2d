@@ -1,6 +1,5 @@
 #include "AppScene.h"
 #include "AppObject.h"
-#include <iostream>
 
 AppScene::AppScene() :
     m_scene(new Scene())

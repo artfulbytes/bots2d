@@ -200,5 +200,4 @@ Body2D::~Body2D()
     }
     m_world->DestroyBody(m_body);
     m_world->DestroyBody(m_frictionBody);
-    delete m_translator;
 }

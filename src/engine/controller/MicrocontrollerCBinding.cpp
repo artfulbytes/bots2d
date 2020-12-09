@@ -1,17 +1,17 @@
 #include "MicrocontrollerCBinding.h"
 #include "stdio.h"
 
-MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLineArray &voltageLines, setup_function setupFcn, loop_function loopFcn) :
+MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn) :
     Microcontroller(voltageLines),
     m_loopFcn(loopFcn)
 {
-    for (int i = 0; i < Microcontroller::VOLTAGE_LINE_COUNT; i++) {
-        m_voltageLinesCArray[i] = m_voltageLines[i];
+    for (int i = 0; i < Microcontroller::VoltageLine::Idx::Count; i++) {
+        m_voltageLinesCArray[i] = &m_microcontrollerVoltageLineLevels[i];
     }
-    setupFcn(m_voltageLinesCArray, Microcontroller::VOLTAGE_LINE_COUNT);
+    setupFcn(m_voltageLinesCArray, Microcontroller::VoltageLine::Idx::Count);
 }
 
-void MicrocontrollerCBinding::onFixedUpdate(double stepTime)
+void MicrocontrollerCBinding::microcontrollerUpdate()
 {
     m_loopFcn();
 }

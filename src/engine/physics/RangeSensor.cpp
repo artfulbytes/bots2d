@@ -24,6 +24,10 @@ RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform, co
     }
 }
 
+RangeSensor::~RangeSensor()
+{
+}
+
 void RangeSensor::onFixedUpdate(double stepTime)
 {
     const float rayAngleStart = -m_parentBody->getAngle();

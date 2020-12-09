@@ -8,6 +8,7 @@ class RenderableComponent : public Component
 {
     public:
         RenderableComponent() {}
+        virtual ~RenderableComponent() {}
         virtual void onFixedUpdate() = 0;
 };
 

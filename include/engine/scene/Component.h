@@ -3,8 +3,10 @@
 
 #include "SceneObject.h"
 
-struct Component
+class Component
 {
+public:
+    virtual ~Component() { }
     SceneObject *m_parent = nullptr;
 };
 
