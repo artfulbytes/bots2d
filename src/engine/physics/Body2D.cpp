@@ -199,5 +199,7 @@ Body2D::~Body2D()
         m_world->DestroyJoint(joint);
     }
     m_world->DestroyBody(m_body);
-    m_world->DestroyBody(m_frictionBody);
+    if (m_frictionBody != nullptr) {
+        m_world->DestroyBody(m_frictionBody);
+    }
 }
