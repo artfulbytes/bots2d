@@ -12,7 +12,7 @@ PhysicsBoxTestScene::PhysicsBoxTestScene()
 
     glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
     QuadTransform *transformBox = new QuadTransform();
-    transformBox->position.x = 1.0f;
+    transformBox->position.x = 0.0f;
     transformBox->position.y = 1.0f;
     transformBox->position.z = 0.0f;
     transformBox->size.x = 0.05f;
@@ -22,7 +22,7 @@ PhysicsBoxTestScene::PhysicsBoxTestScene()
     m_scene->createObject(transformBox, boxComponent, fallingBody, nullptr);
 
     QuadTransform *transformGround = new QuadTransform();
-    transformGround->position.x = 1.03f;
+    transformGround->position.x = 0.03f;
     transformGround->position.y = 0.0f;
     transformGround->position.z = 0.0f;
     transformGround->size.x = 0.2f;

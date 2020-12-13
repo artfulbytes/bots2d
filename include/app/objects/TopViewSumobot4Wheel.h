@@ -14,6 +14,8 @@ class LineDetectorObject;
 class TopViewSumobot4Wheel : public AppObject
 {
 public:
+    enum class TextureType { Plated, Circuited, None };
+
     /*
      *    |-----width-----|
      *       ___________     ___
@@ -30,9 +32,11 @@ public:
         const float width;
         const float mass;
         const float frictionCoefficient = 0.05f;
+        const TextureType textureType = TextureType::None;
     };
 
-    TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
+    TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world,
+                         const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
     ~TopViewSumobot4Wheel();
 
     enum class VoltageLine { FrontLeftMotor, BackLeftMotor, FrontRightMotor, BackRightMotor,
@@ -44,7 +48,7 @@ public:
 private:
     static constexpr float massBodyFactor = 0.9f;
     static constexpr float massWheelFactor = 1.0f - massBodyFactor;
-    static constexpr float widthBodyFactor = 0.8f;
+    static constexpr float widthBodyFactor = 0.7f;
     static constexpr float widthWheelsFactor = 1.0f - widthBodyFactor;
 
     void createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);

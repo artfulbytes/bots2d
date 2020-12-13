@@ -2,13 +2,23 @@
 #include "Renderer.h"
 
 namespace {
-    const float positionStepSize = 1.0f;
+    const float positionStepSize = 10.0f;
     const float zoomStepSize = 1.25f;
     const float minZoomFactor = 0.1f;
     const float maxZoomFactor = 4.0f;
 
     glm::vec3 cameraPosition = {0.0f, 0.0f, 0.0f};
     float zoomFactor = 1.0f;
+    int windowWidth = 800;
+    int windowHeight = 600;
+}
+
+void Camera::reset()
+{
+    cameraPosition.x = windowWidth / 2;
+    cameraPosition.y = windowHeight / 2;
+    zoomFactor = 1.0f;
+    Renderer::setCameraPosition(cameraPosition, zoomFactor);
 }
 
 bool Camera::onKeyEvent(const Event::Key &keyEvent)
@@ -29,10 +39,8 @@ bool Camera::onKeyEvent(const Event::Key &keyEvent)
             cameraPosition.y -= positionStepSize;
             break;
         case Event::KeyCode::R:
-            cameraPosition.x = 0;
-            cameraPosition.y = 0;
-            zoomFactor = 1.0f;
-            break;
+            Camera::reset();
+            return true;
         default:
             return false;
         }
@@ -59,4 +67,6 @@ void Camera::onScrollEvent(const Event::Scroll &scrollEvent)
 void Camera::onWindowEvent(const Event::Window &windowEvent)
 {
     Renderer::setViewport(0, 0, windowEvent.width, windowEvent.height);
+    windowWidth = windowEvent.width;
+    windowHeight = windowEvent.height;
 }

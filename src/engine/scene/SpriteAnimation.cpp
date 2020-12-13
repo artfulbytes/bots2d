@@ -4,31 +4,58 @@ namespace {
     float maxFloatRoundingError = 0.001f;
 }
 
-SpriteAnimation::SpriteAnimation(const Vec2<unsigned int> &spriteCountAxis, const unsigned int spriteCount, unsigned int framesBetweenUpdates) :
+SpriteAnimation::SpriteAnimation(const Vec2<unsigned int> &spriteCountAxis, const unsigned int spriteCount, unsigned int framesBetweenUpdates,
+                                SpriteAnimation::Direction animationDirection) :
     m_spriteCountAxis(spriteCountAxis),
     m_spriteCount(spriteCount),
     m_framesBetweenUpdates(framesBetweenUpdates),
     m_spriteWidth(1.0f / m_spriteCountAxis.x),
-    m_spriteHeight(1.0f / m_spriteCountAxis.y)
+    m_spriteHeight(1.0f / m_spriteCountAxis.y),
+    m_animationDirection(animationDirection)
 {
+    if (animationDirection == SpriteAnimation::Direction::Backward) {
+        m_currentSpriteIndex = m_spriteCount - 1;
+    }
 }
 
 SpriteAnimation::~SpriteAnimation()
 {
 }
 
+void SpriteAnimation::stop()
+{
+    m_stopped = true;
+}
+
+void SpriteAnimation::setDirection(Direction animationDirection)
+{
+    m_animationDirection = animationDirection;
+}
+
 void SpriteAnimation::setFramesBetweenUpdates(unsigned int framesBetweenUpdates)
 {
+    m_stopped = false;
     m_framesBetweenUpdates = framesBetweenUpdates;
 }
 
 void SpriteAnimation::onFixedUpdate()
 {
+    if (m_stopped) {
+        return;
+    }
     if (m_framesSinceLastUpdate != m_framesBetweenUpdates) {
         m_framesSinceLastUpdate++;
         return;
     }
-    m_currentSpriteIndex = (m_currentSpriteIndex + 1) % m_spriteCount;
+    if (m_animationDirection == SpriteAnimation::Direction::Forward) {
+        m_currentSpriteIndex = (m_currentSpriteIndex + 1) % m_spriteCount;
+    } else {
+        if (m_currentSpriteIndex == 0) {
+            m_currentSpriteIndex = m_spriteCount - 1;
+        } else {
+            m_currentSpriteIndex--;
+        }
+    }
     m_framesSinceLastUpdate = 0;
 }
 

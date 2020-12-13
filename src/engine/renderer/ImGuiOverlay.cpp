@@ -43,6 +43,7 @@ void ImGuiOverlay::render()
 
 void ImGuiOverlay::begin(const char *name)
 {
+    ImGui::SetNextWindowPos({0.0f, 0.0f});
     ImGui::Begin(name);
 }
 

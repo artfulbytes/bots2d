@@ -10,9 +10,11 @@ class Body2D;
 class TopViewDohyo : public AppObject
 {
 public:
+    enum class TextureType { Scratched, None };
     struct Specification {
         const float innerRadius;
         const float outerRadius;
+        const TextureType textureType = TextureType::None;
     };
     TopViewDohyo(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
     ~TopViewDohyo();

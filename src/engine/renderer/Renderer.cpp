@@ -44,19 +44,17 @@ struct RendererStorage
 
 static RendererStorage* s_rendererData;
 
-/* Scale with pixel scale */
-static glm::mat4 scale2D(const glm::vec2 &size) {
-    return glm::scale(glm::mat4(1.0f), { size.x * s_rendererData->centimetersToPxScale,
-                                         size.y * s_rendererData->centimetersToPxScale,
-                                         1.0f });
+static glm::mat4 scale2D(const glm::vec2 &size, bool pixelScale) {
+    const float sizeX = pixelScale ? (size.x * s_rendererData->centimetersToPxScale) : size.x;
+    const float sizeY = pixelScale ? (size.y * s_rendererData->centimetersToPxScale) : size.y;
+    return glm::scale(glm::mat4(1.0f), { sizeX, sizeY, 1.0f });
 }
 
-/* Translate with pixel scale */
-static glm::mat4 translate2D(const glm::vec3 &position)
+static glm::mat4 translate2D(const glm::vec3 &position, bool pixelScale)
 {
-    return glm::translate(glm::mat4(1.0f), { position.x * s_rendererData->centimetersToPxScale,
-                                             position.y * s_rendererData->centimetersToPxScale,
-                                             position.z });
+    const float posX = pixelScale ? (position.x * s_rendererData->centimetersToPxScale) : position.x;
+    const float posY = pixelScale ? (position.y * s_rendererData->centimetersToPxScale) : position.y;
+    return glm::translate(glm::mat4(1.0f), { posX, posY, position.z });
 }
 
 static void initCircle()
@@ -153,7 +151,7 @@ void Renderer::destroy()
 
 void Renderer::setCameraPosition(const glm::vec3 &position, float zoomFactor)
 {
-    *s_rendererData->viewMatrix = translate2D(position) * glm::scale(glm::mat4(1.0f), { zoomFactor, zoomFactor, 1.0f });
+    *s_rendererData->viewMatrix = translate2D(position, false) * glm::scale(glm::mat4(1.0f), { zoomFactor, zoomFactor, 1.0f });
 }
 
 void Renderer::setViewport(int x, int y, int width, int height)
@@ -194,8 +192,8 @@ void Renderer::drawLine(const glm::vec2& start, const glm::vec2& end, float widt
 
 static glm::mat4 getQuadMvpMatrix(const glm::vec3& position, const glm::vec2& size, float angle)
 {
-    glm::mat4 scale = scale2D(size);
-    glm::mat4 translate = translate2D(position);
+    glm::mat4 scale = scale2D(size, true);
+    glm::mat4 translate = translate2D(position, true);
     glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle, { 0.0f, 0.0f, 1.0f });
     return *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
 }
@@ -250,8 +248,8 @@ void Renderer::drawCircle(const glm::vec3 &position, float radius, const glm::ve
     s_rendererData->solidColorShader->bind();
     s_rendererData->circleVertexArray->bind();
     s_rendererData->circleIndexBuffer->bind();
-    glm::mat4 scale = scale2D({2 * radius, 2 * radius });
-    glm::mat4 translate = translate2D(position);
+    glm::mat4 scale = scale2D({2 * radius, 2 * radius }, true);
+    glm::mat4 translate = translate2D(position, true);
     glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * scale;
     s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
     s_rendererData->solidColorShader->setUniform4f("u_Color", color);

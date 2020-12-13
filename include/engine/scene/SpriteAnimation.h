@@ -6,12 +6,15 @@
 
 class SpriteAnimation {
 public:
+    enum class Direction { Forward, Backward };
     /* NOTE: Certain values of spriteCountAxis (spritesheet row/column) lead to small rounding
      * errors of the texture coordinates, which results in a slighty miss-aligned sprite. */
     SpriteAnimation(const Vec2<unsigned int> &spriteCountAxis, unsigned int spriteCount,
-                    unsigned int framesBetweenUpdates);
+                    unsigned int framesBetweenUpdates, Direction animationDirection = Direction::Forward);
     ~SpriteAnimation();
     void setFramesBetweenUpdates(unsigned int framesBetweenUpdates);
+    void setDirection(Direction animationDirection);
+    void stop();
     void onFixedUpdate();
     void getTexCoords(TexCoords &texCoords) const;
     void computeTexCoords(TexCoords &texCoords) const;
@@ -26,6 +29,8 @@ private:
     const float m_spriteHeight = 1.0f;
     const float m_spriteWidth = 1.0f;
     TexCoords m_texCoords;
+    Direction m_animationDirection = Direction::Forward;
+    bool m_stopped = false;
 };
 
 #endif /* SPRITE_ANIMATION_H_ */
