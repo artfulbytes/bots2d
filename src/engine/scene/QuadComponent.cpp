@@ -5,28 +5,22 @@
 #include "Texture.h"
 #include "SpriteAnimation.h"
 
-QuadComponent::QuadComponent(const glm::vec4& color)
-    : m_color(color)
+QuadComponent::QuadComponent(const QuadTransform *transform, const glm::vec4& color) :
+    m_transform(transform),
+    m_color(color)
 {
 }
 
-QuadComponent::QuadComponent(const std::string& textureFilepath) :
-    m_texture(new Texture(textureFilepath))
-{
-}
-
-QuadComponent::QuadComponent(const std::string &textureFilepath, SpriteAnimation &spriteAnimation) :
-    m_texture(new Texture(textureFilepath)),
-    m_texCoords(new TexCoords()),
-    m_spriteAnimation(&spriteAnimation)
+QuadComponent::QuadComponent(const QuadTransform *transform, const std::string &textureFilepath, SpriteAnimation *spriteAnimation) :
+    m_transform(transform),
+    m_texture(std::make_unique<Texture>(textureFilepath)),
+    m_texCoords(std::make_unique<TexCoords>()),
+    m_spriteAnimation(spriteAnimation)
 {
 }
 
 QuadComponent::~QuadComponent()
 {
-    delete m_texture;
-    delete m_texCoords;
-    delete m_spriteAnimation;
 }
 
 void QuadComponent::onFixedUpdate()
@@ -35,13 +29,11 @@ void QuadComponent::onFixedUpdate()
         m_spriteAnimation->onFixedUpdate();
         m_spriteAnimation->computeTexCoords(*m_texCoords);
     }
-    const auto transformComp = m_parent->getTransform();
-    const auto transform = dynamic_cast<const QuadTransform*>(transformComp);
-    /* Transform of parent must be a quad transform! */
-    assert(transform != nullptr);
+
+    assert(m_transform != nullptr);
     if (m_texture) {
-        Renderer::drawQuad(transform->position, transform->size, transform->rotation, *m_texture, m_texCoords);
+        Renderer::drawQuad(m_transform->position, m_transform->size, m_transform->rotation, *m_texture.get(), m_texCoords.get());
     } else {
-        Renderer::drawQuad(transform->position, transform->size, transform->rotation, m_color);
+        Renderer::drawQuad(m_transform->position, m_transform->size, m_transform->rotation, m_color);
     }
 }

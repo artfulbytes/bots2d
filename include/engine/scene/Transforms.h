@@ -14,6 +14,9 @@ struct TransformComponent : Component
 
 struct LineTransform : TransformComponent
 {
+    LineTransform() {}
+    LineTransform(const glm::vec2 &start, const glm::vec2 &end, float width) :
+        start(start), end(end), width(width) {}
     glm::vec2 start;
     glm::vec2 end;
     float width;
@@ -21,20 +24,29 @@ struct LineTransform : TransformComponent
 
 struct QuadTransform : TransformComponent
 {
-    glm::vec3 position;
+    QuadTransform(const glm::vec2 &position, const glm::vec2 &size, float rotation = 0.0f) :
+        position(position), size(size), rotation(rotation) {}
+    ~QuadTransform() {}
+    glm::vec2 position;
     glm::vec2 size;
     float rotation;
 };
 
 struct CircleTransform : TransformComponent
 {
-    glm::vec3 position;
+    CircleTransform() {}
+    CircleTransform(const glm::vec2 &position, float radius) :
+        position(position), radius(radius) {}
+    ~CircleTransform() {}
+    glm::vec2 position;
     float radius;
 };
 
 struct HollowCircleTransform : TransformComponent
 {
-    glm::vec3 position;
+    HollowCircleTransform(const glm::vec2 &position, float innerRadius, float outerRadius) :
+        position(position), innerRadius(innerRadius), outerRadius(outerRadius) {}
+    glm::vec2 position;
     float innerRadius;
     float outerRadius;
 };

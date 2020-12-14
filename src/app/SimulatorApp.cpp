@@ -1,6 +1,5 @@
 #include "SimulatorApp.h"
 #include "SceneMenu.h"
-#include "AppScene.h"
 #include "DrawTestScene.h"
 #include "SpriteAnimationTestScene.h"
 #include "PhysicsBoxTestScene.h"
@@ -9,7 +8,7 @@
 
 SimulatorApp::SimulatorApp()
 {
-    m_sceneMenu = new SceneMenu(m_currentScene);
+    m_sceneMenu = std::make_unique<SceneMenu>(m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
     m_sceneMenu->registerScene<SpriteAnimationTestScene>("SpriteAnimationTest");
     m_sceneMenu->registerScene<PhysicsBoxTestScene>("PhysicsBoxTest");
@@ -20,7 +19,6 @@ SimulatorApp::SimulatorApp()
 SimulatorApp::~SimulatorApp()
 {
     delete m_currentScene;
-    delete m_sceneMenu;
 }
 
 void SimulatorApp::onKeyEvent(const Event::Key &keyEvent)

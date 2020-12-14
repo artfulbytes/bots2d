@@ -58,19 +58,21 @@ set (SIMULATOR_ENGINE_FILES
 set (SIMULATOR_APP_FILES
     src/app/SimulatorApp.cpp
     src/app/SceneMenu.cpp
-    src/app/scenes/AppScene.cpp
+    src/app/objects/QuadObject.cpp
+    src/app/objects/CircleObject.cpp
+    src/app/objects/LineObject.cpp
     src/app/scenes/DrawTestScene.cpp
     src/app/scenes/SpriteAnimationTestScene.cpp
     src/app/scenes/PhysicsBoxTestScene.cpp
     src/app/scenes/WheelMotorTestScene.cpp
     src/app/scenes/Sumobot4WheelTestScene.cpp
-    src/app/objects/TopViewWheelMotor.cpp
-    src/app/objects/TopViewSumobot4Wheel.cpp
-    src/app/objects/TopViewDohyo.cpp
+    src/app/objects/WheelMotor.cpp
+    src/app/objects/Sumobot4Wheel.cpp
+    src/app/objects/Dohyo.cpp
     src/app/objects/RangeSensorObject.cpp
     src/app/objects/LineDetectorObject.cpp
-    src/app/objects/controllers/sumobot4wheelexample/main.c
-    src/app/objects/controllers/sumobot4wheelexample/MicrocontrollerSumobot4WheelExample.cpp
+    src/app/controllers/Sumobot4WheelExample/main.c
+    src/app/controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES
@@ -92,7 +94,7 @@ target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
 target_include_directories(sumobot_simulator PRIVATE include/engine/controller)
 target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
-target_include_directories(sumobot_simulator PRIVATE src/app/objects/controllers)
+target_include_directories(sumobot_simulator PRIVATE include/app/controllers)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)
 target_include_directories(sumobot_simulator PRIVATE external/stb)
 target_include_directories(sumobot_simulator PRIVATE external/glm)

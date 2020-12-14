@@ -7,7 +7,7 @@ namespace {
     const float minZoomFactor = 0.1f;
     const float maxZoomFactor = 4.0f;
 
-    glm::vec3 cameraPosition = {0.0f, 0.0f, 0.0f};
+    glm::vec2 cameraPosition = {0.0f, 0.0f};
     float zoomFactor = 1.0f;
     int windowWidth = 800;
     int windowHeight = 600;

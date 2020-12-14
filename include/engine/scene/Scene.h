@@ -2,34 +2,28 @@
 #define SCENE_H_
 
 #include "Event.h"
+#include "PhysicsWorld.h"
 #include <vector>
+#include <memory>
 
-class TransformComponent;
-class RenderableComponent;
-class PhysicsComponent;
-class ControllerComponent;
-class PhysicsWorld;
 class SceneObject;
 
 class Scene
 {
 public:
     Scene();
-    ~Scene();
+    Scene(PhysicsWorld::Gravity gravity);
+    virtual ~Scene();
+    PhysicsWorld *getPhysicsWorld() const;
     void onFixedUpdate(double stepTime);
     void onKeyEvent(const Event::Key &keyEvent);
-    void createObject(TransformComponent *transformComp,
-                      RenderableComponent *renderableComp,
-                      PhysicsComponent *physicsComp,
-                      ControllerComponent *controllerComp);
-    void setPhysicsWorld(PhysicsWorld *world);
-    const PhysicsWorld *getPhysicsWorld() const { return m_physicsWorld; }
+    void addObject(SceneObject *sceneObject);
+
+protected:
+    std::unique_ptr<PhysicsWorld> m_physicsWorld;
 
 private:
     std::vector<SceneObject *> m_objects;
-
-protected:
-    PhysicsWorld *m_physicsWorld = nullptr;
 };
 
 #endif /* SCENE_H_ */

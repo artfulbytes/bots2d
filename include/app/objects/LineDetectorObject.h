@@ -1,17 +1,17 @@
 #ifndef LINE_DETECTOR_OBJECT_H_
 #define LINE_DETECTOR_OBJECT_H_
 
-#include "AppObject.h"
+#include "SceneObject.h"
 #include "PhysicsWorld.h"
 
 class LineDetector;
 class Body2D;
 
-class LineDetectorObject : public AppObject
+class LineDetectorObject : public SceneObject
 {
 public:
-    LineDetectorObject(AppScene &appScene, const PhysicsWorld &world, Body2D &parentBody,
-                       bool show, const Vec2<float> &unscaledRelativePosition);
+    LineDetectorObject(Scene *scene, const PhysicsWorld &world, Body2D &parentBody,
+                       bool show, const glm::vec2 &unscaledRelativePosition);
     ~LineDetectorObject();
     void onFixedUpdate(double stepTime) override;
     float *getVoltageLine() const;

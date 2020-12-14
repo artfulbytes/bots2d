@@ -1,5 +1,5 @@
 #include "WheelMotorTestScene.h"
-#include "TopViewWheelMotor.h"
+#include "WheelMotor.h"
 #include "Transforms.h"
 #include "KeyboardController.h"
 
@@ -9,7 +9,10 @@ namespace {
     class WheelMotorController : public KeyboardController
     {
     public:
-        WheelMotorController(TopViewWheelMotor &wheelMotor) : m_wheelMotor(&wheelMotor) {}
+        WheelMotorController(WheelMotor *wheelMotor) : m_wheelMotor(wheelMotor)
+        {
+            assert(wheelMotor != nullptr);
+        }
         void onKeyEvent(const Event::Key &keyEvent) override
         {
             if (keyEvent.code == Event::KeyCode::Up) {
@@ -30,16 +33,16 @@ namespace {
         {
         }
     private:
-        TopViewWheelMotor *m_wheelMotor = nullptr;
+        WheelMotor *m_wheelMotor = nullptr;
     };
 }
 
-WheelMotorTestScene::WheelMotorTestScene()
+WheelMotorTestScene::WheelMotorTestScene() :
+    Scene(PhysicsWorld::Gravity::TopView)
 {
-    PhysicsWorld *world = new PhysicsWorld(PhysicsWorld::Gravity::TopView);
-    m_scene->setPhysicsWorld(world);
+    auto physicsWorld = m_physicsWorld.get();
 
-    TopViewWheelMotor::Specification unscaledSpec = {
+    const WheelMotor::Specification unscaledSpec = {
         .voltageInConstant = 314.0f,
         .angularSpeedConstant = 89.0f,
         .maxVoltage = 6.0f,
@@ -47,7 +50,7 @@ WheelMotorTestScene::WheelMotorTestScene()
         .width = 0.06f,
         .mass = 0.05f
     };
-    TopViewWheelMotor *wheelMotor = new TopViewWheelMotor(*this, *world, unscaledSpec, TopViewWheelMotor::Orientation::Left, Vec2<float>(0.0f, 0.0f));
-    WheelMotorController *controller = new WheelMotorController(*wheelMotor);
-    m_scene->createObject(nullptr, nullptr, nullptr, controller);
+    m_wheelMotor = std::make_unique<WheelMotor>(this, *physicsWorld, unscaledSpec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f });
+    m_wheelMotorController = std::make_unique<WheelMotorController>(m_wheelMotor.get());
+    m_wheelMotor->setController(m_wheelMotorController.get());
 }

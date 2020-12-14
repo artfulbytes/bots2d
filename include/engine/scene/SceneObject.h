@@ -2,6 +2,7 @@
 #define SCENE_OBJECT_H_
 
 #include "Event.h"
+#include <memory>
 
 class TransformComponent;
 class RenderableComponent;
@@ -11,28 +12,28 @@ class Scene;
 
 class SceneObject
 {
-    public:
-        /* A scene object must be part of a scene */
-        SceneObject(const Scene &scene,
-                    TransformComponent *transformComp,
-                    RenderableComponent *renderableComp,
-                    PhysicsComponent *physicsComp,
-                    ControllerComponent *controllerComp);
-        ~SceneObject();
-        inline TransformComponent *getTransform() { return m_transformComp; }
-        void updateRenderable();
-        void updatePhysics(double stepTime);
-        void updateController(double stepTime);
-        void onKeyEvent(const Event::Key &keyEvent);
+public:
+    /* A scene object must be part of a scene */
+    SceneObject(Scene *scene);
+    virtual ~SceneObject();
+    Scene *getScene() const { return m_scene; };
+    void setController(ControllerComponent *controller);
+    void updateRenderable();
+    void updatePhysics(double stepTime);
+    void updateController(double stepTime);
+    virtual void onFixedUpdate(double stepTime);
+    virtual void onKeyEvent(const Event::Key &keyEvent);
 
-    private:
-        const Scene *m_scene;
-        /* This is not cache friendly, it would be more optimal to use an entity component system.
-         * But the simulations are still simple so let's not over-engineer it. */
-        TransformComponent *m_transformComp = nullptr;
-        RenderableComponent *m_renderableComp = nullptr;
-        PhysicsComponent *m_physicsComp = nullptr;
-        ControllerComponent *m_controllerComp = nullptr;
+protected:
+    Scene * m_scene = nullptr;
+    /* This is not cache friendly, it would be more optimal to use an entity component system.
+     * But the simulations are still simple so let's not over-engineer it. */
+    std::unique_ptr<TransformComponent> m_transformComponent;
+    std::unique_ptr<RenderableComponent> m_renderableComponent;
+    std::unique_ptr<PhysicsComponent> m_physicsComponent;
+    /* Make controller a raw pointer because it's unflexible to have the scene object
+     * own the controller. */
+    ControllerComponent *m_controllerComponent = nullptr;
 };
 
 #endif /* SCENE_OBJECT_H_ */

@@ -9,14 +9,15 @@
 class LineComponent : public RenderableComponent
 {
     public:
-        LineComponent(const glm::vec4& color) : m_color(color) {}
+        LineComponent(const LineTransform *transform, const glm::vec4& color) :
+            m_transform(transform),
+            m_color(color) {}
         void onFixedUpdate() override {
-            const auto transform = dynamic_cast<const LineTransform*>(m_parent->getTransform());
-            /* Transform of parent must be a line transform! */
-            assert(transform != nullptr);
-            Renderer::drawLine(transform->start, transform->end, transform->width, m_color);
+            assert(m_transform != nullptr);
+            Renderer::drawLine(m_transform->start, m_transform->end, m_transform->width, m_color);
         }
     private:
+        const LineTransform *const m_transform = nullptr;
         glm::vec4 m_color;
 };
 

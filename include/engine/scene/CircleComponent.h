@@ -9,14 +9,16 @@
 class CircleComponent : public RenderableComponent
 {
     public:
-        CircleComponent(const glm::vec4& color) : m_color(color) {}
-        void onFixedUpdate() override {
-            const auto transform = dynamic_cast<const CircleTransform*>(m_parent->getTransform());
-            /* Transform of parent must be a circle transform! */
+        CircleComponent(const CircleTransform *transform, const glm::vec4& color) :
+            m_transform(transform), m_color(color) {
             assert(transform != nullptr);
-            Renderer::drawCircle(transform->position, transform->radius, m_color);
+        }
+
+        void onFixedUpdate() override {
+            Renderer::drawCircle(m_transform->position, m_transform->radius, m_color);
         }
     private:
+        const CircleTransform *const m_transform = nullptr;
         glm::vec4 m_color;
 };
 

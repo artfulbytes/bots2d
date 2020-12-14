@@ -1,17 +1,17 @@
 #ifndef TOP_VIEW_SUMOBOT_4_WHEEL_H_
 #define TOP_VIEW_SUMOBOT_4_WHEEL_H_
 
-#include "AppObject.h"
+#include "SceneObject.h"
 #include "PhysicsWorld.h"
 
 class Body2D;
-class TopViewWheelMotor;
+class WheelMotor;
 class RangeSensorObject;
 class LineDetectorObject;
 
-/* TopViewSumobot4Wheel simulates a sumo robot with four DC motors in a
+/* Sumobot4Wheel simulates a sumo robot with four DC motors in a
  * top-view gravity physics world */
-class TopViewSumobot4Wheel : public AppObject
+class Sumobot4Wheel : public SceneObject
 {
 public:
     enum class TextureType { Plated, Circuited, None };
@@ -35,9 +35,9 @@ public:
         const TextureType textureType = TextureType::None;
     };
 
-    TopViewSumobot4Wheel(AppScene &scene, const PhysicsWorld &world,
-                         const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
-    ~TopViewSumobot4Wheel();
+    Sumobot4Wheel(Scene *scene, const PhysicsWorld &world,
+                         const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
+    ~Sumobot4Wheel();
 
     enum class VoltageLine { FrontLeftMotor, BackLeftMotor, FrontRightMotor, BackRightMotor,
                              LeftRangeSensor, FrontLeftRangeSensor, FrontRangeSensor, FrontRightRangeSensor, RightRangeSensor,
@@ -51,28 +51,28 @@ private:
     static constexpr float widthBodyFactor = 0.7f;
     static constexpr float widthWheelsFactor = 1.0f - widthBodyFactor;
 
-    void createBody(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledStartPos);
-    void createWheelMotors(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec, const Vec2<float> &unscaledBodyStartPos);
-    void createSensors(AppScene &appScene, const PhysicsWorld &world);
+    void createBody(const PhysicsWorld &world, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
+    void createWheelMotors(const PhysicsWorld &world, const Specification &unscaledSpec, const glm::vec2 &unscaledBodyStartPos);
+    void createSensors(const PhysicsWorld &world);
     static Specification scaleSpec(const Specification &unscaledSpec);
     Body2D *m_body2D = nullptr;
     Specification m_scaledSpec;
 
-    TopViewWheelMotor *m_frontRightWheelMotor = nullptr;
-    TopViewWheelMotor *m_frontLeftWheelMotor = nullptr;
-    TopViewWheelMotor *m_backRightWheelMotor = nullptr;
-    TopViewWheelMotor *m_backLeftWheelMotor = nullptr;
+    std::unique_ptr<WheelMotor> m_frontRightWheelMotor;
+    std::unique_ptr<WheelMotor> m_frontLeftWheelMotor;
+    std::unique_ptr<WheelMotor> m_backRightWheelMotor;
+    std::unique_ptr<WheelMotor> m_backLeftWheelMotor;
 
-    RangeSensorObject *m_leftRangeSensor = nullptr;
-    RangeSensorObject *m_frontLeftRangeSensor = nullptr;
-    RangeSensorObject *m_frontRangeSensor = nullptr;
-    RangeSensorObject *m_frontRightRangeSensor = nullptr;
-    RangeSensorObject *m_rightRangeSensor = nullptr;
+    std::unique_ptr<RangeSensorObject> m_leftRangeSensor;
+    std::unique_ptr<RangeSensorObject> m_frontLeftRangeSensor;
+    std::unique_ptr<RangeSensorObject> m_frontRangeSensor;
+    std::unique_ptr<RangeSensorObject> m_frontRightRangeSensor;
+    std::unique_ptr<RangeSensorObject> m_rightRangeSensor;
 
-    LineDetectorObject *m_frontLeftLineDetector = nullptr;
-    LineDetectorObject *m_frontRightLineDetector = nullptr;
-    LineDetectorObject *m_backLeftLineDetector = nullptr;
-    LineDetectorObject *m_backRightLineDetector = nullptr;
+    std::unique_ptr<LineDetectorObject> m_frontLeftLineDetector;
+    std::unique_ptr<LineDetectorObject> m_frontRightLineDetector;
+    std::unique_ptr<LineDetectorObject> m_backLeftLineDetector;
+    std::unique_ptr<LineDetectorObject> m_backRightLineDetector;
 };
 
 #endif /* TOP_VIEW_SUMOBOT_4_WHEEL_H_ */

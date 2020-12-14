@@ -1,16 +1,16 @@
 #ifndef TOP_VIEW_WHEEL_MOTOR_H_
 #define TOP_VIEW_WHEEL_MOTOR_H_
 
-#include "AppObject.h"
-#include "Body2D.h"
+#include "SceneObject.h"
 #include "PhysicsWorld.h"
 #include <string>
 
 class SpriteAnimation;
+class Body2D;
 
-/* TopViewWheelMotor simulates a wheel connected to a DC-motor in a top-view
+/* WheelMotor simulates a wheel connected to a DC-motor in a top-view
  * gravity physics world. */
-class TopViewWheelMotor : public AppObject
+class WheelMotor : public SceneObject
 {
 public:
     enum class Orientation { Left, Right };
@@ -32,9 +32,9 @@ public:
         const TextureType textureType = TextureType::None;
     };
 
-    TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec,
-                      Orientation orientation, const Vec2<float> &unscaledStartPos);
-    ~TopViewWheelMotor();
+    WheelMotor(Scene *scene, const PhysicsWorld &world, const Specification &unscaledSpec,
+               Orientation orientation, const glm::vec2 &unscaledStartPos);
+    ~WheelMotor();
 
     void setVoltageIn(float voltage);
     void setDutyCycle(float dutyCycle);
@@ -47,10 +47,10 @@ private:
     std::string getTexturePath(Orientation orientation, TextureType textureType);
 
     void updateForce();
-    Body2D *m_body2D = nullptr;
     Specification m_scaledSpec;
     float m_voltageIn = 0.0f;
-    SpriteAnimation *m_animation = nullptr;
+    std::unique_ptr<SpriteAnimation> m_animation;
+    Body2D *m_body2D = nullptr;
 };
 
 #endif /* TOP_VIEW_WHEEL_MOTOR_H_ */

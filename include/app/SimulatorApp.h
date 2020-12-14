@@ -2,8 +2,9 @@
 #define SIMULATOR_APP_H_
 
 #include "Application.h"
+#include <memory>
 
-class AppScene;
+class Scene;
 class SceneMenu;
 
 class SimulatorApp : public Application
@@ -15,8 +16,8 @@ public:
     void onFixedUpdate(double stepTime) override;
 
 private:
-    AppScene *m_currentScene = nullptr;
-    SceneMenu *m_sceneMenu = nullptr;
+    Scene *m_currentScene = nullptr;
+    std::unique_ptr<SceneMenu> m_sceneMenu;
 };
 
 #endif /* SIMULATOR_APP_H_ */

@@ -8,9 +8,8 @@ class PhysicsComponent : public Component
 {
 public:
     PhysicsComponent(const PhysicsWorld &world) :
-        m_world(world.m_world) {}
+        m_world(world.m_world.get()) {}
     virtual ~PhysicsComponent() {
-        delete m_translator;
     }
     virtual void onFixedUpdate(double stepTime) = 0;
 
@@ -20,8 +19,8 @@ protected:
     public:
         virtual void translate() = 0;
     };
-    b2World *m_world = nullptr;
-    PhysicsToTransformTranslator *m_translator = nullptr;
+    b2World *m_world;
+    std::unique_ptr<PhysicsToTransformTranslator> m_translator;
 };
 
 #endif /* PHYSICS_COMPONENT_H */

@@ -1,19 +1,30 @@
 #ifndef SUMOBOT_4_WHEEL_TEST_SCENE_H_
 #define SUMOBOT_4_WHEEL_TEST_SCENE_H_
 
-#include "AppScene.h"
+#include "Scene.h"
 
-class TopViewSumobot4Wheel;
+#include "Sumobot4Wheel.h"
+#include "Dohyo.h"
+#include "QuadObject.h"
 
-class Sumobot4WheelTestScene : public AppScene
+class Sumobot4WheelTestScene : public Scene
 {
 public:
     Sumobot4WheelTestScene();
     ~Sumobot4WheelTestScene();
+
 private:
-    void createBackground(float dohyoOuterRadius);
-    TopViewSumobot4Wheel *m_sumobot4WheelPlated = nullptr;
-    TopViewSumobot4Wheel *m_sumobot4WheelCircuited = nullptr;
+    struct Background {
+        std::unique_ptr<QuadObject> leftSide;
+        std::unique_ptr<QuadObject> rightSide;
+    };
+    void createBackground();
+    std::unique_ptr<Background> m_background = std::make_unique<Background>();
+    std::unique_ptr<Dohyo> m_dohyo;
+    std::unique_ptr<Sumobot4Wheel> m_sumobot4WheelPlated;
+    std::unique_ptr<Sumobot4Wheel> m_sumobot4WheelCircuited;
+    std::unique_ptr<ControllerComponent> m_platedController;
+    std::unique_ptr<ControllerComponent> m_circuitedController;
 };
 
 #endif /* SUMOBOT_4_WHEEL_TEST_SCENE_H_ */

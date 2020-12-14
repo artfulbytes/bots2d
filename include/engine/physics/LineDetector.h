@@ -11,7 +11,7 @@ class CircleTransform;
 class LineDetector : public PhysicsComponent
 {
 public:
-    LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2<float> &relativePosition);
+    LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const glm::vec2 &relativePosition);
     ~LineDetector();
     void onFixedUpdate(double stepTime) override;
     float *getVoltageLine();

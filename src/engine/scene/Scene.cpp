@@ -1,6 +1,24 @@
 #include "Scene.h"
 #include "SceneObject.h"
-#include "PhysicsWorld.h"
+
+Scene::Scene()
+{
+}
+
+Scene::Scene(PhysicsWorld::Gravity gravity) :
+    m_physicsWorld(std::make_unique<PhysicsWorld>(gravity))
+{
+}
+
+Scene::~Scene()
+{
+}
+
+PhysicsWorld *Scene::getPhysicsWorld() const
+{
+    assert(m_physicsWorld);
+    return m_physicsWorld.get();
+}
 
 void Scene::onKeyEvent(const Event::Key &keyEvent)
 {
@@ -23,31 +41,17 @@ void Scene::onFixedUpdate(double stepTime)
     }
 
     for (auto obj : m_objects) {
+        obj->onFixedUpdate(stepTime);
+    }
+
+    for (auto obj : m_objects) {
         obj->updateRenderable();
     }
 }
 
-void Scene::createObject(TransformComponent *transformComp,
-                         RenderableComponent *renderableComp,
-                         PhysicsComponent *physicsComp,
-                         ControllerComponent *controllerComp)
+void Scene::addObject(SceneObject *sceneObject)
 {
-    m_objects.push_back(new SceneObject(*this, transformComp, renderableComp, physicsComp, controllerComp));
-}
-
-void Scene::setPhysicsWorld(PhysicsWorld *world) {
-    m_physicsWorld = world;
-}
-
-Scene::Scene()
-{
-}
-
-Scene::~Scene()
-{
-    for (auto obj : m_objects) {
-        delete obj;
-    }
-
-    delete m_physicsWorld;
+    assert(sceneObject != nullptr);
+    assert(sceneObject->getScene() == nullptr);
+    m_objects.push_back(sceneObject);
 }

@@ -1,16 +1,23 @@
 #ifndef SPRITE_ANIMATION_H_
 #define SPRITE_ANIMATION_H_
 
-#include "Vec2.h"
 #include "TexCoords.h"
 
 class SpriteAnimation {
 public:
     enum class Direction { Forward, Backward };
+    struct Params {
+        unsigned int spriteSheetWidth = 0;
+        unsigned int spriteSheetHeight = 0;
+        unsigned int spriteCount = 0;
+        unsigned int framesBetweenUpdates = 0;
+        Direction direction = Direction::Forward;
+    };
     /* NOTE: Certain values of spriteCountAxis (spritesheet row/column) lead to small rounding
      * errors of the texture coordinates, which results in a slighty miss-aligned sprite. */
-    SpriteAnimation(const Vec2<unsigned int> &spriteCountAxis, unsigned int spriteCount,
+    SpriteAnimation(unsigned int spriteSheetWidth, unsigned int spriteSheetHeight, unsigned int spriteCount,
                     unsigned int framesBetweenUpdates, Direction animationDirection = Direction::Forward);
+    SpriteAnimation(const Params &params);
     ~SpriteAnimation();
     void setFramesBetweenUpdates(unsigned int framesBetweenUpdates);
     void setDirection(Direction animationDirection);
@@ -20,8 +27,8 @@ public:
     void computeTexCoords(TexCoords &texCoords) const;
 
 private:
-    /* Specifies how many columns and rows in the sprite sheet */
-    const Vec2<unsigned int> m_spriteCountAxis = {1, 1};
+    unsigned int m_spriteSheetWidth = 1;
+    unsigned int m_spriteSheetHeight = 1;
     const unsigned int m_spriteCount = 1;
     unsigned int m_currentSpriteIndex = 1;
     unsigned int m_framesBetweenUpdates = 10;

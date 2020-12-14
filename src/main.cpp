@@ -3,7 +3,6 @@
 
 int main()
 {
-    SimulatorApp *app = new SimulatorApp();
-    app->run();
-    delete app;
+    SimulatorApp app;
+    app.run();
 }

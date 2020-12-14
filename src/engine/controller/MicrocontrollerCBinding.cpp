@@ -1,5 +1,4 @@
 #include "MicrocontrollerCBinding.h"
-#include "stdio.h"
 
 MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn) :
     Microcontroller(voltageLines),

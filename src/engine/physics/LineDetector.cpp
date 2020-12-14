@@ -7,13 +7,13 @@ namespace {
     constexpr float radius = 0.005f;
 }
 
-LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const Vec2<float> &relativePosition) :
+LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, Body2D &parentBody, const glm::vec2 &relativePosition) :
     PhysicsComponent(world),
     m_transform(transform)
 {
     const auto scaledRelativePosition = PhysicsWorld::scalePosition(relativePosition);
     if (m_transform) {
-        m_transform->position = { scaledRelativePosition.x, scaledRelativePosition.y, 0.0f};
+        m_transform->position = { scaledRelativePosition.x, scaledRelativePosition.y };
         m_transform->radius = radius;
     }
     b2BodyDef bodyDef;
@@ -55,7 +55,7 @@ void LineDetector::onFixedUpdate(double stepTime)
     m_detectVoltage = detected ? 3.3f : 0.0f;
     if (m_transform) {
         const auto position = m_body->GetPosition();
-        m_transform->position = { position.x, position.y, 0.0f};
+        m_transform->position = { position.x, position.y };
         m_transform->radius = detected ? 50.0f * radius : radius;
     }
 }

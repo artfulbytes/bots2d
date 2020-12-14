@@ -1,53 +1,49 @@
-#include "TopViewWheelMotor.h"
+#include "WheelMotor.h"
 #include "Transforms.h"
 #include "QuadComponent.h"
+#include "Body2D.h"
 #include "SpriteAnimation.h"
 #include <glm/glm.hpp>
 #include <iostream>
 
-TopViewWheelMotor::TopViewWheelMotor(AppScene &appScene, const PhysicsWorld &world, const Specification &unscaledSpec,
-                                     TopViewWheelMotor::Orientation orientation, const Vec2<float> &unscaledStartPos) :
-    AppObject(appScene),
+WheelMotor::WheelMotor(Scene *scene, const PhysicsWorld &world, const Specification &unscaledSpec,
+                                     WheelMotor::Orientation orientation, const glm::vec2 &unscaledStartPos) :
+    SceneObject(scene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
     assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(unscaledSpec.maxVoltage > 0);
-    QuadTransform *transformBody = new QuadTransform();
-    transformBody->position.x = unscaledStartPos.x;
-    transformBody->position.y = unscaledStartPos.y;
-    transformBody->position.z = 0.0f;
-    transformBody->size.x = unscaledSpec.width;
-    transformBody->size.y = unscaledSpec.diameter;
+    m_transformComponent = std::make_unique<QuadTransform>(unscaledStartPos, glm::vec2{unscaledSpec.width, unscaledSpec.diameter});
+    auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
 
-    QuadComponent *renderable = nullptr;
-    if (unscaledSpec.textureType != TopViewWheelMotor::TextureType::None) {
-        m_animation = new SpriteAnimation(Vec2<unsigned int>{1, 5}, 5, 3, SpriteAnimation::Direction::Backward);
+    if (unscaledSpec.textureType != WheelMotor::TextureType::None) {
+        m_animation = std::make_unique<SpriteAnimation>(1, 5, 5, 3, SpriteAnimation::Direction::Backward);
         m_animation->setFramesBetweenUpdates(1);
-        renderable = new QuadComponent(getTexturePath(orientation, unscaledSpec.textureType), *m_animation);
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, getTexturePath(orientation, unscaledSpec.textureType), m_animation.get());
     } else {
-        renderable = new QuadComponent(glm::vec4{1.0f, 0.0f, 0.0f, 1.0f});
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
-    m_body2D = new Body2D(world, *transformBody, true, true, unscaledSpec.mass);
-    appScene.getScene()->createObject(transformBody, renderable, m_body2D, nullptr);
+    m_physicsComponent = std::make_unique<Body2D>(world, transform, Body2D::BodySpec{ true, true, unscaledSpec.mass });
+    m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
-TopViewWheelMotor::~TopViewWheelMotor()
+WheelMotor::~WheelMotor()
 {
 }
 
-std::string TopViewWheelMotor::getTexturePath(TopViewWheelMotor::Orientation orientation, TopViewWheelMotor::TextureType textureType)
+std::string WheelMotor::getTexturePath(WheelMotor::Orientation orientation, WheelMotor::TextureType textureType)
 {
     switch(textureType) {
-    case TopViewWheelMotor::TextureType::Orange:
+    case WheelMotor::TextureType::Orange:
         switch(orientation) {
-        case TopViewWheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_orange.png";
-        case TopViewWheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_orange.png";
+        case WheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_orange.png";
+        case WheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_orange.png";
         }
-    case TopViewWheelMotor::TextureType::Green:
+    case WheelMotor::TextureType::Green:
         switch(orientation) {
-        case TopViewWheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_green.png";
-        case TopViewWheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_green.png";
+        case WheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_green.png";
+        case WheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_green.png";
         }
     case TextureType::None:
         assert(0);
@@ -55,7 +51,7 @@ std::string TopViewWheelMotor::getTexturePath(TopViewWheelMotor::Orientation ori
     return "";
 }
 
-void TopViewWheelMotor::setAnimation()
+void WheelMotor::setAnimation()
 {
     assert(m_animation);
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
@@ -70,7 +66,7 @@ void TopViewWheelMotor::setAnimation()
     }
 }
 
-TopViewWheelMotor::Specification TopViewWheelMotor::scaleSpec(const Specification &unscaledSpec)
+WheelMotor::Specification WheelMotor::scaleSpec(const Specification &unscaledSpec)
 {
     const Specification scaledSpec = {
         .voltageInConstant = unscaledSpec.voltageInConstant,
@@ -85,21 +81,21 @@ TopViewWheelMotor::Specification TopViewWheelMotor::scaleSpec(const Specificatio
     return scaledSpec;
 }
 
-void TopViewWheelMotor::setVoltageIn(float voltage)
+void WheelMotor::setVoltageIn(float voltage)
 {
     assert(abs(voltage) <= m_scaledSpec.maxVoltage);
     m_voltageIn = voltage;
     updateForce();
 }
 
-float *TopViewWheelMotor::getVoltageLine()
+float *WheelMotor::getVoltageLine()
 {
     return &m_voltageIn;
 }
 
-void TopViewWheelMotor::updateForce()
+void WheelMotor::updateForce()
 {
-    const Vec2<float> currentForwardNormal = m_body2D->getForwardNormal();
+    const glm::vec2 currentForwardNormal = m_body2D->getForwardNormal();
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
     const float angularSpeed = currentForwardSpeed / (3.14f * m_scaledSpec.diameter);
 
@@ -117,9 +113,8 @@ void TopViewWheelMotor::updateForce()
     m_body2D->getLateralVelocity();
     m_body2D->getMass();
 
-    Vec2<float> lateralCancelingImpulse = m_body2D->getLateralVelocity();
-    lateralCancelingImpulse.x *= -m_body2D->getMass();
-    lateralCancelingImpulse.y *= -m_body2D->getMass();
+    glm::vec2 lateralCancelingImpulse = m_body2D->getLateralVelocity();
+    lateralCancelingImpulse *= -m_body2D->getMass();
 
     // Allow some skidding
     if (lateralCancelingImpulse.length() > m_scaledSpec.maxLateralCancelingImpulse) {
@@ -130,7 +125,7 @@ void TopViewWheelMotor::updateForce()
     m_body2D->setLinearImpulse(lateralCancelingImpulse);
 }
 
-void TopViewWheelMotor::onFixedUpdate(double stepTime)
+void WheelMotor::onFixedUpdate(double stepTime)
 {
     if (m_animation != nullptr) {
         setAnimation();

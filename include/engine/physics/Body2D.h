@@ -14,20 +14,25 @@ class Body2DUserData;
 class Body2D : public PhysicsComponent
 {
 public:
-    Body2D(const PhysicsWorld &world, QuadTransform &transform, bool dynamic, bool collision, float mass);
-    Body2D(const PhysicsWorld &world, HollowCircleTransform &transform, bool dynamic, bool collision, float mass);
+    struct BodySpec {
+        bool dynamic = false;
+        bool collision = true;
+        float massUnscaled = 1.0f;
+    };
+    Body2D(const PhysicsWorld &world, QuadTransform *transform, const BodySpec &bodySpec);
+    Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, const BodySpec &bodySpec);
     ~Body2D();
     void setUserData(Body2DUserData *userData);
-    void attachBodyWithRevoluteJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body);
-    void attachBodyWithWeldJoint(const Vec2<float> &unscaledAttachPos, const Body2D &body);
+    void attachBodyWithRevoluteJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
+    void attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
     void onFixedUpdate(double stepTime) override;
     float getForwardSpeed() const;
-    Vec2<float> getLateralVelocity() const;
-    Vec2<float> getForwardNormal() const;
-    Vec2<float> getPosition() const;
+    glm::vec2 getLateralVelocity() const;
+    glm::vec2 getForwardNormal() const;
+    glm::vec2 getPosition() const;
     float getAngle() const;
-    void setForce(const Vec2<float> &vec, float magnitude);
-    void setLinearImpulse(const Vec2<float> &vec);
+    void setForce(const glm::vec2 &vec, float magnitude);
+    void setLinearImpulse(const glm::vec2 &vec);
     float getMass() const;
 
     /* Give access to m_body so it can attach itself */
@@ -35,8 +40,8 @@ public:
 private:
     class QuadTransformTranslator : public PhysicsToTransformTranslator {
         public:
-        QuadTransformTranslator(QuadTransform &transform, b2Body &body) :
-            m_transform(&transform), m_body(&body) {}
+        QuadTransformTranslator(QuadTransform *transform, b2Body &body) :
+            m_transform(transform), m_body(&body) {}
         void translate();
 
         b2Body *m_body = nullptr;
@@ -44,8 +49,8 @@ private:
     };
     class CircleTransformTranslator : public PhysicsToTransformTranslator {
         public:
-        CircleTransformTranslator(CircleTransform &transform, b2Body &body) :
-            m_transform(&transform), m_body(&body) {}
+        CircleTransformTranslator(CircleTransform *transform, b2Body &body) :
+            m_transform(transform), m_body(&body) {}
         void translate();
 
         private:
@@ -57,7 +62,6 @@ private:
 
     b2Body *m_body = nullptr;
     b2Body *m_frictionBody = nullptr;
-    std::vector<b2Joint *> m_joints;
 
     constexpr static float frictionCoefficient = 0.1f;
 };

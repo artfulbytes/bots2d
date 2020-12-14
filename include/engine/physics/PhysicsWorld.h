@@ -1,9 +1,11 @@
 #ifndef PHYSICS_WORLD_H_
 #define PHYSICS_WORLD_H_
 
-#include "Vec2.h"
+#include <glm/glm.hpp>
+#include <memory>
 
 class b2World;
+class ContactListener;
 
 class PhysicsWorld
 {
@@ -17,20 +19,21 @@ public:
     void step(double stepTime);
     inline Gravity getGravityType() const { return m_gravityType; }
 
-    static void assertDimensions(float length);
-    static float scaleLength(float length);
-    static Vec2<float> scalePosition(const Vec2<float> &vec);
-    static float scalePosition(float position);
-    static float scaleSpeed(float speed);
-    static float scaleAcceleration(float acceleration);
-    static float scaleMass(float mass);
-    static float scaleForce(float force);
-    static float normalForce(float mass);
+    static void assertDimensions(float unscaledLength);
+    static float scaleLength(float unscaledLength);
+    static glm::vec2 scalePosition(const glm::vec2 &unscaledPosition);
+    static float scalePosition(float unscaledPosition);
+    static float scaleSpeed(float unscaledSpeed);
+    static float scaleAcceleration(float unscaledAcceleration);
+    static float scaleMass(float unscaledMass);
+    static float scaleForce(float unscaledForce);
+    static float normalForce(float unscaledMass);
 
     /* We want physics components to have access to b2World */
     friend class PhysicsComponent;
 private:
-    b2World *m_world;
+    std::unique_ptr<b2World> m_world;
+    std::unique_ptr<ContactListener> m_contactListener;
     Gravity m_gravityType = Gravity::SideView;
 };
 

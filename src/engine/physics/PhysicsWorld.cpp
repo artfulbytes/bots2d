@@ -22,56 +22,57 @@ inline constexpr float forceScaleFactor { massScaleFactor * accelerationScaleFac
 
 inline constexpr float gravitationConstant { 9.82 };
 
-void PhysicsWorld::assertDimensions(float length)
+void PhysicsWorld::assertDimensions(float unscaledLength)
 {
-    assert(minWidthObject <= length && length <= maxWidthObject);
+    assert(minWidthObject <= unscaledLength && unscaledLength <= maxWidthObject);
 }
 
-float PhysicsWorld::scaleLength(float length)
+float PhysicsWorld::scaleLength(float unscaledLength)
 {
-    assertDimensions(length);
-    return length * lengthScaleFactor;
+    assertDimensions(unscaledLength);
+    return unscaledLength * lengthScaleFactor;
 }
 
-Vec2<float> PhysicsWorld::scalePosition(const Vec2<float> &vec)
+glm::vec2 PhysicsWorld::scalePosition(const glm::vec2 &unscaledPosition)
 {
-    return { scalePosition(vec.x), scalePosition(vec.y) };
+    return { scalePosition(unscaledPosition.x), scalePosition(unscaledPosition.y) };
 }
 
-float PhysicsWorld::scalePosition(float position)
+float PhysicsWorld::scalePosition(float unscaledPosition)
 {
     /* No dimension limitation for position x or y */
-    return position * lengthScaleFactor;
+    return unscaledPosition * lengthScaleFactor;
 }
 
-float PhysicsWorld::scaleSpeed(float speed)
+float PhysicsWorld::scaleSpeed(float unscaledSpeed)
 {
-    return speed * speedScaleFactor;
+    return unscaledSpeed * speedScaleFactor;
 }
 
-float PhysicsWorld::scaleAcceleration(float acceleration)
+float PhysicsWorld::scaleAcceleration(float unscaledAcceleration)
 {
-    return acceleration * accelerationScaleFactor;
+    return unscaledAcceleration * accelerationScaleFactor;
 }
 
-float PhysicsWorld::scaleMass(float mass)
+float PhysicsWorld::scaleMass(float unscaledMass)
 {
-    return mass * massScaleFactor;
+    return unscaledMass * massScaleFactor;
 }
 
-float PhysicsWorld::scaleForce(float force)
+float PhysicsWorld::scaleForce(float unscaledForce)
 {
-    return force * forceScaleFactor;
+    return unscaledForce * forceScaleFactor;
 }
 
-float PhysicsWorld::normalForce(float mass)
+float PhysicsWorld::normalForce(float unscaledMass)
 {
-    return mass * gravitationConstant * forceScaleFactor;
+    return unscaledMass * gravitationConstant * forceScaleFactor;
 }
 
 void PhysicsWorld::init()
 {
-    m_world->SetContactListener(new ContactListener());
+    m_contactListener = std::make_unique<ContactListener>();
+    m_world->SetContactListener(m_contactListener.get());
 }
 
 PhysicsWorld::PhysicsWorld(Gravity gravity) :
@@ -81,12 +82,12 @@ PhysicsWorld::PhysicsWorld(Gravity gravity) :
     {
     case Gravity::SideView:
         /* The typical Box2D physics */
-        m_world = new b2World(b2Vec2(0, -gravitationConstant));
+        m_world = std::make_unique<b2World>(b2Vec2(0, -gravitationConstant));
         break;
     case Gravity::TopView:
         /* Box2D is not designed for top view physics, but we
            can work around this by setting gravity to 0 */
-        m_world = new b2World(b2Vec2(0, 0));
+        m_world = std::make_unique<b2World>(b2Vec2(0, 0));
         break;
     case Gravity::Custom:
         /* If you end up here, you have used the wrong constructor, use the other one */
@@ -97,7 +98,7 @@ PhysicsWorld::PhysicsWorld(Gravity gravity) :
 }
 
 PhysicsWorld::PhysicsWorld(float gravityX, float gravityY) :
-    m_world(new b2World(b2Vec2(gravityX, gravityY))),
+    m_world(std::make_unique<b2World>(b2Vec2(gravityX, gravityY))),
     m_gravityType(Gravity::Custom)
 {
     init();
@@ -105,7 +106,6 @@ PhysicsWorld::PhysicsWorld(float gravityX, float gravityY) :
 
 PhysicsWorld::~PhysicsWorld()
 {
-    delete m_world;
 }
 
 void PhysicsWorld::step(double stepTime)

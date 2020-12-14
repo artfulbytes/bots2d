@@ -9,21 +9,22 @@
 class TexCoords;
 class Texture;
 class SpriteAnimation;
+class QuadTransform;
 
 class QuadComponent : public RenderableComponent
 {
-    public:
-        QuadComponent(const glm::vec4& color);
-        QuadComponent(const std::string& textureFilepath);
-        QuadComponent(const std::string &textureFilepath, SpriteAnimation &spriteAnimation);
-        ~QuadComponent();
+public:
+    QuadComponent(const QuadTransform *transform, const glm::vec4& color);
+    QuadComponent(const QuadTransform *transform, const std::string &textureFilepath, SpriteAnimation *spriteAnimation = nullptr);
+    ~QuadComponent();
 
-        void onFixedUpdate() override;
-    private:
-        glm::vec4 m_color;
-        Texture *const m_texture = nullptr;
-        TexCoords *const m_texCoords = nullptr;
-        SpriteAnimation *const m_spriteAnimation = nullptr;
+    void onFixedUpdate() override;
+private:
+    const QuadTransform *const m_transform = nullptr;
+    glm::vec4 m_color;
+    const std::unique_ptr<Texture> m_texture;
+    const std::unique_ptr<TexCoords> m_texCoords;
+    SpriteAnimation *const m_spriteAnimation = nullptr;
 };
 
 #endif /* QUAD_COMPONENT_H_ */

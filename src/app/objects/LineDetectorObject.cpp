@@ -6,20 +6,19 @@
 
 #include <glm/glm.hpp>
 
-
-LineDetectorObject::LineDetectorObject(AppScene &appScene, const PhysicsWorld &world, Body2D &parentBody,
-                                       bool show, const Vec2<float> &unscaledRelativePosition) :
-    AppObject(appScene)
+LineDetectorObject::LineDetectorObject(Scene *scene, const PhysicsWorld &world, Body2D &parentBody,
+                                       bool show, const glm::vec2 &unscaledRelativePosition) :
+    SceneObject(scene)
 {
-    CircleTransform *transform = nullptr;
-    CircleComponent *renderable = nullptr;
+    CircleTransform *circleTransform;
     if (show) {
-        transform = new CircleTransform();
+        m_transformComponent = std::make_unique<CircleTransform>();
+        circleTransform = static_cast<CircleTransform *>(m_transformComponent.get());
         glm::vec4 color(1.0f, 0.5f, 0.0f, 1.0f);
-        renderable = new CircleComponent(color);
+        m_renderableComponent = std::make_unique<CircleComponent>(circleTransform, color);
     }
-    m_lineDetector = new LineDetector(world, transform, parentBody, unscaledRelativePosition);
-    appScene.getScene()->createObject(transform, renderable, m_lineDetector, nullptr);
+    m_physicsComponent = std::make_unique<LineDetector>(world, circleTransform, parentBody, unscaledRelativePosition);
+    m_lineDetector = static_cast<LineDetector *>(m_physicsComponent.get());
 }
 
 float *LineDetectorObject::getVoltageLine() const

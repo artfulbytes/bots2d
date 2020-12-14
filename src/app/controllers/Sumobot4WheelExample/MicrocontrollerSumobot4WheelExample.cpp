@@ -1,7 +1,7 @@
-#include "sumobot4wheelexample/MicrocontrollerSumobot4WheelExample.h"
+#include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
 
 extern "C" {
-#include "sumobot4wheelexample/c_bindings.h"
+#include "Sumobot4WheelExample/c_bindings.h"
 }
 
 MicrocontrollerSumobot4WheelExample::MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLines &voltageLines) :

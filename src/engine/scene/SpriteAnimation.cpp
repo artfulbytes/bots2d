@@ -4,18 +4,25 @@ namespace {
     float maxFloatRoundingError = 0.001f;
 }
 
-SpriteAnimation::SpriteAnimation(const Vec2<unsigned int> &spriteCountAxis, const unsigned int spriteCount, unsigned int framesBetweenUpdates,
-                                SpriteAnimation::Direction animationDirection) :
-    m_spriteCountAxis(spriteCountAxis),
+SpriteAnimation::SpriteAnimation(unsigned int spriteSheetWidth, unsigned int spriteSheetHeight, unsigned int spriteCount,
+                                 unsigned int framesBetweenUpdates, SpriteAnimation::Direction animationDirection) :
+    m_spriteSheetWidth(spriteSheetWidth),
+    m_spriteSheetHeight(spriteSheetHeight),
     m_spriteCount(spriteCount),
     m_framesBetweenUpdates(framesBetweenUpdates),
-    m_spriteWidth(1.0f / m_spriteCountAxis.x),
-    m_spriteHeight(1.0f / m_spriteCountAxis.y),
+    m_spriteWidth(1.0f / m_spriteSheetWidth),
+    m_spriteHeight(1.0f / m_spriteSheetHeight),
     m_animationDirection(animationDirection)
 {
     if (animationDirection == SpriteAnimation::Direction::Backward) {
         m_currentSpriteIndex = m_spriteCount - 1;
     }
+}
+
+SpriteAnimation::SpriteAnimation(const SpriteAnimation::Params &params) :
+    SpriteAnimation(params.spriteSheetWidth, params.spriteSheetHeight, params.spriteCount,
+                    params.framesBetweenUpdates, params.direction)
+{
 }
 
 SpriteAnimation::~SpriteAnimation()
@@ -61,9 +68,8 @@ void SpriteAnimation::onFixedUpdate()
 
 void SpriteAnimation::computeTexCoords(TexCoords &texCoords) const
 {
-    const Vec2<unsigned int> m_currentSprite = {m_currentSpriteIndex % m_spriteCountAxis.x, m_currentSpriteIndex / m_spriteCountAxis.x};
-    texCoords.TopLeft.x = m_currentSprite.x * m_spriteWidth;
-    texCoords.TopLeft.y = 1.0f - m_currentSprite.y * m_spriteHeight;
+    texCoords.TopLeft.x = (m_currentSpriteIndex % m_spriteSheetWidth) * m_spriteWidth;
+    texCoords.TopLeft.y = 1.0f - (m_currentSpriteIndex / m_spriteSheetWidth) * m_spriteHeight;
     if (texCoords.TopLeft.y < 0.0f)
     {
         assert(texCoords.TopLeft.y >= -maxFloatRoundingError);

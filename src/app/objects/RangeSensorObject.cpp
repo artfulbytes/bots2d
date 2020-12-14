@@ -5,28 +5,30 @@
 
 #include <glm/glm.hpp>
 
-RangeSensorObject::RangeSensorObject(AppScene &appScene, const PhysicsWorld &world, const Body2D &parentBody, bool show, const Specification &unscaledSpec) :
-    AppObject(appScene)
+RangeSensorObject::RangeSensorObject(Scene *scene, const PhysicsWorld &world, const Body2D &parentBody, bool show,
+                                     const Specification &unscaledSpec) :
+    SceneObject(scene)
 {
     LineTransform *transform = nullptr;
-    LineComponent *renderable = nullptr;
     if (show) {
-        transform = new LineTransform();
+        m_transformComponent = std::make_unique<LineTransform>();
+        transform = static_cast<LineTransform *>(m_transformComponent.get());
         glm::vec4 color(0.0f, 0.5f, 0.0f, 1.0f);
-        renderable = new LineComponent(color);
+        m_renderableComponent = std::make_unique<LineComponent>(transform, color);
     }
-    m_rangeSensor = new RangeSensor(world, transform, parentBody, unscaledSpec.relativePosition, unscaledSpec.relativeAngle,
-                                    unscaledSpec.minDistance, unscaledSpec.maxDistance);
-    appScene.getScene()->createObject(transform, renderable, m_rangeSensor, nullptr);
+    m_physicsComponent = std::make_unique<RangeSensor>(world, transform, parentBody,
+                                                       unscaledSpec.relativePosition, unscaledSpec.relativeAngle,
+                                                       unscaledSpec.minDistance, unscaledSpec.maxDistance);
+    m_rangeSensor = static_cast<RangeSensor *>(m_physicsComponent.get());
+}
+
+RangeSensorObject::~RangeSensorObject()
+{
 }
 
 float *RangeSensorObject::getVoltageLine() const
 {
     return m_rangeSensor->getVoltageLine();
-}
-
-RangeSensorObject::~RangeSensorObject()
-{
 }
 
 void RangeSensorObject::onFixedUpdate(double stepTime)

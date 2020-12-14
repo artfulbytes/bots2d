@@ -1,36 +1,15 @@
 #include "DrawTestScene.h"
-#include "Transforms.h"
-#include "QuadComponent.h"
-#include "LineComponent.h"
-#include "CircleComponent.h"
 #include <glm/glm.hpp>
+#include "QuadObject.h"
+#include "CircleObject.h"
+#include "LineObject.h"
 
 DrawTestScene::DrawTestScene()
 {
-    glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
-    QuadTransform *transform = new QuadTransform();
-    transform->position.x = 3.0f;
-    transform->position.y = 3.0f;
-    transform->position.z = 0.0f;
-    transform->size.x = 1.0f;
-    transform->size.y = 1.0f;
-    transform->rotation = 0.2f;
-    QuadComponent *quadComponent = new QuadComponent(color);
-    m_scene->createObject(transform, quadComponent, nullptr, nullptr);
-
-    LineTransform *transformLine = new LineTransform();
-    transformLine->start.x = 1.0f;
-    transformLine->start.y = 1.0f;
-    transformLine->end.x = 2.0f;
-    transformLine->end.y = 2.0f;
-    transformLine->width = 0.05f;
-    LineComponent *lineComponent = new LineComponent(color);
-    m_scene->createObject(transformLine, lineComponent, nullptr, nullptr);
-
-    CircleTransform *transformCircle = new CircleTransform();
-    transformCircle->position.x = 0.0f;
-    transformCircle->position.y = 0.0f;
-    transformCircle->radius = 1.0f;
-    CircleComponent *circleComponent = new CircleComponent(color);
-    m_scene->createObject(transformCircle, circleComponent, nullptr, nullptr);
+    m_quadObject = std::make_unique<QuadObject>(this, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f }, nullptr,
+                                                glm::vec2{ 0.0f, 0.0f }, glm::vec2{ 2.0f, 2.0f }, 2.0f);
+    m_circleObject = std::make_unique<CircleObject>(this, glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f },
+                                                    glm::vec2{ 0.0f, 3.0f }, 1.0f);
+    m_lineObject = std::make_unique<LineObject>(this, glm::vec4{ 0.0f, 0.0f, 1.0f, 1.0f }, glm::vec2{ -1.0f, -3.0f },
+                                                glm::vec2{ 1.0f, -1.5f }, 0.05f);
 }

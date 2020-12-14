@@ -9,7 +9,7 @@ namespace {
 }
 
 RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform, const Body2D &body,
-                         const Vec2<float> &position, float angle, float minDistance, float maxDistance) :
+                         const glm::vec2 &position, float angle, float minDistance, float maxDistance) :
     PhysicsComponent(world),
     m_lineTransform(transform),
     m_parentBody(&body),
@@ -32,16 +32,16 @@ void RangeSensor::onFixedUpdate(double stepTime)
 {
     const float rayAngleStart = -m_parentBody->getAngle();
     const float rayAngleEnd = m_relativeAngle - m_parentBody->getAngle();
-    const Vec2<float> bodyPosition = m_parentBody->getPosition();
+    const glm::vec2 bodyPosition = m_parentBody->getPosition();
 
     /* Recalculate the casted ray after parent body rotation */
     const float sinAngle = sinf(-rayAngleStart);
     const float cosAngle = cosf(-rayAngleStart);
-    const Vec2<float> rayStartPosition = { (m_relativePosition.x * cosAngle - m_relativePosition.y * sinAngle) + bodyPosition.x,
+    const glm::vec2 rayStartPosition = { (m_relativePosition.x * cosAngle - m_relativePosition.y * sinAngle) + bodyPosition.x,
                                     (m_relativePosition.x * sinAngle + m_relativePosition.y * cosAngle) + bodyPosition.y };
-    const Vec2<float> rayEndPosition = rayStartPosition + Vec2<float>(sinf(rayAngleEnd), cosf(rayAngleEnd)) * m_maxDistance;
+    const glm::vec2 rayEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_maxDistance;
     updateDetectedDistance(rayStartPosition, rayEndPosition);
-    const Vec2<float> detectedEndPosition = rayStartPosition + Vec2<float>(sinf(rayAngleEnd), cosf(rayAngleEnd)) * m_detectedDistance;
+    const glm::vec2 detectedEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_detectedDistance;
 
     if (m_lineTransform) {
         m_lineTransform->start = { rayStartPosition.x, rayStartPosition.y };
@@ -50,7 +50,7 @@ void RangeSensor::onFixedUpdate(double stepTime)
     updateVoltage();
 }
 
-void RangeSensor::updateDetectedDistance(const Vec2<float> &start, const Vec2<float> &end)
+void RangeSensor::updateDetectedDistance(const glm::vec2 &start, const glm::vec2 &end)
 {
     b2RayCastInput rayInput;
     b2RayCastOutput rayOutput;

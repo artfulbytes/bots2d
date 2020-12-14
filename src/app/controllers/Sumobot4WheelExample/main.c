@@ -1,4 +1,4 @@
-#include "c_bindings.h"
+#include "Sumobot4WheelExample/c_bindings.h"
 
 /* Must match with how the lines are attached to the microcontroller */
 enum VoltageLine {

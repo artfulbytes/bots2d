@@ -7,67 +7,52 @@
 
 #include <cassert>
 
-SceneObject::SceneObject(const Scene &scene,
-                         TransformComponent *transformComp,
-                         RenderableComponent *renderableComp,
-                         PhysicsComponent *physicsComp,
-                         ControllerComponent *controllerComp) :
-    m_scene(&scene),
-    m_transformComp(transformComp),
-    m_renderableComp(renderableComp),
-    m_physicsComp(physicsComp),
-    m_controllerComp(controllerComp)
+SceneObject::SceneObject(Scene *scene)
 {
-    if (m_transformComp) {
-        m_transformComp->m_parent = this;
-    }
-
-    if (m_renderableComp) {
-        assert(m_transformComp);
-        m_renderableComp->m_parent = this;
-    }
-
-    if (m_physicsComp) {
-        m_physicsComp->m_parent = this;
-    }
-
-    if (m_controllerComp) {
-        m_controllerComp->m_parent = this;
-    }
+    assert(scene != nullptr);
+    scene->addObject(this);
+    m_scene = scene;
 }
 
 SceneObject::~SceneObject()
 {
-    delete m_transformComp;
-    delete m_renderableComp;
-    delete m_physicsComp;
-    delete m_controllerComp;
+}
+
+void SceneObject::setController(ControllerComponent *controller)
+{
+    assert(controller != nullptr);
+    m_controllerComponent = controller;
 }
 
 void SceneObject::updateRenderable()
 {
-    if (m_renderableComp) {
-        m_renderableComp->onFixedUpdate();
+    if (m_renderableComponent) {
+        m_renderableComponent->onFixedUpdate();
     }
 }
 
 void SceneObject::updatePhysics(double stepTime)
 {
-    if (m_physicsComp) {
-        m_physicsComp->onFixedUpdate(stepTime);
+    if (m_physicsComponent) {
+        m_physicsComponent->onFixedUpdate(stepTime);
     }
 }
 
 void SceneObject::updateController(double stepTime)
 {
-    if (m_controllerComp) {
-        m_controllerComp->onFixedUpdate(stepTime);
+    if (m_controllerComponent) {
+        m_controllerComponent->onFixedUpdate(stepTime);
     }
 }
 
 void SceneObject::onKeyEvent(const Event::Key &keyEvent)
 {
-    if (m_controllerComp) {
-        m_controllerComp->onKeyEvent(keyEvent);
+    if (m_controllerComponent) {
+        m_controllerComponent->onKeyEvent(keyEvent);
     }
+}
+
+void SceneObject::onFixedUpdate(double stepTime)
+{
+    /* Do nothing */
 }

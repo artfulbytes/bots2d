@@ -2,8 +2,8 @@
 #include "ImGuiOverlay.h"
 #include "Camera.h"
 
-SceneMenu::SceneMenu(AppScene*& appScene) :
-    m_currentScene(appScene)
+SceneMenu::SceneMenu(Scene*& scene) :
+    m_currentScene(scene)
 {
 }
 
