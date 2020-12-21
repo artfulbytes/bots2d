@@ -3,9 +3,13 @@
 
 #include "Scene.h"
 
-#include "Sumobot4Wheel.h"
-#include "Dohyo.h"
-#include "QuadObject.h"
+#include "playgrounds/Dohyo.h"
+#include "shapes/QuadObject.h"
+
+
+class QuadObject;
+class Dohyo;
+class Sumobot4Wheel;
 
 class Sumobot4WheelTestScene : public Scene
 {

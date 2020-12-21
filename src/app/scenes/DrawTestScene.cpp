@@ -1,8 +1,9 @@
 #include "DrawTestScene.h"
+#include "shapes/QuadObject.h"
+#include "shapes/CircleObject.h"
+#include "shapes/LineObject.h"
+
 #include <glm/glm.hpp>
-#include "QuadObject.h"
-#include "CircleObject.h"
-#include "LineObject.h"
 
 DrawTestScene::DrawTestScene()
 {

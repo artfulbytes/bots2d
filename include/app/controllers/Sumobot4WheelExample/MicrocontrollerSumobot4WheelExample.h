@@ -1,7 +1,7 @@
 #ifndef MICROCONTROLLER_SUMOBOT_4_WHEEL_EXAMPLE_H_
 #define MICROCONTROLLER_SUMOBOT_4_WHEEL_EXAMPLE_H_
 
-#include "MicrocontrollerCBinding.h"
+#include "components/MicrocontrollerCBinding.h"
 
 class MicrocontrollerSumobot4WheelExample : public MicrocontrollerCBinding
 {

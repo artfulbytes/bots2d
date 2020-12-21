@@ -1,5 +1,5 @@
 #include "PhysicsBoxTestScene.h"
-#include "QuadObject.h"
+#include "shapes/QuadObject.h"
 
 #include <glm/glm.hpp>
 

@@ -1,7 +1,7 @@
 #include "WheelMotorTestScene.h"
-#include "WheelMotor.h"
-#include "Transforms.h"
-#include "KeyboardController.h"
+#include "actuators/WheelMotor.h"
+#include "components/Transforms.h"
+#include "components/KeyboardController.h"
 
 namespace {
     const float voltageToApply = 2.0f;

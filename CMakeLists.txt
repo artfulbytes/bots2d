@@ -25,20 +25,21 @@ set (RENDERER_SOURCE_FILES
     src/engine/renderer/ImGuiOverlay.cpp
     src/engine/renderer/stb_image.cpp
     src/engine/renderer/Texture.cpp
-    src/engine/renderer/Texture.cpp
+    src/engine/renderer/components/QuadComponent.cpp
+    src/engine/renderer/SpriteAnimation.cpp
 )
 
 set (PHYSICS_SOURCE_FILES
     src/engine/physics/PhysicsWorld.cpp
-    src/engine/physics/Body2D.cpp
-    src/engine/physics/RangeSensor.cpp
-    src/engine/physics/LineDetector.cpp
     src/engine/physics/ContactListener.cpp
+    src/engine/physics/components/Body2D.cpp
+    src/engine/physics/components/RangeSensor.cpp
+    src/engine/physics/components/LineDetector.cpp
 )
 
 set (CONTROLLER_SOURCE_FILES
-    src/engine/controller/Microcontroller.cpp
-    src/engine/controller/MicrocontrollerCBinding.cpp
+    src/engine/controllers/Microcontroller.cpp
+    src/engine/controllers/MicrocontrollerCBinding.cpp
 )
 
 set (SIMULATOR_ENGINE_FILES
@@ -46,8 +47,7 @@ set (SIMULATOR_ENGINE_FILES
     src/engine/core/Event.cpp
     src/engine/scene/SceneObject.cpp
     src/engine/scene/Scene.cpp
-    src/engine/scene/QuadComponent.cpp
-    src/engine/scene/SpriteAnimation.cpp
+    src/engine/scene/SceneMenu.cpp
     ${RENDERER_SOURCE_FILES}
     ${PHYSICS_SOURCE_FILES}
     ${CONTROLLER_SOURCE_FILES}
@@ -57,22 +57,21 @@ set (SIMULATOR_ENGINE_FILES
 
 set (SIMULATOR_APP_FILES
     src/app/SimulatorApp.cpp
-    src/app/SceneMenu.cpp
-    src/app/objects/QuadObject.cpp
-    src/app/objects/CircleObject.cpp
-    src/app/objects/LineObject.cpp
+    src/app/objects/shapes/QuadObject.cpp
+    src/app/objects/shapes/CircleObject.cpp
+    src/app/objects/shapes/LineObject.cpp
+    src/app/objects/actuators/WheelMotor.cpp
+    src/app/objects/robots/Sumobot4Wheel.cpp
+    src/app/objects/sensors/RangeSensorObject.cpp
+    src/app/objects/sensors/LineDetectorObject.cpp
+    src/app/objects/playgrounds/Dohyo.cpp
+    src/app/controllers/Sumobot4WheelExample/main.c
+    src/app/controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
     src/app/scenes/DrawTestScene.cpp
     src/app/scenes/SpriteAnimationTestScene.cpp
     src/app/scenes/PhysicsBoxTestScene.cpp
     src/app/scenes/WheelMotorTestScene.cpp
     src/app/scenes/Sumobot4WheelTestScene.cpp
-    src/app/objects/WheelMotor.cpp
-    src/app/objects/Sumobot4Wheel.cpp
-    src/app/objects/Dohyo.cpp
-    src/app/objects/RangeSensorObject.cpp
-    src/app/objects/LineDetectorObject.cpp
-    src/app/controllers/Sumobot4WheelExample/main.c
-    src/app/controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES
@@ -91,8 +90,9 @@ target_include_directories(sumobot_simulator PRIVATE include/app/scenes)
 target_include_directories(sumobot_simulator PRIVATE include/app/objects)
 target_include_directories(sumobot_simulator PRIVATE include/engine/core)
 target_include_directories(sumobot_simulator PRIVATE include/engine/renderer)
+target_include_directories(sumobot_simulator PRIVATE include/engine/transforms)
 target_include_directories(sumobot_simulator PRIVATE include/engine/physics)
-target_include_directories(sumobot_simulator PRIVATE include/engine/controller)
+target_include_directories(sumobot_simulator PRIVATE include/engine/controllers)
 target_include_directories(sumobot_simulator PRIVATE include/engine/scene)
 target_include_directories(sumobot_simulator PRIVATE include/app/controllers)
 target_include_directories(sumobot_simulator PRIVATE external/glfw/deps)

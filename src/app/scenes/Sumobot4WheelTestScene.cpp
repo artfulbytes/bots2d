@@ -1,46 +1,46 @@
 #include "Sumobot4WheelTestScene.h"
-#include "Sumobot4Wheel.h"
-#include "Transforms.h"
-#include "QuadComponent.h"
-#include "Body2D.h"
-#include "KeyboardController.h"
+#include "components/Transforms.h"
+#include "components/QuadComponent.h"
+#include "components/Body2D.h"
+#include "components/KeyboardController.h"
 #include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
-
-#include "Dohyo.h"
+#include "robots/Sumobot4Wheel.h"
+#include "shapes/QuadObject.h"
+#include "playgrounds/Dohyo.h"
 
 namespace {
     class Sumobot4WheelController : public KeyboardController
     {
     public:
         enum class Drive { Stop, Forward, Backward, Left, Right };
-        const float maxSpeed = 4.0f;
+        const float maxVoltage = 4.0f;
 
         void setDrive(Drive drive) {
-            float leftSpeed = 0.0f;
-            float rightSpeed = 0.0f;
+            float leftVoltage = 0.0f;
+            float rightVoltage = 0.0f;
             switch (drive) {
                 case Drive::Stop:
-                    leftSpeed = rightSpeed = 0.0f;
+                    leftVoltage = rightVoltage = 0.0f;
                     break;
                 case Drive::Forward:
-                    leftSpeed = rightSpeed = maxSpeed;
+                    leftVoltage = rightVoltage = maxVoltage;
                     break;
                 case Drive::Backward:
-                    leftSpeed = rightSpeed = -maxSpeed;
+                    leftVoltage = rightVoltage = -maxVoltage;
                     break;
                 case Drive::Left:
-                    leftSpeed = -maxSpeed;
-                    rightSpeed = maxSpeed;
+                    leftVoltage = -maxVoltage;
+                    rightVoltage = maxVoltage;
                     break;
                 case Drive::Right:
-                    leftSpeed = maxSpeed;
-                    rightSpeed = -maxSpeed;
+                    leftVoltage = maxVoltage;
+                    rightVoltage = -maxVoltage;
                     break;
             }
-            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::FrontLeftMotor) = leftSpeed;
-            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::BackLeftMotor) = leftSpeed;
-            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::FrontRightMotor) = rightSpeed;
-            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::BackRightMotor) = rightSpeed;
+            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::FrontLeftMotor) = leftVoltage;
+            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::BackLeftMotor) = leftVoltage;
+            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::FrontRightMotor) = rightVoltage;
+            *m_sumobot4Wheel->getVoltageLine(Sumobot4Wheel::VoltageLine::BackRightMotor) = rightVoltage;
         }
         Sumobot4WheelController(Sumobot4Wheel *sumobot4Wheel) : m_sumobot4Wheel(sumobot4Wheel)
         {

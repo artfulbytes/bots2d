@@ -1,9 +1,9 @@
 #include "SceneObject.h"
 #include "Scene.h"
-#include "RenderableComponent.h"
-#include "PhysicsComponent.h"
-#include "ControllerComponent.h"
-#include "Transforms.h"
+#include "components/RenderableComponent.h"
+#include "components/PhysicsComponent.h"
+#include "components/ControllerComponent.h"
+#include "components/Transforms.h"
 
 #include <cassert>
 
