@@ -16,7 +16,7 @@ git clone --recursive -j8 https://github.com/artfulbytes/simulator
 1. mkdir build
 2. cd build
 3. cmake ..
-4. make
+4. cmake --build .
 
 ## Windows
 

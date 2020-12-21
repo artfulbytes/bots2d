@@ -15,7 +15,8 @@ void ResourcesHelper::init()
      * should work for both Linux and Windows */
     struct stat info;
 
-    std::array<std::string, 3> pathsToCheck {"./resources/", "../resources/", "../../resources/"};
+    std::array<std::string, 4> pathsToCheck {"./resources/", "../resources/",
+                                             "../../resources/", "../../../resources/"};
     for (const auto &path : pathsToCheck) {
         if (stat(path.c_str(), &info) == 0) {
             resourcesPath = path;
@@ -23,7 +24,7 @@ void ResourcesHelper::init()
         }
     }
     std::cout << "Couldn't find resources folder" << std::endl;
-    std::cout << "You must run the program from 'build/', 'build/Debug' or project folder" << std::endl;
+    std::cout << "You must run the program from project folder or at most 3 nested levels down" << std::endl;
     assert(false);
 }
 
