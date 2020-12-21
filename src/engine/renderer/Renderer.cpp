@@ -135,6 +135,8 @@ void Renderer::init()
 
 void Renderer::destroy()
 {
+    /* Frees all smart pointers */
+    s_rendererData = nullptr;
 }
 
 void Renderer::setCameraPosition(const glm::vec2 &position, float zoomFactor)

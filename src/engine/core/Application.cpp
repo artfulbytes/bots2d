@@ -53,6 +53,10 @@ static void enable_vsync(bool enabled)
     glfwSwapInterval(enabled ? 1 : 0);
 }
 
+/* Doesn't matter, width and height are adjusted automatically */
+static const int defaultWidth = 800;
+static const int defaultHeight = 600;
+
 static int init_opengl(GLFWwindow* window) {
     if (!window) {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -84,7 +88,7 @@ static int init_opengl(GLFWwindow* window) {
     }
     std::cout << glGetString(GL_VERSION) << std::endl;
 
-    GLCall(glViewport(0, 0, 800, 600));
+    GLCall(glViewport(0, 0, defaultWidth, defaultHeight));
 
     glfwSetKeyCallback(window, key_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -93,7 +97,7 @@ static int init_opengl(GLFWwindow* window) {
 }
 
 
-Application::Application()
+Application::Application(std::string name)
 {
     glfwSetErrorCallback(error_callback);
 
@@ -101,7 +105,7 @@ Application::Application()
         assert(false);
     }
 
-    m_window = glfwCreateWindow(800, 600, "Sumobot simulator", NULL, NULL);
+    m_window = glfwCreateWindow(defaultWidth, defaultHeight, name.c_str(), NULL, NULL);
 
     /* Makes Application object accessible from C-callback */
     glfwSetWindowUserPointer(m_window, this);

@@ -2,13 +2,14 @@
 #define APPLICATION_H_
 
 #include "Event.h"
+#include <string>
 
 class GLFWwindow;
 
 class Application
 {
 public:
-    Application();
+    Application(std::string name);
     ~Application();
     void run();
 

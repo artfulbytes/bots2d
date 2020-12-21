@@ -6,7 +6,8 @@
 #include "WheelMotorTestScene.h"
 #include "Sumobot4WheelTestScene.h"
 
-SimulatorApp::SimulatorApp()
+SimulatorApp::SimulatorApp() :
+    Application("Simulator")
 {
     m_sceneMenu = std::make_unique<SceneMenu>(m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
