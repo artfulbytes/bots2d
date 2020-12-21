@@ -6,14 +6,16 @@
 #include <glm/glm.hpp>
 
 /* Transform act as the link between physics and rendering */
-struct TransformComponent : Component
+class TransformComponent : public Component
 {
+public:
     /* Add virtual destructor for polymorphism */
     virtual ~TransformComponent() {};
 };
 
-struct LineTransform : TransformComponent
+class LineTransform : public TransformComponent
 {
+public:
     LineTransform() {}
     LineTransform(const glm::vec2 &start, const glm::vec2 &end, float width) :
         start(start), end(end), width(width) {}
@@ -22,8 +24,9 @@ struct LineTransform : TransformComponent
     float width;
 };
 
-struct QuadTransform : TransformComponent
+class QuadTransform : public TransformComponent
 {
+public:
     QuadTransform(const glm::vec2 &position, const glm::vec2 &size, float rotation = 0.0f) :
         position(position), size(size), rotation(rotation) {}
     ~QuadTransform() {}
@@ -32,8 +35,9 @@ struct QuadTransform : TransformComponent
     float rotation;
 };
 
-struct CircleTransform : TransformComponent
+class CircleTransform : public TransformComponent
 {
+public:
     CircleTransform() {}
     CircleTransform(const glm::vec2 &position, float radius) :
         position(position), radius(radius) {}
@@ -42,8 +46,9 @@ struct CircleTransform : TransformComponent
     float radius;
 };
 
-struct HollowCircleTransform : TransformComponent
+class HollowCircleTransform : public TransformComponent
 {
+public:
     HollowCircleTransform(const glm::vec2 &position, float innerRadius, float outerRadius) :
         position(position), innerRadius(innerRadius), outerRadius(outerRadius) {}
     glm::vec2 position;
