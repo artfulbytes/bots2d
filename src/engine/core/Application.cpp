@@ -62,16 +62,7 @@ static int init_opengl(GLFWwindow* window) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
-    } else {
-        std::cout << "Created GLFW window" << std::endl;
     }
-
-    /* Set OpenGL version
-     * Might need to export MESA_GL_VERSION_OVERRIDE=3.3 for it to work */
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 3 );
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 3 );
-    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-    glfwWindowHint(GLFW_SAMPLES, 4);
 
     glfwMakeContextCurrent(window);
 
@@ -105,6 +96,15 @@ Application::Application(std::string name)
         assert(false);
     }
 
+    /* Set OpenGL version */
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    /* Enable anti aliasing */
+    glfwWindowHint(GLFW_SAMPLES, 16);
+
+    /* NOTE: glfwWindowHint-calls must come before glfwCreateWindow */
     m_window = glfwCreateWindow(defaultWidth, defaultHeight, name.c_str(), NULL, NULL);
 
     /* Makes Application object accessible from C-callback */

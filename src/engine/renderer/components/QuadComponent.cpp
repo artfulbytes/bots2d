@@ -11,9 +11,9 @@ QuadComponent::QuadComponent(const QuadTransform *transform, const glm::vec4& co
 {
 }
 
-QuadComponent::QuadComponent(const QuadTransform *transform, const std::string &textureFilepath, SpriteAnimation *spriteAnimation) :
+QuadComponent::QuadComponent(const QuadTransform *transform, const std::string &textureName, SpriteAnimation *spriteAnimation) :
     m_transform(transform),
-    m_texture(std::make_unique<Texture>(textureFilepath)),
+    m_texture(std::make_unique<Texture>(textureName)),
     m_texCoords(std::make_unique<TexCoords>()),
     m_spriteAnimation(spriteAnimation)
 {

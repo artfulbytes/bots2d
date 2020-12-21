@@ -44,7 +44,7 @@ public:
 private:
     static Specification scaleSpec(const Specification &unscaledSpec);
     void setAnimation();
-    std::string getTexturePath(Orientation orientation, TextureType textureType);
+    std::string getTextureName(Orientation orientation, TextureType textureType);
 
     void updateForce();
     Specification m_scaledSpec;

@@ -108,10 +108,10 @@ void Sumobot4Wheel::createBody(const PhysicsWorld &world, const Specification &u
 
     switch(unscaledSpec.textureType) {
     case Sumobot4Wheel::TextureType::Plated:
-        m_renderableComponent = std::make_unique<QuadComponent>(transform, "../resources/textures/sumobot_body_plated.png");
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_plated.png");
         break;
     case Sumobot4Wheel::TextureType::Circuited:
-        m_renderableComponent = std::make_unique<QuadComponent>(transform, "../resources/textures/sumobot_body_circuited.png");
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_circuited.png");
         break;
     case Sumobot4Wheel::TextureType::None:
         glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);

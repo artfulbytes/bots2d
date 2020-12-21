@@ -20,7 +20,7 @@ Dohyo::Dohyo(Scene *scene, const PhysicsWorld &world, const Specification &unsca
     switch (unscaledSpec.textureType) {
     case Dohyo::TextureType::Scratched:
     {
-        m_quadObject = std::make_unique<QuadObject>(scene, "../resources/textures/dohyo_scratched.png", nullptr, nullptr,
+        m_quadObject = std::make_unique<QuadObject>(scene, "dohyo_scratched.png", nullptr, nullptr,
                                                     PhysicsWorld::scalePosition(unscaledStartPos),
                                                     glm::vec2{ 2.0f * m_scaledSpec.outerRadius, 2.0f * m_scaledSpec.outerRadius },
                                                     0.0f);

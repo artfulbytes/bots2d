@@ -4,6 +4,7 @@
 #include "components/QuadComponent.h"
 #include "components/Body2D.h"
 #include "SpriteAnimation.h"
+#include "ResourcesHelper.h"
 
 #include <glm/glm.hpp>
 
@@ -20,7 +21,7 @@ WheelMotor::WheelMotor(Scene *scene, const PhysicsWorld &world, const Specificat
     if (unscaledSpec.textureType != WheelMotor::TextureType::None) {
         m_animation = std::make_unique<SpriteAnimation>(1, 5, 5, 3, SpriteAnimation::Direction::Backward);
         m_animation->setFramesBetweenUpdates(1);
-        m_renderableComponent = std::make_unique<QuadComponent>(transform, getTexturePath(orientation, unscaledSpec.textureType), m_animation.get());
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, getTextureName(orientation, unscaledSpec.textureType), m_animation.get());
     } else {
         m_renderableComponent = std::make_unique<QuadComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
@@ -33,18 +34,18 @@ WheelMotor::~WheelMotor()
 {
 }
 
-std::string WheelMotor::getTexturePath(WheelMotor::Orientation orientation, WheelMotor::TextureType textureType)
+std::string WheelMotor::getTextureName(WheelMotor::Orientation orientation, WheelMotor::TextureType textureType)
 {
     switch(textureType) {
     case WheelMotor::TextureType::Orange:
         switch(orientation) {
-        case WheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_orange.png";
-        case WheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_orange.png";
+        case WheelMotor::Orientation::Left: return "wheel_sprite_left_orange.png";
+        case WheelMotor::Orientation::Right: return "wheel_sprite_right_orange.png";
         }
     case WheelMotor::TextureType::Green:
         switch(orientation) {
-        case WheelMotor::Orientation::Left: return "../resources/textures/wheel_sprite_left_green.png";
-        case WheelMotor::Orientation::Right: return "../resources/textures/wheel_sprite_right_green.png";
+        case WheelMotor::Orientation::Left: return "wheel_sprite_left_green.png";
+        case WheelMotor::Orientation::Right: return "wheel_sprite_right_green.png";
         }
     case TextureType::None:
         assert(0);

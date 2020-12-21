@@ -1,19 +1,25 @@
 #include "Texture.h"
 #include "GLError.h"
+#include "ResourcesHelper.h"
+
 #include <glad/gl.h>
 #include "stb_image.h"
 #include <cassert>
+#include <iostream>
 
-Texture::Texture(const std::string& filepath) :
-    m_filepath(filepath)
+Texture::Texture(const std::string& textureName) :
+    m_filepath(ResourcesHelper::getTexturesPath(textureName))
 {
     /* Flips texture upside down because OpenGl expects pixels to
        start at the bottom left */
     stbi_set_flip_vertically_on_load(1);
     /* 4 channels since RBGA */
-    m_localBuffer = stbi_load(filepath.c_str(), &m_width, &m_height, &m_bpp, 4);
+    m_localBuffer = stbi_load(m_filepath.c_str(), &m_width, &m_height, &m_bpp, 4);
 
-    assert(m_localBuffer != nullptr);
+    if (m_localBuffer == nullptr) {
+        std::cout << "Could not find texture: " << m_filepath << std::endl;
+        assert(m_localBuffer != nullptr);
+    }
 
     GLCall(glGenTextures(1, &m_id));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_id));

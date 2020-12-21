@@ -16,7 +16,7 @@ class QuadComponent : public RenderableComponent
 {
 public:
     QuadComponent(const QuadTransform *transform, const glm::vec4& color);
-    QuadComponent(const QuadTransform *transform, const std::string &textureFilepath, SpriteAnimation *spriteAnimation = nullptr);
+    QuadComponent(const QuadTransform *transform, const std::string &textureName, SpriteAnimation *spriteAnimation = nullptr);
     ~QuadComponent();
 
     void onFixedUpdate() override;

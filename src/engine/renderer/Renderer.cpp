@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "ResourcesHelper.h"
 #include "GLError.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
@@ -122,13 +123,15 @@ static void enableBlending()
 
 void Renderer::init()
 {
+    ResourcesHelper::init();
     s_rendererData = std::make_unique<RendererStorage>();
     enableBlending();
 
     s_rendererData->projectionMatrix = std::make_unique<glm::mat4>(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f));
     s_rendererData->viewMatrix = std::make_unique<glm::mat4>(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)));
-    s_rendererData->solidColorShader = std::make_unique<Shader>("../resources/shaders/solid_color.shader");
-    s_rendererData->textureShader = std::make_unique<Shader>("../resources/shaders/texture.shader");
+
+    s_rendererData->solidColorShader = std::make_unique<Shader>("solid_color.shader");
+    s_rendererData->textureShader = std::make_unique<Shader>("texture.shader");
     initCircle();
     initQuad();
 }
@@ -137,6 +140,7 @@ void Renderer::destroy()
 {
     /* Frees all smart pointers */
     s_rendererData = nullptr;
+    ResourcesHelper::destroy();
 }
 
 void Renderer::setCameraPosition(const glm::vec2 &position, float zoomFactor)
