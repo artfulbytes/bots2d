@@ -37,8 +37,8 @@ Dohyo::Dohyo(Scene *scene, const PhysicsWorld &world, const Specification &unsca
 Dohyo::Specification Dohyo::scaleSpec(const Specification &unscaledSpec)
 {
     const Specification scaledSpec = {
-        .innerRadius = PhysicsWorld::scaleLength(unscaledSpec.innerRadius),
-        .outerRadius = PhysicsWorld::scaleLength(unscaledSpec.outerRadius)
+        innerRadius : PhysicsWorld::scaleLength(unscaledSpec.innerRadius),
+        outerRadius : PhysicsWorld::scaleLength(unscaledSpec.outerRadius)
     };
     return scaledSpec;
 }

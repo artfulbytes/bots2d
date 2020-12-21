@@ -27,7 +27,6 @@ public:
         const float diameter;
         const float width;
         const float mass;
-        const float maxDriveForce;
         /* This determines the sideway friction */
         const float maxLateralCancelingImpulse = 40.5f;
         const TextureType textureType = TextureType::None;

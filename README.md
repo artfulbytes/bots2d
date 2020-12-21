@@ -5,6 +5,11 @@ Work in progress. You can follow the progress here:
 https://www.artfulbytes.com/sumo-simulator-journal
 
 # Cloning
+The project depends on other git projects checked out at specific commits.
+All external projects are included as submodules under "external/". To clone
+the repo including the submodules run:
+
+git clone --recursive -j8 https://github.com/artfulbytes/simulator
 
 # Build
 ## Linux
@@ -14,6 +19,14 @@ https://www.artfulbytes.com/sumo-simulator-journal
 4. make
 
 ## Windows
+
+# Troubleshooting...
+* Incorrect OpenGL version (Linux)
+    - Check version in console output
+    - "export MESA_GL_VERSION_OVERRIDE=3.3"
+* "RandR headers not found; install libxrandr development package"
+    - GLFW requires xorg-dev liblu1-mesa-dev
+    - On Ubuntu, run "sudo apt install xorg-dev libglu1-mesa-dev"
 
 # Folder structure
 * include
@@ -34,10 +47,5 @@ https://www.artfulbytes.com/sumo-simulator-journal
     - Resources for the renderer (e.g. shaders, textures, sprites..)
 * tools
     - Any standalone tools (e.g. scripts)
-
-# Troubleshooting...
-* Incorrect OpenGL version
-    - Check version in console output
-    - Try exporting MESA_GL_VERSION_OVERRIDE=3.3
 
 

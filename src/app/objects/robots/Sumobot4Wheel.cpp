@@ -54,43 +54,43 @@ void Sumobot4Wheel::createSensors(const PhysicsWorld &world)
 {
     const RangeSensorObject::Specification leftSpec =
     {
-        .relativePosition = { -0.04f, 0.0f },
-        .relativeAngle = -1.57f,
-        .minDistance = 0.0f,
-        .maxDistance = 0.8f
+        relativePosition : { -0.04f, 0.0f },
+        relativeAngle : -1.57f,
+        minDistance : 0.0f,
+        maxDistance : 0.8f
     };
     m_leftRangeSensor = std::make_unique<RangeSensorObject>(m_scene, world, *m_body2D, true, leftSpec);
     const RangeSensorObject::Specification frontLeftSpec =
     {
-        .relativePosition = { -0.03f, 0.05f },
-        .relativeAngle = -0.3f,
-        .minDistance = 0.0f,
-        .maxDistance = 0.8f
+        relativePosition : { -0.03f, 0.05f },
+        relativeAngle : -0.3f,
+        minDistance : 0.0f,
+        maxDistance : 0.8f
     };
     m_frontLeftRangeSensor = std::make_unique<RangeSensorObject>(m_scene, world, *m_body2D, true, frontLeftSpec);
     const RangeSensorObject::Specification frontSpec =
     {
-        .relativePosition = { 0.0f, 0.05f },
-        .relativeAngle = 0.0f,
-        .minDistance = 0.0f,
-        .maxDistance = 0.8f
+        relativePosition : { 0.0f, 0.05f },
+        relativeAngle : 0.0f,
+        minDistance : 0.0f,
+        maxDistance : 0.8f
     };
     m_frontRangeSensor = std::make_unique<RangeSensorObject>(m_scene, world, *m_body2D, true, frontSpec);
     const RangeSensorObject::Specification frontRightSpec =
     {
-        .relativePosition = { 0.03f, 0.05f },
-        .relativeAngle = 0.3f,
-        .minDistance = 0.0f,
-        .maxDistance = 0.8f
+        relativePosition : { 0.03f, 0.05f },
+        relativeAngle : 0.3f,
+        minDistance : 0.0f,
+        maxDistance : 0.8f
 
     };
     m_frontRightRangeSensor = std::make_unique<RangeSensorObject>(m_scene, world, *m_body2D, true, frontRightSpec);
     const RangeSensorObject::Specification rightSpec =
     {
-        .relativePosition = { 0.04f, 0.0f },
-        .relativeAngle = 1.57f,
-        .minDistance = 0.0f,
-        .maxDistance = 0.8f
+        relativePosition : { 0.04f, 0.0f },
+        relativeAngle : 1.57f,
+        minDistance : 0.0f,
+        maxDistance : 0.8f
     };
     m_rightRangeSensor = std::make_unique<RangeSensorObject>(m_scene, world, *m_body2D, true, rightSpec);
 
@@ -128,13 +128,14 @@ void Sumobot4Wheel::createWheelMotors(const PhysicsWorld &world, const Specifica
 
     const float unscaledBodyWidth = (unscaledSpec.width * widthBodyFactor);
     const WheelMotor::Specification unscaledWheelSpec = {
-        .voltageInConstant = 314.0f,
-        .angularSpeedConstant = 89.0f,
-        .maxVoltage = 6.0f,
-        .diameter = unscaledSpec.length / 4.0f,
-        .width = (unscaledSpec.width * widthWheelsFactor) / 2.0f,
-        .mass = 0.05f,
-        .textureType = getWheelTextureType(unscaledSpec.textureType)
+        voltageInConstant : 314.0f,
+        angularSpeedConstant : 89.0f,
+        maxVoltage : 6.0f,
+        diameter : unscaledSpec.length / 4.0f,
+        width : (unscaledSpec.width * widthWheelsFactor) / 2.0f,
+        mass : 0.05f,
+        maxLateralCancelingImpulse : 40.5f,
+        textureType : getWheelTextureType(unscaledSpec.textureType)
     };
 
     float frontYPos = 0.0f;
@@ -190,9 +191,9 @@ float *Sumobot4Wheel::getVoltageLine(Sumobot4Wheel::VoltageLine line) const
 Sumobot4Wheel::Specification Sumobot4Wheel::scaleSpec(const Specification &unscaledSpec)
 {
     const Specification scaledSpec = {
-        .length = PhysicsWorld::scaleLength(unscaledSpec.length),
-        .width = PhysicsWorld::scaleLength(unscaledSpec.width),
-        .mass = PhysicsWorld::scaleMass(unscaledSpec.mass)
+        length : PhysicsWorld::scaleLength(unscaledSpec.length),
+        width : PhysicsWorld::scaleLength(unscaledSpec.width),
+        mass : PhysicsWorld::scaleMass(unscaledSpec.mass)
     };
     return scaledSpec;
 }

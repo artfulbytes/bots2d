@@ -43,12 +43,12 @@ WheelMotorTestScene::WheelMotorTestScene() :
     auto physicsWorld = m_physicsWorld.get();
 
     const WheelMotor::Specification unscaledSpec = {
-        .voltageInConstant = 314.0f,
-        .angularSpeedConstant = 89.0f,
-        .maxVoltage = 6.0f,
-        .diameter = 0.12f,
-        .width = 0.06f,
-        .mass = 0.05f
+        voltageInConstant : 314.0f,
+        angularSpeedConstant : 89.0f,
+        maxVoltage : 6.0f,
+        diameter : 0.12f,
+        width : 0.06f,
+        mass : 0.05f
     };
     m_wheelMotor = std::make_unique<WheelMotor>(this, *physicsWorld, unscaledSpec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f });
     m_wheelMotorController = std::make_unique<WheelMotorController>(m_wheelMotor.get());
