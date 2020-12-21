@@ -3,7 +3,7 @@
 
 #include <string>
 
-class GLFWwindow;
+struct GLFWwindow;
 
 class ImGuiOverlay
 {

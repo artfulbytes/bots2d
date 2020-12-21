@@ -51,6 +51,7 @@ class HollowCircleTransform : public TransformComponent
 public:
     HollowCircleTransform(const glm::vec2 &position, float innerRadius, float outerRadius) :
         position(position), innerRadius(innerRadius), outerRadius(outerRadius) {}
+    ~HollowCircleTransform() {}
     glm::vec2 position;
     float innerRadius;
     float outerRadius;

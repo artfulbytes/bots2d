@@ -4,7 +4,7 @@
 #include "Event.h"
 #include <string>
 
-class GLFWwindow;
+struct GLFWwindow;
 
 class Application
 {

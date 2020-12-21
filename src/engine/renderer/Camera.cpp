@@ -15,8 +15,8 @@ namespace {
 
 void Camera::reset()
 {
-    cameraPosition.x = windowWidth / 2;
-    cameraPosition.y = windowHeight / 2;
+    cameraPosition.x = windowWidth / 2.0f;
+    cameraPosition.y = windowHeight / 2.0f;
     zoomFactor = 1.0f;
     Renderer::setCameraPosition(cameraPosition, zoomFactor);
 }

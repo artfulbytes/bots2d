@@ -20,7 +20,7 @@ inline constexpr float massScaleFactor { physScaleFactor * physScaleFactor * phy
 /* F = m*a so F_scaled = forceFactor * F = (massFactor * m) * (accFactor * a) */
 inline constexpr float forceScaleFactor { massScaleFactor * accelerationScaleFactor };
 
-inline constexpr float gravitationConstant { 9.82 };
+inline constexpr float gravitationConstant { 9.82f };
 
 void PhysicsWorld::assertDimensions(float unscaledLength)
 {
