@@ -70,14 +70,14 @@ void WheelMotor::setAnimation()
 WheelMotor::Specification WheelMotor::scaleSpec(const Specification &unscaledSpec)
 {
     const Specification scaledSpec = {
-        voltageInConstant : unscaledSpec.voltageInConstant,
-        angularSpeedConstant : unscaledSpec.angularSpeedConstant,
-        maxVoltage : unscaledSpec.maxVoltage,
-        diameter : PhysicsWorld::scaleLength(unscaledSpec.diameter),
-        width : PhysicsWorld::scaleLength(unscaledSpec.width),
-        mass : PhysicsWorld::scaleMass(unscaledSpec.mass),
-        maxLateralCancelingImpulse : unscaledSpec.maxLateralCancelingImpulse,
-        textureType : unscaledSpec.textureType
+        unscaledSpec.voltageInConstant,
+        unscaledSpec.angularSpeedConstant,
+        unscaledSpec.maxVoltage,
+        PhysicsWorld::scaleLength(unscaledSpec.diameter),
+        PhysicsWorld::scaleLength(unscaledSpec.width),
+        PhysicsWorld::scaleMass(unscaledSpec.mass),
+        unscaledSpec.maxLateralCancelingImpulse,
+        unscaledSpec.textureType
     };
     return scaledSpec;
 }

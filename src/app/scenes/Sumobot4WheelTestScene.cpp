@@ -101,20 +101,20 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene() :
     createBackground();
     const Dohyo::Specification dohyoSpec =
     {
-        innerRadius : 0.35f,
-        outerRadius : 0.37f,
-        textureType : Dohyo::TextureType::Scratched
+        0.35f,
+        0.37f,
+        Dohyo::TextureType::Scratched
     };
     m_dohyo = std::make_unique<Dohyo>(this, *physicsWorld, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
     /* Sumobot controlled by keyboard */
     const Sumobot4Wheel::Specification circuitedSpec =
     {
-        length : 0.1f,
-        width : 0.1f,
-        mass : 0.5f,
-        frictionCoefficient : 0.05f,
-        textureType : Sumobot4Wheel::TextureType::Circuited,
+        0.1f,
+        0.1f,
+        0.5f,
+        0.05f,
+        Sumobot4Wheel::TextureType::Circuited,
     };
     m_sumobot4WheelCircuited = std::make_unique<Sumobot4Wheel>(this, *physicsWorld, circuitedSpec, glm::vec2(-0.25f, -0.25f));
     m_circuitedController = std::make_unique<Sumobot4WheelController>(m_sumobot4WheelCircuited.get());
@@ -123,11 +123,11 @@ Sumobot4WheelTestScene::Sumobot4WheelTestScene() :
     /* Sumobot controlled by microcontroller */
     const Sumobot4Wheel::Specification platedSpec =
     {
-        length : 0.1f,
-        width : 0.1f,
-        mass : 0.5f,
-        frictionCoefficient : 0.05f,
-        textureType : Sumobot4Wheel::TextureType::Plated,
+        0.1f,
+        0.1f,
+        0.5f,
+        0.05f,
+        Sumobot4Wheel::TextureType::Plated,
     };
     m_sumobot4WheelPlated = std::make_unique<Sumobot4Wheel>(this, *physicsWorld, platedSpec, glm::vec2{ 0.0f, 0.0f });
 
