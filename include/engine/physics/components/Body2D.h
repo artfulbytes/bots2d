@@ -9,7 +9,7 @@ class b2Joint;
 class QuadTransform;
 class CircleTransform;
 class HollowCircleTransform;
-class Body2DUserData;
+struct Body2DUserData;
 
 class Body2D : public PhysicsComponent
 {

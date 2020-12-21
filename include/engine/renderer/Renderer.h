@@ -8,7 +8,7 @@ class VertexArray;
 class IndexBuffer;
 class Shader;
 class Texture;
-class TexCoords;
+struct TexCoords;
 
 class Renderer
 {

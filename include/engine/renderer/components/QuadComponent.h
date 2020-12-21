@@ -7,7 +7,7 @@
 #include <string>
 #include <memory>
 
-class TexCoords;
+struct TexCoords;
 class Texture;
 class SpriteAnimation;
 class QuadTransform;
