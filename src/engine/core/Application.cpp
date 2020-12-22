@@ -1,12 +1,13 @@
 #include "Application.h"
-/* Note, Glad must be included before any OpenGL stuff */
-#define GLFW_INCLUDE_NONE
 #include "Renderer.h"
 #include "ImGuiOverlay.h"
 #include "GLError.h"
 #include "Event.h"
 #include "Camera.h"
 
+/* Glad must be included before any OpenGL stuff */
+#define GLFW_INCLUDE_NONE
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <cassert>
 #include <iostream>

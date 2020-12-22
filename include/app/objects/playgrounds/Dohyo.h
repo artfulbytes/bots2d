@@ -1,5 +1,5 @@
-#ifndef TOP_VIEW_DOHYO_H_
-#define TOP_VIEW_DOHYO_H_
+#ifndef DOHYO_H_
+#define DOHYO_H_
 
 #include "SceneObject.h"
 #include "Body2DUserData.h"
@@ -18,7 +18,7 @@ public:
         const float outerRadius;
         const TextureType textureType = TextureType::None;
     };
-    Dohyo(Scene *scene, const PhysicsWorld &world, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
+    Dohyo(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
     ~Dohyo();
     void onFixedUpdate(double stepTime) override;
 
@@ -29,4 +29,4 @@ private:
     std::unique_ptr<QuadObject> m_quadObject;
 };
 
-#endif /* TOP_VIEW_DOHYO_H_ */
+#endif /* DOHYO_H_ */

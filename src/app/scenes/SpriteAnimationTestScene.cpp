@@ -4,7 +4,8 @@
 
 #include <glm/glm.hpp>
 
-SpriteAnimationTestScene::SpriteAnimationTestScene()
+SpriteAnimationTestScene::SpriteAnimationTestScene() :
+    Scene("Simple animation sprite sheet test")
 {
     const SpriteAnimation::Params animationParams = { 1, 2, 2, 30 };
     m_quadObject = std::make_unique<QuadObject>(this, "AnimationTestSpriteSheet.png", &animationParams,

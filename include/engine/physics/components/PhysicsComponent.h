@@ -4,6 +4,13 @@
 #include "PhysicsWorld.h"
 #include "Component.h"
 
+class PhysicsToTransformTranslator
+{
+public:
+    virtual ~PhysicsToTransformTranslator() {}
+    virtual void translate() = 0;
+};
+
 class PhysicsComponent : public Component
 {
 public:
@@ -14,11 +21,6 @@ public:
     virtual void onFixedUpdate(double stepTime) = 0;
 
 protected:
-    class PhysicsToTransformTranslator
-    {
-    public:
-        virtual void translate() = 0;
-    };
     b2World *m_world;
     std::unique_ptr<PhysicsToTransformTranslator> m_translator;
 };

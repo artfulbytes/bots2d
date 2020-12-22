@@ -38,19 +38,12 @@ namespace {
 }
 
 WheelMotorTestScene::WheelMotorTestScene() :
-    Scene(PhysicsWorld::Gravity::TopView)
+    Scene("Test wheel motor object", PhysicsWorld::Gravity::TopView)
 {
     auto physicsWorld = m_physicsWorld.get();
 
-    const WheelMotor::Specification unscaledSpec = {
-        314.0f,
-        89.0f,
-        6.0f,
-        0.12f,
-        0.06f,
-        0.05f
-    };
-    m_wheelMotor = std::make_unique<WheelMotor>(this, *physicsWorld, unscaledSpec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f });
+    const WheelMotor::Specification spec(0.06f, 0.12f, 0.06f, WheelMotor::TextureType::Green);
+    m_wheelMotor = std::make_unique<WheelMotor>(this, spec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f });
     m_wheelMotorController = std::make_unique<WheelMotorController>(m_wheelMotor.get());
     m_wheelMotor->setController(m_wheelMotorController.get());
 }

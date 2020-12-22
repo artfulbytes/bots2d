@@ -21,6 +21,8 @@ public:
 
     static void assertDimensions(float unscaledLength);
     static float scaleLength(float unscaledLength);
+    static float scaleLengthNoAssert(float unscaledLength);
+    static float scaleRadius(float unscaledRadius);
     static glm::vec2 scalePosition(const glm::vec2 &unscaledPosition);
     static float scalePosition(float unscaledPosition);
     static float scaleSpeed(float unscaledSpeed);

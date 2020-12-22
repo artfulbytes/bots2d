@@ -12,6 +12,7 @@ SceneObject::SceneObject(Scene *scene)
     assert(scene != nullptr);
     scene->addObject(this);
     m_scene = scene;
+    m_physicsWorld = scene->getPhysicsWorld();
 }
 
 SceneObject::~SceneObject()

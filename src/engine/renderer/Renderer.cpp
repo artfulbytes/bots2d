@@ -9,6 +9,8 @@
 #include "Texture.h"
 #include "TexCoords.h"
 
+#include <glad/gl.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -113,12 +115,16 @@ static void initQuad()
 
 static void enableBlending()
 {
-    glEnable(GL_MULTISAMPLE);
     /* Specify how colors should be blended together */
     /* alpha * src + (1 - alpha) * target */
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
     GLCall(glEnable(GL_BLEND));
-    //glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_MULTISAMPLE);
+    //int samples;
+    ///* Can be used to see if anti-aliasing is enabled */
+    //glGetInteger(GL_SAMPLES, &samples);
+    //std::cout << samples << std::endl;
 }
 
 void Renderer::init()

@@ -2,9 +2,9 @@
 #include "SceneMenu.h"
 #include "DrawTestScene.h"
 #include "SpriteAnimationTestScene.h"
-#include "PhysicsBoxTestScene.h"
+#include "PhysicsTestScene.h"
 #include "WheelMotorTestScene.h"
-#include "Sumobot4WheelTestScene.h"
+#include "SumobotTestScene.h"
 
 SimulatorApp::SimulatorApp() :
     Application("Simulator")
@@ -12,9 +12,9 @@ SimulatorApp::SimulatorApp() :
     m_sceneMenu = std::make_unique<SceneMenu>(m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
     m_sceneMenu->registerScene<SpriteAnimationTestScene>("SpriteAnimationTest");
-    m_sceneMenu->registerScene<PhysicsBoxTestScene>("PhysicsBoxTest");
+    m_sceneMenu->registerScene<PhysicsTestScene>("PhysicsTest");
     m_sceneMenu->registerScene<WheelMotorTestScene>("WheelMotorTest");
-    m_sceneMenu->registerScene<Sumobot4WheelTestScene>("Sumobot4WheelTest");
+    m_sceneMenu->registerScene<SumobotTestScene>("SumobotTest");
 }
 
 SimulatorApp::~SimulatorApp()

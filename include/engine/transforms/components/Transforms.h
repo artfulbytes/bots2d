@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-/* Transform act as the link between physics and rendering */
+/* Transform acts as the link between physics and rendering */
 class TransformComponent : public Component
 {
 public:
@@ -32,7 +32,7 @@ public:
     ~QuadTransform() {}
     glm::vec2 position;
     glm::vec2 size;
-    float rotation;
+    float rotation = 0.0f;
 };
 
 class CircleTransform : public TransformComponent
@@ -44,6 +44,7 @@ public:
     ~CircleTransform() {}
     glm::vec2 position;
     float radius;
+    float rotation;
 };
 
 class HollowCircleTransform : public TransformComponent

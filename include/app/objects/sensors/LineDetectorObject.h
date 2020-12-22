@@ -10,9 +10,10 @@ class Body2D;
 class LineDetectorObject : public SceneObject
 {
 public:
-    LineDetectorObject(Scene *scene, const PhysicsWorld &world, Body2D &parentBody,
-                       bool show, const glm::vec2 &unscaledRelativePosition);
+    LineDetectorObject(Scene *scene, bool debugShow,
+                       const glm::vec2 &unscaledRelativePosition = { 0.0f, 0.0f });
     ~LineDetectorObject();
+    Body2D *getBody() const;
     void onFixedUpdate(double stepTime) override;
     float *getVoltageLine() const;
 

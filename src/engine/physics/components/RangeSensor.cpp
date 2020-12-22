@@ -5,40 +5,46 @@
 #include <box2d/box2d.h>
 
 namespace {
-    static const float drawWidth = 0.01f;
+    const float drawWidth = 0.01f;
 }
 
-RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform, const Body2D &body,
-                         const glm::vec2 &position, float angle, float minDistance, float maxDistance) :
+RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform,
+                         const glm::vec2 &unscaledPosition, float angle, float minDistance, float maxDistance) :
     PhysicsComponent(world),
     m_lineTransform(transform),
-    m_parentBody(&body),
-    m_relativePosition(PhysicsWorld::scalePosition(position)),
     m_relativeAngle(angle),
     m_minDistance(PhysicsWorld::scalePosition(minDistance)),
-    m_maxDistance(PhysicsWorld::scaleLength(maxDistance)),
+    m_maxDistance(PhysicsWorld::scaleLengthNoAssert(maxDistance)),
     m_detectedDistance(m_maxDistance)
 {
     if (m_lineTransform) {
         m_lineTransform->width = drawWidth;
     }
+
+    /* Create tiny body for attaching and keeping track of ray cast start position */
+    const Body2D::Specification bodySpec { true, false, 0.001f };
+    m_body2D = std::make_unique<Body2D>(world, unscaledPosition, 0.0f, 0.0005f, bodySpec);
 }
 
 RangeSensor::~RangeSensor()
 {
 }
 
+Body2D *RangeSensor::getBody() const
+{
+    return m_body2D.get();
+}
+
 void RangeSensor::onFixedUpdate(double stepTime)
 {
-    const float rayAngleStart = -m_parentBody->getAngle();
-    const float rayAngleEnd = m_relativeAngle - m_parentBody->getAngle();
-    const glm::vec2 bodyPosition = m_parentBody->getPosition();
+    const float rayAngleStart = -m_body2D->getAngle();
+    const float rayAngleEnd = m_relativeAngle - m_body2D->getAngle();
+    const glm::vec2 bodyPosition = m_body2D->getPosition();
 
-    /* Recalculate the casted ray after parent body rotation */
+    /* Recalculate the casted ray */
     const float sinAngle = sinf(-rayAngleStart);
     const float cosAngle = cosf(-rayAngleStart);
-    const glm::vec2 rayStartPosition = { (m_relativePosition.x * cosAngle - m_relativePosition.y * sinAngle) + bodyPosition.x,
-                                    (m_relativePosition.x * sinAngle + m_relativePosition.y * cosAngle) + bodyPosition.y };
+    const glm::vec2 rayStartPosition = bodyPosition;
     const glm::vec2 rayEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_maxDistance;
     updateDetectedDistance(rayStartPosition, rayEndPosition);
     const glm::vec2 detectedEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_detectedDistance;

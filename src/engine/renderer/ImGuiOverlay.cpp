@@ -54,3 +54,9 @@ bool ImGuiOverlay::button(const char *name)
 {
     return ImGui::Button(name);
 }
+
+void ImGuiOverlay::text(const char *text, ...)
+{
+    va_list args;
+    ImGui::Text(text, args);
+}

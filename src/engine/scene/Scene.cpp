@@ -1,12 +1,14 @@
 #include "Scene.h"
 #include "SceneObject.h"
 
-Scene::Scene()
+Scene::Scene(std::string description) :
+    m_description(description)
 {
 }
 
-Scene::Scene(PhysicsWorld::Gravity gravity) :
-    m_physicsWorld(std::make_unique<PhysicsWorld>(gravity))
+Scene::Scene(std::string description, PhysicsWorld::Gravity gravity) :
+    m_physicsWorld(std::make_unique<PhysicsWorld>(gravity)),
+    m_description(description)
 {
 }
 
@@ -16,7 +18,6 @@ Scene::~Scene()
 
 PhysicsWorld *Scene::getPhysicsWorld() const
 {
-    assert(m_physicsWorld);
     return m_physicsWorld.get();
 }
 

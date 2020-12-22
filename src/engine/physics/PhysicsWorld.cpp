@@ -33,6 +33,16 @@ float PhysicsWorld::scaleLength(float unscaledLength)
     return unscaledLength * lengthScaleFactor;
 }
 
+float PhysicsWorld::scaleLengthNoAssert(float unscaledLength)
+{
+    return unscaledLength * lengthScaleFactor;
+}
+
+float PhysicsWorld::scaleRadius(float unscaledRadius)
+{
+    return scaleLength(unscaledRadius * 2.0f) / 2.0f;
+}
+
 glm::vec2 PhysicsWorld::scalePosition(const glm::vec2 &unscaledPosition)
 {
     return { scalePosition(unscaledPosition.x), scalePosition(unscaledPosition.y) };

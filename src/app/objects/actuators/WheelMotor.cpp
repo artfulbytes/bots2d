@@ -8,12 +8,12 @@
 
 #include <glm/glm.hpp>
 
-WheelMotor::WheelMotor(Scene *scene, const PhysicsWorld &world, const Specification &unscaledSpec,
-                                     WheelMotor::Orientation orientation, const glm::vec2 &unscaledStartPos) :
+WheelMotor::WheelMotor(Scene *scene, const Specification &unscaledSpec,
+                       WheelMotor::Orientation orientation, const glm::vec2 &unscaledStartPos) :
     SceneObject(scene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
-    assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
+    assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(unscaledSpec.maxVoltage > 0);
     m_transformComponent = std::make_unique<QuadTransform>(unscaledStartPos, glm::vec2{unscaledSpec.width, unscaledSpec.diameter});
     auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
@@ -26,7 +26,7 @@ WheelMotor::WheelMotor(Scene *scene, const PhysicsWorld &world, const Specificat
         m_renderableComponent = std::make_unique<QuadComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
-    m_physicsComponent = std::make_unique<Body2D>(world, transform, Body2D::BodySpec{ true, true, unscaledSpec.mass });
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, unscaledSpec.mass });
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
@@ -57,10 +57,10 @@ void WheelMotor::setAnimation()
 {
     assert(m_animation);
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
-    if (currentForwardSpeed > 0.05f) {
+    if (currentForwardSpeed > 0.05f || m_voltageIn > 0.0f) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Backward);
-    } else if (currentForwardSpeed < -0.05f) {
+    } else if (currentForwardSpeed < -0.05f || m_voltageIn < 0.0f) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Forward);
     } else {
@@ -70,14 +70,14 @@ void WheelMotor::setAnimation()
 
 WheelMotor::Specification WheelMotor::scaleSpec(const Specification &unscaledSpec)
 {
-    const Specification scaledSpec = {
+    const Specification scaledSpec {
         unscaledSpec.voltageInConstant,
         unscaledSpec.angularSpeedConstant,
         unscaledSpec.maxVoltage,
-        PhysicsWorld::scaleLength(unscaledSpec.diameter),
-        PhysicsWorld::scaleLength(unscaledSpec.width),
-        PhysicsWorld::scaleMass(unscaledSpec.mass),
         unscaledSpec.maxLateralCancelingImpulse,
+        PhysicsWorld::scaleLength(unscaledSpec.width),
+        PhysicsWorld::scaleLength(unscaledSpec.diameter),
+        PhysicsWorld::scaleMass(unscaledSpec.mass),
         unscaledSpec.textureType
     };
     return scaledSpec;

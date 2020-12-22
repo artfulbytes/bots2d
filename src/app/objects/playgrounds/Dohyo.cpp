@@ -6,15 +6,15 @@
 #include "components/QuadComponent.h"
 #include "shapes/QuadObject.h"
 
-Dohyo::Dohyo(Scene *scene, const PhysicsWorld &world, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos) :
+Dohyo::Dohyo(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos) :
     SceneObject(scene),
     m_scaledSpec(scaleSpec(unscaledSpec))
 {
-    assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
+    assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     m_transformComponent = std::make_unique<HollowCircleTransform>(unscaledStartPos, unscaledSpec.innerRadius,
                                                                    unscaledSpec.outerRadius);
     const auto transform = static_cast<HollowCircleTransform *>(m_transformComponent.get());
-    m_physicsComponent = std::make_unique<Body2D>(world, transform, Body2D::BodySpec{ false, false, 0.0f });
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ false, false, 0.0f });
     static_cast<Body2D *>(m_physicsComponent.get())->setUserData(&m_userData);
 
     switch (unscaledSpec.textureType) {
@@ -34,6 +34,10 @@ Dohyo::Dohyo(Scene *scene, const PhysicsWorld &world, const Specification &unsca
     }
 }
 
+Dohyo::~Dohyo()
+{
+}
+
 Dohyo::Specification Dohyo::scaleSpec(const Specification &unscaledSpec)
 {
     const Specification scaledSpec = {
@@ -44,9 +48,5 @@ Dohyo::Specification Dohyo::scaleSpec(const Specification &unscaledSpec)
 }
 
 void Dohyo::onFixedUpdate(double stepTime)
-{
-}
-
-Dohyo::~Dohyo()
 {
 }

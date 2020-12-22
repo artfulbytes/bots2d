@@ -9,11 +9,12 @@ class LineTransform;
 class RangeSensor : public PhysicsComponent
 {
 public:
-    RangeSensor(const PhysicsWorld &world, LineTransform *transform, const Body2D &body,
-                const glm::vec2 &position, float angle, float minDistance, float maxDistance);
+    RangeSensor(const PhysicsWorld &world, LineTransform *transform,
+                const glm::vec2 &unscaledPosition, float angle, float minDistance, float maxDistance);
     ~RangeSensor();
     void onFixedUpdate(double stepTime) override;
     float getDistance() const;
+    Body2D *getBody() const;
     float *getVoltageLine();
 
 private:
@@ -23,8 +24,7 @@ private:
     const float m_minDistance = 0.0f;
     const float m_maxDistance = 0.0f;
     const float m_relativeAngle = 0.0f;
-    const glm::vec2 m_relativePosition;
-    const Body2D *m_parentBody = nullptr;
+    std::unique_ptr<Body2D> m_body2D;
 
     LineTransform * const m_lineTransform = nullptr;
     float m_distanceVoltage = 0.0f;

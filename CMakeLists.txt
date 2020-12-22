@@ -62,7 +62,8 @@ set (SIMULATOR_APP_FILES
     src/app/objects/shapes/CircleObject.cpp
     src/app/objects/shapes/LineObject.cpp
     src/app/objects/actuators/WheelMotor.cpp
-    src/app/objects/robots/Sumobot4Wheel.cpp
+    src/app/objects/chassis/SumobotBody.cpp
+    src/app/objects/robots/Sumobot.cpp
     src/app/objects/sensors/RangeSensorObject.cpp
     src/app/objects/sensors/LineDetectorObject.cpp
     src/app/objects/playgrounds/Dohyo.cpp
@@ -70,9 +71,9 @@ set (SIMULATOR_APP_FILES
     src/app/controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
     src/app/scenes/DrawTestScene.cpp
     src/app/scenes/SpriteAnimationTestScene.cpp
-    src/app/scenes/PhysicsBoxTestScene.cpp
+    src/app/scenes/PhysicsTestScene.cpp
     src/app/scenes/WheelMotorTestScene.cpp
-    src/app/scenes/Sumobot4WheelTestScene.cpp
+    src/app/scenes/SumobotTestScene.cpp
 )
 
 set (SIMULATOR_SOURCE_FILES

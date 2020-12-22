@@ -2,12 +2,14 @@
 #define CIRCLE_OBJECT_
 
 #include "SceneObject.h"
+#include "components/Body2D.h"
 #include <glm/glm.hpp>
 
 class CircleObject : public SceneObject
 {
 public:
-    CircleObject(Scene *scene, const glm::vec4 &color, const glm::vec2 &position, float radius);
+    CircleObject(Scene *scene, const glm::vec4 &color, const Body2D::Specification *spec,
+                 const glm::vec2 &position, float radius);
     CircleObject(Scene *scene, const glm::vec4 &fillColor, const glm::vec4 &borderColor,
                  const glm::vec2 &position, float innerRadius, float outerRadius);
     ~CircleObject();

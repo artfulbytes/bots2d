@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 namespace {
-    const float positionStepSize = 10.0f;
+    const float positionStepSize = 20.0f;
     const float zoomStepSize = 1.25f;
     const float minZoomFactor = 0.1f;
     const float maxZoomFactor = 4.0f;

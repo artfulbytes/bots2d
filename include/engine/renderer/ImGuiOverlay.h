@@ -13,9 +13,10 @@ public:
 
     static void render();
     static void newFrame();
-    static bool button(const char *name);
     static void begin(const char *name);
     static void end();
+    static bool button(const char *name);
+    static void text(const char *text, ...);
 };
 
 #endif /* IMGUI_OVERLAY_ */

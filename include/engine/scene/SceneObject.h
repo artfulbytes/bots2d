@@ -9,6 +9,7 @@ class RenderableComponent;
 class PhysicsComponent;
 class ControllerComponent;
 class Scene;
+class PhysicsWorld;
 
 class SceneObject
 {
@@ -25,7 +26,8 @@ public:
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
 protected:
-    Scene * m_scene = nullptr;
+    Scene *m_scene = nullptr;
+    PhysicsWorld *m_physicsWorld = nullptr;
     /* This is not cache friendly, it would be more optimal to use an entity component system.
      * But the simulations are still simple so let's not over-engineer it. */
     std::unique_ptr<TransformComponent> m_transformComponent;
