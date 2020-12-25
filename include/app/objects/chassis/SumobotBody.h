@@ -27,21 +27,18 @@ public:
         float frictionCoefficient = 0.05f;
     };
 
-    SumobotBody(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
+    SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition);
     ~SumobotBody();
     void onFixedUpdate(double stepTime) override;
-    void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 unscaledRelativePos);
-    void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 unscaledRelativePos);
-    void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 unscaledRelativePos);
+    void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
+    void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
+    void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);
 
 private:
-    static Specification scaleSpec(const Specification &unscaledSpec);
-    void createRectangleBody(const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
-    void createCircleBody(const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
-    void createWheelMotors(const PhysicsWorld &world, const Specification &unscaledSpec, const glm::vec2 &unscaledBodyStartPos);
+    void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition);
+    void createCircleBody(const Specification &spec, const glm::vec2 &startPosition);
     void createSensors(const PhysicsWorld &world);
 
-    Specification m_scaledSpec;
     Body2D *m_body2D = nullptr;
 };
 

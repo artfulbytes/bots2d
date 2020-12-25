@@ -12,7 +12,13 @@ QuadObject::QuadObject(Scene *scene, const glm::vec4 &color,
     const auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
     m_renderableComponent = std::make_unique<QuadComponent>(transform, color);
     if (spec != nullptr) {
-        m_physicsComponent = std::make_unique<Body2D>(*(scene->getPhysicsWorld()), transform, *spec);
+        m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, *spec);
+    }
+    if (m_physicsComponent == nullptr) {
+        /* No physics component, so must scale here */
+        transform->position = PhysicsWorld::scalePosition(transform->position);
+        transform->size.x = PhysicsWorld::scaleLengthNoAssert(transform->size.x);
+        transform->size.y = PhysicsWorld::scaleLengthNoAssert(transform->size.y);
     }
 }
 
@@ -28,6 +34,12 @@ QuadObject::QuadObject(Scene *scene, const std::string& textureFilepath, const S
     }
     m_renderableComponent = std::make_unique<QuadComponent>(transform, textureFilepath, m_animation.get());
     if (spec != nullptr) {
-        m_physicsComponent = std::make_unique<Body2D>(*(scene->getPhysicsWorld()), transform, *spec);
+        m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, *spec);
+    }
+    if (m_physicsComponent == nullptr) {
+        /* No physics component, so must scale here */
+        transform->position = PhysicsWorld::scalePosition(transform->position);
+        transform->size.x = PhysicsWorld::scaleLengthNoAssert(transform->size.x);
+        transform->size.y = PhysicsWorld::scaleLengthNoAssert(transform->size.y);
     }
 }

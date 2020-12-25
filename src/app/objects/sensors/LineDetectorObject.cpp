@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 
 LineDetectorObject::LineDetectorObject(Scene *scene, bool debugShow,
-                                       const glm::vec2 &unscaledRelativePosition) :
+                                       const glm::vec2 &startPosition) :
     SceneObject(scene)
 {
     CircleTransform *circleTransform;
@@ -17,7 +17,7 @@ LineDetectorObject::LineDetectorObject(Scene *scene, bool debugShow,
         glm::vec4 color(1.0f, 0.5f, 0.0f, 1.0f);
         m_renderableComponent = std::make_unique<CircleComponent>(circleTransform, color);
     }
-    m_physicsComponent = std::make_unique<LineDetector>(*m_physicsWorld, circleTransform, unscaledRelativePosition);
+    m_physicsComponent = std::make_unique<LineDetector>(*m_physicsWorld, circleTransform, startPosition);
     m_lineDetector = static_cast<LineDetector *>(m_physicsComponent.get());
 }
 

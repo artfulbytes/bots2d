@@ -9,8 +9,6 @@ class PhysicsWorld;
 class SpriteAnimation;
 class Body2D;
 
-/* WheelMotor simulates a wheel connected to a DC-motor in a top-view
- * gravity physics world. */
 class WheelMotor : public SceneObject
 {
 public:
@@ -23,26 +21,24 @@ public:
                       float maxLateralCancelingImpulse, float width, float diameter, float mass,
                       TextureType textureType) :
             voltageInConstant(voltageInConstant), angularSpeedConstant(angularSpeedConstant),
-            maxVoltage(maxVoltage), maxLateralCancelingImpulse(maxLateralCancelingImpulse),
-            width(width), diameter(diameter), mass(mass), textureType(textureType) {}
+            maxVoltage(maxVoltage), width(width), diameter(diameter), mass(mass), textureType(textureType) {}
         /* Simplified DC motor model
          * Tune these two constants to get different characteristics
+         * (see tools/dc_motor_plot.py)
          * (Torque constant * Voltage constant) / Motor resistance */
-        float voltageInConstant = 314.0f;
+        float voltageInConstant = 31.4f;
         /* Torque constant / Motor resistance */
-        float angularSpeedConstant = 89.0f;
+        float angularSpeedConstant = 8.9f;
         /* Max voltage that can be applied to the voltage line */
         float maxVoltage = 6.0f;
-        /* This determines the sideway friction */
-        float maxLateralCancelingImpulse = 40.5f;
         float width;
         float diameter;
         float mass;
         TextureType textureType = TextureType::None;
     };
 
-    WheelMotor(Scene *scene, const Specification &unscaledSpec,
-               Orientation orientation, const glm::vec2 &unscaledStartPos = glm::vec2{0.0f, 0.0f});
+    WheelMotor(Scene *scene, const Specification &spec,
+               Orientation orientation, const glm::vec2 &startPosition = glm::vec2{0.0f, 0.0f});
     ~WheelMotor();
 
     void setVoltageIn(float voltage);
@@ -52,12 +48,11 @@ public:
     const Body2D *getBody() const { return m_body2D; }
 
 private:
-    static Specification scaleSpec(const Specification &unscaledSpec);
     void setAnimation();
-    std::string getTextureName(Orientation orientation, TextureType textureType);
+    std::string getTextureName(Orientation orientation, TextureType textureType) const;
     void updateForce();
 
-    Specification m_scaledSpec;
+    Specification m_spec;
     float m_voltageIn = 0.0f;
     std::unique_ptr<SpriteAnimation> m_animation;
     Body2D *m_body2D = nullptr;

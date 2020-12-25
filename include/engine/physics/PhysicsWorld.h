@@ -22,12 +22,17 @@ public:
     static void assertDimensions(float unscaledLength);
     static float scaleLength(float unscaledLength);
     static float scaleLengthNoAssert(float unscaledLength);
+    static float unscaleLength(float scaledLength);
     static float scaleRadius(float unscaledRadius);
-    static glm::vec2 scalePosition(const glm::vec2 &unscaledPosition);
     static float scalePosition(float unscaledPosition);
+    static glm::vec2 scalePosition(const glm::vec2 &unscaledPosition);
+    static float unscalePosition(float scaledPosition);
+    static glm::vec2 unscalePosition(const glm::vec2 &scaledPosition);
     static float scaleSpeed(float unscaledSpeed);
+    static float unscaleSpeed(float scaledSpeed);
     static float scaleAcceleration(float unscaledAcceleration);
     static float scaleMass(float unscaledMass);
+    static float unscaleMass(float scaledMass);
     static float scaleForce(float unscaledForce);
     static float normalForce(float unscaledMass);
 

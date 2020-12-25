@@ -18,14 +18,12 @@ public:
         const float outerRadius;
         const TextureType textureType = TextureType::None;
     };
-    Dohyo(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos);
+    Dohyo(Scene *scene, const Specification &spec, const glm::vec2 &position);
     ~Dohyo();
     void onFixedUpdate(double stepTime) override;
 
 private:
-    Specification scaleSpec(const Specification &unscaledSpec);
     Body2DUserData m_userData = { 0, 0, BodyId::DohyoBorder };
-    Specification m_scaledSpec;
     std::unique_ptr<QuadObject> m_quadObject;
 };
 

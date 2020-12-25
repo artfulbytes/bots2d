@@ -5,25 +5,21 @@
 #include <box2d/box2d.h>
 
 namespace {
-    const float drawWidth = 0.01f;
+    constexpr float debugDrawWidth = 0.01f;
 }
 
 RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform,
-                         const glm::vec2 &unscaledPosition, float angle, float minDistance, float maxDistance) :
+                         const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance) :
     PhysicsComponent(world),
     m_lineTransform(transform),
     m_relativeAngle(angle),
-    m_minDistance(PhysicsWorld::scalePosition(minDistance)),
+    m_minDistance(PhysicsWorld::scaleLengthNoAssert(minDistance)),
     m_maxDistance(PhysicsWorld::scaleLengthNoAssert(maxDistance)),
     m_detectedDistance(m_maxDistance)
 {
-    if (m_lineTransform) {
-        m_lineTransform->width = drawWidth;
-    }
-
     /* Create tiny body for attaching and keeping track of ray cast start position */
     const Body2D::Specification bodySpec { true, false, 0.001f };
-    m_body2D = std::make_unique<Body2D>(world, unscaledPosition, 0.0f, 0.0005f, bodySpec);
+    m_body2D = std::make_unique<Body2D>(world, startPosition, 0.0f, 0.0005f, bodySpec);
 }
 
 RangeSensor::~RangeSensor()
@@ -39,7 +35,7 @@ void RangeSensor::onFixedUpdate(double stepTime)
 {
     const float rayAngleStart = -m_body2D->getAngle();
     const float rayAngleEnd = m_relativeAngle - m_body2D->getAngle();
-    const glm::vec2 bodyPosition = m_body2D->getPosition();
+    const glm::vec2 bodyPosition = PhysicsWorld::scalePosition(m_body2D->getPosition());
 
     /* Recalculate the casted ray */
     const float sinAngle = sinf(-rayAngleStart);
@@ -48,8 +44,10 @@ void RangeSensor::onFixedUpdate(double stepTime)
     const glm::vec2 rayEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_maxDistance;
     updateDetectedDistance(rayStartPosition, rayEndPosition);
     const glm::vec2 detectedEndPosition = rayStartPosition + glm::vec2{sinf(rayAngleEnd), cosf(rayAngleEnd)} * m_detectedDistance;
+    const bool debugDraw = m_lineTransform != nullptr;
 
-    if (m_lineTransform) {
+    if (debugDraw) {
+        m_lineTransform->width = debugDrawWidth;
         m_lineTransform->start = { rayStartPosition.x, rayStartPosition.y };
         m_lineTransform->end = { detectedEndPosition.x, detectedEndPosition.y };
     }

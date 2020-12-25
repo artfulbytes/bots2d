@@ -208,19 +208,20 @@ void Body2D::attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const B
 
 void Body2D::setForce(const glm::vec2 &vec, float magnitude)
 {
+    const float scaledMagnitude = PhysicsWorld::scaleForce(magnitude);
     m_body->ApplyForce(magnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
 }
 
 void Body2D::setLinearImpulse(const glm::vec2 &vec)
 {
-    b2Vec2 box2DVec(vec.x, vec.y);
+    b2Vec2 box2DVec(PhysicsWorld::scaleForce(vec.x), PhysicsWorld::scaleForce(vec.y));
     m_body->ApplyLinearImpulse(b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
 }
 
 glm::vec2 Body2D::getPosition() const
 {
     auto position = m_body->GetPosition();
-    return { position.x, position.y };
+    return { PhysicsWorld::unscalePosition(position.x), PhysicsWorld::unscalePosition(position.y) };
 }
 
 float Body2D::getAngle() const
@@ -231,14 +232,15 @@ float Body2D::getAngle() const
 float Body2D::getForwardSpeed() const
 {
     b2Vec2 currentForwardNormal = m_body->GetWorldVector(b2Vec2(0,1));
-    return b2Dot(currentForwardNormal, m_body->GetLinearVelocity());
+    const float scaledSpeed = b2Dot(currentForwardNormal, m_body->GetLinearVelocity());
+    return PhysicsWorld::unscaleSpeed(scaledSpeed);
 }
 
 glm::vec2 Body2D::getLateralVelocity() const
 {
     b2Vec2 currentRightNormal = m_body->GetWorldVector( b2Vec2(1,0) );
     b2Vec2 lateralVelocity = b2Dot(currentRightNormal, m_body->GetLinearVelocity()) * currentRightNormal;
-    return { lateralVelocity.x, lateralVelocity.y };
+    return { PhysicsWorld::unscaleSpeed(lateralVelocity.x), PhysicsWorld::unscaleSpeed(lateralVelocity.y) };
 }
 
 glm::vec2 Body2D::getForwardNormal() const
@@ -250,7 +252,7 @@ glm::vec2 Body2D::getForwardNormal() const
 float Body2D::getMass() const
 {
     assert(m_body);
-    return m_body->GetMass();
+    return PhysicsWorld::unscaleMass(m_body->GetMass());
 }
 
 void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)

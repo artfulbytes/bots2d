@@ -6,29 +6,28 @@
 #include "components/QuadComponent.h"
 #include "shapes/QuadObject.h"
 
-Dohyo::Dohyo(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos) :
-    SceneObject(scene),
-    m_scaledSpec(scaleSpec(unscaledSpec))
+Dohyo::Dohyo(Scene *scene, const Specification &spec, const glm::vec2 &position) :
+    SceneObject(scene)
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
-    m_transformComponent = std::make_unique<HollowCircleTransform>(unscaledStartPos, unscaledSpec.innerRadius,
-                                                                   unscaledSpec.outerRadius);
+    m_transformComponent = std::make_unique<HollowCircleTransform>(position, spec.innerRadius, spec.outerRadius);
     const auto transform = static_cast<HollowCircleTransform *>(m_transformComponent.get());
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ false, false, 0.0f });
     static_cast<Body2D *>(m_physicsComponent.get())->setUserData(&m_userData);
 
-    switch (unscaledSpec.textureType) {
+    switch (spec.textureType) {
     case Dohyo::TextureType::Scratched:
     {
         m_quadObject = std::make_unique<QuadObject>(scene, "dohyo_scratched.png", nullptr, nullptr,
-                                                    PhysicsWorld::scalePosition(unscaledStartPos),
-                                                    glm::vec2{ 2.0f * m_scaledSpec.outerRadius, 2.0f * m_scaledSpec.outerRadius },
+                                                    position,
+                                                    glm::vec2{ 2.0f * spec.outerRadius, 2.0f * spec.outerRadius },
                                                     0.0f);
         break;
     }
     case Dohyo::TextureType::None:
     {
-        m_renderableComponent = std::make_unique<HollowCircleComponent>(transform, glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f }, glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
+        m_renderableComponent = std::make_unique<HollowCircleComponent>(transform, glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f },
+                                                                        glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
         break;
     }
     }
@@ -36,15 +35,6 @@ Dohyo::Dohyo(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &u
 
 Dohyo::~Dohyo()
 {
-}
-
-Dohyo::Specification Dohyo::scaleSpec(const Specification &unscaledSpec)
-{
-    const Specification scaledSpec = {
-        PhysicsWorld::scaleLength(unscaledSpec.innerRadius),
-        PhysicsWorld::scaleLength(unscaledSpec.outerRadius)
-    };
-    return scaledSpec;
 }
 
 void Dohyo::onFixedUpdate(double stepTime)

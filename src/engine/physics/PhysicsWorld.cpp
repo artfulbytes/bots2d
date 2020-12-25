@@ -5,11 +5,14 @@
 #include "box2d/box2d.h"
 #include <cassert>
 
-/* Box2D uses metric units and recommends sizing objects
- * between 0.1-10 m. In this simulation tool we want
- * sizes as small as 0.01 m. Therefore, introduce
- * a scale factor of 10, which converts 1 meter in Box2D
- * 10 cm, giving us a range between 0.01-1 m for our objects. */
+/* Box2D uses metric units and documentation recommends sizing objects between 0.1-10 m.
+ * We want sizes as small as 0.01 m, so introduce a scale factor of 10 to give us a working
+ * range of 0.01-1 m instead.
+ *
+ * All scaling should be handled inside the physics components and be hidden from the
+ * other classes. That is, physics components work in the range 0.1-10 m while the
+ * other classes work in 0.01-1 m.
+ */
 inline constexpr float maxWidthObject { 1.0f };
 inline constexpr float minWidthObject { 0.01f };
 inline constexpr float physScaleFactor { 10.0f };
@@ -38,14 +41,16 @@ float PhysicsWorld::scaleLengthNoAssert(float unscaledLength)
     return unscaledLength * lengthScaleFactor;
 }
 
+float PhysicsWorld::unscaleLength(float scaledLength)
+{
+    const float unscaledLength = scaledLength / lengthScaleFactor;
+    assertDimensions(unscaledLength);
+    return unscaledLength;
+}
+
 float PhysicsWorld::scaleRadius(float unscaledRadius)
 {
     return scaleLength(unscaledRadius * 2.0f) / 2.0f;
-}
-
-glm::vec2 PhysicsWorld::scalePosition(const glm::vec2 &unscaledPosition)
-{
-    return { scalePosition(unscaledPosition.x), scalePosition(unscaledPosition.y) };
 }
 
 float PhysicsWorld::scalePosition(float unscaledPosition)
@@ -54,9 +59,29 @@ float PhysicsWorld::scalePosition(float unscaledPosition)
     return unscaledPosition * lengthScaleFactor;
 }
 
+glm::vec2 PhysicsWorld::scalePosition(const glm::vec2 &unscaledPosition)
+{
+    return { scalePosition(unscaledPosition.x), scalePosition(unscaledPosition.y) };
+}
+
+float PhysicsWorld::unscalePosition(const float scaledPosition)
+{
+    return scaledPosition / lengthScaleFactor;
+}
+
+glm::vec2 PhysicsWorld::unscalePosition(const glm::vec2 &scaledPosition)
+{
+    return { unscalePosition(scaledPosition.x), unscalePosition(scaledPosition.y) };
+}
+
 float PhysicsWorld::scaleSpeed(float unscaledSpeed)
 {
     return unscaledSpeed * speedScaleFactor;
+}
+
+float PhysicsWorld::unscaleSpeed(float scaledSpeed)
+{
+    return scaledSpeed / speedScaleFactor;
 }
 
 float PhysicsWorld::scaleAcceleration(float unscaledAcceleration)
@@ -67,6 +92,11 @@ float PhysicsWorld::scaleAcceleration(float unscaledAcceleration)
 float PhysicsWorld::scaleMass(float unscaledMass)
 {
     return unscaledMass * massScaleFactor;
+}
+
+float PhysicsWorld::unscaleMass(float scaledMass)
+{
+    return scaledMass / massScaleFactor;
 }
 
 float PhysicsWorld::scaleForce(float unscaledForce)

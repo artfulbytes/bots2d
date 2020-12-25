@@ -11,7 +11,7 @@ class LineDetectorObject : public SceneObject
 {
 public:
     LineDetectorObject(Scene *scene, bool debugShow,
-                       const glm::vec2 &unscaledRelativePosition = { 0.0f, 0.0f });
+                       const glm::vec2 &startPosition = { 0.0f, 0.0f });
     ~LineDetectorObject();
     Body2D *getBody() const;
     void onFixedUpdate(double stepTime) override;

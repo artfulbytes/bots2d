@@ -8,17 +8,16 @@
 #include "sensors/RangeSensorObject.h"
 #include "sensors/LineDetectorObject.h"
 
-SumobotBody::SumobotBody(Scene *scene, const Specification &unscaledSpec, const glm::vec2 &unscaledStartPos) :
-    SceneObject(scene),
-    m_scaledSpec(scaleSpec(unscaledSpec))
+SumobotBody::SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition) :
+    SceneObject(scene)
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
-    switch (unscaledSpec.shape) {
+    switch (spec.shape) {
     case SumobotBody::Shape::Rectangle:
-        createRectangleBody(unscaledSpec, unscaledStartPos);
+        createRectangleBody(spec, startPosition);
         break;
     case SumobotBody::Shape::Circle:
-        createCircleBody(unscaledSpec, unscaledStartPos);
+        createCircleBody(spec, startPosition);
         break;
     }
 }
@@ -27,12 +26,12 @@ SumobotBody::~SumobotBody()
 {
 }
 
-void SumobotBody::createRectangleBody(const Specification &unscaledSpec, const glm::vec2 &unscaledBodyStartPos)
+void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition)
 {
-    m_transformComponent = std::make_unique<QuadTransform>(unscaledBodyStartPos, glm::vec2{ unscaledSpec.width, unscaledSpec.length });
+    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{ spec.width, spec.length });
     const auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
 
-    switch(unscaledSpec.textureType) {
+    switch(spec.textureType) {
     case SumobotBody::TextureType::Plated:
         m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_plated.png");
         break;
@@ -44,11 +43,11 @@ void SumobotBody::createRectangleBody(const Specification &unscaledSpec, const g
         m_renderableComponent = std::make_unique<QuadComponent>(transform, color);
         break;
     }
-    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, unscaledSpec.mass });
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
-void SumobotBody::createCircleBody(const Specification &unscaledSpec, const glm::vec2 &unscaledBodyStartPos)
+void SumobotBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition)
 {
 #if 0
     m_transformComponent = std::make_unique<CircleTransform>(unscaledBodyStartPos, (unscaledSpec.width / 2.0f) * widthBodyFactor);
@@ -60,31 +59,19 @@ void SumobotBody::createCircleBody(const Specification &unscaledSpec, const glm:
 #endif
 }
 
-void SumobotBody::attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 unscaledRelativePos)
+void SumobotBody::attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition)
 {
-    m_body2D->attachBodyWithRevoluteJoint(unscaledRelativePos, wheelMotor->getBody());
+    m_body2D->attachBodyWithRevoluteJoint(relativePosition, wheelMotor->getBody());
 }
 
-void SumobotBody::attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 unscaledRelativePos)
+void SumobotBody::attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition)
 {
-    m_body2D->attachBodyWithWeldJoint(unscaledRelativePos, rangeSensorObject->getBody());
+    m_body2D->attachBodyWithWeldJoint(relativePosition, rangeSensorObject->getBody());
 }
 
-void SumobotBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 unscaledRelativePos)
+void SumobotBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition)
 {
-    m_body2D->attachBodyWithWeldJoint(unscaledRelativePos, lineDetectorObject->getBody());
-}
-
-SumobotBody::Specification SumobotBody::scaleSpec(const Specification &unscaledSpec)
-{
-    const Specification scaledSpec = {
-        PhysicsWorld::scaleLength(unscaledSpec.length),
-        PhysicsWorld::scaleLength(unscaledSpec.width),
-        PhysicsWorld::scaleMass(unscaledSpec.mass),
-        unscaledSpec.shape,
-        unscaledSpec.textureType
-    };
-    return scaledSpec;
+    m_body2D->attachBodyWithWeldJoint(relativePosition, lineDetectorObject->getBody());
 }
 
 void SumobotBody::onFixedUpdate(double stepTime)

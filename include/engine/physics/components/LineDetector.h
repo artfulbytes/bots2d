@@ -11,7 +11,7 @@ class CircleTransform;
 class LineDetector : public PhysicsComponent
 {
 public:
-    LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &unscaledRelativePos);
+    LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition);
     ~LineDetector();
     void onFixedUpdate(double stepTime) override;
     Body2D *getBody() const;

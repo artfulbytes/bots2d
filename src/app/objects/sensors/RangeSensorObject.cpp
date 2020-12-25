@@ -5,8 +5,8 @@
 
 #include <glm/glm.hpp>
 
-RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &unscaledSpec, bool debugShow,
-                                     const glm::vec2 unscaledStartPosition) :
+RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &spec, bool debugShow,
+                                     const glm::vec2 startPosition) :
     SceneObject(scene)
 {
     LineTransform *transform = nullptr;
@@ -17,8 +17,8 @@ RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &unscaled
         m_renderableComponent = std::make_unique<LineComponent>(transform, color);
     }
     m_physicsComponent = std::make_unique<RangeSensor>(*m_physicsWorld, transform,
-                                                       unscaledStartPosition, unscaledSpec.relativeAngle,
-                                                       unscaledSpec.minDistance, unscaledSpec.maxDistance);
+                                                       startPosition, spec.relativeAngle,
+                                                       spec.minDistance, spec.maxDistance);
     m_rangeSensor = static_cast<RangeSensor *>(m_physicsComponent.get());
 }
 
