@@ -1,6 +1,6 @@
 #include "Renderer.h"
-#include "ResourcesHelper.h"
 #include "GLError.h"
+#include "ResourcesHelper.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -146,7 +146,11 @@ void Renderer::destroy()
 {
     /* Frees all smart pointers */
     s_rendererData = nullptr;
-    ResourcesHelper::destroy();
+}
+
+float Renderer::getPixelScaleFactor()
+{
+    return s_rendererData->centimetersToPxScale;
 }
 
 void Renderer::setCameraPosition(const glm::vec2 &position, float zoomFactor)
@@ -224,7 +228,8 @@ static void updateDynamicQuadVertices(const TexCoords &texCoords)
     dynamicQuadVertices[15] = texCoords.TopLeft.y;
 }
 
-void Renderer::drawQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation, const Texture &texture, const TexCoords *texCoords)
+void Renderer::drawQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation, const Texture &texture,
+                        const TexCoords *texCoords)
 {
     if (texCoords != nullptr) {
         updateDynamicQuadVertices(*texCoords);

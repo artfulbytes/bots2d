@@ -28,11 +28,6 @@ void ResourcesHelper::init()
     assert(false);
 }
 
-void ResourcesHelper::destroy()
-{
-    resourcesPath.clear();
-}
-
 std::string ResourcesHelper::getResourcesPath()
 {
     assert(!resourcesPath.empty());

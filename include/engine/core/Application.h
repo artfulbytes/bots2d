@@ -3,6 +3,8 @@
 
 #include "Event.h"
 #include <string>
+#include <memory>
+#include "Scalebar.h"
 
 struct GLFWwindow;
 
@@ -17,7 +19,8 @@ public:
     virtual void onFixedUpdate(double stepTime) = 0;
 
 private:
-    GLFWwindow *m_window;
+    GLFWwindow *m_window = nullptr;
+    std::unique_ptr<Scalebar> m_scalebar = nullptr;
 };
 
 #endif /* APPLICATION_H_ */

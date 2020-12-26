@@ -17,6 +17,7 @@ set(IMGUI_SOURCE_FILES
 set (RENDERER_SOURCE_FILES
     src/engine/renderer/Renderer.cpp
     src/engine/renderer/Camera.cpp
+    src/engine/renderer/Scalebar.cpp
     src/engine/renderer/GLError.cpp
     src/engine/renderer/ResourcesHelper.cpp
     src/engine/renderer/VertexBuffer.cpp

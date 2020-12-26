@@ -108,7 +108,6 @@ SumobotTestScene::SumobotTestScene() :
 
     m_sumobot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::Nsumo),
                                                             glm::vec2{0.0f, 0.0f}, 0);
-
     m_sumobot->setController(new SumobotController(m_sumobot.get()));
 }
 

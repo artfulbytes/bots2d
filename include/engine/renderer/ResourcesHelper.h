@@ -7,7 +7,6 @@ class ResourcesHelper
 {
 public:
     static void init();
-    static void destroy();
     static std::string getResourcesPath();
     static std::string getTexturesPath();
     static std::string getTexturesPath(std::string textureName);

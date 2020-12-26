@@ -1,6 +1,7 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 #include <string>
+
 class Texture
 {
 public:

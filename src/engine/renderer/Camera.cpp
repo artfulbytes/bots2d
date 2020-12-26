@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include "Renderer.h"
+#include "Texture.h"
+#include "TexCoords.h"
 
 namespace {
     const float positionStepSize = 20.0f;
@@ -11,6 +13,21 @@ namespace {
     float zoomFactor = 1.0f;
     int windowWidth = 800;
     int windowHeight = 600;
+}
+
+float Camera::getZoomFactor()
+{
+    return zoomFactor;
+}
+
+glm::vec2 Camera::getPosition()
+{
+    return cameraPosition;
+}
+
+glm::vec2 Camera::getWindowSize()
+{
+    return { windowWidth, windowHeight };
 }
 
 void Camera::reset()

@@ -33,7 +33,7 @@ public:
         std::vector<std::tuple<RangeSensorIndex, glm::vec2, RangeSensorObject::Specification>> rangeSensorTuples;
         std::vector<std::tuple<LineDetectorIndex, glm::vec2>> lineDetectorTuples;
     };
-    enum class Blueprint { Nsumo };
+    enum class Blueprint { Nsumo, TwoWheelRound, TwoWheelRectangle };
     static const Specification &getBlueprintSpec(Blueprint blueprint);
     static void sanityCheckSpec(const Specification &spec);
 

@@ -117,6 +117,7 @@ Application::Application(std::string name)
 
     ImGuiOverlay::init(m_window);
     Renderer::init();
+    m_scalebar = std::make_unique<Scalebar>();
 }
 
 Application::~Application()
@@ -159,6 +160,7 @@ void Application::run()
         ImGuiOverlay::newFrame();
         onFixedUpdate(stepTime);
         ImGuiOverlay::render();
+        m_scalebar->render();
         glfwSwapBuffers(m_window);
 
         /* lastUpdateTime = currentTime; */

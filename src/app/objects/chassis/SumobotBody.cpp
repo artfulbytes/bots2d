@@ -49,14 +49,12 @@ void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2
 
 void SumobotBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition)
 {
-#if 0
-    m_transformComponent = std::make_unique<CircleTransform>(unscaledBodyStartPos, (unscaledSpec.width / 2.0f) * widthBodyFactor);
+    m_transformComponent = std::make_unique<CircleTransform>(startPosition, (spec.width / 2.0f));
     const auto transform = static_cast<CircleTransform *>(m_transformComponent.get());
     glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
-    m_renderableComponent = std::make_unique<CircleComponent>(transform, color);
-    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, unscaledSpec.mass * massBodyFactor });
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
+    m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_twowheel.png");
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
-#endif
 }
 
 void SumobotBody::attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition)
