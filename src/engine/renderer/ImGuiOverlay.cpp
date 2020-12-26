@@ -2,7 +2,6 @@
 #include <GLFW/glfw3.h>
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include <cstdarg>
 
 void ImGuiOverlay::init(GLFWwindow *window)
 {
@@ -43,6 +42,7 @@ void ImGuiOverlay::render()
 void ImGuiOverlay::begin(const char *name)
 {
     ImGui::SetNextWindowPos({0.0f, 0.0f});
+    ImGui::SetNextWindowSize(ImVec2(375, 500), ImGuiCond_Once);
     ImGui::Begin(name);
 }
 
@@ -56,9 +56,7 @@ bool ImGuiOverlay::button(const char *name)
     return ImGui::Button(name);
 }
 
-void ImGuiOverlay::text(const char *text, ...)
+void ImGuiOverlay::text(const char *text)
 {
-    va_list args;
-    ImGui::Text(text, args);
-    va_end(args);
+    ImGui::Text(text);
 }
