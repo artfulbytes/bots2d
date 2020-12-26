@@ -9,11 +9,11 @@ public:
     Scalebar();
     ~Scalebar();
     void render();
+
 private:
     struct ScalebarRenderable
     {
-        ScalebarRenderable(std::string textureName, float width, float height) :
-            texture(textureName), width(width), height(height) {}
+        ScalebarRenderable(std::string textureName, float width, float height);
         Texture texture;
         float width;
         float height;

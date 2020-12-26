@@ -1,13 +1,22 @@
 #include "Scalebar.h"
+#include "PhysicsWorld.h"
 #include "Renderer.h"
 #include "Camera.h"
 
+
+Scalebar::ScalebarRenderable::ScalebarRenderable(std::string textureName, float width, float height) :
+    texture(textureName),
+    width(PhysicsWorld::scaleLengthNoAssert(width)),
+    height(PhysicsWorld::scaleLengthNoAssert(height))
+{
+}
+
 Scalebar::Scalebar() :
-    m_scalebar4m("scalebar4m.png", 40.0f, 1.8f),
-    m_scalebar2m("scalebar2m.png", 20.0f, 0.9f),
-    m_scalebar1m("scalebar1m.png", 10.0f, 0.45f),
-    m_scalebar50cm("scalebar50cm.png", 5.0f, 0.225f),
-    m_scalebar25cm("scalebar25cm.png", 2.5f, 0.1125f)
+    m_scalebar4m("scalebar4m.png", 4.0f, 0.18f),
+    m_scalebar2m("scalebar2m.png", 2.0f, 0.09f),
+    m_scalebar1m("scalebar1m.png", 1.0f, 0.045f),
+    m_scalebar50cm("scalebar50cm.png", 0.50f, 0.0225f),
+    m_scalebar25cm("scalebar25cm.png", 0.25f, 0.01125f)
 {
 }
 
@@ -34,7 +43,8 @@ void Scalebar::render()
     } else {
         scalebar = &m_scalebar25cm;
     }
-    const float bottomMargin = (pixelScaleFactor * zoomFactor) * (scalebar->height / 2.0f);
+    const float extraBottomMargin = 0.1f * scalebar->height;
+    const float bottomMargin = (pixelScaleFactor * zoomFactor) * ((scalebar->height / 2.0f) + extraBottomMargin);
     const float positionY = bottomMargin - cameraPosition.y;
     const float positionX = (windowSize.x / 2.0f) - cameraPosition.x;
 
