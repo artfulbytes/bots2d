@@ -54,9 +54,8 @@ static void enable_vsync(bool enabled)
     glfwSwapInterval(enabled ? 1 : 0);
 }
 
-/* Doesn't matter, width and height are adjusted automatically */
-static const int defaultWidth = 800;
-static const int defaultHeight = 600;
+static const int defaultWidth = 1280;
+static const int defaultHeight = 960;
 
 static int init_opengl(GLFWwindow* window) {
     if (!window) {

@@ -51,5 +51,10 @@ void Scalebar::render()
     glm::vec2 drawPosition = glm::vec2{positionX, positionY} / (pixelScaleFactor * zoomFactor);
     glm::vec2 drawSize { scalebar->width, scalebar->height };
 
+    if ((drawSize.x * zoomFactor * pixelScaleFactor) > windowSize.x) {
+        /* Hide if scalebar is larger than window */
+        return;
+    }
+
     Renderer::drawQuad(drawPosition, drawSize, 0.0f, scalebar->texture);
 }

@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
+#include <cstdarg>
 
 void ImGuiOverlay::init(GLFWwindow *window)
 {
@@ -59,4 +60,5 @@ void ImGuiOverlay::text(const char *text, ...)
 {
     va_list args;
     ImGui::Text(text, args);
+    va_end(args);
 }

@@ -86,4 +86,5 @@ void Camera::onWindowEvent(const Event::Window &windowEvent)
     Renderer::setViewport(0, 0, windowEvent.width, windowEvent.height);
     windowWidth = windowEvent.width;
     windowHeight = windowEvent.height;
+    reset();
 }
