@@ -33,7 +33,7 @@ public:
         std::vector<std::tuple<RangeSensorIndex, glm::vec2, RangeSensorObject::Specification>> rangeSensorTuples;
         std::vector<std::tuple<LineDetectorIndex, glm::vec2>> lineDetectorTuples;
     };
-    enum class Blueprint { Nsumo, TwoWheelRound, TwoWheelRectangle };
+    enum class Blueprint { FourWheel, TwoWheelRectangle, TwoWheelRoundBlack, TwoWheelRoundRed };
     static const Specification &getBlueprintSpec(Blueprint blueprint);
     static void sanityCheckSpec(const Specification &spec);
 
@@ -41,9 +41,10 @@ public:
             const glm::vec2 &startPosition, const float startRotation);
     ~Sumobot();
     float *getVoltageLine(WheelMotorIndex wheelMotorIndex) const;
+    void setDebug(bool enabled);
 
 private:
-    void createBody(const Specification &spec, const glm::vec2 &startPosition, const float startRotation);
+    void createBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);
     void createWheelMotors(const Specification &spec);
     void createSensors(const Specification &spec);
 

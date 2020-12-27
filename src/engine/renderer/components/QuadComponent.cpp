@@ -33,6 +33,10 @@ QuadComponent::~QuadComponent()
 
 void QuadComponent::onFixedUpdate()
 {
+    if (m_enabled == false) {
+        return;
+    }
+
     if (m_spriteAnimation != nullptr) {
         m_spriteAnimation->onFixedUpdate();
         m_spriteAnimation->computeTexCoords(*m_texCoords);

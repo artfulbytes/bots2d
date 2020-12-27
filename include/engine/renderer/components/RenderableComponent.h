@@ -10,6 +10,13 @@ class RenderableComponent : public Component
         RenderableComponent() {}
         virtual ~RenderableComponent() {}
         virtual void onFixedUpdate() = 0;
+        void setEnabled(float enabled)
+        {
+            m_enabled = enabled;
+        }
+
+    protected:
+        bool m_enabled = true;
 };
 
 #endif /* RENDERABLE_COMPONENT_H_ */

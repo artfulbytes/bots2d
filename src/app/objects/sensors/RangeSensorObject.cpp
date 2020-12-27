@@ -5,17 +5,16 @@
 
 #include <glm/glm.hpp>
 
-RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &spec, bool debugShow,
+RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &spec, bool debugDrawEnabled,
                                      const glm::vec2 startPosition) :
     SceneObject(scene)
 {
     LineTransform *transform = nullptr;
-    if (debugShow) {
-        m_transformComponent = std::make_unique<LineTransform>();
-        transform = static_cast<LineTransform *>(m_transformComponent.get());
-        glm::vec4 color(0.0f, 0.5f, 0.0f, 1.0f);
-        m_renderableComponent = std::make_unique<LineComponent>(transform, color);
-    }
+    m_transformComponent = std::make_unique<LineTransform>();
+    transform = static_cast<LineTransform *>(m_transformComponent.get());
+    glm::vec4 color(0.0f, 0.5f, 0.0f, 1.0f);
+    m_renderableComponent = std::make_unique<LineComponent>(transform, color);
+    m_renderableComponent->setEnabled(debugDrawEnabled);
     m_physicsComponent = std::make_unique<RangeSensor>(*m_physicsWorld, transform,
                                                        startPosition, spec.relativeAngle,
                                                        spec.minDistance, spec.maxDistance);
@@ -24,6 +23,11 @@ RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &spec, bo
 
 RangeSensorObject::~RangeSensorObject()
 {
+}
+
+void RangeSensorObject::setDebugDraw(bool enabled)
+{
+    m_renderableComponent->setEnabled(enabled);
 }
 
 Body2D *RangeSensorObject::getBody() const

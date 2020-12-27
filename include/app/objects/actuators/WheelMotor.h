@@ -13,7 +13,7 @@ class WheelMotor : public SceneObject
 {
 public:
     enum class Orientation { Left, Right };
-    enum class TextureType { None, Green, Orange };
+    enum class TextureType { None, Green, Orange, Red };
     struct Specification {
         Specification(float width, float diameter, float mass, TextureType textureType) :
             width(width), diameter(diameter), mass(mass), textureType(textureType) {}
@@ -37,8 +37,8 @@ public:
         TextureType textureType = TextureType::None;
     };
 
-    WheelMotor(Scene *scene, const Specification &spec,
-               Orientation orientation, const glm::vec2 &startPosition = glm::vec2{0.0f, 0.0f});
+    WheelMotor(Scene *scene, const Specification &spec, Orientation orientation,
+               const glm::vec2 &startPosition, float startRotation);
     ~WheelMotor();
 
     void setVoltageIn(float voltage);

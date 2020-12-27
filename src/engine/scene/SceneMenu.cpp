@@ -1,8 +1,10 @@
 #include "SceneMenu.h"
 #include "ImGuiOverlay.h"
 #include "Camera.h"
+#include "Application.h"
 
-SceneMenu::SceneMenu(Scene*& scene) :
+SceneMenu::SceneMenu(Application *app, Scene*& scene) :
+    m_appPtr(app),
     m_currentScene(scene)
 {
 }
@@ -17,6 +19,11 @@ void SceneMenu::render()
             m_currentScene = scene.second();
             Camera::reset();
         }
+    }
+    if (m_appPtr != nullptr)
+    {
+        ImGuiOverlay::text("");
+        ImGuiOverlay::text("  " + std::to_string(m_appPtr->getAvgFps()) + " fps");
     }
     ImGuiOverlay::text("");
     if (m_currentScene != nullptr) {

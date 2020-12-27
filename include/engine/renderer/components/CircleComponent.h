@@ -16,6 +16,9 @@ class CircleComponent : public RenderableComponent
         }
 
         void onFixedUpdate() override {
+            if (m_enabled == false) {
+                return;
+            }
             Renderer::drawCircle(m_transform->position, m_transform->radius, m_color);
         }
     private:

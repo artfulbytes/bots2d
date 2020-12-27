@@ -8,16 +8,18 @@
 #include "sensors/RangeSensorObject.h"
 #include "sensors/LineDetectorObject.h"
 
-SumobotBody::SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition) :
+#include <iostream>
+
+SumobotBody::SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation) :
     SceneObject(scene)
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     switch (spec.shape) {
     case SumobotBody::Shape::Rectangle:
-        createRectangleBody(spec, startPosition);
+        createRectangleBody(spec, startPosition, startRotation);
         break;
     case SumobotBody::Shape::Circle:
-        createCircleBody(spec, startPosition);
+        createCircleBody(spec, startPosition, startRotation);
         break;
     }
 }
@@ -26,9 +28,19 @@ SumobotBody::~SumobotBody()
 {
 }
 
-void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition)
+glm::vec2 SumobotBody::getPosition() const
 {
-    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{ spec.width, spec.length });
+    return m_body2D->getPosition();
+}
+
+float SumobotBody::getRotation() const
+{
+    return m_body2D->getRotation();
+}
+
+void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
+{
+    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{ spec.width, spec.length }, startRotation);
     const auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
 
     switch(spec.textureType) {
@@ -37,6 +49,11 @@ void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2
         break;
     case SumobotBody::TextureType::Circuited:
         m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_circuited.png");
+        break;
+    case SumobotBody::TextureType::RoundRed:
+    case SumobotBody::TextureType::RoundBlack:
+        assert(0);
+        std::cout << "Can't use round texture for rectangle shape" << std::endl;
         break;
     case SumobotBody::TextureType::None:
         glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
@@ -47,13 +64,31 @@ void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
-void SumobotBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition)
+void SumobotBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
-    m_transformComponent = std::make_unique<CircleTransform>(startPosition, (spec.width / 2.0f));
+    m_transformComponent = std::make_unique<CircleTransform>(startPosition, (spec.width / 2.0f), startRotation);
     const auto transform = static_cast<CircleTransform *>(m_transformComponent.get());
-    glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
+
+    switch(spec.textureType) {
+    case SumobotBody::TextureType::Plated:
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_plated.png");
+        break;
+    case SumobotBody::TextureType::Circuited:
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_circuited.png");
+        break;
+    case SumobotBody::TextureType::RoundRed:
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_round_red.png");
+        break;
+    case SumobotBody::TextureType::RoundBlack:
+        m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_round_black.png");
+        break;
+    case SumobotBody::TextureType::None:
+        glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
+        m_renderableComponent = std::make_unique<CircleComponent>(transform, color);
+        break;
+    }
+
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
-    m_renderableComponent = std::make_unique<QuadComponent>(transform, "sumobot_body_twowheel.png");
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 

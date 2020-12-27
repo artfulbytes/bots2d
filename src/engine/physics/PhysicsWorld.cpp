@@ -1,5 +1,4 @@
 #include "PhysicsWorld.h"
-#include "Constants.h"
 #include "ContactListener.h"
 
 #include "box2d/box2d.h"

@@ -42,7 +42,7 @@ void ImGuiOverlay::render()
 void ImGuiOverlay::begin(const char *name)
 {
     ImGui::SetNextWindowPos({0.0f, 0.0f});
-    ImGui::SetNextWindowSize(ImVec2(375, 500), ImGuiCond_Once);
+    ImGui::SetNextWindowSize(ImVec2(250, 450), ImGuiCond_Once);
     ImGui::Begin(name);
 }
 
@@ -56,7 +56,8 @@ bool ImGuiOverlay::button(const char *name)
     return ImGui::Button(name);
 }
 
-void ImGuiOverlay::text(const char *text)
+void ImGuiOverlay::text(const std::string text)
 {
-    ImGui::Text(text);
+    ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 230);
+    ImGui::Text(text.c_str());
 }

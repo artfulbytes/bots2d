@@ -39,8 +39,8 @@ class CircleTransform : public TransformComponent
 {
 public:
     CircleTransform() {}
-    CircleTransform(const glm::vec2 &position, float radius) :
-        position(position), radius(radius) {}
+    CircleTransform(const glm::vec2 &position, float radius, float rotation) :
+        position(position), radius(radius), rotation(rotation) {}
     ~CircleTransform() {}
     glm::vec2 position;
     float radius;

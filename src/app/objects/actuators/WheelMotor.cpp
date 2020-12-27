@@ -8,14 +8,14 @@
 
 #include <glm/glm.hpp>
 
-WheelMotor::WheelMotor(Scene *scene, const Specification &spec,
-                       WheelMotor::Orientation orientation, const glm::vec2 &startPosition) :
+WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orientation orientation,
+                       const glm::vec2 &startPosition, float startRotation) :
     SceneObject(scene),
     m_spec(spec)
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(spec.maxVoltage > 0);
-    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{spec.width, spec.diameter});
+    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{spec.width, spec.diameter}, startRotation);
     auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
 
     if (spec.textureType != WheelMotor::TextureType::None) {
@@ -46,6 +46,11 @@ std::string WheelMotor::getTextureName(WheelMotor::Orientation orientation, Whee
         switch(orientation) {
         case WheelMotor::Orientation::Left: return "wheel_sprite_left_green.png";
         case WheelMotor::Orientation::Right: return "wheel_sprite_right_green.png";
+        }
+    case WheelMotor::TextureType::Red:
+        switch(orientation) {
+        case WheelMotor::Orientation::Left: return "wheel_sprite_left_red.png";
+        case WheelMotor::Orientation::Right: return "wheel_sprite_right_red.png";
         }
     case TextureType::None:
         assert(0);

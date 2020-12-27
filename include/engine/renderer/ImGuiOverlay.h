@@ -16,7 +16,7 @@ public:
     static void begin(const char *name);
     static void end();
     static bool button(const char *name);
-    static void text(const char *text);
+    static void text(const std::string text);
 };
 
 #endif /* IMGUI_OVERLAY_ */

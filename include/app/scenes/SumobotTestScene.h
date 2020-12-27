@@ -24,7 +24,10 @@ private:
     void createBackground();
     std::unique_ptr<Background> m_background = std::make_unique<Background>();
     std::unique_ptr<Dohyo> m_dohyo;
-    std::unique_ptr<Sumobot> m_sumobot;
+    std::unique_ptr<Sumobot> m_fourWheelBot;
+    std::unique_ptr<Sumobot> m_twoWheelRectangleBot;
+    std::unique_ptr<Sumobot> m_twoWheelRoundBlackBot;
+    std::unique_ptr<Sumobot> m_twoWheelRoundRedBot;
 };
 
 #endif /* SUMOBOT_TEST_SCENE_H_ */

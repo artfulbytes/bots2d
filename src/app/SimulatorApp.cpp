@@ -9,7 +9,7 @@
 SimulatorApp::SimulatorApp() :
     Application("Simulator")
 {
-    m_sceneMenu = std::make_unique<SceneMenu>(m_currentScene);
+    m_sceneMenu = std::make_unique<SceneMenu>(this, m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
     m_sceneMenu->registerScene<SpriteAnimationTestScene>("SpriteAnimationTest");
     m_sceneMenu->registerScene<PhysicsTestScene>("PhysicsTest");

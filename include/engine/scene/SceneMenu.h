@@ -5,10 +5,12 @@
 #include <string>
 #include <functional>
 
+class Application;
+
 class SceneMenu
 {
 public:
-    SceneMenu(Scene*& scene);
+    SceneMenu(Application *app, Scene*& scene);
 
     void render();
 
@@ -19,7 +21,7 @@ public:
     }
 private:
     Scene*& m_currentScene;
-
+    Application *m_appPtr;
     std::vector<std::pair<std::string, std::function<Scene*()>>> m_scenes;
 };
 

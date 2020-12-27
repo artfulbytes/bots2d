@@ -9,7 +9,7 @@ CircleObject::CircleObject(Scene *scene, const glm::vec4 &color,
                            const glm::vec2 &position, float radius) :
     SceneObject(scene)
 {
-    m_transformComponent = std::make_unique<CircleTransform>(position, radius);
+    m_transformComponent = std::make_unique<CircleTransform>(position, radius, 0.0f);
     auto transform = static_cast<CircleTransform *>(m_transformComponent.get());
     m_renderableComponent = std::make_unique<CircleComponent>(transform, color);
     if (spec != nullptr) {

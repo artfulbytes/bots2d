@@ -33,8 +33,8 @@ Body2D *RangeSensor::getBody() const
 
 void RangeSensor::onFixedUpdate(double stepTime)
 {
-    const float rayAngleStart = -m_body2D->getAngle();
-    const float rayAngleEnd = m_relativeAngle - m_body2D->getAngle();
+    const float rayAngleStart = -m_body2D->getRotation();
+    const float rayAngleEnd = m_relativeAngle - m_body2D->getRotation();
     const glm::vec2 bodyPosition = PhysicsWorld::scalePosition(m_body2D->getPosition());
 
     /* Recalculate the casted ray */

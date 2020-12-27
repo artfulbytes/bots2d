@@ -14,7 +14,7 @@ class SumobotBody : public SceneObject
 {
 public:
     enum class Shape { Rectangle, Circle };
-    enum class TextureType { Plated, Circuited, None };
+    enum class TextureType { None, Plated, Circuited, RoundRed, RoundBlack };
 
     struct Specification {
         Specification(float length, float width, float mass, Shape shape, TextureType textureType) :
@@ -27,17 +27,18 @@ public:
         float frictionCoefficient = 0.05f;
     };
 
-    SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition);
+    SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
     ~SumobotBody();
+    glm::vec2 getPosition() const;
+    float getRotation() const;
     void onFixedUpdate(double stepTime) override;
     void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
     void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
     void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);
 
 private:
-    void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition);
-    void createCircleBody(const Specification &spec, const glm::vec2 &startPosition);
-    void createSensors(const PhysicsWorld &world);
+    void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);
+    void createCircleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);
 
     Body2D *m_body2D = nullptr;
 };

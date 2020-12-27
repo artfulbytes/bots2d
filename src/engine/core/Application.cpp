@@ -128,40 +128,32 @@ Application::~Application()
 }
 
 namespace {
-    /* We rely on 60 FPS monitor atm, physics engine will be out of sync for other Hz monitors */
-    const double framesPerSecond = 60.0;
-    const double stepTime = 1.0 / framesPerSecond;
-    double lastUpdateTime = 0;
-    glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
+    const glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
+    const unsigned int fpsSampleCount = 10;
 }
 
-/* Using VSYNC for now
-#include <chrono>
-#include <thread>
-*/
+unsigned int Application::getAvgFps() const
+{
+    return static_cast<unsigned int>(m_avgFps);
+}
 
 void Application::run()
 {
+    float lastTime = glfwGetTime();
     while (!glfwWindowShouldClose(m_window))
     {
-        /* This create intermittent lag..
-        const double currentTime = glfwGetTime();
-        const double timeSinceLastUpdate = currentTime - lastUpdateTime;
-
-        if (timeSinceLastUpdate < stepTime) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            continue;
-        }
-        */
-
         glfwPollEvents();
         Renderer::clear(defaultBgColor);
         ImGuiOverlay::newFrame();
+        const float stepTime = 1.0 / m_avgFps;
         onFixedUpdate(stepTime);
         ImGuiOverlay::render();
         m_scalebar->render();
         glfwSwapBuffers(m_window);
 
-        /* lastUpdateTime = currentTime; */
+        const float currentTime = glfwGetTime();
+        const float newFps = 1.0f / (currentTime - lastTime);
+        m_avgFps = m_avgFps + (newFps - m_avgFps) / fpsSampleCount;
+        lastTime = currentTime;
     }
 }

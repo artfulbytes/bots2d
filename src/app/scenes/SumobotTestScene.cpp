@@ -37,10 +37,13 @@ namespace {
                     rightVoltage = -maxVoltage;
                     break;
             }
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
+
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
         }
         SumobotController(Sumobot *sumobot) : m_sumobot(sumobot)
         {
@@ -95,7 +98,7 @@ void SumobotTestScene::createBackground()
 }
 
 SumobotTestScene::SumobotTestScene() :
-    Scene("Test keyboard-controlled sumobot with dohyo@74cm", PhysicsWorld::Gravity::TopView)
+    Scene("Test keyboard-controlled sumobot and dohyo@74cm", PhysicsWorld::Gravity::TopView)
 {
     createBackground();
     const Dohyo::Specification dohyoSpec =
@@ -106,9 +109,16 @@ SumobotTestScene::SumobotTestScene() :
     };
     m_dohyo = std::make_unique<Dohyo>(this, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
-    m_sumobot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::Nsumo),
-                                                            glm::vec2{0.0f, 0.0f}, 0);
-    m_sumobot->setController(new SumobotController(m_sumobot.get()));
+    m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
+                                               glm::vec2{0.25f, 0.0f}, 4.71f);
+    m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
+                                                       glm::vec2{-0.25f, 0.0f}, 1.5f);
+    m_twoWheelRectangleBot->setController(new SumobotController(m_twoWheelRectangleBot.get()));
+    m_twoWheelRectangleBot->setDebug(true);
+    m_twoWheelRoundBlackBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundBlack),
+                                                        glm::vec2{0.2f, -0.2f}, 3.0f);
+    m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),
+                                                      glm::vec2{-0.15f, -0.15f}, 1.0f);
 }
 
 SumobotTestScene::~SumobotTestScene()

@@ -42,8 +42,8 @@ WheelMotorTestScene::WheelMotorTestScene() :
 {
     auto physicsWorld = m_physicsWorld.get();
 
-    const WheelMotor::Specification spec(0.06f, 0.12f, 0.06f, WheelMotor::TextureType::Green);
-    m_wheelMotor = std::make_unique<WheelMotor>(this, spec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f });
+    const WheelMotor::Specification spec(0.03f, 0.06f, 0.06f, WheelMotor::TextureType::Green);
+    m_wheelMotor = std::make_unique<WheelMotor>(this, spec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f }, 0.0f);
     m_wheelMotorController = std::make_unique<WheelMotorController>(m_wheelMotor.get());
     m_wheelMotor->setController(m_wheelMotorController.get());
 }

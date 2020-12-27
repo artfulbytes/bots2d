@@ -1,10 +1,10 @@
 #include "components/Body2D.h"
 #include "components/Transforms.h"
 #include "PhysicsWorld.h"
-#include "Constants.h"
 #include "Body2DUserData.h"
 
 #include <box2d/box2d.h>
+#include <glm/ext/scalar_constants.hpp>
 
 namespace {
 class QuadTransformTranslator : public PhysicsToTransformTranslator
@@ -44,7 +44,7 @@ private:
 };
 
 constexpr int totalVertexCount = 180;
-constexpr float anglePerVertex = 2 * constants::pi / static_cast<float>(totalVertexCount);
+constexpr float anglePerVertex = 2 * glm::pi<float>() / static_cast<float>(totalVertexCount);
 constexpr int trapezoidVertexCount = 4;
 }
 
@@ -89,7 +89,7 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, flo
                                               : PhysicsWorld::scaleLengthNoAssert(radius);
     const float scaledMass = PhysicsWorld::scaleMass(spec.massUnscaled);
     const float normalForce = PhysicsWorld::normalForce(spec.massUnscaled);
-    const float scaledArea = constants::pi * scaledRadius * scaledRadius;
+    const float scaledArea = glm::pi<float>() * scaledRadius * scaledRadius;
     const float scaledDensity = scaledMass / scaledArea;
     const auto scaledPosition = PhysicsWorld::scalePosition(unscaledStartPos);
 
@@ -206,6 +206,12 @@ void Body2D::attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const B
     m_world->CreateJoint(&jointDef);
 }
 
+void Body2D::setPositionAndRotation(const glm::vec2 &position, float rotation)
+{
+    const b2Vec2 scaledPosition = { PhysicsWorld::scalePosition(position.x), PhysicsWorld::scalePosition(position.y) };
+    m_body->SetTransform(scaledPosition, rotation);
+}
+
 void Body2D::setForce(const glm::vec2 &vec, float magnitude)
 {
     const float scaledMagnitude = PhysicsWorld::scaleForce(magnitude);
@@ -224,7 +230,7 @@ glm::vec2 Body2D::getPosition() const
     return { PhysicsWorld::unscalePosition(position.x), PhysicsWorld::unscalePosition(position.y) };
 }
 
-float Body2D::getAngle() const
+float Body2D::getRotation() const
 {
     return m_body->GetAngle();
 }

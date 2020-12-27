@@ -33,13 +33,14 @@ public:
     void setUserData(Body2DUserData *userData);
     void attachBodyWithRevoluteJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
     void attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
+    void setPositionAndRotation(const glm::vec2 &position, float rotation);
     void setForce(const glm::vec2 &vec, float magnitude);
     void setLinearImpulse(const glm::vec2 &vec);
     float getForwardSpeed() const;
     glm::vec2 getLateralVelocity() const;
     glm::vec2 getForwardNormal() const;
     glm::vec2 getPosition() const;
-    float getAngle() const;
+    float getRotation() const;
     float getMass() const;
 
 private:

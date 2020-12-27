@@ -16,6 +16,9 @@ class HollowCircleComponent : public RenderableComponent
         }
 
         void onFixedUpdate() override {
+            if (m_enabled == false) {
+                return;
+            }
             Renderer::drawCircle(m_transform->position, m_transform->outerRadius, m_borderColor);
             Renderer::drawCircle(m_transform->position, m_transform->innerRadius, m_fillColor);
         }
