@@ -25,11 +25,12 @@ set (RENDERER_SOURCE_FILES
     src/engine/renderer/VertexArray.cpp
     src/engine/renderer/Shader.cpp
     src/engine/renderer/ImGuiOverlay.cpp
-    src/engine/renderer/stb_image.cpp
     src/engine/renderer/Texture.cpp
     src/engine/renderer/components/QuadComponent.cpp
     src/engine/renderer/SpriteAnimation.cpp
+    src/engine/renderer/stb_image.cpp
 )
+
 
 set (PHYSICS_SOURCE_FILES
     src/engine/physics/PhysicsWorld.cpp
@@ -118,3 +119,12 @@ set_target_properties(sumobot_simulator PROPERTIES
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
+
+# Ignore compile flags to keep the external repo intact
+set_source_files_properties(src/engine/renderer/stb_image.cpp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-unused-but-set-variable")
+
+if(MSVC)
+  target_compile_options(sumobot_simulator PRIVATE /W4 /WX)
+else()
+  target_compile_options(sumobot_simulator PRIVATE -Wall -Wextra -pedantic -Werror)
+endif()

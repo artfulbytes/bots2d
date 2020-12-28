@@ -103,6 +103,11 @@ float PhysicsWorld::scaleForce(float unscaledForce)
     return unscaledForce * forceScaleFactor;
 }
 
+float PhysicsWorld::unscaleForce(float scaledForce)
+{
+    return scaledForce / forceScaleFactor;
+}
+
 float PhysicsWorld::normalForce(float unscaledMass)
 {
     return unscaledMass * gravitationConstant * forceScaleFactor;

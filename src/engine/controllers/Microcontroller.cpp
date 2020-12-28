@@ -61,6 +61,7 @@ void Microcontroller::transferVoltageLevelsMicrocontrollerToSimulator()
  * the frame rate. */
 void Microcontroller::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
     transferVoltageLevelsSimulatorToMicrocontroller();
 }
 
@@ -75,6 +76,7 @@ void Microcontroller::microcontrollerLoop()
 
 void Microcontroller::onKeyEvent(const Event::Key &keyEvent)
 {
+    (void)keyEvent;
     /* Microcontroller should typically not handle key events,
      * but don't make this method final, because it's
      * useful to override it when testing */

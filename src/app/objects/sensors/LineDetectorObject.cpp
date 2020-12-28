@@ -41,4 +41,5 @@ void LineDetectorObject::setDebugDraw(bool enabled)
 
 void LineDetectorObject::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
 }

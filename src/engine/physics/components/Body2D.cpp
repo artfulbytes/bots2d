@@ -21,8 +21,8 @@ public:
     }
 
 private:
-    b2Body *m_body = nullptr;
     QuadTransform *m_transform = nullptr;
+    b2Body *m_body = nullptr;
 };
 
 class CircleTransformTranslator : public PhysicsToTransformTranslator
@@ -77,7 +77,7 @@ Body2D::Body2D(const PhysicsWorld &world, QuadTransform *transform, const Body2D
     m_translator = std::make_unique<QuadTransformTranslator>(transform, m_body);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
-        addTopViewFriction(normalForce, spec.frictionCoefficient);
+        addTopViewFriction(normalForce, spec.frictionCoefficient, spec.torqueFrictionCoefficient);
     }
 }
 
@@ -108,7 +108,7 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, flo
     m_body->CreateFixture(&fixtureDef);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
-        addTopViewFriction(normalForce, spec.frictionCoefficient);
+        addTopViewFriction(normalForce, spec.frictionCoefficient, spec.torqueFrictionCoefficient);
     }
 }
 
@@ -168,6 +168,7 @@ Body2D::~Body2D()
 
 void Body2D::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
     if (nullptr == m_translator) {
         return;
     }
@@ -215,7 +216,7 @@ void Body2D::setPositionAndRotation(const glm::vec2 &position, float rotation)
 void Body2D::setForce(const glm::vec2 &vec, float magnitude)
 {
     const float scaledMagnitude = PhysicsWorld::scaleForce(magnitude);
-    m_body->ApplyForce(magnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
+    m_body->ApplyForce(scaledMagnitude * b2Vec2(vec.x, vec.y), m_body->GetWorldCenter(), true);
 }
 
 void Body2D::setLinearImpulse(const glm::vec2 &vec)
@@ -261,7 +262,7 @@ float Body2D::getMass() const
     return PhysicsWorld::unscaleMass(m_body->GetMass());
 }
 
-void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
+void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient, float torqueFrictionCoefficient)
 {
     b2BodyDef frictionBodyDef;
     b2FixtureDef fixtureDef;
@@ -271,9 +272,15 @@ void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
     jointDef.bodyA = m_frictionBody;
     jointDef.bodyB = m_body;
     jointDef.maxForce = normalForce * frictionCoefficient;
-    /* Setting maxTorque to same as maxForce might not be realistic... (but works for now) */
-    jointDef.maxTorque = normalForce * frictionCoefficient;
+
+    jointDef.maxTorque = normalForce * torqueFrictionCoefficient;
     /* No need to explicitly delete joint, it's deleted when the attached body is deleted */
-    m_world->CreateJoint(&jointDef);
+    m_topViewFrictionJoint = static_cast<b2FrictionJoint *>(m_world->CreateJoint(&jointDef));
+}
+
+float Body2D::getTopViewFrictionForce(float stepTime) const
+{
+    const b2Vec2 reactionForce = m_topViewFrictionJoint->GetReactionForce(1.0f / stepTime);
+    return PhysicsWorld::unscaleForce(reactionForce.Length());
 }
 

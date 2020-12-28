@@ -20,6 +20,7 @@ enum VoltageLine {
 float **voltageLines;
 void setup(float **const voltageLinesArr, int voltageLineCount)
 {
+    (void)voltageLineCount;
     voltageLines = voltageLinesArr;
     *voltageLines[FRONT_LEFT_MOTOR] = 3.0f;
     *voltageLines[BACK_LEFT_MOTOR] = 3.0f;

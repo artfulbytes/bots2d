@@ -18,19 +18,25 @@ public:
         Specification(float width, float diameter, float mass, TextureType textureType) :
             width(width), diameter(diameter), mass(mass), textureType(textureType) {}
         Specification(float voltageInConstant, float angularSpeedConstant, float maxVoltage,
-                      float maxLateralCancelingImpulse, float width, float diameter, float mass,
+                      float sidewayFrictionConstant, float width, float diameter, float mass,
                       TextureType textureType) :
             voltageInConstant(voltageInConstant), angularSpeedConstant(angularSpeedConstant),
-            maxVoltage(maxVoltage), width(width), diameter(diameter), mass(mass), textureType(textureType) {}
+            maxVoltage(maxVoltage), sidewayFrictionConstant(sidewayFrictionConstant),
+            width(width), diameter(diameter), mass(mass), textureType(textureType) {}
         /* Simplified DC motor model
-         * Tune these two constants to get different characteristics
-         * (see tools/dc_motor_plot.py)
-         * (Torque constant * Voltage constant) / Motor resistance */
-        float voltageInConstant = 31.4f;
-        /* Torque constant / Motor resistance */
-        float angularSpeedConstant = 8.9f;
+         * Tune voltageInConstant and angularSpeedConstant for different acceleration
+         * and top speed (see tools/dc_motor_plot.py)
+         * voltageInConstant = (Torque constant * Voltage constant) / Motor resistance */
+        float voltageInConstant = 0.00628f;
+        /* angularSpeedConstant = Torque constant / Motor resistance */
+        float angularSpeedConstant = 0.00178f;
         /* Max voltage that can be applied to the voltage line */
         float maxVoltage = 6.0f;
+        /* Made-up constant to tweak the sideway friction, larger value
+         * means more friction and less skidding */
+        float sidewayFrictionConstant = 100.0f;
+        /* Negative value means use default */
+        float torqueFrictionCoefficient = -1.0f;
         float width;
         float diameter;
         float mass;

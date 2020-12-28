@@ -33,8 +33,8 @@ private:
     unsigned int m_currentSpriteIndex = 1;
     unsigned int m_framesBetweenUpdates = 10;
     unsigned int m_framesSinceLastUpdate = 0;
-    const float m_spriteHeight = 1.0f;
     const float m_spriteWidth = 1.0f;
+    const float m_spriteHeight = 1.0f;
     TexCoords m_texCoords;
     Direction m_animationDirection = Direction::Forward;
     bool m_stopped = false;

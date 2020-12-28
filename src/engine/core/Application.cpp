@@ -14,11 +14,14 @@
 
 static void error_callback(int error, const char* description)
 {
-    fprintf(stderr, "Error: %s\n", description);
+    fprintf(stderr, "Error: %d %s\n", error, description);
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+    (void)window;
+    (void)scancode;
+    (void)mods;
     const Event::Key keyEvent = { Event::GLFWKeyToKeyCode(key),
                                   Event::GLFWActionToKeyAction(action) };
     if (keyEvent.code == Event::KeyCode::Unhandled || keyEvent.action == Event::KeyAction::Unhandled) {
@@ -41,11 +44,13 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+     (void)window;
      Camera::onScrollEvent({ xoffset, yoffset });
 }
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    (void)window;
     Camera::onWindowEvent({ width, height });
 }
 
@@ -122,6 +127,7 @@ Application::Application(std::string name)
 Application::~Application()
 {
     Renderer::destroy();
+    m_scalebar = nullptr;
     ImGuiOverlay::destroy();
     glfwDestroyWindow(m_window);
     glfwTerminate();

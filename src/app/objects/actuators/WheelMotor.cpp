@@ -26,7 +26,12 @@ WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orie
         m_renderableComponent = std::make_unique<QuadComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
-    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
+    Body2D::Specification bodySpec(true, true, spec.mass);
+    if (spec.torqueFrictionCoefficient >= 0.0f)
+    {
+        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
+    }
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
@@ -42,16 +47,19 @@ std::string WheelMotor::getTextureName(WheelMotor::Orientation orientation, Whee
         case WheelMotor::Orientation::Left: return "wheel_sprite_left_orange.png";
         case WheelMotor::Orientation::Right: return "wheel_sprite_right_orange.png";
         }
+        break;
     case WheelMotor::TextureType::Green:
         switch(orientation) {
         case WheelMotor::Orientation::Left: return "wheel_sprite_left_green.png";
         case WheelMotor::Orientation::Right: return "wheel_sprite_right_green.png";
         }
+        break;
     case WheelMotor::TextureType::Red:
         switch(orientation) {
         case WheelMotor::Orientation::Left: return "wheel_sprite_left_red.png";
         case WheelMotor::Orientation::Right: return "wheel_sprite_right_red.png";
         }
+        break;
     case TextureType::None:
         assert(0);
     }
@@ -93,13 +101,18 @@ void WheelMotor::updateForce()
     const float angularSpeed = currentForwardSpeed / (3.14f * diameter);
     const float torqueApplied = m_spec.voltageInConstant * m_voltageIn - m_spec.angularSpeedConstant * angularSpeed;
     const float rollingFriction = 0;
-    // Convert torque to force (t = r * F => F = t / r)
+    /* Convert torque to force (t = r * F => F = t / r) */
     const float forceToApply = (torqueApplied / (diameter / 2)) - rollingFriction;
     m_body2D->setForce(currentForwardNormal, forceToApply);
+
+    /* Apply sideway friction to mimic real wheel */
+    glm::vec2 lateralCancelingImpulse = -m_body2D->getLateralVelocity() * m_spec.sidewayFrictionConstant;
+    m_body2D->setLinearImpulse(lateralCancelingImpulse);
 }
 
 void WheelMotor::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
     if (m_animation != nullptr) {
         setAnimation();
     }

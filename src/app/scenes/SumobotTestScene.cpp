@@ -13,7 +13,7 @@ namespace {
     {
     public:
         enum class Drive { Stop, Forward, Backward, Left, Right };
-        const float maxVoltage = 3.0f;
+        const float maxVoltage = 6.0f;
 
         void setDrive(Drive drive) {
             float leftVoltage = 0.0f;
@@ -38,12 +38,12 @@ namespace {
                     break;
             }
 
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
+            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
         }
         SumobotController(Sumobot *sumobot) : m_sumobot(sumobot)
         {
@@ -79,6 +79,7 @@ namespace {
         }
         void onFixedUpdate(double stepTime) override
         {
+            (void)stepTime;
         }
     private:
         Sumobot *m_sumobot = nullptr;
@@ -111,10 +112,11 @@ SumobotTestScene::SumobotTestScene() :
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                glm::vec2{0.25f, 0.0f}, 4.71f);
+    m_fourWheelBot->setController(new SumobotController(m_fourWheelBot.get()));
+    m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
                                                        glm::vec2{-0.25f, 0.0f}, 1.5f);
-    m_twoWheelRectangleBot->setController(new SumobotController(m_twoWheelRectangleBot.get()));
-    m_twoWheelRectangleBot->setDebug(true);
+    //m_twoWheelRectangleBot->setController(new SumobotController(m_twoWheelRectangleBot.get()));
     m_twoWheelRoundBlackBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundBlack),
                                                         glm::vec2{0.2f, -0.2f}, 3.0f);
     m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),

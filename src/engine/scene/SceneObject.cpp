@@ -55,5 +55,6 @@ void SceneObject::onKeyEvent(const Event::Key &keyEvent)
 
 void SceneObject::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
     /* Do nothing */
 }

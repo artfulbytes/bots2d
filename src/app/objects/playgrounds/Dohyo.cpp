@@ -39,4 +39,5 @@ Dohyo::~Dohyo()
 
 void Dohyo::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
 }

@@ -20,8 +20,8 @@ public:
         m_scenes.push_back(std::make_pair(name, []() { return new T(); }));
     }
 private:
+    Application *m_appPtr = nullptr;
     Scene*& m_currentScene;
-    Application *m_appPtr;
     std::vector<std::pair<std::string, std::function<Scene*()>>> m_scenes;
 };
 

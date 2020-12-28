@@ -10,6 +10,7 @@ class QuadTransform;
 class CircleTransform;
 class HollowCircleTransform;
 struct Body2DUserData;
+class b2FrictionJoint;
 
 class Body2D : public PhysicsComponent
 {
@@ -20,7 +21,10 @@ public:
         bool dynamic = false;
         bool collision = true;
         float massUnscaled = 1.0f;
+        /* This determines how easy it is to push a body */
         float frictionCoefficient = 0.1f;
+        /* This determines how easy it is to turn a body */
+        float torqueFrictionCoefficient = 0.6f;
     };
 
     Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, float rotation, float radius,
@@ -44,8 +48,10 @@ public:
     float getMass() const;
 
 private:
-    void addTopViewFriction(float normalForce, float frictionCoefficient);
+    void addTopViewFriction(float normalForce, float frictionCoefficient, float torqueFrictionCoefficient);
+    float getTopViewFrictionForce(float stepTime) const;
 
+    b2FrictionJoint *m_topViewFrictionJoint = nullptr;
     b2Body *m_body = nullptr;
     b2Body *m_frictionBody = nullptr;
 };

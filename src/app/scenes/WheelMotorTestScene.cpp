@@ -31,6 +31,7 @@ namespace {
         }
         void onFixedUpdate(double stepTime) override
         {
+            (void)stepTime;
         }
     private:
         WheelMotor *m_wheelMotor = nullptr;
@@ -40,8 +41,6 @@ namespace {
 WheelMotorTestScene::WheelMotorTestScene() :
     Scene("Test wheel motor object", PhysicsWorld::Gravity::TopView)
 {
-    auto physicsWorld = m_physicsWorld.get();
-
     const WheelMotor::Specification spec(0.03f, 0.06f, 0.06f, WheelMotor::TextureType::Green);
     m_wheelMotor = std::make_unique<WheelMotor>(this, spec, WheelMotor::Orientation::Left, glm::vec2{ 0.0f, 0.0f }, 0.0f);
     m_wheelMotorController = std::make_unique<WheelMotorController>(m_wheelMotor.get());

@@ -19,8 +19,8 @@ public:
     void setUniformMat4f(const std::string& name, const glm::mat4& matrix);
 
 private:
-    unsigned int m_id;
     std::string m_filepath;
+    unsigned int m_id;
     std::unordered_map<std::string, int> m_uniformLocationCache;
 
     ShaderProgramSource parse(const std::string& filepath);

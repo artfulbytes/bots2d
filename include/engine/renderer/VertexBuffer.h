@@ -16,8 +16,8 @@ private:
     int glDrawType(DrawType drawType);
 
     unsigned int m_id;
-    const int m_glDrawType;
     const unsigned int m_size;
+    const int m_glDrawType;
 };
 
 #endif /* VERTEX_BUFFER_H_ */

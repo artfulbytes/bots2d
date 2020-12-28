@@ -34,6 +34,7 @@ public:
     static float scaleMass(float unscaledMass);
     static float unscaleMass(float scaledMass);
     static float scaleForce(float unscaledForce);
+    static float unscaleForce(float scaledForce);
     static float normalForce(float unscaledMass);
 
     /* We want physics components to have access to b2World */

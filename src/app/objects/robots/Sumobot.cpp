@@ -14,8 +14,13 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.07f, 0.1f,   /* Body width, length */
             0.42f,         /* Body mass */
+            0.6f,         /* Body torque friction coefficient */
             0.015f, 0.03f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            100.0f,        /* Wheel sideway friction constant */
+            0.00628f,      /* Motor voltage in constant */
+            0.00178f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
             SumobotBody::Shape::Rectangle,
             SumobotBody::TextureType::Circuited,
             WheelMotor::TextureType::Green,
@@ -44,8 +49,13 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.06f, 0.08f,   /* Body width, length */
             0.25f,         /* Body mass */
+            0.3f,         /* Body torque friction coefficient */
             0.02f, 0.04f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            150.0f,        /* Wheel sideway friction constant */
+            0.00628f,      /* Motor voltage in constant */
+            0.00178f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
             SumobotBody::Shape::Rectangle,
             SumobotBody::TextureType::Plated,
             WheelMotor::TextureType::Orange,
@@ -72,8 +82,13 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.075f, 0.08f,   /* Body width, length */
             0.42f,         /* Body mass */
+            0.35f,         /* Body torque friction coefficient */
             0.0125f, 0.0225f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            100.0f,        /* Wheel sideway friction constant */
+            0.00500f,      /* Motor voltage in constant */
+            0.00178f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
             SumobotBody::Shape::Circle,
             SumobotBody::TextureType::RoundBlack,
             WheelMotor::TextureType::Red,
@@ -98,8 +113,13 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.075f, 0.08f,   /* Body width, length */
             0.42f,         /* Body mass */
+            0.35f,         /* Body torque friction coefficient */
             0.0125f, 0.0225f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            100.0f,        /* Wheel sideway friction constant */
+            0.00500f,      /* Motor voltage in constant */
+            0.00178f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
             SumobotBody::Shape::Circle,
             SumobotBody::TextureType::RoundRed,
             WheelMotor::TextureType::Green,
@@ -166,14 +186,15 @@ Sumobot::~Sumobot()
 void Sumobot::createBody(const Sumobot::Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     const SumobotBody::Specification bodySpec(spec.bodyLength, spec.bodyWidth, spec.bodyMass,
-                                              spec.bodyShape, spec.bodyTexture);
+                                              spec.bodyTorqueFrictionCoefficient, spec.bodyShape, spec.bodyTexture);
     m_sumobotBody = std::make_unique<SumobotBody>(m_scene, bodySpec, startPosition, startRotation);
 }
 
 void Sumobot::createWheelMotors(const Sumobot::Specification &spec)
 {
-    const WheelMotor::Specification wheelSpec(spec.wheelWidth, spec.wheelDiameter,
-                                              spec.wheelMass, spec.wheelTexture);
+    const WheelMotor::Specification wheelSpec(spec.motorVoltageInConstant, spec.motorAngularSpeedConstant,
+                                              spec.motorMaxVoltage, spec.wheelSidewayFrictionConstant,
+                                              spec.wheelWidth, spec.wheelDiameter, spec.wheelMass, spec.wheelTexture);
     for (const auto &wheelMotorTuple : spec.wheelMotorTuples) {
         const auto index = std::get<0>(wheelMotorTuple);
         const auto relativePosition = std::get<1>(wheelMotorTuple);
@@ -224,6 +245,7 @@ void Sumobot::setDebug(bool enabled)
     for (const auto &rangeSensorTuple : m_rangeSensors) {
         rangeSensorTuple.second->setDebugDraw(enabled);
     }
+    m_debugEnabled = enabled;
 }
 
 float *Sumobot::getVoltageLine(Sumobot::WheelMotorIndex wheelMotorIndex) const
@@ -234,4 +256,15 @@ float *Sumobot::getVoltageLine(Sumobot::WheelMotorIndex wheelMotorIndex) const
         assert(0);
     }
     return wheelMotorItr->second->getVoltageLine();
+}
+
+void Sumobot::onFixedUpdate(double stepTime)
+{
+    (void)stepTime;
+    if (m_debugEnabled) {
+        const auto position = m_sumobotBody->getPosition();
+        std::cout << "Sumobot position (" << position.x << ", " << position.y << ") "
+                  << "speed " << m_sumobotBody->getForwardSpeed()
+                  << std::endl;
+    }
 }

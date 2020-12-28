@@ -23,9 +23,16 @@ public:
         float bodyWidth;
         float bodyLength;
         float bodyMass;
+        /* Determines how easy it is to rotate the body */
+        float bodyTorqueFrictionCoefficient;
         float wheelWidth;
         float wheelDiameter;
         float wheelMass;
+        float wheelSidewayFrictionConstant;
+        /* Motor constants (See WheelMotor.h for more info) */
+        float motorVoltageInConstant;
+        float motorAngularSpeedConstant;
+        float motorMaxVoltage;
         SumobotBody::Shape bodyShape;
         SumobotBody::TextureType bodyTexture;
         WheelMotor::TextureType wheelTexture;
@@ -40,6 +47,7 @@ public:
     Sumobot(Scene *scene, const Specification &spec,
             const glm::vec2 &startPosition, const float startRotation);
     ~Sumobot();
+    void onFixedUpdate(double timeStep) override;
     float *getVoltageLine(WheelMotorIndex wheelMotorIndex) const;
     void setDebug(bool enabled);
 
@@ -52,6 +60,7 @@ private:
     std::unordered_map<WheelMotorIndex, std::unique_ptr<WheelMotor>> m_wheelMotors;
     std::unordered_map<RangeSensorIndex, std::unique_ptr<RangeSensorObject>> m_rangeSensors;
     std::unordered_map<LineDetectorIndex, std::unique_ptr<LineDetectorObject>> m_lineDetectors;
+    bool m_debugEnabled = false;
 };
 
 #endif /* SUMOBOT_H_ */

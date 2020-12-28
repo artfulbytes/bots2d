@@ -21,12 +21,12 @@ private:
     void updateVoltage();
     void updateDetectedDistance(const glm::vec2 &start, const glm::vec2 &end);
 
+    LineTransform *const m_lineTransform = nullptr;
+    const float m_relativeAngle = 0.0f;
     const float m_minDistance = 0.0f;
     const float m_maxDistance = 0.0f;
-    const float m_relativeAngle = 0.0f;
     std::unique_ptr<Body2D> m_body2D;
 
-    LineTransform * const m_lineTransform = nullptr;
     float m_distanceVoltage = 0.0f;
     float m_detectedDistance = 0.0f;
 };

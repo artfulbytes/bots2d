@@ -38,6 +38,11 @@ float SumobotBody::getRotation() const
     return m_body2D->getRotation();
 }
 
+float SumobotBody::getForwardSpeed() const
+{
+    return m_body2D->getForwardSpeed();
+}
+
 void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{ spec.width, spec.length }, startRotation);
@@ -60,7 +65,12 @@ void SumobotBody::createRectangleBody(const Specification &spec, const glm::vec2
         m_renderableComponent = std::make_unique<QuadComponent>(transform, color);
         break;
     }
-    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
+    Body2D::Specification bodySpec(true, true, spec.mass);
+    if (spec.torqueFrictionCoefficient >= 0.0f)
+    {
+        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
+    }
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
@@ -88,7 +98,12 @@ void SumobotBody::createCircleBody(const Specification &spec, const glm::vec2 &s
         break;
     }
 
-    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, Body2D::Specification{ true, true, spec.mass });
+    Body2D::Specification bodySpec(true, true, spec.mass);
+    if (spec.torqueFrictionCoefficient >= 0.0f)
+    {
+        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
+    }
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
@@ -109,4 +124,5 @@ void SumobotBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm
 
 void SumobotBody::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
 }

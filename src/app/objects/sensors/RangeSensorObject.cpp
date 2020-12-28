@@ -42,4 +42,5 @@ float *RangeSensorObject::getVoltageLine() const
 
 void RangeSensorObject::onFixedUpdate(double stepTime)
 {
+    (void)stepTime;
 }
