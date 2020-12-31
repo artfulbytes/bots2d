@@ -3,6 +3,10 @@
 
 #include "Texture.h"
 
+/**
+ * GUI-overlay at the bottom, which displays the scale. It adjusts to
+ * the camera zoom factor.
+ */
 class Scalebar
 {
 public:

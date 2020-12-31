@@ -54,8 +54,8 @@ Body2D::Body2D(const PhysicsWorld &world, RectTransform *transform, const Body2D
     const float scaledWidth = PhysicsWorld::scaleLength(transform->size.x);
     const float scaledLength = PhysicsWorld::scaleLength(transform->size.y);
     const glm::vec2 scaledPosition = PhysicsWorld::scalePosition(transform->position);
-    const float scaledMass = PhysicsWorld::scaleMass(spec.massUnscaled);
-    const float normalForce = PhysicsWorld::normalForce(spec.massUnscaled);
+    const float scaledMass = PhysicsWorld::scaleMass(spec.mass);
+    const float normalForce = PhysicsWorld::normalForce(spec.mass);
     const float scaledArea = scaledWidth * scaledLength;
     const float scaledDensity = scaledMass / scaledArea;
 
@@ -86,8 +86,8 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float 
 {
     const float scaledRadius = spec.collision ? PhysicsWorld::scaleRadius(radius)
                                               : PhysicsWorld::scaleLengthNoAssert(radius);
-    const float scaledMass = PhysicsWorld::scaleMass(spec.massUnscaled);
-    const float normalForce = PhysicsWorld::normalForce(spec.massUnscaled);
+    const float scaledMass = PhysicsWorld::scaleMass(spec.mass);
+    const float normalForce = PhysicsWorld::normalForce(spec.mass);
     const float scaledArea = glm::pi<float>() * scaledRadius * scaledRadius;
     const float scaledDensity = scaledMass / scaledArea;
     const auto scaledPosition = PhysicsWorld::scalePosition(startPosition);

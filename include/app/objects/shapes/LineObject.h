@@ -4,6 +4,10 @@
 #include "SceneObject.h"
 #include <glm/glm.hpp>
 
+/**
+ * Draws a line in a scene. It's needed because a scene can't directly
+ * update components (LineComponent).
+ */
 class LineObject : public SceneObject
 {
 public:

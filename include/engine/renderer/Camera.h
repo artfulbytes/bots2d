@@ -4,6 +4,9 @@
 #include "Event.h"
 #include <glm/glm.hpp>
 
+/**
+ * Camera position and zoom factor.
+ */
 class Camera
 {
 public:

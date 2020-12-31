@@ -5,6 +5,9 @@
 
 struct GLFWwindow;
 
+/**
+ * Wrapper around ImGui (lightweight GUI library).
+ */
 class ImGuiOverlay
 {
 public:

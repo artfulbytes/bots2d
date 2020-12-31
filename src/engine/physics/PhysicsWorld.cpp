@@ -4,25 +4,18 @@
 #include "box2d/box2d.h"
 #include <cassert>
 
-/* Box2D uses metric units and documentation recommends sizing objects between 0.1-10 m.
- * We want sizes as small as 0.01 m, so introduce a scale factor of 10 to give us a working
- * range of 0.01-1 m instead.
- *
- * All scaling should be handled inside the physics components and be hidden from the
- * other classes. That is, physics components work in the range 0.1-10 m while the
- * other classes work in 0.01-1 m.
- */
-inline constexpr float maxWidthObject { 1.0f };
-inline constexpr float minWidthObject { 0.01f };
-inline constexpr float physScaleFactor { 10.0f };
-inline constexpr float lengthScaleFactor { physScaleFactor };
-inline constexpr float speedScaleFactor { lengthScaleFactor };
-inline constexpr float accelerationScaleFactor { speedScaleFactor };
-inline constexpr float massScaleFactor { physScaleFactor * physScaleFactor * physScaleFactor };
+namespace {
+constexpr float maxWidthObject { 1.0f };
+constexpr float minWidthObject { 0.01f };
+constexpr float physScaleFactor { 10.0f };
+constexpr float lengthScaleFactor { physScaleFactor };
+constexpr float speedScaleFactor { lengthScaleFactor };
+constexpr float accelerationScaleFactor { speedScaleFactor };
+constexpr float massScaleFactor { physScaleFactor * physScaleFactor * physScaleFactor };
 /* F = m*a so F_scaled = forceFactor * F = (massFactor * m) * (accFactor * a) */
-inline constexpr float forceScaleFactor { massScaleFactor * accelerationScaleFactor };
-
-inline constexpr float gravitationConstant { 9.82f };
+const float forceScaleFactor { massScaleFactor * accelerationScaleFactor };
+constexpr float gravitationConstant { 9.82f };
+}
 
 void PhysicsWorld::assertDimensions(float unscaledLength)
 {

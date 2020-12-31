@@ -8,6 +8,10 @@
 #include <glm/glm.hpp>
 #include <string>
 
+/**
+ * A renderable rectangle with physics (optional). It's needed because a scene can't directly update
+ * components (RectComponent and Body2D).
+ */
 class RectObject : public SceneObject
 {
 public:

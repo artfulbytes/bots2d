@@ -10,9 +10,14 @@ class Texture;
 struct TexCoords;
 struct QuadCoords;
 
+/**
+ * Main renderer class, which brings together all the other OpenGL wrappers to
+ * produce OpenGL draw calls from simple arguments (position, size, rotation, etc.)
+ */
 class Renderer
 {
 public:
+    /** Must be called before calling any other function */
     static void init();
     static void destroy();
     static void clear(const glm::vec4 &color);

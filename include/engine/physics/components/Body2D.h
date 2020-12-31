@@ -14,19 +14,27 @@ struct Body2DUserData;
 class b2FrictionJoint;
 struct QuadCoords;
 
+/**
+ * Basic physics body class which creates a b2Body based on a transform. It synchronizes
+ * the Box2D changes (position+rotation) with the transform data every fixed update.
+ *
+ * Many of the functions are just simple wrappers around b2Body.
+ */
 class Body2D : public PhysicsComponent
 {
 public:
     struct Specification {
         Specification() {}
-        Specification(bool dynamic, bool collision, float massUnscaled) :
-            dynamic(dynamic), collision(collision), massUnscaled(massUnscaled) {}
+        Specification(bool dynamic, bool collision, float mass) :
+            dynamic(dynamic), collision(collision), mass(mass) {}
+        /** Set body as dynamic (moveable) or static (still) */
         bool dynamic = false;
+        /** Enable or disable collision */
         bool collision = true;
-        float massUnscaled = 1.0f;
-        /* This determines how easy it is to push a body */
+        float mass = 1.0f;
+        /** This determines how easy it is to push the body */
         float frictionCoefficient = 0.1f;
-        /* This determines how easy it is to turn a body */
+        /** This determines how easy it is to rotate the body */
         float torqueFrictionCoefficient = 0.6f;
     };
 
@@ -52,6 +60,9 @@ public:
     float getMass() const;
 
 private:
+    /**
+     * In top view gravity mode, the gravity is set to 0. This mimics friction with a b2FrictionJoint.
+     */
     void addTopViewFriction(float normalForce, float frictionCoefficient, float torqueFrictionCoefficient);
     float getTopViewFrictionForce(float stepTime) const;
 

@@ -3,6 +3,10 @@
 
 #include <string>
 
+/**
+ * Finds the path to the resources folder. It enables the simulator binary to
+ * be executed from different locations.
+ */
 class ResourcesHelper
 {
 public:

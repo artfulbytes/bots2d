@@ -4,6 +4,10 @@
 class VertexBuffer;
 class VertexBufferLayout;
 
+/**
+ * Wrapper around OpenGL vertex array object (VAO). A VAO contains VertexBuffer and
+ * its layout.
+ */
 class VertexArray
 {
 public:

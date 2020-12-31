@@ -6,7 +6,11 @@
 
 #include <glm/glm.hpp>
 
-/* Transform acts as the link between physics and rendering */
+/**
+ * The base class for Transform-components. A transform holds the data
+ * shared between physics and rendering and can thus be seen as the
+ * link between them.
+ */
 class TransformComponent : public Component
 {
 public:

@@ -2,6 +2,10 @@
 #define TEXTURE_H_
 #include <string>
 
+/**
+ * Loads a texture (image file) from a given path.
+ * It depends on stb_image.
+ */
 class Texture
 {
 public:

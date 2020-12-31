@@ -24,6 +24,10 @@ struct VertexBufferElement
     }
 };
 
+/**
+ * Wrapper around OpenGL vertex buffer layout, which labels the data in a
+ * vertex buffer.
+ */
 class VertexBufferLayout
 {
 public:
@@ -66,6 +70,5 @@ inline void VertexBufferLayout::push<unsigned int>(unsigned int count)
     m_elements.push_back({ GL_UNSIGNED_INT, count, GL_FALSE });
     m_stride += count * VertexBufferElement::getSizeOfType(GL_UNSIGNED_INT);
 }
-
 
 #endif /* VERTEX_BUFFER_LAYOUT_H_ */

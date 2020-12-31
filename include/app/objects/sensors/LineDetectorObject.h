@@ -7,6 +7,9 @@
 class LineDetector;
 class Body2D;
 
+/**
+ * Line detector with debug draw to notice detection graphically.
+ */
 class LineDetectorObject : public SceneObject
 {
 public:

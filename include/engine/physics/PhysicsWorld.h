@@ -7,9 +7,25 @@
 class b2World;
 class ContactListener;
 
+/**
+ * Wrapper class around Box2D b2World. Only one instance should exist at a time.
+ *
+ * Box2D uses metric units, and its documentation recommends sizing objects between
+ * 0.1-10 m. For this simulator, it's more appropriate with a smaller range. Therefore,
+ * we use a scale factor of 10. This class provides the necessary scaling
+ * functions, which should only be called by classes inheriting PhysicsComponent.
+ * That is, physics components work in the range 0.1-10 m while the other classes
+ * work in the range 0.01-1 m.
+ */
 class PhysicsWorld
 {
 public:
+    /**
+     * PhysicsWorld supports different gravity modes. SideView is the same as the
+     * regular 2D-game with a side view (Box2D default) 9.82 m/s^2 gravity constant.
+     * TopView represents gravity when looked at from above. Custom mode can be used
+     * to set specific gravity constant for X and Y axis.
+     */
     enum class Gravity { SideView, TopView, Custom };
     PhysicsWorld(Gravity gravity);
     PhysicsWorld(float gravityX, float gravityY);
@@ -37,7 +53,7 @@ public:
     static float unscaleForce(float scaledForce);
     static float normalForce(float unscaledMass);
 
-    /* We want physics components to have access to b2World */
+    /** To give physics components to access to b2World */
     friend class PhysicsComponent;
 private:
     std::unique_ptr<b2World> m_world;

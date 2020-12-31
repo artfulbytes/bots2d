@@ -3,6 +3,9 @@
 
 #include "ControllerComponent.h"
 
+/**
+ * Base class for classes that controls a SceneObject based on keyboard input.
+ */
 class KeyboardController : public ControllerComponent
 {
 public:

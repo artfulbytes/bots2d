@@ -21,6 +21,10 @@ namespace {
     const float metersToPxScale = 1000.0f;
 }
 
+/**
+ * Contains the state of the renderer. The vertex buffers are allocated once, and the renderer
+ * then re-use them for each draw call.
+ */
 struct RendererStorage
 {
     float dynamicQuadVertices[16] = {

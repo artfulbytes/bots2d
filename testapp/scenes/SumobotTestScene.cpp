@@ -89,13 +89,19 @@ namespace {
 
 void SumobotTestScene::createBackground()
 {
-    const float backgroundWidth = 500.0f;
+    const float backgroundWidth = 100.0f;
     const float backgroundHeight = backgroundWidth;
-    glm::vec4 leftColor(0.906f, 0.294f, 0.235f, 1.0f);
-    m_background->leftSide = std::make_unique<RectObject>(this, leftColor, nullptr, glm::vec2{ -backgroundWidth / 4.0f, 0.0f },
+    const float middleStripeWidth = 0.075f;
+    const glm::vec4 leftColor(0.906f, 0.294f, 0.235f, 1.0f);
+    const glm::vec4 middleColor(0.0f, 0.0f, 0.0f, 1.0f);
+    const glm::vec4 rightColor(0.153f, 0.565f, 0.69f, 1.0f);
+    m_background->leftSide = std::make_unique<RectObject>(this, leftColor, nullptr,
+                                                          glm::vec2{ (-backgroundWidth / 4.0f) - (middleStripeWidth / 2.0f) , 0.0f },
                                                           glm::vec2{ backgroundWidth / 2.0f, backgroundHeight }, 0.0f);
-    glm::vec4 rightColor(0.153f, 0.565f, 0.69f, 1.0f);
-    m_background->rightSide = std::make_unique<RectObject>(this, rightColor, nullptr, glm::vec2{ backgroundWidth / 4.0f, 0.0f },
+    m_background->middleStripe = std::make_unique<RectObject>(this, middleColor, nullptr, glm::vec2{ 0.0f, 0.0f },
+                                                              glm::vec2{ middleStripeWidth, backgroundHeight}, 0.0f);
+    m_background->rightSide = std::make_unique<RectObject>(this, rightColor, nullptr,
+                                                           glm::vec2{ (backgroundWidth / 4.0f) + (middleStripeWidth / 2.0f), 0.0f },
                                                            glm::vec2{ backgroundWidth / 2.0f, backgroundHeight }, 0.0f);
 }
 

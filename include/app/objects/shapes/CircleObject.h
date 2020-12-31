@@ -5,6 +5,10 @@
 #include "components/Body2D.h"
 #include <glm/glm.hpp>
 
+/**
+ * Simulates a simple circular object with physics (optional). It's needed because
+ * a scene can't directly update components (CircleComponent).
+ */
 class CircleObject : public SceneObject
 {
 public:

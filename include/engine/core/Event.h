@@ -1,6 +1,9 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
+/**
+ * Wrapper class around GLFW window, key and scroll events.
+ */
 class Event
 {
 public:

@@ -4,6 +4,9 @@
 #include <box2d/b2_contact.h>
 #include <box2d/b2_world_callbacks.h>
 
+/**
+ * Implements Box2D contact listener callbacks.
+ */
 class ContactListener : public b2ContactListener
 {
 public:

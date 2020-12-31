@@ -1,4 +1,4 @@
-#include "SimulatorApp.h"
+#include "SimulatorTestApp.h"
 #include "SceneMenu.h"
 #include "DrawTestScene.h"
 #include "SpriteAnimationTestScene.h"
@@ -7,8 +7,8 @@
 #include "SumobotTestScene.h"
 #include "LineFollowerTestScene.h"
 
-SimulatorApp::SimulatorApp() :
-    Application("Simulator")
+SimulatorTestApp::SimulatorTestApp() :
+    Application("Bots2D test")
 {
     m_sceneMenu = std::make_unique<SceneMenu>(this, m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
@@ -19,19 +19,19 @@ SimulatorApp::SimulatorApp() :
     m_sceneMenu->registerScene<LineFollowerTestScene>("LineFollowerTest");
 }
 
-SimulatorApp::~SimulatorApp()
+SimulatorTestApp::~SimulatorTestApp()
 {
     delete m_currentScene;
 }
 
-void SimulatorApp::onKeyEvent(const Event::Key &keyEvent)
+void SimulatorTestApp::onKeyEvent(const Event::Key &keyEvent)
 {
     if (m_currentScene) {
         m_currentScene->onKeyEvent(keyEvent);
     }
 }
 
-void SimulatorApp::onFixedUpdate(double stepTime)
+void SimulatorTestApp::onFixedUpdate(double stepTime)
 {
     m_sceneMenu->render();
     if (m_currentScene) {

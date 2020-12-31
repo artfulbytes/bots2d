@@ -9,6 +9,11 @@
 
 class SceneObject;
 
+/**
+ * Base class for scenes. All scenes must inherit this class. A Scene provides the stage
+ * for the simulation and has a PhysicsWorld and a list of SceneObject. Only one Scene
+ * can be active at a time.
+ */
 class Scene
 {
 public:

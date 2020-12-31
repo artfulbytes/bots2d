@@ -7,6 +7,10 @@
 
 struct ShaderProgramSource;
 
+/**
+ * Wrapper around OpenGL shader handling.
+ * Loads and compiles a shader (GPU) program.
+ */
 class Shader
 {
 public:

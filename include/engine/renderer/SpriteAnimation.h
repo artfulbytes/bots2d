@@ -3,6 +3,11 @@
 
 #include "TexCoords.h"
 
+/**
+ * Provides animation based on a spritesheet texture. It animates by showing a portion
+ * of the spritesheet (a single sprite) at a time and changing the texture coordinates
+ * based on the specified update frequency.
+ */
 class SpriteAnimation {
 public:
     enum class Direction { Forward, Backward };
@@ -13,7 +18,8 @@ public:
         unsigned int framesBetweenUpdates = 0;
         Direction direction = Direction::Forward;
     };
-    /* NOTE: Certain values of spriteCountAxis (spritesheet row/column) lead to small rounding
+    /**
+     * NOTE: Certain values of spriteCountAxis (spritesheet row/column) lead to small rounding
      * errors of the texture coordinates, which results in a slighty miss-aligned sprite. */
     SpriteAnimation(unsigned int spriteSheetWidth, unsigned int spriteSheetHeight, unsigned int spriteCount,
                     unsigned int framesBetweenUpdates, Direction animationDirection = Direction::Forward);

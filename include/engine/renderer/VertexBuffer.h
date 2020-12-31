@@ -1,6 +1,10 @@
 #ifndef VERTEX_BUFFER_H_
 #define VERTEX_BUFFER_H_
 
+/**
+ * Wrapper around OpenGL vertex buffer object (VBO). A VBO holds vertex data such as
+ * position and texture coordinates.
+ */
 class VertexBuffer
 {
 public:

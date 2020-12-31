@@ -13,6 +13,12 @@ class SpriteAnimation;
 class RectTransform;
 class CircleTransform;
 
+/**
+ * Renders a rectangle with single color or texture (and animation).
+ *
+ * It can't be used directly in a Scene, instead it must be assigned to
+ * a Scene object to be updated each simulation iteration.
+ */
 class RectComponent : public RenderableComponent
 {
 public:

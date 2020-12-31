@@ -9,6 +9,11 @@ class PhysicsWorld;
 class SpriteAnimation;
 class Body2D;
 
+/**
+ * A wheel with a built-in DC-motor. The DC-motor is modeled with basic DC-motor
+ * equations computing torque/force from a voltage input. Tune voltageInConstant and angularSpeedConstant
+ * for different acceleration and top speed (see tools/dc_motor_plot.py)
+ */
 class WheelMotor : public SceneObject
 {
 public:
@@ -23,19 +28,16 @@ public:
             voltageInConstant(voltageInConstant), angularSpeedConstant(angularSpeedConstant),
             maxVoltage(maxVoltage), sidewayFrictionConstant(sidewayFrictionConstant),
             width(width), diameter(diameter), mass(mass), textureType(textureType) {}
-        /* Simplified DC motor model
-         * Tune voltageInConstant and angularSpeedConstant for different acceleration
-         * and top speed (see tools/dc_motor_plot.py)
-         * voltageInConstant = (Torque constant * Voltage constant) / Motor resistance */
+        /** voltageInConstant = (Torque constant * Voltage constant) / Motor resistance */
         float voltageInConstant = 0.00628f;
-        /* angularSpeedConstant = Torque constant / Motor resistance */
+        /** angularSpeedConstant = Torque constant / Motor resistance */
         float angularSpeedConstant = 0.00178f;
-        /* Max voltage that can be applied to the voltage line */
+        /** Max voltage that can be applied to the voltage line */
         float maxVoltage = 6.0f;
-        /* Made-up constant to tweak the sideway friction, larger value
+        /** Made-up constant to tweak the sideway friction, larger value
          * means more friction and less skidding */
         float sidewayFrictionConstant = 100.0f;
-        /* Negative value means use default */
+        /** Negative value means use default */
         float torqueFrictionCoefficient = -1.0f;
         float width;
         float diameter;

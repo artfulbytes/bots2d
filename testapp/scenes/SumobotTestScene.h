@@ -16,6 +16,7 @@ public:
 private:
     struct Background {
         std::unique_ptr<RectObject> leftSide;
+        std::unique_ptr<RectObject> middleStripe;
         std::unique_ptr<RectObject> rightSide;
     };
     void createBackground();

@@ -1,5 +1,5 @@
-#ifndef SIMULATOR_APP_H_
-#define SIMULATOR_APP_H_
+#ifndef SIMULATOR_TEST_APP_H_
+#define SIMULATOR_TEST_APP_H_
 
 #include "Application.h"
 #include <memory>
@@ -7,11 +7,14 @@
 class Scene;
 class SceneMenu;
 
-class SimulatorApp : public Application
+/**
+ * Test application with test scenes.
+ */
+class SimulatorTestApp : public Application
 {
 public:
-    SimulatorApp();
-    ~SimulatorApp();
+    SimulatorTestApp();
+    ~SimulatorTestApp();
     void onKeyEvent(const Event::Key &keyEvent) override;
     void onFixedUpdate(double stepTime) override;
 
@@ -20,4 +23,4 @@ private:
     std::unique_ptr<SceneMenu> m_sceneMenu;
 };
 
-#endif /* SIMULATOR_APP_H_ */
+#endif /* SIMULATOR_TEST_APP_H_ */

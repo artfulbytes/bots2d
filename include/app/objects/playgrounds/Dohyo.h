@@ -8,6 +8,9 @@
 class PhysicsWorld;
 class RectObject;
 
+/**
+ * A sumobot dohyo (circular arena) with a detectable border and adjustable dimensions.
+ */
 class Dohyo : public SceneObject
 {
 public:

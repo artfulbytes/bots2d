@@ -11,10 +11,18 @@ class ControllerComponent;
 class Scene;
 class PhysicsWorld;
 
+/**
+ * Base class that scene objects inherit from. A scene object is a general purpose object. It's
+ * similar to the "entity" in an Entity-component-system (ECS) pattern. It's an object composed
+ * of multiple components such as rendering and physics components. In contrast to a real
+ * ECS, there is no memory optimization, e.g. similar components are not stored next to each
+ * other for cache-friendliness.
+ *
+ * A scene object must be part of a scene.
+ */
 class SceneObject
 {
 public:
-    /* A scene object must be part of a scene */
     SceneObject(Scene *scene);
     virtual ~SceneObject();
     Scene *getScene() const { return m_scene; };
@@ -28,12 +36,10 @@ public:
 protected:
     Scene *m_scene = nullptr;
     PhysicsWorld *m_physicsWorld = nullptr;
-    /* This is not cache friendly, it would be more optimal to use an entity component system.
-     * But the simulations are still simple so let's not over-engineer it. */
     std::unique_ptr<TransformComponent> m_transformComponent;
     std::unique_ptr<RenderableComponent> m_renderableComponent;
     std::unique_ptr<PhysicsComponent> m_physicsComponent;
-    /* Make controller a raw pointer because it's unflexible to have the scene object
+    /** Make controller a raw pointer because it's unflexible to have the scene object
      * own the controller. */
     ControllerComponent *m_controllerComponent = nullptr;
 };

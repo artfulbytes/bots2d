@@ -7,6 +7,10 @@
 
 class Application;
 
+/**
+ * A GUI sidebar menu that provides a list of selectable scenes and keeps
+ * track of the current Scene. It also displays useful simulation info and statistics.
+ */
 class SceneMenu
 {
 public:

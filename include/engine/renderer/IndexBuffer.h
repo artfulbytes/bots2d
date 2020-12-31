@@ -1,6 +1,11 @@
 #ifndef INDEX_BUFFER_H_
 #define INDEX_BUFFER_H_
 
+/**
+ * Wrapper around OpenGL index buffer. An index buffer indexes into
+ * a vertex buffer, and prevents storage duplication when using the
+ * same vertex multiple times.
+ */
 class IndexBuffer
 {
 public:

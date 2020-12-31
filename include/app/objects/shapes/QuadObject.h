@@ -7,7 +7,10 @@
 #include <glm/glm.hpp>
 
 struct QuadCoords;
-
+/**
+ * Renders a detectable quad. It's needed because a Scene can't directly update components
+ * (QuadComponent and Body2D).
+ */
 class QuadObject : public SceneObject
 {
 public:

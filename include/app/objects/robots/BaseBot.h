@@ -13,23 +13,30 @@
 class WheelMotor;
 class LineDetectorObject;
 
+/**
+ * Base class representing a general robot that can attach wheels and sensors.
+ */
 class BaseBot : public SceneObject
 {
 public:
+    /** Enum for easier indexing of wheel motors */
     enum class WheelMotorIndex { Left, Right, FrontLeft, FrontRight, BackLeft, BackRight };
+    /** Enum for easier indexing of range sensors */
     enum class RangeSensorIndex { Left, Right, FrontLeft, Front, FrontRight };
+    /** Enum for easier indexing of line detector */
     enum class LineDetectorIndex { Left, Right, SecondFrontLeft, FrontLeft, FrontRight, SecondFrontRight, BackLeft, BackRight };
+    /** Specifies the bot as a list of adjustable variables */
     struct Specification {
         float bodyWidth;
         float bodyLength;
         float bodyMass;
-        /* Determines how easy it is to rotate the body */
+        /** Determines how easy it is to rotate the body */
         float bodyTorqueFrictionCoefficient;
         float wheelWidth;
         float wheelDiameter;
         float wheelMass;
         float wheelSidewayFrictionConstant;
-        /* Motor constants (See WheelMotor.h for more info) */
+        /** Motor constants (See WheelMotor.h for more info) */
         float motorVoltageInConstant;
         float motorAngularSpeedConstant;
         float motorMaxVoltage;

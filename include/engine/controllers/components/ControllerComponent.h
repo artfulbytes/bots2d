@@ -4,6 +4,10 @@
 #include "Component.h"
 #include "Event.h"
 
+/**
+ * Base class for components that implement control behaviour based on
+ * key events or pure logic.
+ */
 class ControllerComponent : public Component
 {
 public:

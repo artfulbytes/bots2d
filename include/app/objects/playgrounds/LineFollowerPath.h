@@ -9,6 +9,13 @@
 
 class QuadObject;
 
+/**
+ * Creates a line follower path from a set of points. The path is implemented as
+ * an array of quads placed next to each other.
+ *
+ * Currently, it's limited to complete loops with right-angled 90-degrees
+ * turns.
+ */
 class LineFollowerPath : public SceneObject
 {
 public:

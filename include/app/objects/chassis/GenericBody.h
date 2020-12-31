@@ -10,6 +10,11 @@ class WheelMotor;
 class RangeSensorObject;
 class LineDetectorObject;
 
+/**
+ * General robot body to be used along with other scene objects in a SceneObject
+ * implementing a full robot. Dimensions are adjustable, and it can attach motors
+ * and sensors
+ */
 class GenericBody : public SceneObject
 {
 public:
@@ -23,9 +28,10 @@ public:
             length(length), width(width), mass(mass), torqueFrictionCoefficient(torqueFrictionCoefficient),
             shape(shape), textureType(textureType) {}
         float length;
-        float width; /* Or radius */
+        /** Stores the width if rectangle shape and radius if round shape. */
+        float width;
         float mass;
-        /* Negative value means use default */
+        /** Negative value means use default */
         float torqueFrictionCoefficient = -1.0f;
         Shape shape = Shape::Rectangle;
         TextureType textureType = TextureType::None;

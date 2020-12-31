@@ -7,6 +7,9 @@
 class RangeSensor;
 class Body2D;
 
+/**
+ * Range sensor with debug draw to notice detection graphically.
+ */
 class RangeSensorObject : public SceneObject
 {
 public:

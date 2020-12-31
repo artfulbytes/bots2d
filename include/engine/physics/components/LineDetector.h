@@ -8,6 +8,10 @@ class Body2D;
 class b2Body;
 class CircleTransform;
 
+/**
+ * A perfect line detector sensor, which detects physics bodies with BodyId set to
+ * "Detectable" (see Body2DUserData).
+ */
 class LineDetector : public PhysicsComponent
 {
 public:
@@ -15,6 +19,7 @@ public:
     ~LineDetector();
     void onFixedUpdate(double stepTime) override;
     Body2D *getBody() const;
+    /** Retrieve a pointer to the voltage line where the value is > 0 when detected and 0 when not detected. */
     float *getVoltageLine();
 
 private:

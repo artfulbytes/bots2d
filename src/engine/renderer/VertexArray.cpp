@@ -14,10 +14,10 @@ VertexArray::~VertexArray()
     GLCall(glDeleteVertexArrays(1, &m_id));
 }
 
-/* There are two main ways to store vertex data:
+/** There are two main ways to store vertex data:
  * Separate: Spread the vertex across data specific buffers (e.g. position, normal, texcoord)
  * Interleave: Store the vertex data in a single buffer.
- * Here we do it the interleaving way. */
+ * Here it's done the interleaving way. */
 void VertexArray::addBuffer(const VertexBuffer& vertexBuffer, const VertexBufferLayout& layout)
 {
     bind();

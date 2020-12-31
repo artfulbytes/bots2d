@@ -8,6 +8,12 @@
 
 class QuadTransform;
 
+/**
+ * Renders a quad from four arbitrary points (QuadCoords).
+ *
+ * It can't be used directly in a Scene, instead it must be assigned to
+ * a Scene object to be updated each simulation iteration.
+ */
 class QuadComponent : public RenderableComponent
 {
 public:

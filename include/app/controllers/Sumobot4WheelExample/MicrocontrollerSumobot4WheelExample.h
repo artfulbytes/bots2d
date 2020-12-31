@@ -3,6 +3,9 @@
 
 #include "components/MicrocontrollerCBinding.h"
 
+/**
+ * Example class for demonstrating how to use MicrocontrollerCBinding.
+ */
 class MicrocontrollerSumobot4WheelExample : public MicrocontrollerCBinding
 {
 public:

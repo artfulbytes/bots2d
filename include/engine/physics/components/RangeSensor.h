@@ -6,6 +6,9 @@
 class Body2D;
 class LineTransform;
 
+/**
+ * Implements a perfect range sensor. Min and max distance are adjustable.
+ */
 class RangeSensor : public PhysicsComponent
 {
 public:
@@ -13,8 +16,11 @@ public:
                 const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance);
     ~RangeSensor();
     void onFixedUpdate(double stepTime) override;
+    /** Retrieve distance in metrics */
     float getDistance() const;
     Body2D *getBody() const;
+    /** Retrieve a pointer to a voltage value which corresponds to the detected distance where max
+     * distance is 3.3 V. */
     float *getVoltageLine();
 
 private:

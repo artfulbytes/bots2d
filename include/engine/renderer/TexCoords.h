@@ -2,12 +2,14 @@
 #define TEX_COORDS_H_
 #include <glm/glm.hpp>
 
-namespace {
-    float texCoordMax = 1.0f;
-    float texCoordMin = 0.0f;
-}
-
+/**
+ * Texture coordinates determine how a texture is rendered relative to
+ * its corresponding location coordinates in the vertex buffer.
+ */
 struct TexCoords {
+    static constexpr float texCoordMax = 1.0f;
+    static constexpr float texCoordMin = 0.0f;
+
     glm::vec2 BottomLeft = {0.0f, 0.0f};
     glm::vec2 BottomRight = {1.0f, 0.0f};
     glm::vec2 TopRight = {1.0f, 1.0f};

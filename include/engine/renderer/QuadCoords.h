@@ -2,6 +2,9 @@
 #define QUAD_COORDS_H_
 #include <glm/glm.hpp>
 
+/**
+ * Location coordinates for the four corner points of a quad.
+ */
 struct QuadCoords {
     glm::vec2 BottomLeft = {-0.5f, -0.5f};
     glm::vec2 BottomRight = {0.5, -0.5f};

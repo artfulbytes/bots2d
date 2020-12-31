@@ -8,11 +8,19 @@
 
 struct GLFWwindow;
 
+/**
+ * Application base class. Sets up OpenGL and GLFW (window and event handling),
+ * and implements the main loop.
+ *
+ * You inherit this when you create your own Application, look at SimulatorTestApp for
+ * an example.
+ */
 class Application
 {
 public:
     Application(std::string name);
     ~Application();
+    /** Starts the main loop */
     void run();
 
     virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
