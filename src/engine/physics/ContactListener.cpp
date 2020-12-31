@@ -9,9 +9,9 @@ void ContactListener::updateLineDetector(b2Contact *contact, bool begin)
         Body2DUserData *userDataA = reinterpret_cast<Body2DUserData*>(bodyAUserData.pointer);
         Body2DUserData *userDataB = reinterpret_cast<Body2DUserData*>(bodyBUserData.pointer);
 
-        if (userDataA->bodyId == BodyId::LineDetector && userDataB->bodyId == BodyId::DohyoBorder) {
+        if (userDataA->bodyId == BodyId::LineDetector && userDataB->bodyId == BodyId::Detectable) {
             userDataA->contactCount += begin ? 1 : -1;
-        } else if (userDataB->bodyId == BodyId::LineDetector && userDataA->bodyId == BodyId::DohyoBorder) {
+        } else if (userDataB->bodyId == BodyId::LineDetector && userDataA->bodyId == BodyId::Detectable) {
             userDataB->contactCount += begin ? 1 : -1;
         }
     }

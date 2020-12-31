@@ -3,7 +3,7 @@
 
 #include "Scene.h"
 
-class QuadObject;
+class RectObject;
 class CircleObject;
 
 class PhysicsTestScene : public Scene
@@ -12,8 +12,8 @@ public:
     PhysicsTestScene();
 
 private:
-    std::unique_ptr<QuadObject> m_ground;
-    std::unique_ptr<QuadObject> m_fallingBox;
+    std::unique_ptr<RectObject> m_ground;
+    std::unique_ptr<RectObject> m_fallingBox;
     std::unique_ptr<CircleObject> m_fallingBall;
 };
 

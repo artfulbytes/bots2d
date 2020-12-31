@@ -6,8 +6,7 @@
 #include <glm/glm.hpp>
 
 class PhysicsWorld;
-class QuadObject;
-class Body2D;
+class RectObject;
 
 class Dohyo : public SceneObject
 {
@@ -23,8 +22,8 @@ public:
     void onFixedUpdate(double stepTime) override;
 
 private:
-    Body2DUserData m_userData = { 0, 0, BodyId::DohyoBorder };
-    std::unique_ptr<QuadObject> m_quadObject;
+    Body2DUserData m_userData = { 0, 0, BodyId::Detectable };
+    std::unique_ptr<RectObject> m_quadObject;
 };
 
 #endif /* DOHYO_H_ */

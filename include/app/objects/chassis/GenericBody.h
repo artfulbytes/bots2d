@@ -10,11 +10,12 @@ class WheelMotor;
 class RangeSensorObject;
 class LineDetectorObject;
 
-class SumobotBody : public SceneObject
+class GenericBody : public SceneObject
 {
 public:
     enum class Shape { Rectangle, Circle };
-    enum class TextureType { None, Plated, Circuited, RoundRed, RoundBlack };
+    enum class TextureType { None, SumobotPlated, SumobotCircuited, SumobotRoundRed, SumobotRoundBlack,
+                             LineFollowerPlated};
 
     struct Specification {
         Specification(float length, float width, float mass, float torqueFrictionCoefficient,
@@ -30,8 +31,8 @@ public:
         TextureType textureType = TextureType::None;
     };
 
-    SumobotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
-    ~SumobotBody();
+    GenericBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
+    ~GenericBody();
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getForwardSpeed() const;

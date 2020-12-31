@@ -3,7 +3,8 @@
 #include "components/Transforms.h"
 
 namespace {
-    constexpr float tinyRadius = 0.005f;
+    constexpr float drawRadiusUndetected = 0.001f;
+    constexpr float drawRadiusDetected = 10 * drawRadiusUndetected;
 }
 
 LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition) :
@@ -12,7 +13,7 @@ LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform
 {
     /* Represent as tiny body */
     const Body2D::Specification bodySpec { true, false, 0.001f };
-    m_body2D = std::make_unique<Body2D>(world, startPosition, 0.0f, tinyRadius, bodySpec);
+    m_body2D = std::make_unique<Body2D>(world, startPosition, 0.0f, drawRadiusUndetected, bodySpec);
     m_body2D->setUserData(&m_userData);
 }
 
@@ -37,7 +38,7 @@ void LineDetector::onFixedUpdate(double stepTime)
     m_detectVoltage = detected ? 3.3f : 0.0f;
     const bool debugDraw = m_transform != nullptr;
     if (debugDraw) {
-        m_transform->position = PhysicsWorld::scalePosition(m_body2D->getPosition());
-        m_transform->radius = detected ? 50.0f * tinyRadius : tinyRadius;
+        m_transform->position = m_body2D->getPosition();
+        m_transform->radius = detected ? drawRadiusDetected : drawRadiusUndetected;
     }
 }

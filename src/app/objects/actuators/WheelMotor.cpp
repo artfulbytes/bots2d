@@ -1,7 +1,7 @@
 #include "actuators/WheelMotor.h"
 #include "PhysicsWorld.h"
 #include "components/Transforms.h"
-#include "components/QuadComponent.h"
+#include "components/RectComponent.h"
 #include "components/Body2D.h"
 #include "SpriteAnimation.h"
 #include "ResourcesHelper.h"
@@ -15,15 +15,15 @@ WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orie
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(spec.maxVoltage > 0);
-    m_transformComponent = std::make_unique<QuadTransform>(startPosition, glm::vec2{spec.width, spec.diameter}, startRotation);
-    auto transform = static_cast<QuadTransform *>(m_transformComponent.get());
+    m_transformComponent = std::make_unique<RectTransform>(startPosition, glm::vec2{spec.width, spec.diameter}, startRotation);
+    auto transform = static_cast<RectTransform *>(m_transformComponent.get());
 
     if (spec.textureType != WheelMotor::TextureType::None) {
         m_animation = std::make_unique<SpriteAnimation>(1, 5, 5, 3, SpriteAnimation::Direction::Backward);
         m_animation->setFramesBetweenUpdates(1);
-        m_renderableComponent = std::make_unique<QuadComponent>(transform, getTextureName(orientation, spec.textureType), m_animation.get());
+        m_renderableComponent = std::make_unique<RectComponent>(transform, getTextureName(orientation, spec.textureType), m_animation.get());
     } else {
-        m_renderableComponent = std::make_unique<QuadComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+        m_renderableComponent = std::make_unique<RectComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
     Body2D::Specification bodySpec(true, true, spec.mass);

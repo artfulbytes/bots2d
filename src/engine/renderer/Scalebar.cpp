@@ -1,13 +1,12 @@
 #include "Scalebar.h"
-#include "PhysicsWorld.h"
 #include "Renderer.h"
 #include "Camera.h"
 
 
 Scalebar::ScalebarRenderable::ScalebarRenderable(std::string textureName, float width, float height) :
     texture(textureName),
-    width(PhysicsWorld::scaleLengthNoAssert(width)),
-    height(PhysicsWorld::scaleLengthNoAssert(height))
+    width(width),
+    height(height)
 {
 }
 
@@ -56,5 +55,5 @@ void Scalebar::render()
         return;
     }
 
-    Renderer::drawQuad(drawPosition, drawSize, 0.0f, scalebar->texture);
+    Renderer::drawRect(drawPosition, drawSize, 0.0f, scalebar->texture);
 }

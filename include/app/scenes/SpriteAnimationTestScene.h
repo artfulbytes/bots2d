@@ -3,14 +3,14 @@
 
 #include "Scene.h"
 
-class QuadObject;
+class RectObject;
 
 class SpriteAnimationTestScene : public Scene
 {
 public:
     SpriteAnimationTestScene();
 private:
-    std::unique_ptr<QuadObject> m_quadObject;
+    std::unique_ptr<RectObject> m_rectObject;
 };
 
 #endif /* SPRITE_ANIMATION_TEST_SCENE_H_ */

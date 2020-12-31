@@ -1,12 +1,13 @@
 #include "SumobotTestScene.h"
 #include "components/Transforms.h"
-#include "components/QuadComponent.h"
+#include "components/RectComponent.h"
 #include "components/Body2D.h"
 #include "components/KeyboardController.h"
 #include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
 #include "robots/Sumobot.h"
-#include "shapes/QuadObject.h"
+#include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
+
 
 namespace {
     class SumobotController : public KeyboardController
@@ -91,10 +92,10 @@ void SumobotTestScene::createBackground()
     const float backgroundWidth = 500.0f;
     const float backgroundHeight = backgroundWidth;
     glm::vec4 leftColor(0.906f, 0.294f, 0.235f, 1.0f);
-    m_background->leftSide = std::make_unique<QuadObject>(this, leftColor, nullptr, glm::vec2{ -backgroundWidth / 4.0f, 0.0f },
+    m_background->leftSide = std::make_unique<RectObject>(this, leftColor, nullptr, glm::vec2{ -backgroundWidth / 4.0f, 0.0f },
                                                           glm::vec2{ backgroundWidth / 2.0f, backgroundHeight }, 0.0f);
     glm::vec4 rightColor(0.153f, 0.565f, 0.69f, 1.0f);
-    m_background->rightSide = std::make_unique<QuadObject>(this, rightColor, nullptr, glm::vec2{ backgroundWidth / 4.0f, 0.0f },
+    m_background->rightSide = std::make_unique<RectObject>(this, rightColor, nullptr, glm::vec2{ backgroundWidth / 4.0f, 0.0f },
                                                            glm::vec2{ backgroundWidth / 2.0f, backgroundHeight }, 0.0f);
 }
 
@@ -111,7 +112,7 @@ SumobotTestScene::SumobotTestScene() :
     m_dohyo = std::make_unique<Dohyo>(this, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
-                                               glm::vec2{0.25f, 0.0f}, 4.71f);
+                                               glm::vec2{0.5f, -0.5f}, 4.71f);
     m_fourWheelBot->setController(new SumobotController(m_fourWheelBot.get()));
     m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),

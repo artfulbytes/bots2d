@@ -5,7 +5,7 @@
 #include <box2d/box2d.h>
 
 namespace {
-    constexpr float debugDrawWidth = 0.01f;
+    constexpr float debugDrawWidth = 0.001f;
 }
 
 RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform,
@@ -13,8 +13,8 @@ RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform,
     PhysicsComponent(world),
     m_lineTransform(transform),
     m_relativeAngle(angle),
-    m_minDistance(PhysicsWorld::scaleLengthNoAssert(minDistance)),
-    m_maxDistance(PhysicsWorld::scaleLengthNoAssert(maxDistance)),
+    m_minDistance(minDistance),
+    m_maxDistance(maxDistance),
     m_detectedDistance(m_maxDistance)
 {
     /* Create tiny body for attaching and keeping track of ray cast start position */
@@ -35,7 +35,7 @@ void RangeSensor::onFixedUpdate(double stepTime)
 {
     (void)stepTime;
     const float rayAngleEnd = m_relativeAngle - m_body2D->getRotation();
-    const glm::vec2 bodyPosition = PhysicsWorld::scalePosition(m_body2D->getPosition());
+    const glm::vec2 bodyPosition = m_body2D->getPosition();
 
     /* Recalculate the casted ray */
     const glm::vec2 rayStartPosition = bodyPosition;
@@ -54,12 +54,14 @@ void RangeSensor::onFixedUpdate(double stepTime)
 
 void RangeSensor::updateDetectedDistance(const glm::vec2 &start, const glm::vec2 &end)
 {
+    const glm::vec2 scaledStart = PhysicsWorld::scalePosition(start);
+    const glm::vec2 scaledEnd = PhysicsWorld::scalePosition(end);
     b2RayCastInput rayInput;
     b2RayCastOutput rayOutput;
-    rayInput.p1.x = start.x;
-    rayInput.p1.y = start.y;
-    rayInput.p2.x = end.x;
-    rayInput.p2.y = end.y;
+    rayInput.p1.x = scaledStart.x;
+    rayInput.p1.y = scaledStart.y;
+    rayInput.p2.x = scaledEnd.x;
+    rayInput.p2.y = scaledEnd.y;
     rayInput.maxFraction = 1.0f;
 
     float closestFraction = rayInput.maxFraction;

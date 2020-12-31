@@ -3,8 +3,8 @@
 #include "components/Transforms.h"
 #include "components/Body2D.h"
 #include "components/HollowCircleComponent.h"
-#include "components/QuadComponent.h"
-#include "shapes/QuadObject.h"
+#include "components/RectComponent.h"
+#include "shapes/RectObject.h"
 
 Dohyo::Dohyo(Scene *scene, const Specification &spec, const glm::vec2 &position) :
     SceneObject(scene)
@@ -18,7 +18,7 @@ Dohyo::Dohyo(Scene *scene, const Specification &spec, const glm::vec2 &position)
     switch (spec.textureType) {
     case Dohyo::TextureType::Scratched:
     {
-        m_quadObject = std::make_unique<QuadObject>(scene, "dohyo_scratched.png", nullptr, nullptr,
+        m_quadObject = std::make_unique<RectObject>(scene, "dohyo_scratched.png", nullptr, nullptr,
                                                     position,
                                                     glm::vec2{ 2.0f * spec.outerRadius, 2.0f * spec.outerRadius },
                                                     0.0f);

@@ -5,6 +5,7 @@
 #include "PhysicsTestScene.h"
 #include "WheelMotorTestScene.h"
 #include "SumobotTestScene.h"
+#include "LineFollowerTestScene.h"
 
 SimulatorApp::SimulatorApp() :
     Application("Simulator")
@@ -15,6 +16,7 @@ SimulatorApp::SimulatorApp() :
     m_sceneMenu->registerScene<PhysicsTestScene>("PhysicsTest");
     m_sceneMenu->registerScene<WheelMotorTestScene>("WheelMotorTest");
     m_sceneMenu->registerScene<SumobotTestScene>("SumobotTest");
+    m_sceneMenu->registerScene<LineFollowerTestScene>("LineFollowerTest");
 }
 
 SimulatorApp::~SimulatorApp()

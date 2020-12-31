@@ -3,10 +3,7 @@
 
 #include "Scene.h"
 
-#include "playgrounds/Dohyo.h"
-#include "shapes/QuadObject.h"
-
-class QuadObject;
+class RectObject;
 class Dohyo;
 class Sumobot;
 
@@ -18,8 +15,8 @@ public:
 
 private:
     struct Background {
-        std::unique_ptr<QuadObject> leftSide;
-        std::unique_ptr<QuadObject> rightSide;
+        std::unique_ptr<RectObject> leftSide;
+        std::unique_ptr<RectObject> rightSide;
     };
     void createBackground();
     std::unique_ptr<Background> m_background = std::make_unique<Background>();

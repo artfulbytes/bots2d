@@ -3,7 +3,7 @@
 
 #include <atomic>
 
-enum class BodyId {LineDetector, DohyoBorder};
+enum class BodyId {LineDetector, Detectable};
 
 struct Body2DUserData
 {

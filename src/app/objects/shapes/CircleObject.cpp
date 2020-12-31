@@ -15,11 +15,6 @@ CircleObject::CircleObject(Scene *scene, const glm::vec4 &color,
     if (spec != nullptr) {
         m_physicsComponent = std::make_unique<Body2D>(*(scene->getPhysicsWorld()), transform, *spec);
     }
-    if (m_physicsComponent == nullptr) {
-        /* No physics component, so must scale here */
-        transform->position = PhysicsWorld::scalePosition(transform->position);
-        transform->radius = PhysicsWorld::scaleLengthNoAssert(transform->radius);
-    }
 }
 
 CircleObject::CircleObject(Scene *scene, const glm::vec4 &fillColor, const glm::vec4 &borderColor,
@@ -29,12 +24,6 @@ CircleObject::CircleObject(Scene *scene, const glm::vec4 &fillColor, const glm::
     m_transformComponent = std::make_unique<HollowCircleTransform>(position, innerRadius, outerRadius);
     auto transform = static_cast<HollowCircleTransform *>(m_transformComponent.get());
     m_renderableComponent = std::make_unique<HollowCircleComponent>(transform, fillColor, borderColor);
-    if (m_physicsComponent == nullptr) {
-        /* No physics component, so must scale here */
-        transform->position = PhysicsWorld::scalePosition(transform->position);
-        transform->innerRadius = PhysicsWorld::scaleLengthNoAssert(transform->innerRadius);
-        transform->outerRadius = PhysicsWorld::scaleLengthNoAssert(transform->outerRadius);
-    }
 }
 
 CircleObject::~CircleObject()

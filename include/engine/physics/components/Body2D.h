@@ -6,16 +6,19 @@
 
 class b2Body;
 class b2Joint;
-class QuadTransform;
+class RectTransform;
 class CircleTransform;
 class HollowCircleTransform;
+class QuadTransform;
 struct Body2DUserData;
 class b2FrictionJoint;
+struct QuadCoords;
 
 class Body2D : public PhysicsComponent
 {
 public:
     struct Specification {
+        Specification() {}
         Specification(bool dynamic, bool collision, float massUnscaled) :
             dynamic(dynamic), collision(collision), massUnscaled(massUnscaled) {}
         bool dynamic = false;
@@ -27,16 +30,17 @@ public:
         float torqueFrictionCoefficient = 0.6f;
     };
 
-    Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, float rotation, float radius,
+    Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float rotation, float radius,
            const Body2D::Specification &spec);
     Body2D(const PhysicsWorld &world, CircleTransform *transform, const Specification &spec);
-    Body2D(const PhysicsWorld &world, QuadTransform *transform, const Specification &spec);
+    Body2D(const PhysicsWorld &world, RectTransform *transform, const Specification &spec);
     Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, const Specification &spec);
+    Body2D(const PhysicsWorld &world, QuadTransform *transform, const Specification &spec);
     ~Body2D();
     void onFixedUpdate(double stepTime) override;
     void setUserData(Body2DUserData *userData);
-    void attachBodyWithRevoluteJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
-    void attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body);
+    void attachBodyWithRevoluteJoint(const glm::vec2 &attachPos, const Body2D *body);
+    void attachBodyWithWeldJoint(const glm::vec2 &attachPos, const Body2D *body);
     void setPositionAndRotation(const glm::vec2 &position, float rotation);
     void setForce(const glm::vec2 &vec, float magnitude);
     void setLinearImpulse(const glm::vec2 &vec);

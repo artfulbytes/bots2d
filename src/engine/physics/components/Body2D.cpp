@@ -2,26 +2,26 @@
 #include "components/Transforms.h"
 #include "PhysicsWorld.h"
 #include "Body2DUserData.h"
+#include "QuadCoords.h"
 
 #include <box2d/box2d.h>
 #include <glm/ext/scalar_constants.hpp>
 
 namespace {
-class QuadTransformTranslator : public PhysicsToTransformTranslator
+class RectTransformTranslator : public PhysicsToTransformTranslator
 {
 public:
-    QuadTransformTranslator(QuadTransform *transform, b2Body *body) :
+    RectTransformTranslator(RectTransform *transform, b2Body *body) :
         m_transform(transform), m_body(body) {}
     void translate()
     {
         const b2Vec2 position = m_body->GetPosition();
-        m_transform->position.x = position.x;
-        m_transform->position.y = position.y;
+        m_transform->position = PhysicsWorld::unscalePosition({ position.x, position.y });
         m_transform->rotation = m_body->GetAngle();
     }
 
 private:
-    QuadTransform *m_transform = nullptr;
+    RectTransform *m_transform = nullptr;
     b2Body *m_body = nullptr;
 };
 
@@ -33,8 +33,7 @@ public:
     void translate()
     {
         const b2Vec2 position = m_body->GetPosition();
-        m_transform->position.x = position.x;
-        m_transform->position.y = position.y;
+        m_transform->position = PhysicsWorld::unscalePosition({ position.x, position.y });
         m_transform->rotation = m_body->GetAngle();
     }
 
@@ -48,40 +47,40 @@ constexpr float anglePerVertex = 2 * glm::pi<float>() / static_cast<float>(total
 constexpr int trapezoidVertexCount = 4;
 }
 
-Body2D::Body2D(const PhysicsWorld &world, QuadTransform *transform, const Body2D::Specification &spec) :
+Body2D::Body2D(const PhysicsWorld &world, RectTransform *transform, const Body2D::Specification &spec) :
     PhysicsComponent(world)
 {
     assert(transform != nullptr);
-    transform->size.x = PhysicsWorld::scaleLength(transform->size.x);
-    transform->size.y = PhysicsWorld::scaleLength(transform->size.y);
-    transform->position = PhysicsWorld::scalePosition(transform->position);
+    const float scaledWidth = PhysicsWorld::scaleLength(transform->size.x);
+    const float scaledLength = PhysicsWorld::scaleLength(transform->size.y);
+    const glm::vec2 scaledPosition = PhysicsWorld::scalePosition(transform->position);
     const float scaledMass = PhysicsWorld::scaleMass(spec.massUnscaled);
     const float normalForce = PhysicsWorld::normalForce(spec.massUnscaled);
-    const float scaledArea = transform->size.x * transform->size.y;
+    const float scaledArea = scaledWidth * scaledLength;
     const float scaledDensity = scaledMass / scaledArea;
 
     b2BodyDef bodyDef;
     bodyDef.type = spec.dynamic ? b2_dynamicBody : b2_staticBody;
-    bodyDef.position = b2Vec2(transform->position.x, transform->position.y);
+    bodyDef.position = b2Vec2(scaledPosition.x, scaledPosition.y);
     bodyDef.angle = transform->rotation;
     m_body = m_world->CreateBody(&bodyDef);
 
     b2FixtureDef fixtureDef;
     b2PolygonShape polygonShape;
-    polygonShape.SetAsBox(transform->size.x / 2, transform->size.y / 2);
+    polygonShape.SetAsBox(scaledWidth / 2, scaledLength / 2);
     fixtureDef.shape = &polygonShape;
     fixtureDef.isSensor = !spec.collision;
     fixtureDef.density = scaledDensity;
     m_body->CreateFixture(&fixtureDef);
 
-    m_translator = std::make_unique<QuadTransformTranslator>(transform, m_body);
+    m_translator = std::make_unique<RectTransformTranslator>(transform, m_body);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
         addTopViewFriction(normalForce, spec.frictionCoefficient, spec.torqueFrictionCoefficient);
     }
 }
 
-Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, float rotation,
+Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float rotation,
                float radius, const Body2D::Specification &spec) :
     PhysicsComponent(world)
 {
@@ -91,7 +90,7 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, flo
     const float normalForce = PhysicsWorld::normalForce(spec.massUnscaled);
     const float scaledArea = glm::pi<float>() * scaledRadius * scaledRadius;
     const float scaledDensity = scaledMass / scaledArea;
-    const auto scaledPosition = PhysicsWorld::scalePosition(unscaledStartPos);
+    const auto scaledPosition = PhysicsWorld::scalePosition(startPosition);
 
     b2BodyDef bodyDef;
     bodyDef.type = spec.dynamic ? b2_dynamicBody : b2_staticBody;
@@ -115,8 +114,6 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &unscaledStartPos, flo
 Body2D::Body2D(const PhysicsWorld &world, CircleTransform *transform, const Body2D::Specification &spec) :
     Body2D(world, transform->position, transform->rotation, transform->radius, spec)
 {
-    transform->radius = spec.collision ? PhysicsWorld::scaleRadius(transform->radius)
-                                       : PhysicsWorld::scaleLengthNoAssert(transform->radius);
     m_translator = std::make_unique<CircleTransformTranslator>(transform, m_body);
 }
 
@@ -128,13 +125,13 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, cons
     assert(!spec.dynamic);
     assert(world.getGravityType() == PhysicsWorld::Gravity::TopView);
     assert(transform->outerRadius > transform->innerRadius);
-    transform->innerRadius = PhysicsWorld::scaleLength(transform->innerRadius);
-    transform->outerRadius = PhysicsWorld::scaleLength(transform->outerRadius);
-    transform->position = PhysicsWorld::scalePosition(transform->position);
+    const float scaledInnerRadius = PhysicsWorld::scaleLength(transform->innerRadius);
+    const float scaledOuterRadius = PhysicsWorld::scaleLength(transform->outerRadius);
+    const glm::vec2 scaledPosition = PhysicsWorld::scalePosition(transform->position);
 
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
-    bodyDef.position = b2Vec2(transform->position.x, transform->position.y);
+    bodyDef.position = b2Vec2(scaledPosition.x, scaledPosition.y);
 
     m_body = m_world->CreateBody(&bodyDef);
     b2PolygonShape shape;
@@ -142,11 +139,11 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, cons
     float angle=0;
     for (int cornerIdx=0; cornerIdx < totalVertexCount; cornerIdx++) {
         angle = cornerIdx * anglePerVertex;
-        trapezoidVertices[0].Set(transform->innerRadius * cosf(angle), transform->innerRadius * sinf(angle));
-        trapezoidVertices[1].Set(transform->outerRadius * cosf(angle), transform->outerRadius * sinf(angle));
+        trapezoidVertices[0].Set(scaledInnerRadius * cosf(angle), scaledInnerRadius * sinf(angle));
+        trapezoidVertices[1].Set(scaledOuterRadius * cosf(angle), scaledOuterRadius * sinf(angle));
         angle += anglePerVertex;
-        trapezoidVertices[2].Set(transform->outerRadius * cosf(angle), transform->outerRadius * sinf(angle));
-        trapezoidVertices[3].Set(transform->innerRadius * cosf(angle), transform->innerRadius * sinf(angle));
+        trapezoidVertices[2].Set(scaledOuterRadius * cosf(angle), scaledOuterRadius * sinf(angle));
+        trapezoidVertices[3].Set(scaledInnerRadius * cosf(angle), scaledInnerRadius * sinf(angle));
         shape.Set(trapezoidVertices, trapezoidVertexCount);
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &shape;
@@ -157,6 +154,41 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, cons
     /* Only static so no translation needed for now */
     m_translator = nullptr;
 }
+
+Body2D::Body2D(const PhysicsWorld &world, QuadTransform *transform, const Body2D::Specification &spec) :
+    PhysicsComponent(world)
+{
+    assert(transform != nullptr);
+    (void)spec;
+    b2BodyDef bodyDef;
+    /* Quad body doesn't support dynamic or collision yet */
+    bodyDef.type = b2_staticBody;
+    bodyDef.position = b2Vec2(0, 0);
+
+    m_body = m_world->CreateBody(&bodyDef);
+    b2PolygonShape shape;
+    b2Vec2 quadVertices[4];
+    QuadCoords scaledQuadCoords = {
+        PhysicsWorld::scalePosition(transform->quadCoords.BottomLeft),
+        PhysicsWorld::scalePosition(transform->quadCoords.BottomRight),
+        PhysicsWorld::scalePosition(transform->quadCoords.TopRight),
+        PhysicsWorld::scalePosition(transform->quadCoords.TopLeft)
+    };
+    quadVertices[0].Set(scaledQuadCoords.BottomLeft.x, scaledQuadCoords.BottomLeft.y);
+    quadVertices[1].Set(scaledQuadCoords.BottomRight.x, scaledQuadCoords.BottomRight.y);
+    quadVertices[2].Set(scaledQuadCoords.TopRight.x, scaledQuadCoords.TopRight.y);
+    quadVertices[3].Set(scaledQuadCoords.TopLeft.x, scaledQuadCoords.TopLeft.y);
+    shape.Set(quadVertices, 4);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    /* Quad body doesn't support dynamic or collision yet */
+    fixtureDef.isSensor = true;
+    m_body->CreateFixture(&fixtureDef);
+
+    /* Only static so no translation needed for now */
+    m_translator = nullptr;
+}
+
 
 Body2D::~Body2D()
 {
@@ -179,7 +211,7 @@ void Body2D::setUserData(Body2DUserData *userData) {
     m_body->GetUserData().pointer = reinterpret_cast<uintptr_t>(userData);
 }
 
-void Body2D::attachBodyWithRevoluteJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body)
+void Body2D::attachBodyWithRevoluteJoint(const glm::vec2 &attachPos, const Body2D *body)
 {
     b2RevoluteJointDef jointDef;
     jointDef.bodyA = m_body;
@@ -189,18 +221,18 @@ void Body2D::attachBodyWithRevoluteJoint(const glm::vec2 &unscaledAttachPos, con
     /* Center of the body to be attached */
     jointDef.localAnchorB.SetZero();
     jointDef.bodyB = body->m_body;
-    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(unscaledAttachPos.x),
-                              PhysicsWorld::scalePosition(unscaledAttachPos.y));
+    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(attachPos.x),
+                              PhysicsWorld::scalePosition(attachPos.y));
     /* No need to explicitly delete joint, it's deleted when the attached body is deleted */
     m_world->CreateJoint(&jointDef);
 }
 
-void Body2D::attachBodyWithWeldJoint(const glm::vec2 &unscaledAttachPos, const Body2D *body)
+void Body2D::attachBodyWithWeldJoint(const glm::vec2 &attachPos, const Body2D *body)
 {
     b2WeldJointDef jointDef;
     jointDef.bodyA = m_body;
-    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(unscaledAttachPos.x),
-                              PhysicsWorld::scalePosition(unscaledAttachPos.y));
+    jointDef.localAnchorA.Set(PhysicsWorld::scalePosition(attachPos.x),
+                              PhysicsWorld::scalePosition(attachPos.y));
     jointDef.localAnchorB.SetZero();
     jointDef.bodyB = body->m_body;
     /* No need to explicitly delete joint, it's deleted when the attached body is deleted */

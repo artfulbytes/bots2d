@@ -2,6 +2,7 @@
 #define TRANSFORMS_H_
 
 #include "Component.h"
+#include "QuadCoords.h"
 
 #include <glm/glm.hpp>
 
@@ -24,15 +25,24 @@ public:
     float width;
 };
 
-class QuadTransform : public TransformComponent
+class RectTransform : public TransformComponent
 {
 public:
-    QuadTransform(const glm::vec2 &position, const glm::vec2 &size, float rotation = 0.0f) :
+    RectTransform(const glm::vec2 &position, const glm::vec2 &size, float rotation = 0.0f) :
         position(position), size(size), rotation(rotation) {}
-    ~QuadTransform() {}
+    ~RectTransform() {}
     glm::vec2 position;
     glm::vec2 size;
     float rotation = 0.0f;
+};
+
+class QuadTransform : public TransformComponent
+{
+public:
+    QuadTransform(const QuadCoords &quadCoords) :
+        quadCoords(quadCoords) {}
+    ~QuadTransform() {}
+    const QuadCoords quadCoords;
 };
 
 class CircleTransform : public TransformComponent

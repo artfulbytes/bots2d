@@ -1,24 +1,21 @@
 #ifndef QUAD_OBJECT_H_
-#define QUAD_OBJECT_H_
+#define QUAD_OBJECT_H
 
 #include "SceneObject.h"
+#include "Body2DUserData.h"
 #include "components/Body2D.h"
-#include "SpriteAnimation.h"
-
 #include <glm/glm.hpp>
-#include <string>
+
+struct QuadCoords;
 
 class QuadObject : public SceneObject
 {
 public:
-    QuadObject(Scene *scene, const glm::vec4 &color,
-               const Body2D::Specification *spec,
-               const glm::vec2 &position, const glm::vec2 &size, float rotation);
-    QuadObject(Scene *scene, const std::string& textureFilepath, const SpriteAnimation::Params *animationParams,
-               const Body2D::Specification *spec,
-               const glm::vec2 &position, const glm::vec2 &size, float rotation);
+    QuadObject(Scene *scene, const QuadCoords &quadCoords, const glm::vec4 &color,
+               const Body2D::Specification *spec, bool detectable);
 private:
-    std::unique_ptr<SpriteAnimation> m_animation;
+    Body2DUserData m_userData = { 0, 0, BodyId::Detectable };
+    Body2D *m_body2D;
 };
 
 #endif /* QUAD_OBJECT_H_ */

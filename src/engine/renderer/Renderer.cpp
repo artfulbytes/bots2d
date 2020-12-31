@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "TexCoords.h"
+#include "QuadCoords.h"
 
 #include <glad/gl.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,6 +18,7 @@
 
 namespace {
     const unsigned int quadVertexBufferSize = 4 * 4 * sizeof(float);
+    const float metersToPxScale = 1000.0f;
 }
 
 struct RendererStorage
@@ -42,21 +44,20 @@ struct RendererStorage
     std::unique_ptr<Shader> textureShader;
     std::unique_ptr<glm::mat4> projectionMatrix;
     std::unique_ptr<glm::mat4> viewMatrix;
-    float centimetersToPxScale = 100.0f;
 };
 
 static std::unique_ptr<RendererStorage> s_rendererData;
 
 static glm::mat4 scale2D(const glm::vec2 &size, bool pixelScale) {
-    const float sizeX = pixelScale ? (size.x * s_rendererData->centimetersToPxScale) : size.x;
-    const float sizeY = pixelScale ? (size.y * s_rendererData->centimetersToPxScale) : size.y;
+    const float sizeX = pixelScale ? (size.x * metersToPxScale) : size.x;
+    const float sizeY = pixelScale ? (size.y * metersToPxScale) : size.y;
     return glm::scale(glm::mat4(1.0f), { sizeX, sizeY, 1.0f });
 }
 
 static glm::mat4 translate2D(const glm::vec2 &position, bool pixelScale)
 {
-    const float posX = pixelScale ? (position.x * s_rendererData->centimetersToPxScale) : position.x;
-    const float posY = pixelScale ? (position.y * s_rendererData->centimetersToPxScale) : position.y;
+    const float posX = pixelScale ? (position.x * metersToPxScale) : position.x;
+    const float posY = pixelScale ? (position.y * metersToPxScale) : position.y;
     return glm::translate(glm::mat4(1.0f), { posX, posY, 0.0f });
 }
 
@@ -88,7 +89,7 @@ static void initCircle()
 
 static void initQuad()
 {
-    float staticQuadVertices[16] = {
+    const float defaultQuadVertices[16] = {
         /* Position, texture coordinates */
         -0.5f, -0.5f, 0.0f, 0.0f, /* Bottom left */
          0.5f, -0.5f, 1.0f, 0.0f, /* Bottom right */
@@ -104,11 +105,12 @@ static void initQuad()
     layout.push<float>(2);
     layout.push<float>(2);
 
-    s_rendererData->quadStaticVertexBuffer = std::make_unique<VertexBuffer>(staticQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Static);
+    s_rendererData->quadStaticVertexBuffer = std::make_unique<VertexBuffer>(defaultQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Static);
     s_rendererData->quadStaticVertexArray = std::make_unique<VertexArray>();
     s_rendererData->quadStaticVertexArray->addBuffer(*(s_rendererData->quadStaticVertexBuffer), layout);
 
-    s_rendererData->quadDynamicVertexBuffer = std::make_unique<VertexBuffer>(s_rendererData->dynamicQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Dynamic);
+    s_rendererData->quadDynamicVertexBuffer = std::make_unique<VertexBuffer>(defaultQuadVertices, quadVertexBufferSize, VertexBuffer::DrawType::Dynamic);
+
     s_rendererData->quadDynamicVertexArray = std::make_unique<VertexArray>();
     s_rendererData->quadDynamicVertexArray->addBuffer(*(s_rendererData->quadDynamicVertexBuffer), layout);
 }
@@ -150,7 +152,7 @@ void Renderer::destroy()
 
 float Renderer::getPixelScaleFactor()
 {
-    return s_rendererData->centimetersToPxScale;
+    return metersToPxScale;
 }
 
 void Renderer::setCameraPosition(const glm::vec2 &position, float zoomFactor)
@@ -191,7 +193,7 @@ void Renderer::drawLine(const glm::vec2 &start, const glm::vec2 &end, float widt
     const float angle = angleToXAxis(start, end);
     const glm::vec2 location((start.x + end.x) / 2, (start.y + end.y) / 2);
     const glm::vec2 size(glm::distance(start, end), width);
-    drawQuad(location, size, angle, color);
+    drawRect(location, size, angle, color);
 }
 
 static glm::mat4 getQuadMvpMatrix(const glm::vec2 &position, const glm::vec2& size, float angle)
@@ -202,7 +204,7 @@ static glm::mat4 getQuadMvpMatrix(const glm::vec2 &position, const glm::vec2& si
     return *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix * translate * rotation * scale;
 }
 
-void Renderer::drawQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation, const glm::vec4 &color)
+void Renderer::drawRect(const glm::vec2 &position, const glm::vec2 &size, float rotation, const glm::vec4 &color)
 {
     s_rendererData->quadStaticVertexArray->bind();
     s_rendererData->quadIndexBuffer->bind();
@@ -214,26 +216,62 @@ void Renderer::drawQuad(const glm::vec2 &position, const glm::vec2 &size, float 
     GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-static void updateDynamicQuadVertices(const TexCoords &texCoords)
+static void setTexCoords(const TexCoords &texCoords)
 {
-    const auto dynamicQuadVertices = s_rendererData->dynamicQuadVertices;
+    float quadVertices[16] = {
+        /* Position, texture coordinates */
+        -0.5f, -0.5f, 0.0f, 0.0f, /* Bottom left */
+         0.5f, -0.5f, 1.0f, 0.0f, /* Bottom right */
+         0.5f,  0.5f, 1.0f, 1.0f, /* Top right */
+        -0.5f,  0.5f, 0.0f, 1.0f  /* Top left */
+    };
     texCoords.assertLimits();
-    dynamicQuadVertices[2] = texCoords.BottomLeft.x;
-    dynamicQuadVertices[3] = texCoords.BottomLeft.y;
-    dynamicQuadVertices[6] = texCoords.BottomRight.x;
-    dynamicQuadVertices[7] = texCoords.BottomRight.y;
-    dynamicQuadVertices[10] = texCoords.TopRight.x;
-    dynamicQuadVertices[11] = texCoords.TopRight.y;
-    dynamicQuadVertices[14] = texCoords.TopLeft.x;
-    dynamicQuadVertices[15] = texCoords.TopLeft.y;
+    quadVertices[2] = texCoords.BottomLeft.x;
+    quadVertices[3] = texCoords.BottomLeft.y;
+    quadVertices[6] = texCoords.BottomRight.x;
+    quadVertices[7] = texCoords.BottomRight.y;
+    quadVertices[10] = texCoords.TopRight.x;
+    quadVertices[11] = texCoords.TopRight.y;
+    quadVertices[14] = texCoords.TopLeft.x;
+    quadVertices[15] = texCoords.TopLeft.y;
+    s_rendererData->quadDynamicVertexBuffer->updateData(quadVertices, quadVertexBufferSize);
 }
 
-void Renderer::drawQuad(const glm::vec2 &position, const glm::vec2 &size, float rotation, const Texture &texture,
+static void setQuadCoords(const QuadCoords &quadCoords)
+{
+    float quadVertices[16] = {};
+    quadVertices[0] = quadCoords.BottomLeft.x;
+    quadVertices[1] = quadCoords.BottomLeft.y;
+    quadVertices[4] = quadCoords.BottomRight.x;
+    quadVertices[5] = quadCoords.BottomRight.y;
+    quadVertices[8] = quadCoords.TopRight.x;
+    quadVertices[9] = quadCoords.TopRight.y;
+    quadVertices[12] = quadCoords.TopLeft.x;
+    quadVertices[13] = quadCoords.TopLeft.y;
+    s_rendererData->quadDynamicVertexBuffer->updateData(quadVertices, quadVertexBufferSize);
+}
+
+void Renderer::drawQuad(const QuadCoords &quadCoords, const glm::vec4 &color)
+{
+    QuadCoords quadCoordsScaled = quadCoords;
+    quadCoordsScaled *= metersToPxScale;
+    setQuadCoords(quadCoordsScaled);
+
+    s_rendererData->quadDynamicVertexArray->bind();
+    s_rendererData->quadIndexBuffer->bind();
+    glm::mat4 mvpMatrix = *s_rendererData->projectionMatrix * *s_rendererData->viewMatrix;
+
+    s_rendererData->solidColorShader->bind();
+    s_rendererData->solidColorShader->setUniformMat4f("u_mvpMatrix", mvpMatrix);
+    s_rendererData->solidColorShader->setUniform4f("u_Color", color);
+    GLCall(glDrawElements(GL_TRIANGLES, s_rendererData->quadIndexBuffer->getCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+void Renderer::drawRect(const glm::vec2 &position, const glm::vec2 &size, float rotation, const Texture &texture,
                         const TexCoords *texCoords)
 {
     if (texCoords != nullptr) {
-        updateDynamicQuadVertices(*texCoords);
-        s_rendererData->quadDynamicVertexBuffer->updateData(s_rendererData->dynamicQuadVertices, quadVertexBufferSize);
+        setTexCoords(*texCoords);
         s_rendererData->quadDynamicVertexArray->bind();
     } else {
         s_rendererData->quadStaticVertexArray->bind();
