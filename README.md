@@ -2,9 +2,9 @@
 Bots2D is a C++ library for simulating robotics in 2D. It provides a simulation
 framework, including assets, to help you quickly set up your simulation application.
 
-![](docs/images/feature_sumobot.gif)
+<img src="docs/images/sumobot_feature.gif">
 
-![](docs/images/feature_line_follower.png)
+<img src="docs/images/line_follower_feature.png">
 
 # Background
 There are several projects out there for simulating robotics ([Gazebo](http://gazebosim.org/),
