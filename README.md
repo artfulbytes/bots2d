@@ -1,4 +1,4 @@
-# Description
+# Bots2D
 Bots2D is a C++ library for simulating robotics in 2D. It provides a simulation
 framework, including assets, to help you quickly set up your simulation application.
 
@@ -6,7 +6,7 @@ framework, including assets, to help you quickly set up your simulation applicat
 
 <img src="docs/images/line_follower_feature.png">
 
-# Background
+## Background
 There are several projects out there for simulating robotics ([Gazebo](http://gazebosim.org/),
 [Webots](https://cyberbotics.com/), [V-REP](https://www.coppeliarobotics.com/),
 [AirSim](https://github.com/microsoft/AirSim), etc.). These have advanced toolsets and are
@@ -20,7 +20,7 @@ but it still takes quite a bit of work, enough to motivate this library.
 Morever, if we are several people who find this project useful, we
 can assemble a larger set of reusable robotics assets.
 
-# Features
+## Features
 * C++
 * Supports Linux and Windows
 * Physics
@@ -29,7 +29,7 @@ can assemble a larger set of reusable robotics assets.
 * Rendering
     - OpenGL, GLFW, ImGui
     - Basic shapes, Texture, Sprite animation
-* Robotics assets
+* Robotics assets so far:
     - Complete robots
         + Sumobot with custom dimensions, wheels, sensors, speed, acceleration etc.
         + Line-follower with custom dimenions, wheels, sensors, speed, acceleration, etc.
@@ -38,10 +38,14 @@ can assemble a larger set of reusable robotics assets.
         + Line detector
     - Actuators
         + Basic DC-motor model with tuneable acceleration and speed characteristics
+    - Playgrounds
+        + Sumobot dohyo with customizable radius
+        + Customizable line follower path
+    - It's easy to create new assets...
 * Language binding ("Software-in-loop")
     - Controller code can be written in C for easier transfer to a real target.
 
-# Limitations
+## Limitations
 * Physics
     - Object dimensions limited to 0.01-1m
         + As a consequence of Box2D being limited to 0.1-10m
@@ -54,11 +58,11 @@ can assemble a larger set of reusable robotics assets.
     - Simulation speed is limited to the frame rate, typically 60 Hz
 * Not tested on macOS (OpenGL deprecated on macOS)
 
-# Getting started
+## Getting started
 Bots2D is meant to be used as a library in your own application.
 An example application exists under **testapp/**.
 
-## Clone
+### Clone
 Bots2D depends on other git projects checked out at specific commits. These
 are included as git submodules under **external/**. To clone the repo (including all
 submodules), run:
@@ -73,11 +77,11 @@ If you have already cloned the repo non-recursively, you can get the submodles w
 git submodule update --init
 ```
 
-## Build
+### Build
 Bots2D is built with CMake. Look at **testapp/** for an example of how to use it
 in your application.
 
-### Build testapp on Linux
+#### Build testapp on Linux
 
 ```
 cd testapp/
@@ -88,7 +92,7 @@ cmake --build .
 run build/bots2d_testapp
 ```
 
-### Build testapp on Windows
+#### Build testapp on Windows
 Tested with Visual Studio 2019:
 
 ```
@@ -98,7 +102,7 @@ Tested with Visual Studio 2019:
 3. Start Debugging (F5)
 ```
 
-## Folder structure
+### Folder structure
 | Folder name | Description                                                  |
 | ------------| -------------------------------------------------------------|
 | docs        | Documentation                                                |
@@ -109,7 +113,7 @@ Tested with Visual Studio 2019:
 | testapp     | An example/test application with test scenes                 |
 | tools       | Standalone helper tools/scripts                              |
 
-## Documentation
+### Documentation
 Bots2D is documented with Doxygen. You can generate the documentation with:
 
 ```
@@ -118,12 +122,12 @@ doxygen docs/Doxyfile
 
 Doxygen generates the output to **docs/doxygen/**.
 
-# Known issues
+## Known issues
 * Rendering is slightly off (probably because of rounding error)
     - i.e physics is fine, but two objects next to each other are rendered with
       a small gap in-between.
 
-# Troubleshooting
+## Troubleshooting
 * Incorrect OpenGL version (Linux)
     - Check version in console output
     - "export MESA_GL_VERSION_OVERRIDE=3.3"
@@ -131,11 +135,11 @@ Doxygen generates the output to **docs/doxygen/**.
     - GLFW requires xorg-dev liblu1-mesa-dev
     - On Ubuntu, run "sudo apt install xorg-dev libglu1-mesa-dev"
 
-# Contributing
+## Contributing
 If you make modifications or additions, you are encouraged to submit a pull
 request.
 
-# Dependencies
+## Dependencies
 Bots2D depends on the following libraries:
 
 | Name  | Description                     | Lisence     |
@@ -148,7 +152,7 @@ Bots2D depends on the following libraries:
 
 They are included (unmodified) as git submodules under **external/**.
 
-# Credits
+## Credits
 | Name | |
 | ---- | ---- |
 | [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw) | Some of the rendering code stem from his YouTube tutorials. |

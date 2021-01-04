@@ -1,3 +1,4 @@
 Makefile
 build/
 tools/*svg
+docs/doxygen
