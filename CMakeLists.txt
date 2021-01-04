@@ -19,7 +19,7 @@ set (RENDERER_SOURCE_FILES
     src/engine/renderer/Camera.cpp
     src/engine/renderer/Scalebar.cpp
     src/engine/renderer/GLError.cpp
-    src/engine/renderer/ResourcesHelper.cpp
+    src/engine/renderer/AssetsHelper.cpp
     src/engine/renderer/VertexBuffer.cpp
     src/engine/renderer/IndexBuffer.cpp
     src/engine/renderer/VertexArray.cpp

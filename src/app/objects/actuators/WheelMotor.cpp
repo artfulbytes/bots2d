@@ -4,7 +4,7 @@
 #include "components/RectComponent.h"
 #include "components/Body2D.h"
 #include "SpriteAnimation.h"
-#include "ResourcesHelper.h"
+#include "AssetsHelper.h"
 
 #include <glm/glm.hpp>
 

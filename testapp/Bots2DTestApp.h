@@ -1,5 +1,5 @@
-#ifndef SIMULATOR_TEST_APP_H_
-#define SIMULATOR_TEST_APP_H_
+#ifndef BOTS2D_TEST_APP_H_
+#define BOTS2D_TEST_APP_H_
 
 #include "Application.h"
 #include <memory>
@@ -10,11 +10,11 @@ class SceneMenu;
 /**
  * Test application with test scenes.
  */
-class SimulatorTestApp : public Application
+class Bots2DTestApp : public Application
 {
 public:
-    SimulatorTestApp();
-    ~SimulatorTestApp();
+    Bots2DTestApp();
+    ~Bots2DTestApp();
     void onKeyEvent(const Event::Key &keyEvent) override;
     void onFixedUpdate(float stepTime) override;
 
@@ -23,4 +23,4 @@ private:
     std::unique_ptr<SceneMenu> m_sceneMenu;
 };
 
-#endif /* SIMULATOR_TEST_APP_H_ */
+#endif /* BOTS2D_TEST_APP_H_ */

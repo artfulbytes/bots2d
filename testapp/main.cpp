@@ -1,7 +1,7 @@
-#include "SimulatorTestApp.h"
+#include "Bots2DTestApp.h"
 
 int main()
 {
-    SimulatorTestApp app;
+    Bots2DTestApp app;
     app.run();
 }

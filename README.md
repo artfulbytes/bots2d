@@ -32,7 +32,7 @@ can assemble a larger set of reusable robotics assets.
 * Robotics assets so far:
     - Complete robots
         + Sumobot with custom dimensions, wheels, sensors, speed, acceleration etc.
-        + Line-follower with custom dimenions, wheels, sensors, speed, acceleration, etc.
+        + Line-follower with custom dimensions, wheels, sensors, speed, acceleration, etc.
     - Sensors
         + Range sensor
         + Line detector

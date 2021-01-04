@@ -3,7 +3,7 @@ project(bots2dtest VERSION 1.0)
 
 set (SIMULATOR_TEST_APP_FILES
     main.cpp
-    SimulatorTestApp.cpp
+    Bots2DTestApp.cpp
     scenes/DrawTestScene.cpp
     scenes/SpriteAnimationTestScene.cpp
     scenes/PhysicsTestScene.cpp

@@ -1,7 +1,6 @@
 #include "Shader.h"
 #include <glad/gl.h>
 #include "GLError.h"
-#include "ResourcesHelper.h"
 
 #include <cassert>
 #include <iostream>
@@ -9,16 +8,89 @@
 #include <string>
 #include <sstream>
 
+/**
+ * Store the shaders in the CPP file so we don't have to find them
+ * at runtime.
+ */
+namespace {
+const char textureVertexShader[] = R"glsl(
+#version 330 core
+
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 texCoord;
+
+out vec2 v_texCoord;
+
+uniform mat4 u_mvpMatrix;
+
+void main()
+{
+   gl_Position = u_mvpMatrix * position;
+   v_texCoord = texCoord;
+};
+)glsl";
+
+const char textureFragmentShader[] = R"glsl(
+#version 330 core
+
+layout(location = 0) out vec4 color;
+
+in vec2 v_texCoord;
+
+uniform sampler2D u_Texture;
+
+void main()
+{
+    vec4 texColor = texture(u_Texture, v_texCoord);
+    color = texColor;
+};
+)glsl";
+
+const char solidColorVertexShader[] = R"glsl(
+#version 330 core
+
+layout(location = 0) in vec4 position;
+
+uniform mat4 u_mvpMatrix;
+
+void main()
+{
+   gl_Position = u_mvpMatrix * position;
+};
+)glsl";
+
+const char solidColorFragmentShader[] = R"glsl(
+#version 330 core
+
+layout(location = 0) out vec4 color;
+
+uniform vec4 u_Color;
+
+void main()
+{
+   color = u_Color;
+};
+)glsl";
+}
+
 struct ShaderProgramSource
 {
     std::string vertexSource;
     std::string fragmentSource;
 };
 
-Shader::Shader(const std::string &name)
-    : m_filepath(ResourcesHelper::getShadersPath() + name), m_id(0)
+Shader::Shader(Shader::Program shaderProgram)
 {
-    ShaderProgramSource source = parse(m_filepath);
+    ShaderProgramSource source;
+    switch (shaderProgram)
+    {
+    case Shader::Program::SolidColor:
+        source = { solidColorVertexShader, solidColorFragmentShader };
+        break;
+    case Shader::Program::Texture:
+        source = { textureVertexShader, textureFragmentShader };
+        break;
+    }
     m_id = create(source.vertexSource, source.fragmentSource);
 }
 
@@ -63,36 +135,6 @@ int Shader::getUniformLocation(const std::string &name)
     }
     m_uniformLocationCache[name] = location;
     return location;
-}
-
-ShaderProgramSource Shader::parse(const std::string &filepath)
-{
-    std::ifstream stream(filepath);
-
-    enum class ShaderType
-    {
-        None = -1,
-        Vertex = 0,
-        Fragment = 1
-    };
-
-    std::string line;
-    ShaderType type = ShaderType::None;
-    std::stringstream stringstreams[2];
-    while (getline(stream, line))
-    {
-        if (line.find("#shader") != std::string::npos) {
-            if (line.find("vertex") != std::string::npos) {
-                type = ShaderType::Vertex;
-            } else if (line.find("fragment") != std::string::npos) {
-                type = ShaderType::Fragment;
-            }
-        } else {
-            stringstreams[(int)type] << line << '\n';
-        }
-    }
-
-    return { stringstreams[0].str(), stringstreams[1].str() };
 }
 
 unsigned int Shader::compile(unsigned int type, const std::string &source)

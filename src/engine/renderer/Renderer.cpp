@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "GLError.h"
-#include "ResourcesHelper.h"
+#include "AssetsHelper.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -137,15 +137,15 @@ static void enableBlending()
 
 void Renderer::init()
 {
-    ResourcesHelper::init();
+    AssetsHelper::init();
     s_rendererData = std::make_unique<RendererStorage>();
     enableBlending();
 
     s_rendererData->projectionMatrix = std::make_unique<glm::mat4>(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f));
     s_rendererData->viewMatrix = std::make_unique<glm::mat4>(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)));
 
-    s_rendererData->solidColorShader = std::make_unique<Shader>("solid_color.shader");
-    s_rendererData->textureShader = std::make_unique<Shader>("texture.shader");
+    s_rendererData->solidColorShader = std::make_unique<Shader>(Shader::Program::SolidColor);
+    s_rendererData->textureShader = std::make_unique<Shader>(Shader::Program::Texture);
     initCircle();
     initQuad();
 }

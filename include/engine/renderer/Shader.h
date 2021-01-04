@@ -14,7 +14,8 @@ struct ShaderProgramSource;
 class Shader
 {
 public:
-    Shader(const std::string& filepath);
+    enum class Program { SolidColor, Texture };
+    Shader(Program shaderProgram);
     ~Shader();
     void bind() const;
     void unbind() const;
@@ -27,7 +28,6 @@ private:
     unsigned int m_id;
     std::unordered_map<std::string, int> m_uniformLocationCache;
 
-    ShaderProgramSource parse(const std::string& filepath);
     unsigned int compile(unsigned int type, const std::string& source);
     unsigned int create(const std::string& vertexShader, const std::string& fragmentShader);
     int getUniformLocation(const std::string& name);

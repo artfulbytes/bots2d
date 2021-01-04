@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "GLError.h"
-#include "ResourcesHelper.h"
+#include "AssetsHelper.h"
 
 #include <glad/gl.h>
 #include "stb_image.h"
@@ -8,7 +8,7 @@
 #include <iostream>
 
 Texture::Texture(const std::string& textureName) :
-    m_filepath(ResourcesHelper::getTexturesPath(textureName))
+    m_filepath(AssetsHelper::getTexturePath(textureName))
 {
     /* Flips texture upside down because OpenGl expects pixels to
        start at the bottom left */
