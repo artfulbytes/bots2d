@@ -11,7 +11,7 @@ which is tedious and overkill for simpler simulations.
 
 Despite 2D simulators being useful and much easier to implement, few
 well-established projects exist. It's fairly straightforward to develop
-from scratch given the available open-source rendering/physics libraries,
+one from scratch given the available open-source rendering/physics libraries,
 but it still takes quite a bit of work, enough to motivate this library.
 Morever, if we are several people who find this project useful, we
 can assemble a larger set of reusable robotics assets.
@@ -41,9 +41,9 @@ can assemble a larger set of reusable robotics assets.
 * Physics
     - Object dimensions limited to 0.01-1m
         + As a consequence of Box2D being limited to 0.1-10m
-        + This can be changed by adjusting the hard-coded scale factor
+        + The physics scale factor can be changed, but the width of the span is still limited
     - Approximates top-view physics by setting Box2D gravity to 0 and
-      using b2FrictionJoint[Link] for friction.
+      using [b2FrictionJoint](https://box2d.org/documentation/classb2_friction_joint.html) for friction.
 * Performance
     - Not optimized for simulating huge amounts of objects
     - Lacks standard optimization techniques such as batch rendering and memory-efficient ECS.
@@ -61,19 +61,20 @@ submodules), run:
 
 ```
 git clone --recursive -j8 https://github.com/artfulbytes/bots2d
-´´´
+```
 
 If you have already cloned the repo non-recursively, you can get the submodles with:
 
 ```
 git submodule update --init
-´´´
+```
 
 ## Build
 Bots2D is built with CMake. Look at **testapp/** for an example of how to use it
 in your application.
 
 ### Build testapp on Linux
+
 ```
 1. cd testapp/
 2. mkdir build
@@ -81,10 +82,9 @@ in your application.
 4. cmake ..
 5. cmake --build .
 6. run build/bots2d_testapp
-´´´
+```
 
 ### Build testapp on Windows
-CMake from cmdline or import to visual studio....
 
 ## Folder structure
 | docs       | Documentation                                                |
@@ -97,9 +97,11 @@ CMake from cmdline or import to visual studio....
 
 ## Documentation
 Bots2D is documented with Doxygen. You can generate the documentation with:
+
 ```
 doxygen docs/Doxyfile
-´´´
+```
+
 Doxygen generates the output to **docs/doxygen/**.
 
 # Known issues
@@ -124,14 +126,15 @@ Bots2D depends on the following libraries:
 
 | Name  | Description                     | Lisence     |
 | ------| --------------------------------| ------------|
-| Box2D | Is used for 2D physics          | MIT         |
-| glfw  | Is used for window management   | zlib/libpng |
-| imgui | Is used for GUI overlay         | MIT         |
-| stb   | Is used for image loading       | MIT         |
-| glm   | Is library used for vector math | MIT         |
+| Box2D | Used for 2D physics          | MIT         |
+| glfw  | Used for window management   | zlib/libpng |
+| imgui | Used for GUI overlay         | MIT         |
+| stb   | Used for image loading       | MIT         |
+| glm   | Used for vector math | MIT         |
 
 They are included (unmodified) as git submodules under **external/**.
 
 # Credits
+| ---- | ---- |
 | [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw) | Some of the rendering code stem from his YouTube tutorials. |
 | [iforce2d](https://www.iforce2d.net/) | Very useful Box2D tutorials |
