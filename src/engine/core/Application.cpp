@@ -145,19 +145,19 @@ unsigned int Application::getAvgFps() const
 
 void Application::run()
 {
-    float lastTime = glfwGetTime();
+    float lastTime = static_cast<float>(glfwGetTime());
     while (!glfwWindowShouldClose(m_window))
     {
         glfwPollEvents();
         Renderer::clear(defaultBgColor);
         ImGuiOverlay::newFrame();
-        const float stepTime = 1.0 / m_avgFps;
+        const float stepTime = 1.0f / m_avgFps;
         onFixedUpdate(stepTime);
         ImGuiOverlay::render();
         m_scalebar->render();
         glfwSwapBuffers(m_window);
 
-        const float currentTime = glfwGetTime();
+        const float currentTime = static_cast<float>(glfwGetTime());
         const float newFps = 1.0f / (currentTime - lastTime);
         m_avgFps = m_avgFps + (newFps - m_avgFps) / fpsSampleCount;
         lastTime = currentTime;

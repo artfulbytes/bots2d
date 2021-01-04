@@ -2,6 +2,10 @@
 Bots2D is a C++ library for simulating robotics in 2D. It provides a simulation
 framework, including assets, to help you quickly set up your simulation application.
 
+![](docs/images/feature_sumobot.gif)
+
+![](docs/images/feature_line_follower.png)
+
 # Background
 There are several projects out there for simulating robotics ([Gazebo](http://gazebosim.org/),
 [Webots](https://cyberbotics.com/), [V-REP](https://www.coppeliarobotics.com/),
@@ -76,24 +80,34 @@ in your application.
 ### Build testapp on Linux
 
 ```
-1. cd testapp/
-2. mkdir build
-3. cd build
-4. cmake ..
-5. cmake --build .
-6. run build/bots2d_testapp
+cd testapp/
+mkdir build
+cd build
+cmake ..
+cmake --build .
+run build/bots2d_testapp
 ```
 
 ### Build testapp on Windows
+Tested with Visual Studio 2019:
+
+```
+1. Open local folder and select bots2d/testapp
+2. After VS has loaded the project, right click on CMakeLists.txt in the solution
+   explorer and set as startup item.
+3. Start Debugging (F5)
+```
 
 ## Folder structure
-| docs       | Documentation                                                |
-| external   | External dependencies                                        |
-| include    | Bots2D header files                                          |
-| resources  | Resources for the renderer (shaders, textures, sprites etc.) |
-| src        | Bots2D implementation files                                  |
-| testapp    | An example/test application with test scenes                 |
-| tools      | Standalone helper tools/scripts                              |
+| Folder name | Description                                                  |
+| ------------| -------------------------------------------------------------|
+| docs        | Documentation                                                |
+| external    | External dependencies                                        |
+| include     | Bots2D header files                                          |
+| resources   | Resources for the renderer (shaders, textures, sprites etc.) |
+| src         | Bots2D implementation files                                  |
+| testapp     | An example/test application with test scenes                 |
+| tools       | Standalone helper tools/scripts                              |
 
 ## Documentation
 Bots2D is documented with Doxygen. You can generate the documentation with:
@@ -135,6 +149,7 @@ Bots2D depends on the following libraries:
 They are included (unmodified) as git submodules under **external/**.
 
 # Credits
+| Name | |
 | ---- | ---- |
 | [The Cherno](https://www.youtube.com/channel/UCQ-W1KE9EYfdxhL6S4twUNw) | Some of the rendering code stem from his YouTube tutorials. |
 | [iforce2d](https://www.iforce2d.net/) | Very useful Box2D tutorials |

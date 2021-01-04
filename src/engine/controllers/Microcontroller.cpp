@@ -59,7 +59,7 @@ void Microcontroller::transferVoltageLevelsMicrocontrollerToSimulator()
 
 /* Called by the simulator update loop, keep it short to avoid affecting
  * the frame rate. */
-void Microcontroller::onFixedUpdate(double stepTime)
+void Microcontroller::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
     transferVoltageLevelsSimulatorToMicrocontroller();

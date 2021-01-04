@@ -51,7 +51,7 @@ public:
 
     void setVoltageIn(float voltage);
     void setDutyCycle(float dutyCycle);
-    void onFixedUpdate(double stepTime) override;
+    void onFixedUpdate(float stepTime) override;
     float *getVoltageLine();
     const Body2D *getBody() const { return m_body2D; }
 

@@ -26,7 +26,7 @@ public:
         start(start), end(end), width(width) {}
     glm::vec2 start;
     glm::vec2 end;
-    float width;
+    float width = 0.0f;
 };
 
 class RectTransform : public TransformComponent
@@ -57,8 +57,8 @@ public:
         position(position), radius(radius), rotation(rotation) {}
     ~CircleTransform() {}
     glm::vec2 position;
-    float radius;
-    float rotation;
+    float radius = 0.0f;
+    float rotation = 0.0f;
 };
 
 class HollowCircleTransform : public TransformComponent
@@ -68,8 +68,8 @@ public:
         position(position), innerRadius(innerRadius), outerRadius(outerRadius) {}
     ~HollowCircleTransform() {}
     glm::vec2 position;
-    float innerRadius;
-    float outerRadius;
+    float innerRadius = 0.0f;
+    float outerRadius = 0.0f;
 };
 
 #endif /* TRANSFORMS_H_ */

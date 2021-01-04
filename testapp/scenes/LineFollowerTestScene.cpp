@@ -69,7 +69,7 @@ namespace {
                 }
             }
         }
-        void onFixedUpdate(double stepTime) override
+        void onFixedUpdate(float stepTime) override
         {
             (void)stepTime;
         }

@@ -42,7 +42,7 @@ public:
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getForwardSpeed() const;
-    void onFixedUpdate(double stepTime) override;
+    void onFixedUpdate(float stepTime) override;
     void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
     void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
     void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);

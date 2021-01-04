@@ -39,7 +39,7 @@ void LineDetectorObject::setDebugDraw(bool enabled)
     m_renderableComponent->setEnabled(enabled);
 }
 
-void LineDetectorObject::onFixedUpdate(double stepTime)
+void LineDetectorObject::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
 }

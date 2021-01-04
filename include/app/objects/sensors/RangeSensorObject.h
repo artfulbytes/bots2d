@@ -23,7 +23,7 @@ public:
     ~RangeSensorObject();
     void setDebugDraw(bool enabled);
     Body2D *getBody() const;
-    void onFixedUpdate(double stepTime) override;
+    void onFixedUpdate(float stepTime) override;
     float *getVoltageLine() const;
 
 private:

@@ -15,8 +15,9 @@ void ResourcesHelper::init()
      * should work for both Linux and Windows */
     struct stat info;
 
-    std::array<std::string, 4> pathsToCheck {"./resources/", "../resources/",
-                                             "../../resources/", "../../../resources/"};
+    std::array<std::string, 5> pathsToCheck {"./resources/", "../resources/",
+                                             "../../resources/", "../../../resources/",
+					     "../../../../resources/"};
     for (const auto &path : pathsToCheck) {
         if (stat(path.c_str(), &info) == 0) {
             resourcesPath = path;

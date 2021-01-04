@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 namespace {
 const std::unordered_map<LineFollowerPath::Blueprint, LineFollowerPath::PathPoints> pathBlueprints
@@ -130,7 +131,7 @@ std::vector<QuadCoords> LineFollowerPath::getRightAnglePathQuadCoords(const Line
     std::vector<QuadCoords> quadCoords;
     QuadCoords prevQuadCoords;
     quadCoords.push_back(prevQuadCoords);
-    const float normalLength = width / std::sqrt(2);
+    const float normalLength = width / sqrtf(2);
     for (unsigned int i = 1; i < pathPoints.size() + 1; i++) {
         const glm::vec2 p0 = pathPoints[i-1];
         const glm::vec2 p1 = pathPoints[i % pathPoints.size()];

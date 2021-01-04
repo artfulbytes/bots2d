@@ -3,7 +3,7 @@
 #include <glad/gl.h>
 #include <cassert>
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size, VertexBuffer::DrawType drawType) :
+VertexBuffer::VertexBuffer(const void* data, size_t size, VertexBuffer::DrawType drawType) :
     m_size(size), m_glDrawType(glDrawType(drawType))
 {
     GLCall(glGenBuffers(1, &m_id));
@@ -26,7 +26,7 @@ int VertexBuffer::glDrawType(VertexBuffer::DrawType drawType)
     return 0;
 }
 
-void VertexBuffer::updateData(const void *data, unsigned int size)
+void VertexBuffer::updateData(const void *data, size_t size)
 {
     assert(size == m_size);
     bind();

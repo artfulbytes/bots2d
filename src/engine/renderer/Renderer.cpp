@@ -68,8 +68,10 @@ static glm::mat4 translate2D(const glm::vec2 &position, bool pixelScale)
 static void initCircle()
 {
     const float radius = 0.5f;
-    const int cornerCount = 60;
-    float circleVertices[cornerCount * 2];
+    const auto cornerCount = 60;
+    const auto circleVerticesCount = cornerCount * 2;
+    const auto circleVertexIndicesCount = cornerCount + 1;
+    float circleVertices[circleVerticesCount];
 
     /* Sin and cos are expensive, but we only run this function once */
 	for(int i = 0; i < cornerCount; i++)
@@ -78,13 +80,13 @@ static void initCircle()
         circleVertices[2 * i] = radius * glm::cos(theta);
         circleVertices[2 * i + 1] = radius * glm::sin(theta);
 	}
-    unsigned int circleVertexIndices[cornerCount + 1];
+    unsigned int circleVertexIndices[circleVertexIndicesCount];
     for (int i = 0; i < cornerCount + 1; i++) {
         circleVertexIndices[i] = i % cornerCount;
     }
-    s_rendererData->circleVertexBuffer = std::make_unique<VertexBuffer>(circleVertices, sizeof(circleVertices), VertexBuffer::DrawType::Static);
+    s_rendererData->circleVertexBuffer = std::make_unique<VertexBuffer>(circleVertices, circleVerticesCount * sizeof(float), VertexBuffer::DrawType::Static);
 
-    s_rendererData->circleIndexBuffer = std::make_unique<IndexBuffer>(circleVertexIndices, sizeof(circleVertexIndices) / sizeof(unsigned int));
+    s_rendererData->circleIndexBuffer = std::make_unique<IndexBuffer>(circleVertexIndices, circleVertexIndicesCount);
     VertexBufferLayout layout;
     layout.push<float>(2);
     s_rendererData->circleVertexArray = std::make_unique<VertexArray>();

@@ -8,7 +8,7 @@
 #include "LineFollowerTestScene.h"
 
 SimulatorTestApp::SimulatorTestApp() :
-    Application("Bots2D test")
+    Application("bots2dtest")
 {
     m_sceneMenu = std::make_unique<SceneMenu>(this, m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
@@ -31,7 +31,7 @@ void SimulatorTestApp::onKeyEvent(const Event::Key &keyEvent)
     }
 }
 
-void SimulatorTestApp::onFixedUpdate(double stepTime)
+void SimulatorTestApp::onFixedUpdate(float stepTime)
 {
     m_sceneMenu->render();
     if (m_currentScene) {

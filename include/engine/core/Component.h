@@ -11,7 +11,7 @@ public:
     /**
      * Called every simulation iteration (if assigned to a Scene Object).
      */
-    virtual void onFixedUpdate(double stepTime)
+    virtual void onFixedUpdate(float stepTime)
     {
         (void)stepTime;
     };

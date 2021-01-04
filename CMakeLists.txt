@@ -119,11 +119,12 @@ set_target_properties(bots2d PROPERTIES
     CXX_EXTENSIONS NO
 )
 
-# Ignore compile flags to keep the external repo intact
-set_source_files_properties(src/engine/renderer/stb_image.cpp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-unused-but-set-variable")
+
 
 if(MSVC)
   target_compile_options(bots2d PRIVATE /W4 /WX)
 else()
   target_compile_options(bots2d PRIVATE -Wall -Wextra -pedantic -Werror)
+  # Ignore compile flags to keep the external repo intact
+  set_source_files_properties(src/engine/renderer/stb_image.cpp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-unused-but-set-variable")
 endif()

@@ -145,7 +145,7 @@ PhysicsWorld::~PhysicsWorld()
 {
 }
 
-void PhysicsWorld::step(double stepTime)
+void PhysicsWorld::step(float stepTime)
 {
     /* The iteration values 6 and 2 are recommended value taken from elsewhere.
        They matter when calculating collision. */

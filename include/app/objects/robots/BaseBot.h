@@ -52,7 +52,7 @@ public:
     BaseBot(Scene *scene, const Specification &spec,
             const glm::vec2 &startPosition, const float startRotation);
     virtual ~BaseBot();
-    virtual void onFixedUpdate(double timeStep) override;
+    virtual void onFixedUpdate(float stepTime) override;
     float *getVoltageLine(WheelMotorIndex wheelMotorIndex) const;
     virtual void setDebug(bool enabled);
 

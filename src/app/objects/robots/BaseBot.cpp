@@ -79,8 +79,8 @@ void BaseBot::createSensors(const BaseBot::Specification &spec)
         const auto index = std::get<0>(rangeSensorTuple);
         const auto relativePosition = std::get<1>(rangeSensorTuple);
         const auto absolutePosition = m_body->getPosition() + glm::rotate(relativePosition, m_body->getRotation());
-        const auto spec = std::get<2>(rangeSensorTuple);
-        m_rangeSensors[index] = std::make_unique<RangeSensorObject>(m_scene, spec, false, absolutePosition);
+        const auto rangeSensorSpec = std::get<2>(rangeSensorTuple);
+        m_rangeSensors[index] = std::make_unique<RangeSensorObject>(m_scene, rangeSensorSpec, false, absolutePosition);
         m_body->attachSensor(m_rangeSensors[index].get(), relativePosition);
     }
     for (const auto &lineDetectorTuple : spec.lineDetectorTuples) {
@@ -113,7 +113,7 @@ float *BaseBot::getVoltageLine(BaseBot::WheelMotorIndex wheelMotorIndex) const
     return wheelMotorItr->second->getVoltageLine();
 }
 
-void BaseBot::onFixedUpdate(double stepTime)
+void BaseBot::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
 }

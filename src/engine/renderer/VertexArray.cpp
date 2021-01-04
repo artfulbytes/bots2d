@@ -23,7 +23,7 @@ void VertexArray::addBuffer(const VertexBuffer& vertexBuffer, const VertexBuffer
     bind();
     vertexBuffer.bind();
     const auto& elements = layout.getElements();
-    unsigned int offset = 0;
+    size_t offset = 0;
 
     for (unsigned int i = 0; i < elements.size(); i++)
     {

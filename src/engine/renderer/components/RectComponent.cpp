@@ -44,7 +44,7 @@ void RectComponent::onFixedUpdate()
 
     glm::vec2 size;
     glm::vec2 position;
-    float rotation;
+    float rotation = 0.0f;
     if (m_quadTransform != nullptr) {
         size = m_quadTransform->size;
         position = m_quadTransform->position;

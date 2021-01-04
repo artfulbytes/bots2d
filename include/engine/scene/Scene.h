@@ -21,7 +21,7 @@ public:
     Scene(std::string description, PhysicsWorld::Gravity gravity);
     virtual ~Scene();
     PhysicsWorld *getPhysicsWorld() const;
-    void onFixedUpdate(double stepTime);
+    void onFixedUpdate(float stepTime);
     void onKeyEvent(const Event::Key &keyEvent);
     void addObject(SceneObject *sceneObject);
     std::string getDescription() const { return m_description; }

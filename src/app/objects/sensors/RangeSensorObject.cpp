@@ -40,7 +40,7 @@ float *RangeSensorObject::getVoltageLine() const
     return m_rangeSensor->getVoltageLine();
 }
 
-void RangeSensorObject::onFixedUpdate(double stepTime)
+void RangeSensorObject::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
 }

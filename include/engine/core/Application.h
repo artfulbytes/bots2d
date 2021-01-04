@@ -24,7 +24,7 @@ public:
     void run();
 
     virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
-    virtual void onFixedUpdate(double stepTime) = 0;
+    virtual void onFixedUpdate(float stepTime) = 0;
     unsigned int getAvgFps() const;
 
 private:

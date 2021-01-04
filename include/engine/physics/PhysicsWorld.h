@@ -32,7 +32,7 @@ public:
     ~PhysicsWorld();
     void init();
 
-    void step(double stepTime);
+    void step(float stepTime);
     inline Gravity getGravityType() const { return m_gravityType; }
 
     static void assertDimensions(float unscaledLength);

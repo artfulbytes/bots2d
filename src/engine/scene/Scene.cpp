@@ -28,7 +28,7 @@ void Scene::onKeyEvent(const Event::Key &keyEvent)
     }
 }
 
-void Scene::onFixedUpdate(double stepTime)
+void Scene::onFixedUpdate(float stepTime)
 {
     if (m_physicsWorld) {
         m_physicsWorld->step(stepTime);

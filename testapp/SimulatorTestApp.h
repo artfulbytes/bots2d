@@ -16,7 +16,7 @@ public:
     SimulatorTestApp();
     ~SimulatorTestApp();
     void onKeyEvent(const Event::Key &keyEvent) override;
-    void onFixedUpdate(double stepTime) override;
+    void onFixedUpdate(float stepTime) override;
 
 private:
     Scene *m_currentScene = nullptr;

@@ -43,7 +43,7 @@ private:
 };
 
 constexpr int totalVertexCount = 180;
-constexpr float anglePerVertex = 2 * glm::pi<float>() / static_cast<float>(totalVertexCount);
+constexpr float anglePerVertex = 2 * glm::pi<float>() / totalVertexCount;
 constexpr int trapezoidVertexCount = 4;
 }
 
@@ -198,7 +198,7 @@ Body2D::~Body2D()
     }
 }
 
-void Body2D::onFixedUpdate(double stepTime)
+void Body2D::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
     if (nullptr == m_translator) {

@@ -15,7 +15,7 @@ public:
     RangeSensor(const PhysicsWorld &world, LineTransform *transform,
                 const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance);
     ~RangeSensor();
-    void onFixedUpdate(double stepTime) override;
+    void onFixedUpdate(float stepTime) override;
     /** Retrieve distance in metrics */
     float getDistance() const;
     Body2D *getBody() const;

@@ -125,7 +125,7 @@ void GenericBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm
     m_body2D->attachBodyWithWeldJoint(relativePosition, lineDetectorObject->getBody());
 }
 
-void GenericBody::onFixedUpdate(double stepTime)
+void GenericBody::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
 }

@@ -31,7 +31,7 @@ Body2D *RangeSensor::getBody() const
     return m_body2D.get();
 }
 
-void RangeSensor::onFixedUpdate(double stepTime)
+void RangeSensor::onFixedUpdate(float stepTime)
 {
     (void)stepTime;
     const float rayAngleEnd = m_relativeAngle - m_body2D->getRotation();
