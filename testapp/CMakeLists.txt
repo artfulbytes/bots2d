@@ -1,9 +1,26 @@
 cmake_minimum_required(VERSION 3.8)
 project(bots2dtest VERSION 1.0)
 
-set (SIMULATOR_TEST_APP_FILES
-    main.cpp
-    Bots2DTestApp.cpp
+# Modify to where the bots2d folder is stored
+set (BOTS2D_RELATIVE_PATH ../)
+
+set (BOTS2D_ASSETS
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/RectObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/QuadObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/CircleObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/LineObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/actuators/WheelMotor.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/bodies/GenericBody.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/BaseBot.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/Sumobot.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/LineFollower.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/sensors/RangeSensorObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/sensors/LineDetectorObject.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/playgrounds/Dohyo.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/playgrounds/LineFollowerPath.cpp
+)
+
+set (BOTS2D_TEST_SCENES
     scenes/DrawTestScene.cpp
     scenes/SpriteAnimationTestScene.cpp
     scenes/PhysicsTestScene.cpp
@@ -12,23 +29,36 @@ set (SIMULATOR_TEST_APP_FILES
     scenes/LineFollowerTestScene.cpp
 )
 
+set (BOTS2D_TEST_CONTROLLERS
+    controllers/Sumobot4WheelExample/main.c
+    controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
+)
+
+set (BOTS2D_TEST_FILES
+    ${BOTS2D_ASSETS}
+    ${BOTS2D_TEST_SCENES}
+    ${BOTS2D_TEST_CONTROLLERS}
+    Bots2DTestApp.cpp
+    main.cpp
+)
+
 add_executable(bots2dtest
-    ${SIMULATOR_TEST_APP_FILES}
+    ${BOTS2D_TEST_FILES}
 )
 
 target_include_directories(bots2dtest PRIVATE scenes)
-target_include_directories(bots2dtest PRIVATE ../include/engine/core)
-target_include_directories(bots2dtest PRIVATE ../include/engine/renderer)
-target_include_directories(bots2dtest PRIVATE ../include/engine/transforms)
-target_include_directories(bots2dtest PRIVATE ../include/engine/scene)
-target_include_directories(bots2dtest PRIVATE ../include/engine/physics)
-target_include_directories(bots2dtest PRIVATE ../include/engine/controllers)
-target_include_directories(bots2dtest PRIVATE ../include/app/objects)
-target_include_directories(bots2dtest PRIVATE ../include/app/controllers)
-target_include_directories(bots2dtest PRIVATE ../external/glm)
+target_include_directories(bots2dtest PRIVATE controllers)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/assets/objects)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/core)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/renderer)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/transforms)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/scene)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/physics)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/controllers)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/external/glm)
 
 # Include bots2d and build it as a static lib
-add_subdirectory(../ build)
+add_subdirectory(${BOTS2D_RELATIVE_PATH} build)
 target_link_libraries(bots2dtest PRIVATE bots2d)
 
 set_target_properties(bots2dtest PROPERTIES

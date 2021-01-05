@@ -118,7 +118,7 @@ SumobotTestScene::SumobotTestScene() :
     m_dohyo = std::make_unique<Dohyo>(this, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
-                                               glm::vec2{0.5f, -0.5f}, 4.71f);
+                                               glm::vec2{0.15f, 0.15f}, 4.71f);
     m_fourWheelBot->setController(new SumobotController(m_fourWheelBot.get()));
     m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),

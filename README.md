@@ -1,37 +1,36 @@
 # Bots2D
-Bots2D is a C++ library for simulating robotics in 2D. It provides a simulation
-framework, including assets, to help you quickly set up your simulation application.
+Bots2D is a C++ framework for simulating robotics in 2D. It provides you with the
+necessary boilerplate and includes robotics assets to help you quickly set up your
+simulation application.
 
 <img src="docs/images/sumobot_feature.gif">
 
 <img src="docs/images/line_follower_feature.png">
 
 ## Background
-There are several projects out there for simulating robotics ([Gazebo](http://gazebosim.org/),
-[Webots](https://cyberbotics.com/), [V-REP](https://www.coppeliarobotics.com/),
-[AirSim](https://github.com/microsoft/AirSim), etc.). These have advanced toolsets and are
-great at realistic simulations, but come at the cost of being large projects with overhead,
-which is tedious and overkill for simpler simulations.
+There are several projects out there for simulating robotics (
+[Gazebo](http://gazebosim.org/), [Webots](https://cyberbotics.com/),
+[V-REP](https://www.coppeliarobotics.com/), [AirSim](https://github.com/microsoft/AirSim),
+etc.). These have advanced toolsets and are great at realistic simulations, but
+come at the cost of being large projects with overhead, which is tedious and
+overkill for simpler simulations.
 
-Despite 2D simulators being useful and much easier to implement, few
-well-established projects exist. It's fairly straightforward to develop
-one from scratch given the available open-source rendering/physics libraries,
-but it still takes quite a bit of work, enough to motivate this library.
-Morever, if we are several people who find this project useful, we
-can assemble a larger set of reusable robotics assets.
+Despite 2D simulators being useful and much easier to implement, few well-established
+projects exist. It's fairly straightforward to develop one from scratch given the
+available open-source rendering/physics libraries, but it still takes quite a bit
+of work, enough to motivate this framework. And together, we can assemble a larger
+set of reusable robotics assets.
 
 ## Features
 * C++
 * Supports Linux and Windows
-* Physics
-    - Box2D
+* Physics based on Box2D
     - Top-view and side-view
-* Rendering
-    - OpenGL, GLFW, ImGui
+* Lightweight rendering using OpenGL, GLFW and ImGui
     - Basic shapes, Texture, Sprite animation
 * Robotics assets so far:
     - Complete robots
-        + Sumobot with custom dimensions, wheels, sensors, speed, acceleration etc.
+        + Sumobot with custom dimensions, wheels, sensors, speed, acceleration, etc.
         + Line-follower with custom dimensions, wheels, sensors, speed, acceleration, etc.
     - Sensors
         + Range sensor
@@ -46,39 +45,42 @@ can assemble a larger set of reusable robotics assets.
     - Controller code can be written in C for easier transfer to a real target.
 
 ## Limitations
+* No drag-and-drop GUI
+    - Everything is set up through code
+* Not tested on macOS (OpenGL is deprecated on macOS)
 * Physics
     - Object dimensions limited to 0.01-1m
         + As a consequence of Box2D being limited to 0.1-10m
-        + The physics scale factor can be changed, but the width of the span is still limited
-    - Approximates top-view physics by setting Box2D gravity to 0 and
-      using [b2FrictionJoint](https://box2d.org/documentation/classb2_friction_joint.html) for friction.
+        + The physics scale factor can be changed, but the span between min and max is still limited
+    - Approximated top-view physics
+        + Sets Box2D gravity to 0 and uses [b2FrictionJoint](https://box2d.org/documentation/classb2_friction_joint.html) for friction.
 * Performance
     - Not optimized for simulating huge amounts of objects
     - Lacks standard optimization techniques such as batch rendering and memory-efficient ECS.
     - Simulation speed is limited to the frame rate, typically 60 Hz
-* Not tested on macOS (OpenGL deprecated on macOS)
 
 ## Getting started
-Bots2D is meant to be used as a library in your own application.
-An example application exists under **testapp/**.
+To get you started, there is a testapp under ***testapp/***, which shows you how to
+use the framework. It contains a set of scenes based on the existing robotics assets
+under ***assets/***.
 
 ### Clone
 Bots2D depends on other git projects checked out at specific commits. These
-are included as git submodules under **external/**. To clone the repo (including all
+are included as git submodules under ***external/***. To clone the repo (including all
 submodules), run:
 
 ```
 git clone --recursive -j8 https://github.com/artfulbytes/bots2d
 ```
 
-If you have already cloned the repo non-recursively, you can get the submodles with:
+If you have already cloned the repo non-recursively, you can get the submodules with:
 
 ```
 git submodule update --init
 ```
 
 ### Build
-Bots2D is built with CMake. Look at **testapp/** for an example of how to use it
+Bots2D is built with CMake. Look at ***testapp/*** for an example of how to use it
 in your application.
 
 #### Build testapp on Linux
@@ -97,19 +99,18 @@ Tested with Visual Studio 2019:
 
 ```
 1. Open local folder and select bots2d/testapp
-2. After VS has loaded the project, right click on CMakeLists.txt in the solution
-   explorer and set as startup item.
+2. After VS has loaded the project, right-click on CMakeLists.txt in the solution
+   explorer and set it as startup item.
 3. Start Debugging (F5)
 ```
 
 ### Folder structure
 | Folder name | Description                                                  |
 | ------------| -------------------------------------------------------------|
+| assets      | Reusable robotics objects and textures                       |
 | docs        | Documentation                                                |
 | external    | External dependencies                                        |
-| include     | Bots2D header files                                          |
-| resources   | Resources for the renderer (shaders, textures, sprites etc.) |
-| src         | Bots2D implementation files                                  |
+| src         | Bots2D implementation and header files                       |
 | testapp     | An example/test application with test scenes                 |
 | tools       | Standalone helper tools/scripts                              |
 
@@ -120,7 +121,8 @@ Bots2D is documented with Doxygen. You can generate the documentation with:
 doxygen docs/Doxyfile
 ```
 
-Doxygen generates the output to **docs/doxygen/**.
+Doxygen generates the output to ***docs/doxygen/***.
+Or access it online via the github pages [here](https://artfulbytes.github.io/bots2d/).
 
 ## Known issues
 * Rendering is slightly off (probably because of rounding error)
@@ -137,7 +139,7 @@ Doxygen generates the output to **docs/doxygen/**.
 
 ## Contributing
 If you make modifications or additions, you are encouraged to submit a pull
-request.
+request. Also, make sure you create a corresponding test scene for the testapp.
 
 ## Dependencies
 Bots2D depends on the following libraries:
@@ -145,12 +147,12 @@ Bots2D depends on the following libraries:
 | Name  | Description                     | Lisence     |
 | ------| --------------------------------| ------------|
 | Box2D | Used for 2D physics          | MIT         |
-| glfw  | Used for window management   | zlib/libpng |
-| imgui | Used for GUI overlay         | MIT         |
+| GLFW  | Used for window management   | zlib/libpng |
+| ImGui | Used for GUI overlay         | MIT         |
 | stb   | Used for image loading       | MIT         |
-| glm   | Used for vector math | MIT         |
+| GLM   | Used for vector math | MIT         |
 
-They are included (unmodified) as git submodules under **external/**.
+They are included (unmodified) as git submodules under ***external/***.
 
 ## Credits
 | Name | |

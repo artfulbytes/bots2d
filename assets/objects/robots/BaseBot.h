@@ -2,7 +2,7 @@
 #define BASE_BOT_H_
 
 #include "SceneObject.h"
-#include "chassis/GenericBody.h"
+#include "bodies/GenericBody.h"
 #include "actuators/WheelMotor.h"
 #include "sensors/RangeSensorObject.h"
 

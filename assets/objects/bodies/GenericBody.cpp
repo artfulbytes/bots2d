@@ -1,4 +1,4 @@
-#include "chassis/GenericBody.h"
+#include "bodies/GenericBody.h"
 #include "PhysicsWorld.h"
 #include "components/Transforms.h"
 #include "components/Body2D.h"

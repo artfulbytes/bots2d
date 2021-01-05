@@ -15,42 +15,42 @@ set(IMGUI_SOURCE_FILES
 )
 
 set (RENDERER_SOURCE_FILES
-    src/engine/renderer/Renderer.cpp
-    src/engine/renderer/Camera.cpp
-    src/engine/renderer/Scalebar.cpp
-    src/engine/renderer/GLError.cpp
-    src/engine/renderer/AssetsHelper.cpp
-    src/engine/renderer/VertexBuffer.cpp
-    src/engine/renderer/IndexBuffer.cpp
-    src/engine/renderer/VertexArray.cpp
-    src/engine/renderer/Shader.cpp
-    src/engine/renderer/ImGuiOverlay.cpp
-    src/engine/renderer/Texture.cpp
-    src/engine/renderer/components/RectComponent.cpp
-    src/engine/renderer/components/QuadComponent.cpp
-    src/engine/renderer/SpriteAnimation.cpp
-    src/engine/renderer/stb_image.cpp
+    src/renderer/Renderer.cpp
+    src/renderer/Camera.cpp
+    src/renderer/Scalebar.cpp
+    src/renderer/GLError.cpp
+    src/renderer/AssetsHelper.cpp
+    src/renderer/VertexBuffer.cpp
+    src/renderer/IndexBuffer.cpp
+    src/renderer/VertexArray.cpp
+    src/renderer/Shader.cpp
+    src/renderer/ImGuiOverlay.cpp
+    src/renderer/Texture.cpp
+    src/renderer/components/RectComponent.cpp
+    src/renderer/components/QuadComponent.cpp
+    src/renderer/SpriteAnimation.cpp
+    src/renderer/stb_image.cpp
 )
 
 set (PHYSICS_SOURCE_FILES
-    src/engine/physics/PhysicsWorld.cpp
-    src/engine/physics/ContactListener.cpp
-    src/engine/physics/components/Body2D.cpp
-    src/engine/physics/components/RangeSensor.cpp
-    src/engine/physics/components/LineDetector.cpp
+    src/physics/PhysicsWorld.cpp
+    src/physics/ContactListener.cpp
+    src/physics/components/Body2D.cpp
+    src/physics/components/RangeSensor.cpp
+    src/physics/components/LineDetector.cpp
 )
 
 set (CONTROLLER_SOURCE_FILES
-    src/engine/controllers/Microcontroller.cpp
-    src/engine/controllers/MicrocontrollerCBinding.cpp
+    src/controllers/Microcontroller.cpp
+    src/controllers/MicrocontrollerCBinding.cpp
 )
 
-set (SIMULATOR_ENGINE_FILES
-    src/engine/core/Application.cpp
-    src/engine/core/Event.cpp
-    src/engine/scene/SceneObject.cpp
-    src/engine/scene/Scene.cpp
-    src/engine/scene/SceneMenu.cpp
+set (BOTS2D_FILES
+    src/core/Application.cpp
+    src/core/Event.cpp
+    src/scene/SceneObject.cpp
+    src/scene/Scene.cpp
+    src/scene/SceneMenu.cpp
     ${RENDERER_SOURCE_FILES}
     ${PHYSICS_SOURCE_FILES}
     ${CONTROLLER_SOURCE_FILES}
@@ -58,46 +58,17 @@ set (SIMULATOR_ENGINE_FILES
     ${IMGUI_SOURCE_FILES}
 )
 
-set (SIMULATOR_APP_FILES
-    src/app/objects/shapes/RectObject.cpp
-    src/app/objects/shapes/QuadObject.cpp
-    src/app/objects/shapes/CircleObject.cpp
-    src/app/objects/shapes/LineObject.cpp
-    src/app/objects/actuators/WheelMotor.cpp
-    src/app/objects/chassis/GenericBody.cpp
-    src/app/objects/robots/BaseBot.cpp
-    src/app/objects/robots/Sumobot.cpp
-    src/app/objects/robots/LineFollower.cpp
-    src/app/objects/sensors/RangeSensorObject.cpp
-    src/app/objects/sensors/LineDetectorObject.cpp
-    src/app/objects/playgrounds/Dohyo.cpp
-    src/app/objects/playgrounds/LineFollowerPath.cpp
-    src/app/controllers/Sumobot4WheelExample/main.c
-    src/app/controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
-)
-
-set (SIMULATOR_SOURCE_FILES
-    ${SIMULATOR_ENGINE_FILES}
-    ${SIMULATOR_APP_FILES}
-)
-
 add_library(bots2d STATIC
-    ${SIMULATOR_SOURCE_FILES}
+    ${BOTS2D_FILES}
 )
 
-target_include_directories(bots2d PRIVATE testapp)
-target_include_directories(bots2d PRIVATE testapp/scenes)
-
-target_include_directories(bots2d PRIVATE include)
-target_include_directories(bots2d PRIVATE include/app)
-target_include_directories(bots2d PRIVATE include/app/objects)
-target_include_directories(bots2d PRIVATE include/engine/core)
-target_include_directories(bots2d PRIVATE include/engine/renderer)
-target_include_directories(bots2d PRIVATE include/engine/transforms)
-target_include_directories(bots2d PRIVATE include/engine/physics)
-target_include_directories(bots2d PRIVATE include/engine/controllers)
-target_include_directories(bots2d PRIVATE include/engine/scene)
-target_include_directories(bots2d PRIVATE include/app/controllers)
+target_include_directories(bots2d PRIVATE src)
+target_include_directories(bots2d PRIVATE src/core)
+target_include_directories(bots2d PRIVATE src/renderer)
+target_include_directories(bots2d PRIVATE src/transforms)
+target_include_directories(bots2d PRIVATE src/physics)
+target_include_directories(bots2d PRIVATE src/controllers)
+target_include_directories(bots2d PRIVATE src/scene)
 target_include_directories(bots2d PRIVATE external/glfw/deps)
 target_include_directories(bots2d PRIVATE external/stb)
 target_include_directories(bots2d PRIVATE external/glm)
@@ -119,12 +90,10 @@ set_target_properties(bots2d PROPERTIES
     CXX_EXTENSIONS NO
 )
 
-
-
 if(MSVC)
   target_compile_options(bots2d PRIVATE /W4 /WX)
 else()
   target_compile_options(bots2d PRIVATE -Wall -Wextra -pedantic -Werror)
   # Ignore compile flags to keep the external repo intact
-  set_source_files_properties(src/engine/renderer/stb_image.cpp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-unused-but-set-variable")
+  set_source_files_properties(src/renderer/stb_image.cpp PROPERTIES COMPILE_FLAGS "-Wno-sign-compare -Wno-unused-but-set-variable")
 endif()

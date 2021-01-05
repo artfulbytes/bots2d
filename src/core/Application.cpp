@@ -135,7 +135,7 @@ Application::~Application()
 
 namespace {
     const glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
-    const unsigned int fpsSampleCount = 10;
+    const unsigned int fpsSampleCount = 15;
 }
 
 unsigned int Application::getAvgFps() const
