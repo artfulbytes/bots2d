@@ -38,4 +38,3 @@ void Bots2DTestApp::onFixedUpdate(float stepTime)
         m_currentScene->onFixedUpdate(stepTime);
     }
 }
-

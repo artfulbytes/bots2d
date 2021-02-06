@@ -10,6 +10,8 @@ struct QuadCoords;
 /**
  * Renders a detectable quad. It's needed because a Scene can't directly update components
  * (QuadComponent and Body2D).
+ *
+ * NOTE: Coordinates must form a convex polygon.
  */
 class QuadObject : public SceneObject
 {

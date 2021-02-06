@@ -5,8 +5,9 @@ class VertexBuffer;
 class VertexBufferLayout;
 
 /**
- * Wrapper around OpenGL vertex array object (VAO). A VAO contains VertexBuffer and
- * its layout.
+ * Wrapper around OpenGL vertex array object (VAO). A VAO ties a VertexBuffer to
+ * a vertex buffer layout. So instead of having to separately bind a buffer and
+ * its layout each time, we can just bind the VAO instead.
  */
 class VertexArray
 {

@@ -9,8 +9,8 @@
 #include <sstream>
 
 /**
- * Store the shaders in the CPP file so we don't have to find them
- * at runtime.
+ * Store the shaders in the executable instead of separate files to avoid
+ * locating them at runtime.
  */
 namespace {
 const char textureVertexShader[] = R"glsl(

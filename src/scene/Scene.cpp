@@ -30,15 +30,15 @@ void Scene::onKeyEvent(const Event::Key &keyEvent)
 
 void Scene::onFixedUpdate(float stepTime)
 {
+    for (auto obj : m_objects) {
+        obj->updateController(stepTime);
+    }
+
     if (m_physicsWorld) {
         m_physicsWorld->step(stepTime);
         for (auto obj : m_objects) {
             obj->updatePhysics(stepTime);
         }
-    }
-
-    for (auto obj : m_objects) {
-        obj->updateController(stepTime);
     }
 
     for (auto obj : m_objects) {

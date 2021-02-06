@@ -25,8 +25,8 @@ struct VertexBufferElement
 };
 
 /**
- * Wrapper around OpenGL vertex buffer layout, which labels the data in a
- * vertex buffer.
+ * Wrapper around OpenGL vertex buffer layout, which specifies to OpenGL what kind of
+ * data the vertex buffer contains.
  */
 class VertexBufferLayout
 {
