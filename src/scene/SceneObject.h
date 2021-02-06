@@ -16,7 +16,8 @@ class PhysicsWorld;
  * similar to the "entity" in an Entity-component-system (ECS) pattern. It's an object composed
  * of multiple components such as rendering and physics components. In contrast to a real
  * ECS, there is no memory optimization, e.g. similar components are not stored next to each
- * other for cache-friendliness.
+ * other for cache-friendliness. Neither are there any systems, instead the data and behaviour
+ * is contained inside the components.
  *
  * A scene object must be part of a scene.
  */
