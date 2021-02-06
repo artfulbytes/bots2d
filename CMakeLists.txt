@@ -41,8 +41,8 @@ set (PHYSICS_SOURCE_FILES
 )
 
 set (CONTROLLER_SOURCE_FILES
-    src/controllers/Microcontroller.cpp
-    src/controllers/MicrocontrollerCBinding.cpp
+    src/controllers/components/Microcontroller.cpp
+    src/controllers/components/MicrocontrollerCBinding.cpp
 )
 
 set (BOTS2D_FILES
