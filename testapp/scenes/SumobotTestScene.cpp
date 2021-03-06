@@ -39,12 +39,8 @@ namespace {
                     break;
             }
 
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
-            //*m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
+            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
         }
         SumobotController(Sumobot *sumobot) : m_sumobot(sumobot)
         {
@@ -119,15 +115,27 @@ SumobotTestScene::SumobotTestScene() :
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                glm::vec2{0.15f, 0.15f}, 4.71f);
-    m_fourWheelBot->setController(new SumobotController(m_fourWheelBot.get()));
+    Microcontroller::VoltageLines voltageLines;
+    voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
+    voltageLines[Microcontroller::VoltageLine::A2] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::A3] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) };
+    voltageLines[Microcontroller::VoltageLine::A4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::A5] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackLeft) };
+    voltageLines[Microcontroller::VoltageLine::A6] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::A7] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackRight) };
+    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
+    m_fourWheelBot->setController(m_microcontroller.get());
+    m_microcontroller->start();
     m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
                                                        glm::vec2{-0.25f, 0.0f}, 1.5f);
-    //m_twoWheelRectangleBot->setController(new SumobotController(m_twoWheelRectangleBot.get()));
     m_twoWheelRoundBlackBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundBlack),
                                                         glm::vec2{0.2f, -0.2f}, 3.0f);
     m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),
                                                       glm::vec2{-0.15f, -0.15f}, 1.0f);
+    m_keyboardController = std::make_unique<SumobotController>(m_twoWheelRoundRedBot.get());
+    m_twoWheelRoundRedBot->setController(m_keyboardController.get());
 }
 
 SumobotTestScene::~SumobotTestScene()

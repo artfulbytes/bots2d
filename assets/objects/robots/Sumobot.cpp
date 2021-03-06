@@ -13,7 +13,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.6f,          /* Body torque friction coefficient */
             0.015f, 0.03f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
-            100.0f,        /* Wheel sideway friction constant */
+            50.0f,        /* Wheel sideway friction constant */
             0.00528f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */

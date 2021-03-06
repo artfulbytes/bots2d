@@ -113,6 +113,26 @@ float *BaseBot::getVoltageLine(BaseBot::WheelMotorIndex wheelMotorIndex) const
     return wheelMotorItr->second->getVoltageLine();
 }
 
+float *BaseBot::getVoltageLine(BaseBot::RangeSensorIndex rangeSensorIndex) const
+{
+    auto rangeSensorItr = m_rangeSensors.find(rangeSensorIndex);
+    if (rangeSensorItr == m_rangeSensors.end()) {
+        std::cout << "Range sensor not found!" << std::endl;
+        assert(0);
+    }
+    return rangeSensorItr->second->getVoltageLine();
+}
+
+float *BaseBot::getVoltageLine(BaseBot::LineDetectorIndex lineDetectorIndex) const
+{
+    auto lineDetectorItr = m_lineDetectors.find(lineDetectorIndex);
+    if (lineDetectorItr == m_lineDetectors.end()) {
+        std::cout << "Line detector not found!" << std::endl;
+        assert(0);
+    }
+    return lineDetectorItr->second->getVoltageLine();
+}
+
 void BaseBot::onFixedUpdate(float stepTime)
 {
     (void)stepTime;

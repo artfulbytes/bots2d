@@ -54,6 +54,8 @@ public:
     virtual ~BaseBot();
     virtual void onFixedUpdate(float stepTime) override;
     float *getVoltageLine(WheelMotorIndex wheelMotorIndex) const;
+    float *getVoltageLine(RangeSensorIndex rangeSensorIndex) const;
+    float *getVoltageLine(LineDetectorIndex lineDetectorIndex) const;
     virtual void setDebug(bool enabled);
 
 private:

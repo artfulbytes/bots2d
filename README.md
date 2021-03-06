@@ -1,5 +1,5 @@
 # Bots2D
-Bots2D is a C++ framework for simulating robotics in 2D that, and it provides you
+Bots2D is a C++ framework for simulating robotics in 2D, which provides you
 with boilerplate and robotics assets to help you quickly set up your simulation.
 
 <img src="docs/images/sumobot_feature.gif">

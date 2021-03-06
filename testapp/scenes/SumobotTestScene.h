@@ -6,6 +6,8 @@
 class RectObject;
 class Dohyo;
 class Sumobot;
+class MicrocontrollerSumobot4WheelExample;
+class KeyboardController;
 
 class SumobotTestScene : public Scene
 {
@@ -26,6 +28,8 @@ private:
     std::unique_ptr<Sumobot> m_twoWheelRectangleBot;
     std::unique_ptr<Sumobot> m_twoWheelRoundBlackBot;
     std::unique_ptr<Sumobot> m_twoWheelRoundRedBot;
+    std::unique_ptr<MicrocontrollerSumobot4WheelExample> m_microcontroller;
+    std::unique_ptr<KeyboardController> m_keyboardController;
 };
 
 #endif /* SUMOBOT_TEST_SCENE_H_ */

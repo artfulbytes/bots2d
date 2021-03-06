@@ -30,6 +30,7 @@ public:
             B0, B1, B2, B3, B4, B5, B6, B7,
             Count
         };
+        /* Direction from the microcontroller's point of view (e.g. motor is output, a sensor is input) */
         enum class Type { Input, Output };
         Type type;
         float *level = nullptr;
@@ -42,6 +43,10 @@ public:
      */
     Microcontroller(VoltageLines &voltageLines);
     ~Microcontroller();
+
+    /**
+     * Must be called to start the loop function.
+     */
     void start();
 
     void onFixedUpdate(float stepTime) override final;
@@ -54,7 +59,7 @@ public:
 
 protected:
     /** The voltage line levels the microcontroller loop writes to and read from */
-    float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count];
+    float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count] = {0};
 
 private:
     /** This is the main controller loop; it runs in a separate thread */
@@ -75,7 +80,7 @@ private:
     std::mutex m_voltageLinesMutex;
     void transferVoltageLevelsSimulatorToMicrocontroller();
     void transferVoltageLevelsMicrocontrollerToSimulator();
-    float m_sharedVoltageLineLevels[VoltageLine::Idx::Count];
+    float m_sharedVoltageLineLevels[VoltageLine::Idx::Count] = {0};
 };
 
 

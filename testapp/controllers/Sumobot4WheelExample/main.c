@@ -6,15 +6,10 @@ enum VoltageLine {
     BACK_LEFT_MOTOR = 1,
     FRONT_RIGHT_MOTOR = 2,
     BACK_RIGHT_MOTOR = 3,
-    LEFT_RANGE_SENSOR = 4,
-    FRONT_LEFT_RANGE_SENSOR = 5,
-    FRONT_RANGE_SENSOR = 6,
-    FRONT_RIGHT_RANGE_SENSOR = 7,
-    RIGHT_RANGE_SENSOR = 8,
-    FRONT_LEFT_LINE_DETECTOR = 9,
-    BACK_LEFT_LINE_DETECTOR = 10,
-    FRONT_RIGHT_LINE_DETECTOR = 11,
-    BACK_RIGHT_LINE_DETECTOR = 12
+    FRONT_LEFT_LINE_DETECTOR = 4,
+    BACK_LEFT_LINE_DETECTOR = 5,
+    FRONT_RIGHT_LINE_DETCTOR = 6,
+    BACK_RIGHT_LINE_DETECTOR = 7,
 };
 
 float **voltageLines;
@@ -22,24 +17,24 @@ void setup(float **const voltageLinesArr, int voltageLineCount)
 {
     (void)voltageLineCount;
     voltageLines = voltageLinesArr;
-    *voltageLines[FRONT_LEFT_MOTOR] = 3.0f;
-    *voltageLines[BACK_LEFT_MOTOR] = 3.0f;
-    *voltageLines[FRONT_RIGHT_MOTOR] = 3.0f;
-    *voltageLines[BACK_RIGHT_MOTOR] = 3.0f;
+    *voltageLines[FRONT_LEFT_MOTOR] = 4.0f;
+    *voltageLines[BACK_LEFT_MOTOR] = 4.0f;
+    *voltageLines[FRONT_RIGHT_MOTOR] = 4.0f;
+    *voltageLines[BACK_RIGHT_MOTOR] = 4.0f;
 }
 
 void loop()
 {
     /* Drive back and forth */
-    if (*voltageLines[FRONT_LEFT_LINE_DETECTOR] > 1.0f) {
-        *voltageLines[FRONT_LEFT_MOTOR] = -3.0f;
-        *voltageLines[BACK_LEFT_MOTOR] = -3.0f;
-        *voltageLines[FRONT_RIGHT_MOTOR] = -3.0f;
-        *voltageLines[BACK_RIGHT_MOTOR] = -3.0f;
-    } else if (*voltageLines[BACK_LEFT_LINE_DETECTOR] > 1.0f) {
-        *voltageLines[FRONT_LEFT_MOTOR] = 3.0f;
-        *voltageLines[BACK_LEFT_MOTOR] = 3.0f;
-        *voltageLines[FRONT_RIGHT_MOTOR] = 3.0f;
-        *voltageLines[BACK_RIGHT_MOTOR] = 3.0f;
+    if (*voltageLines[BACK_LEFT_LINE_DETECTOR] > 1.0f) {
+        *voltageLines[FRONT_LEFT_MOTOR] = 4.0f;
+        *voltageLines[BACK_LEFT_MOTOR] = 4.0f;
+        *voltageLines[FRONT_RIGHT_MOTOR] = 4.0f;
+        *voltageLines[BACK_RIGHT_MOTOR] = 4.0f;
+    } else if (*voltageLines[FRONT_LEFT_LINE_DETECTOR] > 1.0f) {
+        *voltageLines[FRONT_LEFT_MOTOR] = -4.0f;
+        *voltageLines[BACK_LEFT_MOTOR] = -4.0f;
+        *voltageLines[FRONT_RIGHT_MOTOR] = -4.0f;
+        *voltageLines[BACK_RIGHT_MOTOR] = -4.0f;
     }
 }
