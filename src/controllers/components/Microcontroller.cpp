@@ -3,6 +3,7 @@
 #include <cassert>
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 namespace {
     const unsigned int microcontrollerLoopSleep_ms = 10;
@@ -16,7 +17,11 @@ Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines) :
 Microcontroller::~Microcontroller()
 {
     m_running = false;
-    m_thread.join();
+    if (m_thread.joinable()) {
+        m_thread.join();
+    } else {
+        std::cout << "Microcontroller not started?" << std::endl;
+    }
 }
 
 void Microcontroller::start()
@@ -36,22 +41,9 @@ void Microcontroller::transferVoltageLevelsSimulatorToMicrocontroller()
             continue;
         }
         if (m_simulatorVoltageLines[i].type == Microcontroller::VoltageLine::Type::Output) {
-            *m_simulatorVoltageLines[i].level = m_sharedVoltageLineLevels[i];
+            *m_simulatorVoltageLines[i].level = m_microcontrollerVoltageLineLevels[i];
         } else {
-            m_sharedVoltageLineLevels[i] = *m_simulatorVoltageLines[i].level;
-        }
-    }
-    m_voltageLinesMutex.unlock();
-}
-
-void Microcontroller::transferVoltageLevelsMicrocontrollerToSimulator()
-{
-    m_voltageLinesMutex.lock();
-    for (int i = 0; i < Microcontroller::VoltageLine::Idx::Count; i++) {
-        if (m_simulatorVoltageLines[i].type == Microcontroller::VoltageLine::Type::Output) {
-            m_sharedVoltageLineLevels[i] = m_microcontrollerVoltageLineLevels[i];
-        } else {
-            m_microcontrollerVoltageLineLevels[i] = m_sharedVoltageLineLevels[i];
+            m_microcontrollerVoltageLineLevels[i] = *m_simulatorVoltageLines[i].level;
         }
     }
     m_voltageLinesMutex.unlock();
@@ -68,7 +60,6 @@ void Microcontroller::onFixedUpdate(float stepTime)
 void Microcontroller::microcontrollerLoop()
 {
     while (m_running) {
-        transferVoltageLevelsMicrocontrollerToSimulator();
         microcontrollerUpdate();
         std::this_thread::sleep_for(std::chrono::milliseconds(microcontrollerLoopSleep_ms));
     }
@@ -79,3 +70,35 @@ void Microcontroller::onKeyEvent(const Event::Key &keyEvent)
     (void)keyEvent;
 }
 
+float Microcontroller::getVoltageLevel(int idx)
+{
+    m_voltageLinesMutex.lock();
+    assert(idx >= 0);
+    assert(idx <= VoltageLine::Idx::Count);
+    float level = m_microcontrollerVoltageLineLevels[idx];
+    m_voltageLinesMutex.unlock();
+    return level;
+}
+
+float Microcontroller::get_voltage_level(int idx, void *userdata)
+{
+    Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
+    assert(userdata != nullptr);
+    return microcontroller->getVoltageLevel(idx);
+}
+
+void Microcontroller::setVoltageLevel(int idx, float level)
+{
+    m_voltageLinesMutex.lock();
+    assert(idx >= 0);
+    assert(idx <= VoltageLine::Idx::Count);
+    m_microcontrollerVoltageLineLevels[idx] = level;
+    m_voltageLinesMutex.unlock();
+}
+
+void Microcontroller::set_voltage_level(int idx, float level, void *userdata)
+{
+    Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
+    assert(userdata != nullptr);
+    microcontroller->setVoltageLevel(idx, level);
+}

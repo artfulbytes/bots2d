@@ -21,6 +21,8 @@ public:
     RectObject(Scene *scene, const std::string& textureFilepath, const SpriteAnimation::Params *animationParams,
                const Body2D::Specification *spec,
                const glm::vec2 &position, const glm::vec2 &size, float rotation);
+    Body2D *getBody() const;
+
 private:
     std::unique_ptr<SpriteAnimation> m_animation;
 };

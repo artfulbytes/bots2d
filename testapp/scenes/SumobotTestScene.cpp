@@ -5,6 +5,7 @@
 #include "components/KeyboardController.h"
 #include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
 #include "robots/Sumobot.h"
+#include "robots/PhysicsBot.h"
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
 
@@ -124,6 +125,11 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::A5] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackLeft) };
     voltageLines[Microcontroller::VoltageLine::A6] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::FrontRight) };
     voltageLines[Microcontroller::VoltageLine::A7] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackRight) };
+    voltageLines[Microcontroller::VoltageLine::B0] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Left) };
+    voltageLines[Microcontroller::VoltageLine::B1] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::B2] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Front) };
+    voltageLines[Microcontroller::VoltageLine::B3] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
     m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
     m_microcontroller->start();
@@ -136,6 +142,8 @@ SumobotTestScene::SumobotTestScene() :
                                                       glm::vec2{-0.15f, -0.15f}, 1.0f);
     m_keyboardController = std::make_unique<SumobotController>(m_twoWheelRoundRedBot.get());
     m_twoWheelRoundRedBot->setController(m_keyboardController.get());
+
+    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
 }
 
 SumobotTestScene::~SumobotTestScene()

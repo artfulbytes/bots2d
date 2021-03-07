@@ -4,10 +4,7 @@ MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLines &
     Microcontroller(voltageLines),
     m_loopFcn(loopFcn)
 {
-    for (int i = 0; i < Microcontroller::VoltageLine::Idx::Count; i++) {
-        m_voltageLinesCArray[i] = &m_microcontrollerVoltageLineLevels[i];
-    }
-    setupFcn(m_voltageLinesCArray, Microcontroller::VoltageLine::Idx::Count);
+    setupFcn(get_voltage_level, set_voltage_level, this);
 }
 
 void MicrocontrollerCBinding::microcontrollerUpdate()

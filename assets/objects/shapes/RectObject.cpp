@@ -31,3 +31,8 @@ RectObject::RectObject(Scene *scene, const std::string& textureFilepath, const S
         m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, *spec);
     }
 }
+
+Body2D *RectObject::getBody() const
+{
+    return static_cast<Body2D *>(m_physicsComponent.get());
+}

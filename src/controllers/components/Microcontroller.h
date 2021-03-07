@@ -57,9 +57,15 @@ public:
      */
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
-protected:
-    /** The voltage line levels the microcontroller loop writes to and read from */
-    float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count] = {0};
+    /* C-callback function to set voltage level from controller code.
+     * Accesses the member function getVoltageLevel by casting userdata. */
+    static float get_voltage_level(int idx, void *userdata);
+    float getVoltageLevel(int idx);
+
+    /* C-callback function to set voltage level from controller code.
+     * Accesses the member function setVoltageLevel by casting userdata. */
+    static void set_voltage_level(int idx, float level, void *userdata);
+    void setVoltageLevel(int idx, float level);
 
 private:
     /** This is the main controller loop; it runs in a separate thread */
@@ -75,12 +81,11 @@ private:
     /**
      * To give the simulator loop and microcontroller loop freedom to access the voltage lines whenever
      * they want while avoiding race conditions, each loop access its own array of voltage lines. The
-     * shared array is used to safely (with a mutex) synchronize them.
+     * values are copied (safely with a mutex) between them every simulator iteration.
      */
     std::mutex m_voltageLinesMutex;
     void transferVoltageLevelsSimulatorToMicrocontroller();
-    void transferVoltageLevelsMicrocontrollerToSimulator();
-    float m_sharedVoltageLineLevels[VoltageLine::Idx::Count] = {0};
+    float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count] = {0};
 };
 
 
