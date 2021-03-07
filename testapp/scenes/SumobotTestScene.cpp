@@ -5,83 +5,85 @@
 #include "components/KeyboardController.h"
 #include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
 #include "robots/Sumobot.h"
-#include "robots/PhysicsBot.h"
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
+#include <iostream>
 
 
 namespace {
-    class SumobotController : public KeyboardController
+class SumobotController : public KeyboardController
+{
+public:
+    enum class Drive { Stop, Forward, Backward, Left, Right };
+    const float maxVoltage = 6.0f;
+
+    void setDrive(Drive drive) {
+        float leftVoltage = 0.0f;
+        float rightVoltage = 0.0f;
+        switch (drive) {
+            case Drive::Stop:
+                leftVoltage = rightVoltage = 0.0f;
+                break;
+            case Drive::Forward:
+                leftVoltage = rightVoltage = maxVoltage;
+                break;
+            case Drive::Backward:
+                leftVoltage = rightVoltage = -maxVoltage;
+                break;
+            case Drive::Left:
+                leftVoltage = -maxVoltage * 0.6f;
+                rightVoltage = maxVoltage * 0.6f;
+                break;
+            case Drive::Right:
+                leftVoltage = maxVoltage * 0.6f;
+                rightVoltage = -maxVoltage * 0.6f;
+                break;
+        }
+
+        *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
+        *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
+        *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
+        *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) = rightVoltage;
+    }
+    SumobotController(Sumobot *sumobot) : m_sumobot(sumobot)
     {
-    public:
-        enum class Drive { Stop, Forward, Backward, Left, Right };
-        const float maxVoltage = 6.0f;
-
-        void setDrive(Drive drive) {
-            float leftVoltage = 0.0f;
-            float rightVoltage = 0.0f;
-            switch (drive) {
-                case Drive::Stop:
-                    leftVoltage = rightVoltage = 0.0f;
-                    break;
-                case Drive::Forward:
-                    leftVoltage = rightVoltage = maxVoltage;
-                    break;
-                case Drive::Backward:
-                    leftVoltage = rightVoltage = -maxVoltage;
-                    break;
-                case Drive::Left:
-                    leftVoltage = -maxVoltage;
-                    rightVoltage = maxVoltage;
-                    break;
-                case Drive::Right:
-                    leftVoltage = maxVoltage;
-                    rightVoltage = -maxVoltage;
-                    break;
+        assert(sumobot != nullptr);
+    }
+    void onKeyEvent(const Event::Key &keyEvent) override
+    {
+        if (keyEvent.code == Event::KeyCode::Up) {
+            if (keyEvent.action == Event::KeyAction::Press) {
+                setDrive(Drive::Forward);
+            } else if (keyEvent.action == Event::KeyAction::Release) {
+                setDrive(Drive::Stop);
             }
-
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Left) = leftVoltage;
-            *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::Right) = rightVoltage;
-        }
-        SumobotController(Sumobot *sumobot) : m_sumobot(sumobot)
-        {
-            assert(sumobot != nullptr);
-        }
-        void onKeyEvent(const Event::Key &keyEvent) override
-        {
-            if (keyEvent.code == Event::KeyCode::Up) {
-                if (keyEvent.action == Event::KeyAction::Press) {
-                    setDrive(Drive::Forward);
-                } else if (keyEvent.action == Event::KeyAction::Release) {
-                    setDrive(Drive::Stop);
-                }
-            } else if (keyEvent.code == Event::KeyCode::Down) {
-                if (keyEvent.action == Event::KeyAction::Press) {
-                    setDrive(Drive::Backward);
-                } else if (keyEvent.action == Event::KeyAction::Release) {
-                    setDrive(Drive::Stop);
-                }
-            } else if (keyEvent.code == Event::KeyCode::Left) {
-                if (keyEvent.action == Event::KeyAction::Press) {
-                    setDrive(Drive::Left);
-                } else if (keyEvent.action == Event::KeyAction::Release) {
-                    setDrive(Drive::Stop);
-                }
-            } else if (keyEvent.code == Event::KeyCode::Right) {
-                if (keyEvent.action == Event::KeyAction::Press) {
-                    setDrive(Drive::Right);
-                } else if (keyEvent.action == Event::KeyAction::Release) {
-                    setDrive(Drive::Stop);
-                }
+        } else if (keyEvent.code == Event::KeyCode::Down) {
+            if (keyEvent.action == Event::KeyAction::Press) {
+                setDrive(Drive::Backward);
+            } else if (keyEvent.action == Event::KeyAction::Release) {
+                setDrive(Drive::Stop);
+            }
+        } else if (keyEvent.code == Event::KeyCode::Left) {
+            if (keyEvent.action == Event::KeyAction::Press) {
+                setDrive(Drive::Left);
+            } else if (keyEvent.action == Event::KeyAction::Release) {
+                setDrive(Drive::Stop);
+            }
+        } else if (keyEvent.code == Event::KeyCode::Right) {
+            if (keyEvent.action == Event::KeyAction::Press) {
+                setDrive(Drive::Right);
+            } else if (keyEvent.action == Event::KeyAction::Release) {
+                setDrive(Drive::Stop);
             }
         }
-        void onFixedUpdate(float stepTime) override
-        {
-            (void)stepTime;
-        }
-    private:
-        Sumobot *m_sumobot = nullptr;
-    };
+    }
+    void onFixedUpdate(float stepTime) override
+    {
+        (void)stepTime;
+    }
+private:
+    Sumobot *m_sumobot = nullptr;
+};
 }
 
 void SumobotTestScene::createBackground()
@@ -103,7 +105,7 @@ void SumobotTestScene::createBackground()
 }
 
 SumobotTestScene::SumobotTestScene() :
-    Scene("Test keyboard-controlled sumobot and dohyo@74cm", PhysicsWorld::Gravity::TopView)
+    Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView)
 {
     createBackground();
     const Dohyo::Specification dohyoSpec =
@@ -116,6 +118,10 @@ SumobotTestScene::SumobotTestScene() :
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                glm::vec2{0.15f, 0.15f}, 4.71f);
+    m_fourWheelBotOpponent = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
+                                                       glm::vec2{-0.15f, 0.15f}, 4.71f);
+    //m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
+    //m_fourWheelBot->setController(m_keyboardController.get());
     Microcontroller::VoltageLines voltageLines;
     voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
     voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
@@ -140,10 +146,6 @@ SumobotTestScene::SumobotTestScene() :
                                                         glm::vec2{0.2f, -0.2f}, 3.0f);
     m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),
                                                       glm::vec2{-0.15f, -0.15f}, 1.0f);
-    m_keyboardController = std::make_unique<SumobotController>(m_twoWheelRoundRedBot.get());
-    m_twoWheelRoundRedBot->setController(m_keyboardController.get());
-
-    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
 }
 
 SumobotTestScene::~SumobotTestScene()

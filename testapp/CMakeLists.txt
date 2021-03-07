@@ -12,6 +12,7 @@ set (BOTS2D_ASSETS
     ${BOTS2D_RELATIVE_PATH}/assets/objects/actuators/WheelMotor.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/bodies/GenericBody.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/BaseBot.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/PhysicsBot.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/Sumobot.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/LineFollower.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/sensors/RangeSensorObject.cpp
@@ -25,6 +26,7 @@ set (BOTS2D_TEST_SCENES
     scenes/SpriteAnimationTestScene.cpp
     scenes/PhysicsTestScene.cpp
     scenes/WheelMotorTestScene.cpp
+    scenes/PhysicsBotTestScene.cpp
     scenes/SumobotTestScene.cpp
     scenes/LineFollowerTestScene.cpp
 )

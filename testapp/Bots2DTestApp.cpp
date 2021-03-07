@@ -4,6 +4,7 @@
 #include "SpriteAnimationTestScene.h"
 #include "PhysicsTestScene.h"
 #include "WheelMotorTestScene.h"
+#include "PhysicsBotTestScene.h"
 #include "SumobotTestScene.h"
 #include "LineFollowerTestScene.h"
 
@@ -15,6 +16,7 @@ Bots2DTestApp::Bots2DTestApp() :
     m_sceneMenu->registerScene<SpriteAnimationTestScene>("SpriteAnimationTest");
     m_sceneMenu->registerScene<PhysicsTestScene>("PhysicsTest");
     m_sceneMenu->registerScene<WheelMotorTestScene>("WheelMotorTest");
+    m_sceneMenu->registerScene<PhysicsBotTestScene>("PhysicsBotTest");
     m_sceneMenu->registerScene<SumobotTestScene>("SumobotTest");
     m_sceneMenu->registerScene<LineFollowerTestScene>("LineFollowerTest");
 }
