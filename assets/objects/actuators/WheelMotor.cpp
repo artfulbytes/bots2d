@@ -7,6 +7,7 @@
 #include "AssetsHelper.h"
 
 #include <glm/glm.hpp>
+#include <iostream>
 
 WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orientation orientation,
                        const glm::vec2 &startPosition, float startRotation) :
@@ -26,11 +27,7 @@ WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orie
         m_renderableComponent = std::make_unique<RectComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
-    Body2D::Specification bodySpec(true, true, spec.mass);
-    if (spec.torqueFrictionCoefficient >= 0.0f)
-    {
-        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
-    }
+    Body2D::Specification bodySpec(true, true, spec.wheelMass + spec.loadedMass, spec.frictionCoefficient);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
@@ -70,10 +67,10 @@ void WheelMotor::setAnimation()
 {
     assert(m_animation);
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
-    if (currentForwardSpeed > 0.05f || m_voltageIn > 0.0f) {
+    if (currentForwardSpeed > 0.02f || m_voltageIn > 0.0f) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Backward);
-    } else if (currentForwardSpeed < -0.05f || m_voltageIn < 0.0f) {
+    } else if (currentForwardSpeed < -0.02f || m_voltageIn < 0.0f) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Forward);
     } else {
@@ -85,7 +82,6 @@ void WheelMotor::setVoltageIn(float voltage)
 {
     assert(abs(voltage) <= m_spec.maxVoltage);
     m_voltageIn = voltage;
-    updateForce();
 }
 
 float *WheelMotor::getVoltageLine()

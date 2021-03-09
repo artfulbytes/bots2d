@@ -25,6 +25,8 @@ class Body2D : public PhysicsComponent
 public:
     struct Specification {
         Specification() {}
+        Specification(bool dynamic, bool collision, float mass, float frictionCoefficient) :
+            dynamic(dynamic), collision(collision), mass(mass), frictionCoefficient(frictionCoefficient) {}
         Specification(bool dynamic, bool collision, float mass) :
             dynamic(dynamic), collision(collision), mass(mass) {}
         /** Set body as dynamic (moveable) or static (still) */
@@ -32,10 +34,8 @@ public:
         /** Enable or disable collision */
         bool collision = true;
         float mass = 1.0f;
-        /** This determines how easy it is to push the body */
-        float frictionCoefficient = 0.1f;
-        /** This determines how easy it is to rotate the body */
-        float torqueFrictionCoefficient = 0.6f;
+        /** This determines how easy it is to push the body (ONLY for top view) */
+        float frictionCoefficient = 0.0f;
     };
 
     Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float rotation, float radius,
@@ -63,7 +63,7 @@ private:
     /**
      * In top view gravity mode, the gravity is set to 0. This mimics friction with a b2FrictionJoint.
      */
-    void addTopViewFriction(float normalForce, float frictionCoefficient, float torqueFrictionCoefficient);
+    void addTopViewFriction(float normalForce, float frictionCoefficient);
     float getTopViewFrictionForce(float stepTime) const;
 
     b2FrictionJoint *m_topViewFrictionJoint = nullptr;

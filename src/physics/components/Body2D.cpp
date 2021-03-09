@@ -6,6 +6,7 @@
 
 #include <box2d/box2d.h>
 #include <glm/ext/scalar_constants.hpp>
+#include <iostream>
 
 namespace {
 class RectTransformTranslator : public PhysicsToTransformTranslator
@@ -76,7 +77,7 @@ Body2D::Body2D(const PhysicsWorld &world, RectTransform *transform, const Body2D
     m_translator = std::make_unique<RectTransformTranslator>(transform, m_body);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
-        addTopViewFriction(normalForce, spec.frictionCoefficient, spec.torqueFrictionCoefficient);
+        addTopViewFriction(normalForce, spec.frictionCoefficient);
     }
 }
 
@@ -107,7 +108,7 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float 
     m_body->CreateFixture(&fixtureDef);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
-        addTopViewFriction(normalForce, spec.frictionCoefficient, spec.torqueFrictionCoefficient);
+        addTopViewFriction(normalForce, spec.frictionCoefficient);
     }
 }
 
@@ -294,7 +295,7 @@ float Body2D::getMass() const
     return PhysicsWorld::unscaleMass(m_body->GetMass());
 }
 
-void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient, float torqueFrictionCoefficient)
+void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
 {
     b2BodyDef frictionBodyDef;
     b2FixtureDef fixtureDef;
@@ -305,7 +306,8 @@ void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient, fl
     jointDef.bodyB = m_body;
     jointDef.maxForce = normalForce * frictionCoefficient;
 
-    jointDef.maxTorque = normalForce * torqueFrictionCoefficient;
+    /* Don't use torque friction, it just causes weird physics behaviour */
+    jointDef.maxTorque = 0.0f;
     /* No need to explicitly delete joint, it's deleted when the attached body is deleted */
     m_topViewFrictionJoint = static_cast<b2FrictionJoint *>(m_world->CreateJoint(&jointDef));
 }

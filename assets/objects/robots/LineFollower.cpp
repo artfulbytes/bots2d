@@ -10,9 +10,9 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
         {
             0.07f, 0.094f, /* Body width, length */
             0.22f,         /* Body mass */
-            0.2f,          /* Body torque friction coefficient */
             0.015f, 0.03f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            0.1f,          /* Coloumb friction coefficient */
             100.0f,        /* Wheel sideway friction constant */
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */

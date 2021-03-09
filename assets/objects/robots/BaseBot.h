@@ -30,11 +30,10 @@ public:
         float bodyWidth;
         float bodyLength;
         float bodyMass;
-        /** Determines how easy it is to rotate the body */
-        float bodyTorqueFrictionCoefficient;
         float wheelWidth;
         float wheelDiameter;
         float wheelMass;
+        float wheelFrictionCoefficient;
         float wheelSidewayFrictionConstant;
         /** Motor constants (See WheelMotor.h for more info) */
         float motorVoltageInConstant;

@@ -68,11 +68,9 @@ void GenericBody::createRectangleBody(const Specification &spec, const glm::vec2
         m_renderableComponent = std::make_unique<RectComponent>(transform, color);
         break;
     }
-    Body2D::Specification bodySpec(true, true, spec.mass);
-    if (spec.torqueFrictionCoefficient >= 0.0f)
-    {
-        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
-    }
+
+    /* (The friction is added to the wheels, not the body) */
+    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
@@ -101,11 +99,8 @@ void GenericBody::createCircleBody(const Specification &spec, const glm::vec2 &s
         break;
     }
 
-    Body2D::Specification bodySpec(true, true, spec.mass);
-    if (spec.torqueFrictionCoefficient >= 0.0f)
-    {
-        bodySpec.torqueFrictionCoefficient = spec.torqueFrictionCoefficient;
-    }
+    /* (The friction is added to the wheels, not the body) */
+    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }

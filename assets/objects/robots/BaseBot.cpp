@@ -41,15 +41,18 @@ BaseBot::~BaseBot()
 void BaseBot::createBody(const BaseBot::Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     const GenericBody::Specification bodySpec(spec.bodyLength, spec.bodyWidth, spec.bodyMass,
-                                              spec.bodyTorqueFrictionCoefficient, spec.bodyShape, spec.bodyTexture);
+                                              spec.bodyShape, spec.bodyTexture);
     m_body = std::make_unique<GenericBody>(m_scene, bodySpec, startPosition, startRotation);
 }
 
 void BaseBot::createWheelMotors(const BaseBot::Specification &spec)
 {
+    const int wheelCount = spec.wheelMotorTuples.size();
+    const float loadedMass = spec.bodyMass / wheelCount;
     const WheelMotor::Specification wheelSpec(spec.motorVoltageInConstant, spec.motorAngularSpeedConstant,
-                                              spec.motorMaxVoltage, spec.wheelSidewayFrictionConstant,
-                                              spec.wheelWidth, spec.wheelDiameter, spec.wheelMass, spec.wheelTexture);
+                                              spec.motorMaxVoltage, spec.wheelFrictionCoefficient, spec.wheelSidewayFrictionConstant,
+                                              spec.wheelWidth, spec.wheelDiameter, spec.wheelMass, loadedMass,
+                                              spec.wheelTexture);
     for (const auto &wheelMotorTuple : spec.wheelMotorTuples) {
         const auto index = std::get<0>(wheelMotorTuple);
         const auto relativePosition = std::get<1>(wheelMotorTuple);

@@ -10,10 +10,10 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.07f, 0.1f,   /* Body width, length */
             0.42f,         /* Body mass */
-            0.6f,          /* Body torque friction coefficient */
             0.015f, 0.03f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
-            50.0f,        /* Wheel sideway friction constant */
+            0.2f,          /* Coloumb friction coefficient */
+            200.0f,        /* Wheel sideway friction constant */
             0.00528f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
@@ -45,9 +45,9 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.06f, 0.08f,   /* Body width, length */
             0.25f,         /* Body mass */
-            0.3f,         /* Body torque friction coefficient */
             0.02f, 0.04f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            0.1f,          /* Coloumb friction coefficient */
             150.0f,        /* Wheel sideway friction constant */
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
@@ -78,9 +78,9 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.075f, 0.08f,   /* Body width, length */
             0.42f,         /* Body mass */
-            0.35f,         /* Body torque friction coefficient */
             0.0125f, 0.0225f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            0.1f,          /* Coloumb friction coefficient */
             100.0f,        /* Wheel sideway friction constant */
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
@@ -109,9 +109,9 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
         {
             0.075f, 0.08f,   /* Body width, length */
             0.42f,         /* Body mass */
-            0.35f,         /* Body torque friction coefficient */
             0.0125f, 0.0225f, /* Wheel width, diameter */
             0.02f,         /* Wheel mass */
+            0.1f,          /* Coloumb friction coefficient */
             100.0f,        /* Wheel sideway friction constant */
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */

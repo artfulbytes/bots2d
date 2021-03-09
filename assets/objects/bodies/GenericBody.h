@@ -12,8 +12,13 @@ class LineDetectorObject;
 
 /**
  * General robot body to be used along with other scene objects in a SceneObject
- * implementing a full robot. Dimensions are adjustable, and it can attach motors
- * and sensors
+ * implementing a full robot. Dimensions are adjustable, and motors
+ * and sensors can be attached to it.
+ *
+ * Note: It doesn't introduce any friction with the ground, instead that friction has
+ *       to be introduced by the wheels. But it does introduce rotational inertia (all
+ *       bodies in Box2D have inertia). Consequently, we mimic the real world better.
+ *
  */
 class GenericBody : public SceneObject
 {
@@ -23,16 +28,14 @@ public:
                              LineFollowerPlated};
 
     struct Specification {
-        Specification(float length, float width, float mass, float torqueFrictionCoefficient,
+        Specification(float length, float width, float mass,
                       Shape shape, TextureType textureType) :
-            length(length), width(width), mass(mass), torqueFrictionCoefficient(torqueFrictionCoefficient),
+            length(length), width(width), mass(mass),
             shape(shape), textureType(textureType) {}
         float length;
         /** Stores the width if rectangle shape and radius if round shape. */
         float width;
         float mass;
-        /** Negative value means use default */
-        float torqueFrictionCoefficient = -1.0f;
         Shape shape = Shape::Rectangle;
         TextureType textureType = TextureType::None;
     };
