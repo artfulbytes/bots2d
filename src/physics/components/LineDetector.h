@@ -17,7 +17,7 @@ class LineDetector : public PhysicsComponent
 public:
     LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition);
     ~LineDetector();
-    void onFixedUpdate(float stepTime) override;
+    void onFixedUpdate() override;
     Body2D *getBody() const;
     /** Retrieve a pointer to the voltage line where the value is > 0 when detected and 0 when not detected. */
     float *getVoltageLine();

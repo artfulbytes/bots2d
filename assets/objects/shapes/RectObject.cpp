@@ -1,7 +1,6 @@
 #include "shapes/RectObject.h"
 #include "components/Transforms.h"
 #include "components/RectComponent.h"
-#include "Scene.h"
 
 RectObject::RectObject(Scene *scene, const glm::vec4 &color,
                        const Body2D::Specification *spec,

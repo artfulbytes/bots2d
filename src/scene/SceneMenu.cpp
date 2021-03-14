@@ -3,10 +3,31 @@
 #include "Camera.h"
 #include "Application.h"
 
-SceneMenu::SceneMenu(Application *app, Scene*& scene) :
-    m_appPtr(app),
+SceneMenu::SceneMenu(Scene*& scene) :
     m_currentScene(scene)
 {
+}
+
+SceneMenu::~SceneMenu()
+{
+    if (m_currentScene) {
+        delete m_currentScene;
+    }
+}
+
+void SceneMenu::setFps(unsigned int fps)
+{
+    m_fps = fps;
+}
+
+void SceneMenu::setAvgPhysicsSteps(unsigned int avgPhysicsSteps)
+{
+    m_avgPhysicsSteps = avgPhysicsSteps;
+}
+
+void SceneMenu::setWarningMessage(std::string message)
+{
+    m_warningMessage = message;
 }
 
 void SceneMenu::render()
@@ -20,16 +41,20 @@ void SceneMenu::render()
             Camera::reset();
         }
     }
-    if (m_appPtr != nullptr)
-    {
-        ImGuiOverlay::text("");
-        ImGuiOverlay::text("  " + std::to_string(m_appPtr->getAvgFps()) + " fps");
-    }
     ImGuiOverlay::text("");
     if (m_currentScene != nullptr) {
-        ImGuiOverlay::text(m_currentScene->getDescription().c_str());
-        ImGuiOverlay::text("");
+        ImGuiOverlay::text("Scene: " + m_currentScene->getDescription());
     }
+    if (!m_warningMessage.empty())
+    {
+        ImGuiOverlay::text("Warning: " + m_warningMessage);
+    }
+    ImGuiOverlay::text("FPS: " + std::to_string(m_fps) + " Hz");
+    if (m_avgPhysicsSteps)
+    {
+        ImGuiOverlay::text("Physics step rate: " + std::to_string(m_avgPhysicsSteps) + " Hz");
+    }
+    ImGuiOverlay::text("");
     ImGuiOverlay::text("Move camera up     <w>");
     ImGuiOverlay::text("Move camera left   <a>");
     ImGuiOverlay::text("Move camera down   <s>");

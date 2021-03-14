@@ -1,5 +1,4 @@
 #include "robots/Sumobot.h"
-#include "Scene.h"
 
 #include <iostream>
 

@@ -14,7 +14,8 @@ class Application;
 class SceneMenu
 {
 public:
-    SceneMenu(Application *app, Scene*& scene);
+    SceneMenu(Scene*& scene);
+    ~SceneMenu();
 
     void render();
 
@@ -23,10 +24,15 @@ public:
     {
         m_scenes.push_back(std::make_pair(name, []() { return new T(); }));
     }
+    void setFps(unsigned int fps);
+    void setAvgPhysicsSteps(unsigned int avgPhysicsSteps);
+    void setWarningMessage(std::string message);
 private:
-    Application *m_appPtr = nullptr;
     Scene*& m_currentScene;
     std::vector<std::pair<std::string, std::function<Scene*()>>> m_scenes;
+    unsigned int m_fps = 0;
+    unsigned int m_avgPhysicsSteps = 0;
+    std::string m_warningMessage;
 };
 
 #endif /* SCENE_MENU_H_ */

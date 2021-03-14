@@ -29,9 +29,9 @@ public:
     Scene *getScene() const { return m_scene; };
     void setController(ControllerComponent *controller);
     void updateRenderable();
-    void updatePhysics(float stepTime);
-    void updateController(float stepTime);
-    virtual void onFixedUpdate(float stepTime);
+    void updatePhysics();
+    void updateController();
+    virtual void onFixedUpdate();
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
 protected:

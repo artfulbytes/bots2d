@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <chrono>
 
 class SceneObject;
 
@@ -18,13 +19,23 @@ class Scene
 {
 public:
     Scene(std::string description);
-    Scene(std::string description, PhysicsWorld::Gravity gravity);
+    /**
+    * \param physicsStepTime Determines how many times per second the physics and logic are updated.
+    * Note, to avoid jittery behaviour, make this at least twice as large as the rendering rate
+    * (monitor's refresh rate).
+    */
+    Scene(std::string description, PhysicsWorld::Gravity gravity, float physicsStepTime = 0.001f);
     virtual ~Scene();
     PhysicsWorld *getPhysicsWorld() const;
-    void onFixedUpdate(float stepTime);
+    void updatePhysics(float stepTime);
+    void updateControllers();
+    void sceneObjectsOnFixedUpdate();
+    void updateRenderables();
     void onKeyEvent(const Event::Key &keyEvent);
     void addObject(SceneObject *sceneObject);
     std::string getDescription() const { return m_description; }
+    unsigned int getSecondsSinceStart() const;
+    float getPhysicsStepTime() const { return m_physicsStepTime; }
 
 protected:
     std::unique_ptr<PhysicsWorld> m_physicsWorld;
@@ -32,6 +43,8 @@ protected:
 private:
     std::vector<SceneObject *> m_objects;
     std::string m_description;
+    float m_physicsStepTime = 0.001f;
+    const std::chrono::time_point<std::chrono::system_clock> m_startTime;
 };
 
 #endif /* SCENE_H_ */

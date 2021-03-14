@@ -1,5 +1,4 @@
 #include "shapes/QuadObject.h"
-#include "Scene.h"
 #include "components/QuadComponent.h"
 #include "components/Transforms.h"
 

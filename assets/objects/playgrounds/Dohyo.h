@@ -22,7 +22,7 @@ public:
     };
     Dohyo(Scene *scene, const Specification &spec, const glm::vec2 &position);
     ~Dohyo();
-    void onFixedUpdate(float stepTime) override;
+    void onFixedUpdate() override;
 
 private:
     Body2DUserData m_userData = { 0, 0, BodyId::Detectable };

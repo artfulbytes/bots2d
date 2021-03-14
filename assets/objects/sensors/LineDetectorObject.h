@@ -17,7 +17,7 @@ public:
                        const glm::vec2 &startPosition = { 0.0f, 0.0f });
     ~LineDetectorObject();
     Body2D *getBody() const;
-    void onFixedUpdate(float stepTime) override;
+    void onFixedUpdate() override;
     float *getVoltageLine() const;
     void setDebugDraw(bool enable);
 

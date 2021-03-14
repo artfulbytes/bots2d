@@ -70,9 +70,8 @@ public:
             }
         }
     }
-    void onFixedUpdate(float stepTime) override
+    void onFixedUpdate() override
     {
-        (void)stepTime;
     }
 private:
     PhysicsBot *m_physicsBot = nullptr;

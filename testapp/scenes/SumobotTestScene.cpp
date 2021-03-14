@@ -7,8 +7,6 @@
 #include "robots/Sumobot.h"
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
-#include <iostream>
-
 
 namespace {
 class SumobotController : public KeyboardController
@@ -77,9 +75,8 @@ public:
             }
         }
     }
-    void onFixedUpdate(float stepTime) override
+    void onFixedUpdate() override
     {
-        (void)stepTime;
     }
 private:
     Sumobot *m_sumobot = nullptr;
@@ -105,7 +102,7 @@ void SumobotTestScene::createBackground()
 }
 
 SumobotTestScene::SumobotTestScene() :
-    Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView)
+    Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView, (1/500.0f))
 {
     createBackground();
     const Dohyo::Specification dohyoSpec =
@@ -118,10 +115,12 @@ SumobotTestScene::SumobotTestScene() :
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                glm::vec2{0.15f, 0.15f}, 4.71f);
+#if 0
+    m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
+    m_fourWheelBot->setController(m_keyboardController.get());
+#endif
     m_fourWheelBotOpponent = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                        glm::vec2{-0.15f, 0.15f}, 4.71f);
-    //m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
-    //m_fourWheelBot->setController(m_keyboardController.get());
     Microcontroller::VoltageLines voltageLines;
     voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
     voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
@@ -136,7 +135,7 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::B2] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Front) };
     voltageLines[Microcontroller::VoltageLine::B3] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontRight) };
     voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
-    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
+    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines, 500);
     m_fourWheelBot->setController(m_microcontroller.get());
     m_microcontroller->start();
     m_fourWheelBot->setDebug(true);

@@ -9,11 +9,10 @@ class Component
 public:
     virtual ~Component() { }
     /**
-     * Called every simulation iteration (if assigned to a Scene Object).
+     * Called every physics step (if assigned to a Scene Object).
      */
-    virtual void onFixedUpdate(float stepTime)
+    virtual void onFixedUpdate()
     {
-        (void)stepTime;
     };
 };
 

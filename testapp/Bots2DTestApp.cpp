@@ -11,7 +11,6 @@
 Bots2DTestApp::Bots2DTestApp() :
     Application("bots2dtest")
 {
-    m_sceneMenu = std::make_unique<SceneMenu>(this, m_currentScene);
     m_sceneMenu->registerScene<DrawTestScene>("DrawTest");
     m_sceneMenu->registerScene<SpriteAnimationTestScene>("SpriteAnimationTest");
     m_sceneMenu->registerScene<PhysicsTestScene>("PhysicsTest");
@@ -23,20 +22,13 @@ Bots2DTestApp::Bots2DTestApp() :
 
 Bots2DTestApp::~Bots2DTestApp()
 {
-    delete m_currentScene;
 }
 
 void Bots2DTestApp::onKeyEvent(const Event::Key &keyEvent)
 {
-    if (m_currentScene) {
-        m_currentScene->onKeyEvent(keyEvent);
-    }
+    (void)keyEvent;
 }
 
-void Bots2DTestApp::onFixedUpdate(float stepTime)
+void Bots2DTestApp::onFixedUpdate()
 {
-    m_sceneMenu->render();
-    if (m_currentScene) {
-        m_currentScene->onFixedUpdate(stepTime);
-    }
 }

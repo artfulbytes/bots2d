@@ -29,9 +29,8 @@ namespace {
                 }
             }
         }
-        void onFixedUpdate(float stepTime) override
+        void onFixedUpdate() override
         {
-            (void)stepTime;
         }
     private:
         WheelMotor *m_wheelMotor = nullptr;

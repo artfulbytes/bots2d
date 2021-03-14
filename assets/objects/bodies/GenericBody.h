@@ -27,6 +27,7 @@ public:
     enum class TextureType { None, SumobotPlated, SumobotCircuited, SumobotRoundRed, SumobotRoundBlack,
                              LineFollowerPlated};
 
+    /* TODO: Make it possible to change center of mass */
     struct Specification {
         Specification(float length, float width, float mass,
                       Shape shape, TextureType textureType) :
@@ -45,7 +46,7 @@ public:
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getForwardSpeed() const;
-    void onFixedUpdate(float stepTime) override;
+    void onFixedUpdate() override;
     void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
     void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
     void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);

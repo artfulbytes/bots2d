@@ -19,7 +19,7 @@ typedef void (*setup_function)(get_voltage_function, set_voltage_function, void 
 class MicrocontrollerCBinding : public Microcontroller
 {
 public:
-    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn);
+    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, unsigned int updateRateHz, setup_function setupFcn, loop_function loopFcn);
     virtual ~MicrocontrollerCBinding() = 0;
 
 private:

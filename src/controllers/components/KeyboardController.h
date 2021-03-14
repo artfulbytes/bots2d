@@ -10,7 +10,7 @@ class KeyboardController : public ControllerComponent
 {
 public:
     virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
-    virtual void onFixedUpdate(float stepTime) = 0;
+    virtual void onFixedUpdate() = 0;
 };
 
 #endif /* KEYBOARD_CONTROLLER_H_ */

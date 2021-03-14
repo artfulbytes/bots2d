@@ -2,7 +2,6 @@
 #include "components/Transforms.h"
 #include "components/CircleComponent.h"
 #include "components/HollowCircleComponent.h"
-#include "Scene.h"
 
 CircleObject::CircleObject(Scene *scene, const glm::vec4 &color,
                            const Body2D::Specification *spec,
@@ -13,7 +12,7 @@ CircleObject::CircleObject(Scene *scene, const glm::vec4 &color,
     auto transform = static_cast<CircleTransform *>(m_transformComponent.get());
     m_renderableComponent = std::make_unique<CircleComponent>(transform, color);
     if (spec != nullptr) {
-        m_physicsComponent = std::make_unique<Body2D>(*(scene->getPhysicsWorld()), transform, *spec);
+        m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, *spec);
     }
 }
 

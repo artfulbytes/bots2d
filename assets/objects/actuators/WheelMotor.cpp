@@ -106,9 +106,8 @@ void WheelMotor::updateForce()
     m_body2D->setLinearImpulse(lateralCancelingImpulse);
 }
 
-void WheelMotor::onFixedUpdate(float stepTime)
+void WheelMotor::onFixedUpdate()
 {
-    (void)stepTime;
     if (m_animation != nullptr) {
         setAnimation();
     }

@@ -37,7 +37,6 @@ Dohyo::~Dohyo()
 {
 }
 
-void Dohyo::onFixedUpdate(float stepTime)
+void Dohyo::onFixedUpdate()
 {
-    (void)stepTime;
 }

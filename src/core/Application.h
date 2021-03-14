@@ -4,8 +4,11 @@
 #include "Event.h"
 #include <string>
 #include <memory>
+
 #include "Scalebar.h"
 
+class Scene;
+class SceneMenu;
 struct GLFWwindow;
 
 /**
@@ -19,18 +22,30 @@ class Application
 {
 public:
     Application(std::string name);
-    ~Application();
+    virtual ~Application();
     /** Starts the main loop */
     void run();
+    void onKeyCallback(const Event::Key &keyEvent);
+    virtual void onKeyEvent(const Event::Key &keyEvent);
 
-    virtual void onKeyEvent(const Event::Key &keyEvent) = 0;
-    virtual void onFixedUpdate(float stepTime) = 0;
-    unsigned int getAvgFps() const;
+    /** Runs after every physics step */
+    virtual void onFixedUpdate();
+
+protected:
+    std::unique_ptr<SceneMenu> m_sceneMenu;
 
 private:
+    bool isStepTimeTooSmall() const;
+    void updatePhysics(float stepTime);
+    void updateLogic();
+    void updateAndRenderSceneMenu();
+    void render();
+
     GLFWwindow *m_window = nullptr;
     std::unique_ptr<Scalebar> m_scalebar = nullptr;
-    float m_avgFps = 0.0f;
+    float m_fps = 0.0f;
+    float m_avgPhysicsSteps = 0.0f;
+    Scene *m_currentScene = nullptr;
 };
 
 #endif /* APPLICATION_H_ */

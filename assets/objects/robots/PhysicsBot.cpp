@@ -1,6 +1,5 @@
 #include "robots/PhysicsBot.h"
 
-#include "Scene.h"
 #include <glm/gtx/rotate_vector.hpp>
 #include "components/Body2D.h"
 #include "components/Transforms.h"
@@ -16,7 +15,7 @@ PhysicsBot::PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &sta
     mainBodySpec.frictionCoefficient = 0.0f;
     m_transformComponent = std::make_unique<RectTransform>(startPosition, size, startRotation);
     const auto transform = static_cast<RectTransform *>(m_transformComponent.get());
-    m_physicsComponent = std::make_unique<Body2D>(*scene->getPhysicsWorld(), transform, mainBodySpec);
+    m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, mainBodySpec);
     m_renderableComponent = std::make_unique<RectComponent>(transform, glm::vec4{1.0f,1.0f,1.0f,1.0f});
 
     auto wheelColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};
@@ -42,10 +41,8 @@ PhysicsBot::~PhysicsBot()
 {
 }
 
-void PhysicsBot::onFixedUpdate(float stepTime)
+void PhysicsBot::onFixedUpdate()
 {
-    (void)stepTime;
-
     auto frontLeftWheelBody = m_frontLeftWheel->getBody();
     auto backLeftWheelBody = m_backLeftWheel->getBody();
     auto frontRightWheelBody = m_frontRightWheel->getBody();

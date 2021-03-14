@@ -45,7 +45,7 @@ public:
     Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, const Specification &spec);
     Body2D(const PhysicsWorld &world, QuadTransform *transform, const Specification &spec);
     ~Body2D();
-    void onFixedUpdate(float stepTime) override;
+    void onFixedUpdate() override;
     void setUserData(Body2DUserData *userData);
     void attachBodyWithRevoluteJoint(const glm::vec2 &attachPos, const Body2D *body);
     void attachBodyWithWeldJoint(const glm::vec2 &attachPos, const Body2D *body);

@@ -40,8 +40,12 @@ public:
     /**
      * \param voltageLines List of voltage lines that may be connected to "electrical" objects.
      * Users must manually keep track of which voltage lines are connected to what objects.
+     * \param updateRateHz How many times per second the loop should run at maximum. Note
+     * any sleep inside the controller code will of course affect the update rate. There is
+     * also no point in running it faster than the physics update rate because the voltage
+     * lines are only transferred every physics step.
      */
-    Microcontroller(VoltageLines &voltageLines);
+    Microcontroller(VoltageLines &voltageLines, unsigned int updateRateHz);
     ~Microcontroller();
 
     /**
@@ -49,7 +53,7 @@ public:
      */
     void start();
 
-    void onFixedUpdate(float stepTime) override final;
+    void onFixedUpdate() override final;
 
     /**
      * Microcontroller should typically not handle key events, but don't make this method final,
@@ -71,12 +75,16 @@ private:
     /** This is the main controller loop; it runs in a separate thread */
     virtual void microcontrollerUpdate() = 0;
 
-    void microcontrollerLoop();
-    std::thread m_thread;
-    std::atomic<bool> m_running = true;
+    /** Thread function that runs the microcontroller loop */
+    void microcontrollerThreadFn();
 
     /** The voltage lines which the simulator objects (e.g. sumobot, wheel motor) writes to and read from */
     VoltageLines m_simulatorVoltageLines;
+    std::thread m_thread;
+    std::atomic<bool> m_running = true;
+    bool m_physicsStarted = false;
+    bool m_microcontrollerStarted = false;
+    const unsigned int m_loopSleepTime_ms = 10;
 
     /**
      * To give the simulator loop and microcontroller loop freedom to access the voltage lines whenever

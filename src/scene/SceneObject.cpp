@@ -32,17 +32,17 @@ void SceneObject::updateRenderable()
     }
 }
 
-void SceneObject::updatePhysics(float stepTime)
+void SceneObject::updatePhysics()
 {
     if (m_physicsComponent) {
-        m_physicsComponent->onFixedUpdate(stepTime);
+        m_physicsComponent->onFixedUpdate();
     }
 }
 
-void SceneObject::updateController(float stepTime)
+void SceneObject::updateController()
 {
     if (m_controllerComponent) {
-        m_controllerComponent->onFixedUpdate(stepTime);
+        m_controllerComponent->onFixedUpdate();
     }
 }
 
@@ -53,8 +53,7 @@ void SceneObject::onKeyEvent(const Event::Key &keyEvent)
     }
 }
 
-void SceneObject::onFixedUpdate(float stepTime)
+void SceneObject::onFixedUpdate()
 {
-    (void)stepTime;
     /* Do nothing */
 }

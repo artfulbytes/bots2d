@@ -6,11 +6,12 @@
 #include <iostream>
 
 namespace {
-    const unsigned int microcontrollerLoopSleep_ms = 10;
+    const unsigned int startupTime_ms = 500;
 }
 
-Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines) :
-    m_simulatorVoltageLines(voltageLines)
+Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines, unsigned int updateRateHz) :
+    m_simulatorVoltageLines(voltageLines),
+    m_loopSleepTime_ms(1000 / updateRateHz)
 {
 }
 
@@ -26,10 +27,14 @@ Microcontroller::~Microcontroller()
 
 void Microcontroller::start()
 {
+    m_microcontrollerStarted = true;
     /* We need a separate function for starting the microcontroller because
      * we can't create/start inside the constructor when the object is not yet
-     * fully created. */
-    m_thread = std::thread(&Microcontroller::microcontrollerLoop, this);
+     * fully created. Also, make sure we don't start it before the physics
+     * has started. */
+    if (m_physicsStarted) {
+        m_thread = std::thread(&Microcontroller::microcontrollerThreadFn, this);
+    }
 }
 
 void Microcontroller::transferVoltageLevelsSimulatorToMicrocontroller()
@@ -51,17 +56,22 @@ void Microcontroller::transferVoltageLevelsSimulatorToMicrocontroller()
 
 /* Called by the simulator update loop, keep it short to avoid affecting
  * the frame rate. */
-void Microcontroller::onFixedUpdate(float stepTime)
+void Microcontroller::onFixedUpdate()
 {
-    (void)stepTime;
+    m_physicsStarted = true;
     transferVoltageLevelsSimulatorToMicrocontroller();
+    if (!m_thread.joinable() && m_microcontrollerStarted) {
+        start();
+    }
 }
 
-void Microcontroller::microcontrollerLoop()
+void Microcontroller::microcontrollerThreadFn()
 {
+    /* Give it some start up time to prevent buggy physics behaviour */
+    std::this_thread::sleep_for(std::chrono::milliseconds(startupTime_ms));
     while (m_running) {
         microcontrollerUpdate();
-        std::this_thread::sleep_for(std::chrono::milliseconds(microcontrollerLoopSleep_ms));
+        std::this_thread::sleep_for(std::chrono::milliseconds(m_loopSleepTime_ms));
     }
 }
 

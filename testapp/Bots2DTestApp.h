@@ -2,10 +2,6 @@
 #define BOTS2D_TEST_APP_H_
 
 #include "Application.h"
-#include <memory>
-
-class Scene;
-class SceneMenu;
 
 /**
  * Test application with test scenes.
@@ -16,11 +12,7 @@ public:
     Bots2DTestApp();
     ~Bots2DTestApp();
     void onKeyEvent(const Event::Key &keyEvent) override;
-    void onFixedUpdate(float stepTime) override;
-
-private:
-    Scene *m_currentScene = nullptr;
-    std::unique_ptr<SceneMenu> m_sceneMenu;
+    void onFixedUpdate() override;
 };
 
 #endif /* BOTS2D_TEST_APP_H_ */

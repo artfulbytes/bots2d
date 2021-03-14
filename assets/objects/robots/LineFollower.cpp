@@ -1,5 +1,4 @@
 #include "robots/LineFollower.h"
-#include "Scene.h"
 
 #include <iostream>
 
@@ -8,6 +7,7 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
 ({
     { LineFollower::Blueprint::FourFrontSensors,
         {
+            /* TODO: Make the center of mass more realistic */
             0.07f, 0.094f, /* Body width, length */
             0.22f,         /* Body mass */
             0.015f, 0.03f, /* Wheel width, diameter */

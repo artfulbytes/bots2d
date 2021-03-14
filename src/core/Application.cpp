@@ -1,9 +1,11 @@
 #include "Application.h"
 #include "Renderer.h"
+#include "Scene.h"
 #include "ImGuiOverlay.h"
 #include "GLError.h"
 #include "Event.h"
 #include "Camera.h"
+#include "SceneMenu.h"
 
 /* Glad must be included before any OpenGL stuff */
 #define GLFW_INCLUDE_NONE
@@ -11,6 +13,13 @@
 #include <GLFW/glfw3.h>
 #include <cassert>
 #include <iostream>
+
+namespace {
+    const glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
+    const unsigned int sampleCount = 10;
+    const int defaultWidth = 1280;
+    const int defaultHeight = 960;
+}
 
 static void error_callback(int error, const char* description)
 {
@@ -39,7 +48,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 
     Application *app = (Application *)glfwGetWindowUserPointer(window);
-    app->onKeyEvent(keyEvent);
+    app->onKeyCallback(keyEvent);
 }
 
 static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
@@ -59,8 +68,6 @@ static void enable_vsync(bool enabled)
     glfwSwapInterval(enabled ? 1 : 0);
 }
 
-static const int defaultWidth = 1280;
-static const int defaultHeight = 960;
 
 static int init_opengl(GLFWwindow* window) {
     if (!window) {
@@ -92,7 +99,6 @@ static int init_opengl(GLFWwindow* window) {
     return 0;
 }
 
-
 Application::Application(std::string name)
 {
     glfwSetErrorCallback(error_callback);
@@ -122,6 +128,7 @@ Application::Application(std::string name)
     ImGuiOverlay::init(m_window);
     Renderer::init();
     m_scalebar = std::make_unique<Scalebar>();
+    m_sceneMenu = std::make_unique<SceneMenu>(m_currentScene);
 }
 
 Application::~Application()
@@ -133,33 +140,134 @@ Application::~Application()
     glfwTerminate();
 }
 
-namespace {
-    const glm::vec4 defaultBgColor(0.3f, 0.3f, 0.3f, 1.0f);
-    const unsigned int fpsSampleCount = 15;
-}
-
-unsigned int Application::getAvgFps() const
+void Application::onKeyCallback(const Event::Key &keyEvent)
 {
-    return static_cast<unsigned int>(m_avgFps);
+    if (m_currentScene) {
+        m_currentScene->onKeyEvent(keyEvent);
+    }
+    onKeyEvent(keyEvent);
 }
 
+void Application::onKeyEvent(const Event::Key &keyEvent)
+{
+    (void)keyEvent;
+}
+
+void Application::onFixedUpdate()
+{
+}
+
+void Application::updatePhysics(float stepTime)
+{
+    if (m_currentScene) {
+        m_currentScene->updatePhysics(stepTime);
+    }
+}
+
+void Application::updateLogic()
+{
+    if (m_currentScene) {
+        m_currentScene->updateControllers();
+        m_currentScene->sceneObjectsOnFixedUpdate();
+    }
+}
+
+/**
+ * If it takes a longer time to process the physics+logic update than what the
+ * configured time step is, then the physics will be completely messed up because
+ * we will lag behind. We should detect this and warn the user.
+ */
+bool Application::isStepTimeTooSmall() const
+{
+    /* Let average stabilize after a new scene */
+    if (m_currentScene == nullptr && (m_currentScene->getSecondsSinceStart() < 2)) {
+        return false;
+    }
+
+    const float expectedAvgPhysicsSteps = 1.0f / m_currentScene->getPhysicsStepTime();
+    const float maxGap = 50.0f;
+    return expectedAvgPhysicsSteps - m_avgPhysicsSteps > maxGap;
+}
+
+void Application::updateAndRenderSceneMenu()
+{
+    static unsigned int lastUpdateSeconds = 0;
+    /* Avoid flickering updates */
+    if (m_currentScene && m_currentScene->getSecondsSinceStart()) {
+        const auto secondsNow = m_currentScene->getSecondsSinceStart();
+        if (lastUpdateSeconds != secondsNow) {
+            m_sceneMenu->setFps(m_fps);
+            m_sceneMenu->setAvgPhysicsSteps(m_avgPhysicsSteps);
+            if (isStepTimeTooSmall()) {
+                m_sceneMenu->setWarningMessage("Physics step time too small!");
+            } else if ((1 / m_currentScene->getPhysicsStepTime()) < 2 * m_fps) {
+                m_sceneMenu->setWarningMessage("Reduce physics step time to avoid jittery rendering");
+            } else {
+                m_sceneMenu->setWarningMessage("None");
+            }
+            lastUpdateSeconds = secondsNow;
+        }
+    } else if (m_currentScene && m_currentScene->getSecondsSinceStart() == 0) {
+        m_sceneMenu->setFps(0);
+        m_sceneMenu->setAvgPhysicsSteps(0);
+        m_sceneMenu->setWarningMessage("None");
+    }
+    m_sceneMenu->render();
+}
+
+void Application::render()
+{
+    Renderer::clear(defaultBgColor);
+    ImGuiOverlay::newFrame();
+    if (m_currentScene) {
+        m_currentScene->updateRenderables();
+    }
+    m_scalebar->render();
+    updateAndRenderSceneMenu();
+    ImGuiOverlay::render();
+    glfwSwapBuffers(m_window);
+}
+
+/**
+ * The simulator main loop. The physics/logic has a separate update rate from the
+ * rendering. The physics/logic is determined by the physics step time (set inside
+ * scene) while rendering is capped by VSync. Physics is updated by a fixed step
+ * time as per the general recommendation. The technique used here is inspired by
+ * the well-known blog post: https://gafferongames.com/post/fix_your_timestep/
+ *
+ * We do no interpolation for the rendering here, so the rendering will be jittery
+ * if the physics update rate is close to the rendering rate. Make the physics update
+ * rate at least twice as large to avoid this.
+ */
 void Application::run()
 {
-    float lastTime = static_cast<float>(glfwGetTime());
+    double currentTime = glfwGetTime();
+    double accumulator = 0.0;
+    int stepsTaken = 0;
+
     while (!glfwWindowShouldClose(m_window))
     {
-        glfwPollEvents();
-        Renderer::clear(defaultBgColor);
-        ImGuiOverlay::newFrame();
-        const float stepTime = 1.0f / m_avgFps;
-        onFixedUpdate(stepTime);
-        ImGuiOverlay::render();
-        m_scalebar->render();
-        glfwSwapBuffers(m_window);
+        double newTime = glfwGetTime();
+        double frameTime = newTime - currentTime;
+        if (stepsTaken > 0) {
+            m_fps = 1.0f / frameTime;
+            m_avgPhysicsSteps = m_avgPhysicsSteps + ((stepsTaken / frameTime) - m_avgPhysicsSteps) / sampleCount;
+        }
+        currentTime = newTime;
 
-        const float currentTime = static_cast<float>(glfwGetTime());
-        const float newFps = 1.0f / (currentTime - lastTime);
-        m_avgFps = m_avgFps + (newFps - m_avgFps) / fpsSampleCount;
-        lastTime = currentTime;
+        accumulator += frameTime;
+
+        stepsTaken = 0;
+        if (m_currentScene != nullptr) {
+            while (accumulator >= m_currentScene->getPhysicsStepTime())
+            {
+                stepsTaken++;
+                updatePhysics(m_currentScene->getPhysicsStepTime());
+                updateLogic();
+                accumulator -= m_currentScene->getPhysicsStepTime();
+            }
+        }
+        glfwPollEvents();
+        render();
     }
 }

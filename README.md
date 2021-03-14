@@ -1,6 +1,7 @@
 # Bots2D
 Bots2D is a C++ framework for simulating robotics in 2D, which provides you
 with boilerplate and robotics assets to help you quickly set up your simulation.
+You can read more about it [here](https://www.artfulbytes.com/bots2d-blogpost).
 
 <img src="docs/images/sumobot_feature.gif">
 
@@ -41,6 +42,8 @@ same framework, we can assemble a larger set of reusable robotics assets.
     - It's easy to create new assets...
 * Language binding ("Software-in-loop")
     - Controller code can be written in C (easy to transfer to a real MCU)
+* Customizable controller/physics update rate
+    - ~60-2000 Hz (or more depending the host computer)
 
 ## Limitations
 * Not built or tested on macOS (OpenGL is deprecated on macOS)
@@ -50,13 +53,14 @@ same framework, we can assemble a larger set of reusable robotics assets.
         + The physics scale factor can be changed, but the span between min and max is still limited
     - Roughly approximated top-view physics
         + Sets Box2D gravity to 0 and uses [b2FrictionJoint](https://box2d.org/documentation/classb2_friction_joint.html) for friction.
+* Simulation speed fixed to real time
+    - No fast-forwarding or slowmotion.
 * Rendering
-    - No z-indexing, you must create objects in the order you want them rendered.
+    - No z-indexing, so you must create objects in the order you want them rendered.
 * No drag-and-drop GUI
-    - Everything is set up through code
+    - Everything is set up through code.
 * Performance
-    - To keep the code simple, it's not optimized for complex simulations (involving many objects)
-    - Simulation speed is limited to the frame rate, typically 60 Hz
+    - Not optimized for complex simulations (involving many objects)
 
 ## Getting started
 There is a testapp under ***testapp/***, which shows you how to use the framework. It
@@ -121,10 +125,14 @@ doxygen docs/Doxyfile
 to ***docs/doxygen/***.
 You can also access it online [here](https://artfulbytes.github.io/bots2d/).
 
+There is also a lenghty blog post about it [here](https://www.artfulbytes.com/bots2d-blogpost).
+
 ## Known issues
 * Rendering is slightly off (probably because of rounding error)
     - Physics is fine, but two objects next to each other are rendered with
       a small gap in-between.
+* Rendering movement is jittery when the physics rate < 2x rendering rate
+    - No graphics interpolation
 
 ## Troubleshooting
 * Incorrect OpenGL version (Linux)

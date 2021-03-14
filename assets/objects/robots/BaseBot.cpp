@@ -1,6 +1,5 @@
 #include "robots/BaseBot.h"
 
-#include "Scene.h"
 #include "sensors/LineDetectorObject.h"
 #include "components/KeyboardController.h"
 #include <glm/gtx/rotate_vector.hpp>
@@ -136,7 +135,6 @@ float *BaseBot::getVoltageLine(BaseBot::LineDetectorIndex lineDetectorIndex) con
     return lineDetectorItr->second->getVoltageLine();
 }
 
-void BaseBot::onFixedUpdate(float stepTime)
+void BaseBot::onFixedUpdate()
 {
-    (void)stepTime;
 }

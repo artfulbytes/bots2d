@@ -14,7 +14,7 @@ class PhysicsBot : public SceneObject
 public:
     PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &startPosition, const float startRotation);
     virtual ~PhysicsBot();
-    virtual void onFixedUpdate(float stepTime) override;
+    virtual void onFixedUpdate() override;
     void setForceFrontLeft(float force);
     void setForceBackLeft(float force);
     void setForceFrontRight(float force);
