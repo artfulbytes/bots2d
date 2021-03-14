@@ -220,7 +220,7 @@ void Application::render()
     Renderer::clear(defaultBgColor);
     ImGuiOverlay::newFrame();
     if (m_currentScene) {
-        m_currentScene->updateRenderables();
+        m_currentScene->render();
     }
     m_scalebar->render();
     updateAndRenderSceneMenu();

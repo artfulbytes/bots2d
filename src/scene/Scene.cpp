@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "SceneObject.h"
+#include "ImGuiMenu.h"
 
 Scene::Scene(std::string description) :
     m_description(description)
@@ -54,8 +55,11 @@ void Scene::sceneObjectsOnFixedUpdate()
     }
 }
 
-void Scene::updateRenderables()
+void Scene::render()
 {
+    for (auto menu : m_menus) {
+        menu->render();
+    }
     for (auto obj : m_objects) {
         obj->updateRenderable();
     }
@@ -66,6 +70,25 @@ void Scene::addObject(SceneObject *sceneObject)
     assert(sceneObject != nullptr);
     assert(sceneObject->getScene() == nullptr);
     m_objects.push_back(sceneObject);
+}
+
+void Scene::removeObject(SceneObject *sceneObject)
+{
+    auto itr = m_objects.begin();
+    while (itr != m_objects.end())
+    {
+        if (sceneObject == *itr) {
+            itr = m_objects.erase(itr);
+            break;
+        }
+        itr++;
+    }
+}
+
+void Scene::addMenu(ImGuiMenu *menu)
+{
+    assert(menu != nullptr);
+    m_menus.push_back(menu);
 }
 
 unsigned int Scene::getSecondsSinceStart() const

@@ -30,6 +30,7 @@ set (RENDERER_SOURCE_FILES
     src/renderer/components/QuadComponent.cpp
     src/renderer/SpriteAnimation.cpp
     src/renderer/stb_image.cpp
+    src/renderer/ImGuiMenu.cpp
 )
 
 set (PHYSICS_SOURCE_FILES

@@ -16,10 +16,10 @@ public:
 
     static void render();
     static void newFrame();
-    static void begin(const char *name);
+    static void begin(std::string name, float x, float y);
     static void end();
-    static bool button(const char *name);
-    static void text(const std::string text);
+    static bool button(std::string name);
+    static void text(std::string text);
 };
 
 #endif /* IMGUI_OVERLAY_ */

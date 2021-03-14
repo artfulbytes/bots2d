@@ -17,6 +17,7 @@ SceneObject::SceneObject(Scene *scene)
 
 SceneObject::~SceneObject()
 {
+    m_scene->removeObject(this);
 }
 
 void SceneObject::setController(ControllerComponent *controller)

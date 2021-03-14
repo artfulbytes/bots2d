@@ -22,6 +22,7 @@ private:
         std::unique_ptr<RectObject> rightSide;
     };
     void createBackground();
+    std::unique_ptr<ImGuiMenu> m_sumobotMenu;
     std::unique_ptr<Background> m_background = std::make_unique<Background>();
     std::unique_ptr<Dohyo> m_dohyo;
     std::unique_ptr<Sumobot> m_fourWheelBot;

@@ -7,6 +7,7 @@
 #include "robots/Sumobot.h"
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
+#include "ImGuiMenu.h"
 
 namespace {
 class SumobotController : public KeyboardController
@@ -105,6 +106,7 @@ SumobotTestScene::SumobotTestScene() :
     Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView, (1/500.0f))
 {
     createBackground();
+
     const Dohyo::Specification dohyoSpec =
     {
         0.35f,

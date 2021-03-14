@@ -32,7 +32,7 @@ void SceneMenu::setWarningMessage(std::string message)
 
 void SceneMenu::render()
 {
-    ImGuiOverlay::begin("Scene menu");
+    ImGuiOverlay::begin("Scene menu", 15.0f, 15.0f);
     for (auto& scene : m_scenes)
     {
         if (ImGuiOverlay::button(scene.first.c_str())) {
@@ -53,6 +53,8 @@ void SceneMenu::render()
     if (m_avgPhysicsSteps)
     {
         ImGuiOverlay::text("Physics step rate: " + std::to_string(m_avgPhysicsSteps) + " Hz");
+    } else {
+        ImGuiOverlay::text("Physics step rate: ");
     }
     ImGuiOverlay::text("");
     ImGuiOverlay::text("Move camera up     <w>");

@@ -9,6 +9,7 @@
 #include <chrono>
 
 class SceneObject;
+class ImGuiMenu;
 
 /**
  * Base class for scenes. All scenes must inherit this class. A Scene provides the stage
@@ -30,9 +31,11 @@ public:
     void updatePhysics(float stepTime);
     void updateControllers();
     void sceneObjectsOnFixedUpdate();
-    void updateRenderables();
+    void render();
     void onKeyEvent(const Event::Key &keyEvent);
     void addObject(SceneObject *sceneObject);
+    void removeObject(SceneObject *sceneObject);
+    void addMenu(ImGuiMenu *menu);
     std::string getDescription() const { return m_description; }
     unsigned int getSecondsSinceStart() const;
     float getPhysicsStepTime() const { return m_physicsStepTime; }
@@ -42,6 +45,7 @@ protected:
 
 private:
     std::vector<SceneObject *> m_objects;
+    std::vector<ImGuiMenu *> m_menus;
     std::string m_description;
     float m_physicsStepTime = 0.001f;
     const std::chrono::time_point<std::chrono::system_clock> m_startTime;

@@ -39,11 +39,11 @@ void ImGuiOverlay::render()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ImGuiOverlay::begin(const char *name)
+void ImGuiOverlay::begin(std::string name, float x, float y)
 {
-    ImGui::SetNextWindowPos({15.0f, 15.0f});
+    ImGui::SetNextWindowPos({x, y});
     ImGui::SetNextWindowSize(ImVec2(250, 450), ImGuiCond_Once);
-    ImGui::Begin(name);
+    ImGui::Begin(name.c_str());
 }
 
 void ImGuiOverlay::end()
@@ -51,12 +51,12 @@ void ImGuiOverlay::end()
     ImGui::End();
 }
 
-bool ImGuiOverlay::button(const char *name)
+bool ImGuiOverlay::button(std::string name)
 {
-    return ImGui::Button(name);
+    return ImGui::Button(name.c_str());
 }
 
-void ImGuiOverlay::text(const std::string text)
+void ImGuiOverlay::text(std::string text)
 {
     ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 230);
     ImGui::Text(text.c_str());
