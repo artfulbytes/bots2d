@@ -86,8 +86,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9022cbc67afa1bab26a2b20b2e5b146c"><td class="memItemLeft" align="right" valign="top"><a id="a9022cbc67afa1bab26a2b20b2e5b146c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>LineDetector</b> (const <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> &amp;world, <a class="el" href="classCircleTransform.html">CircleTransform</a> *transform, const glm::vec2 &amp;startPosition)</td></tr>
 <tr class="separator:a9022cbc67afa1bab26a2b20b2e5b146c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35ad04bb788bc433c7f769f498531bb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLineDetector.html#a35ad04bb788bc433c7f769f498531bb0">onFixedUpdate</a> (double stepTime) override</td></tr>
-<tr class="separator:a35ad04bb788bc433c7f769f498531bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a502e3cee7f51e0c9745ce69c3203303d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLineDetector.html#a502e3cee7f51e0c9745ce69c3203303d">onFixedUpdate</a> () override</td></tr>
+<tr class="separator:a502e3cee7f51e0c9745ce69c3203303d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20a0bd41952a2e6d2e0d771e60867965"><td class="memItemLeft" align="right" valign="top"><a id="a20a0bd41952a2e6d2e0d771e60867965"></a>
 <a class="el" href="classBody2D.html">Body2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getBody</b> () const</td></tr>
 <tr class="separator:a20a0bd41952a2e6d2e0d771e60867965"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,8 +129,8 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
 
 </div>
 </div>
-<a id="a35ad04bb788bc433c7f769f498531bb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35ad04bb788bc433c7f769f498531bb0">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
+<a id="a502e3cee7f51e0c9745ce69c3203303d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a502e3cee7f51e0c9745ce69c3203303d">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,8 +141,7 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
         <tr>
           <td class="memname">void LineDetector::onFixedUpdate </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>stepTime</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -152,15 +151,15 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Called every simulation iteration (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
+<p>Called every physics step (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
 
-<p>Implements <a class="el" href="classPhysicsComponent.html#a246a7f67880df5d99478ddaf3d3eac79">PhysicsComponent</a>.</p>
+<p>Implements <a class="el" href="classPhysicsComponent.html#a6e25479eae98c4bc4debff3037c2429d">PhysicsComponent</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/physics/components/<a class="el" href="LineDetector_8h_source.html">LineDetector.h</a></li>
-<li>/home/niknil/workspace/c++/sumobot_simulator/src/engine/physics/components/LineDetector.cpp</li>
+<li>src/physics/components/<a class="el" href="LineDetector_8h_source.html">LineDetector.h</a></li>
+<li>src/physics/components/LineDetector.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

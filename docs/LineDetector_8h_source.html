@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/engine/physics/components/LineDetector.h Source File</title>
+<title>Bots2D: src/physics/components/LineDetector.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a7f531b1c37460085cedd304cb8df01d.html">engine</a></li><li class="navelem"><a class="el" href="dir_507eef3fc303406776132f4dfa1b45c0.html">physics</a></li><li class="navelem"><a class="el" href="dir_a4c64af8ddf0ca86587bca6c4687dc54.html">components</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_8250e12e5a19acb8ece30f1703b6dc16.html">physics</a></li><li class="navelem"><a class="el" href="dir_44c91afc7cf6563431f1ec258575e5e6.html">components</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -84,7 +84,7 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classLineDetector.html">LineDetector</a>(<span class="keyword">const</span> <a class="code" href="classPhysicsWorld.html">PhysicsWorld</a> &amp;world, <a class="code" href="classCircleTransform.html">CircleTransform</a> *transform, <span class="keyword">const</span> glm::vec2 &amp;startPosition);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ~<a class="code" href="classLineDetector.html">LineDetector</a>();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classLineDetector.html#a35ad04bb788bc433c7f769f498531bb0">onFixedUpdate</a>(<span class="keywordtype">double</span> stepTime) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classLineDetector.html#a502e3cee7f51e0c9745ce69c3203303d">onFixedUpdate</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="classBody2D.html">Body2D</a> *getBody() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">float</span> *<a class="code" href="classLineDetector.html#a409a9a89a37931acac05100443ed0e97">getVoltageLine</a>();</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
@@ -98,10 +98,10 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* LINE_DETECTOR_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassPhysicsWorld_html"><div class="ttname"><a href="classPhysicsWorld.html">PhysicsWorld</a></div><div class="ttdef"><b>Definition:</b> PhysicsWorld.h:21</div></div>
+<div class="ttc" id="aclassLineDetector_html_a502e3cee7f51e0c9745ce69c3203303d"><div class="ttname"><a href="classLineDetector.html#a502e3cee7f51e0c9745ce69c3203303d">LineDetector::onFixedUpdate</a></div><div class="ttdeci">void onFixedUpdate() override</div><div class="ttdef"><b>Definition:</b> LineDetector.cpp:34</div></div>
 <div class="ttc" id="aclassCircleTransform_html"><div class="ttname"><a href="classCircleTransform.html">CircleTransform</a></div><div class="ttdef"><b>Definition:</b> Transforms.h:53</div></div>
 <div class="ttc" id="astructBody2DUserData_html"><div class="ttname"><a href="structBody2DUserData.html">Body2DUserData</a></div><div class="ttdef"><b>Definition:</b> Body2DUserData.h:9</div></div>
 <div class="ttc" id="aclassPhysicsComponent_html"><div class="ttname"><a href="classPhysicsComponent.html">PhysicsComponent</a></div><div class="ttdef"><b>Definition:</b> PhysicsComponent.h:26</div></div>
-<div class="ttc" id="aclassLineDetector_html_a35ad04bb788bc433c7f769f498531bb0"><div class="ttname"><a href="classLineDetector.html#a35ad04bb788bc433c7f769f498531bb0">LineDetector::onFixedUpdate</a></div><div class="ttdeci">void onFixedUpdate(double stepTime) override</div><div class="ttdef"><b>Definition:</b> LineDetector.cpp:34</div></div>
 <div class="ttc" id="aclassLineDetector_html"><div class="ttname"><a href="classLineDetector.html">LineDetector</a></div><div class="ttdef"><b>Definition:</b> LineDetector.h:16</div></div>
 <div class="ttc" id="aclassBody2D_html"><div class="ttname"><a href="classBody2D.html">Body2D</a></div><div class="ttdef"><b>Definition:</b> Body2D.h:24</div></div>
 <div class="ttc" id="aclassLineDetector_html_a409a9a89a37931acac05100443ed0e97"><div class="ttname"><a href="classLineDetector.html#a409a9a89a37931acac05100443ed0e97">LineDetector::getVoltageLine</a></div><div class="ttdeci">float * getVoltageLine()</div><div class="ttdef"><b>Definition:</b> LineDetector.cpp:29</div></div>

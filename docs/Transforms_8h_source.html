@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/engine/transforms/components/Transforms.h Source File</title>
+<title>Bots2D: src/transforms/components/Transforms.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a7f531b1c37460085cedd304cb8df01d.html">engine</a></li><li class="navelem"><a class="el" href="dir_c82ab486ee49032bf4648ed8abce58fa.html">transforms</a></li><li class="navelem"><a class="el" href="dir_005a82607f8e44e2f7c99f8457bc456c.html">components</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_859cad99e661c8c6c06da42378c04432.html">transforms</a></li><li class="navelem"><a class="el" href="dir_58a30f95f948c34771a70cde50f28fc3.html">components</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -92,7 +92,7 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        start(start), end(end), width(width) {}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    glm::vec2 start;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    glm::vec2 end;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">float</span> width;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">float</span> width = 0.0f;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;};</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classRectTransform.html">   32</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRectTransform.html">RectTransform</a> : <span class="keyword">public</span> <a class="code" href="classTransformComponent.html">TransformComponent</a></div>
@@ -123,8 +123,8 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        position(position), radius(radius), rotation(rotation) {}</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ~<a class="code" href="classCircleTransform.html">CircleTransform</a>() {}</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    glm::vec2 position;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">float</span> radius;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">float</span> rotation;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">float</span> radius = 0.0f;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">float</span> rotation = 0.0f;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classHollowCircleTransform.html">   64</a></span>&#160;<span class="keyword">class </span><a class="code" href="classHollowCircleTransform.html">HollowCircleTransform</a> : <span class="keyword">public</span> <a class="code" href="classTransformComponent.html">TransformComponent</a></div>
@@ -134,8 +134,8 @@ $(function() {
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        position(position), innerRadius(innerRadius), outerRadius(outerRadius) {}</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    ~<a class="code" href="classHollowCircleTransform.html">HollowCircleTransform</a>() {}</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    glm::vec2 position;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">float</span> innerRadius;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">float</span> outerRadius;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">float</span> innerRadius = 0.0f;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">float</span> outerRadius = 0.0f;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;};</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TRANSFORMS_H_ */</span><span class="preprocessor"></span></div>

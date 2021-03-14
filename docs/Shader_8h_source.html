@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/engine/renderer/Shader.h Source File</title>
+<title>Bots2D: src/renderer/Shader.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a7f531b1c37460085cedd304cb8df01d.html">engine</a></li><li class="navelem"><a class="el" href="dir_5d68752ef0a05e0368378c003c0899ae.html">renderer</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7bc5e25958a2fb25a8561f3aa0def6c5.html">renderer</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -81,20 +81,20 @@ $(function() {
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classShader.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="classShader.html">Shader</a></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classShader.html">Shader</a>(<span class="keyword">const</span> std::string&amp; filepath);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    ~<a class="code" href="classShader.html">Shader</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> bind() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> unbind() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> setUniform1i(<span class="keyword">const</span> std::string&amp; name, <span class="keywordtype">int</span> value);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> setUniform4f(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> glm::vec4&amp; color);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> setUniformMat4f(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> glm::mat4&amp; matrix);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    std::string m_filepath;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_id;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    std::unordered_map&lt;std::string, int&gt; m_uniformLocationCache;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="structShaderProgramSource.html">ShaderProgramSource</a> parse(<span class="keyword">const</span> std::string&amp; filepath);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">enum class</span> Program { SolidColor, <a class="code" href="classTexture.html">Texture</a> };</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classShader.html">Shader</a>(Program shaderProgram);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ~<a class="code" href="classShader.html">Shader</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> bind() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> unbind() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> setUniform1i(<span class="keyword">const</span> std::string&amp; name, <span class="keywordtype">int</span> value);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> setUniform4f(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> glm::vec4&amp; color);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> setUniformMat4f(<span class="keyword">const</span> std::string&amp; name, <span class="keyword">const</span> glm::mat4&amp; matrix);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    std::string m_filepath;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_id;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    std::unordered_map&lt;std::string, int&gt; m_uniformLocationCache;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> compile(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> type, <span class="keyword">const</span> std::string&amp; source);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> create(<span class="keyword">const</span> std::string&amp; vertexShader, <span class="keyword">const</span> std::string&amp; fragmentShader);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> getUniformLocation(<span class="keyword">const</span> std::string&amp; name);</div>
@@ -102,7 +102,8 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SHADER_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassShader_html"><div class="ttname"><a href="classShader.html">Shader</a></div><div class="ttdef"><b>Definition:</b> Shader.h:15</div></div>
-<div class="ttc" id="astructShaderProgramSource_html"><div class="ttname"><a href="structShaderProgramSource.html">ShaderProgramSource</a></div><div class="ttdef"><b>Definition:</b> Shader.cpp:13</div></div>
+<div class="ttc" id="aclassTexture_html"><div class="ttname"><a href="classTexture.html">Texture</a></div><div class="ttdef"><b>Definition:</b> Texture.h:10</div></div>
+<div class="ttc" id="astructShaderProgramSource_html"><div class="ttname"><a href="structShaderProgramSource.html">ShaderProgramSource</a></div><div class="ttdef"><b>Definition:</b> Shader.cpp:77</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

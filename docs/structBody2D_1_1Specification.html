@@ -76,6 +76,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a836c0fdc989d0cbe0f51974eb22dc56f"><td class="memItemLeft" align="right" valign="top"><a id="a836c0fdc989d0cbe0f51974eb22dc56f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Specification</b> (bool <a class="el" href="structBody2D_1_1Specification.html#a7ca349aeac9e6988e5a9307954984b00">dynamic</a>, bool <a class="el" href="structBody2D_1_1Specification.html#a9d028fca835421635827e4006018718d">collision</a>, float mass, float <a class="el" href="structBody2D_1_1Specification.html#acc8519285ae3636d70bd424881b6fba5">frictionCoefficient</a>)</td></tr>
+<tr class="separator:a836c0fdc989d0cbe0f51974eb22dc56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeffdbb99d4f76e57f865e41f38b116d4"><td class="memItemLeft" align="right" valign="top"><a id="aeffdbb99d4f76e57f865e41f38b116d4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Specification</b> (bool <a class="el" href="structBody2D_1_1Specification.html#a7ca349aeac9e6988e5a9307954984b00">dynamic</a>, bool <a class="el" href="structBody2D_1_1Specification.html#a9d028fca835421635827e4006018718d">collision</a>, float mass)</td></tr>
 <tr class="separator:aeffdbb99d4f76e57f865e41f38b116d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -89,10 +92,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a517ee8e2bae499f2de521a210ebd2924"><td class="memItemLeft" align="right" valign="top"><a id="a517ee8e2bae499f2de521a210ebd2924"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>mass</b> = 1.0f</td></tr>
 <tr class="separator:a517ee8e2bae499f2de521a210ebd2924"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc8519285ae3636d70bd424881b6fba5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBody2D_1_1Specification.html#acc8519285ae3636d70bd424881b6fba5">frictionCoefficient</a> = 0.1f</td></tr>
+<tr class="memitem:acc8519285ae3636d70bd424881b6fba5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBody2D_1_1Specification.html#acc8519285ae3636d70bd424881b6fba5">frictionCoefficient</a> = 0.0f</td></tr>
 <tr class="separator:acc8519285ae3636d70bd424881b6fba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae72ee3251cf03b2cb3935616cee7379f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBody2D_1_1Specification.html#ae72ee3251cf03b2cb3935616cee7379f">torqueFrictionCoefficient</a> = 0.6f</td></tr>
-<tr class="separator:ae72ee3251cf03b2cb3935616cee7379f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a9d028fca835421635827e4006018718d"></a>
@@ -132,31 +133,16 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>mass</b> = 1.0f</td>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">float Body2D::Specification::frictionCoefficient = 0.1f</td>
+          <td class="memname">float Body2D::Specification::frictionCoefficient = 0.0f</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This determines how easy it is to push the body </p>
-
-</div>
-</div>
-<a id="ae72ee3251cf03b2cb3935616cee7379f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae72ee3251cf03b2cb3935616cee7379f">&#9670;&nbsp;</a></span>torqueFrictionCoefficient</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Body2D::Specification::torqueFrictionCoefficient = 0.6f</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This determines how easy it is to rotate the body </p>
+<p>This determines how easy it is to push the body (ONLY for top view) </p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/physics/components/<a class="el" href="Body2D_8h_source.html">Body2D.h</a></li>
+<li>src/physics/components/<a class="el" href="Body2D_8h_source.html">Body2D.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

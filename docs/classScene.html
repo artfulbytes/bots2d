@@ -71,21 +71,44 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="Scene_8h_source.html">Scene.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Scene:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classScene.png" usemap="#Scene_map" alt=""/>
+  <map id="Scene_map" name="Scene_map">
+<area href="classDrawTestScene.html" alt="DrawTestScene" shape="rect" coords="0,56,159,80"/>
+<area href="classLineFollowerTestScene.html" alt="LineFollowerTestScene" shape="rect" coords="169,56,328,80"/>
+<area href="classPhysicsBotTestScene.html" alt="PhysicsBotTestScene" shape="rect" coords="338,56,497,80"/>
+<area href="classPhysicsTestScene.html" alt="PhysicsTestScene" shape="rect" coords="507,56,666,80"/>
+<area href="classSpriteAnimationTestScene.html" alt="SpriteAnimationTestScene" shape="rect" coords="676,56,835,80"/>
+<area href="classSumobotTestScene.html" alt="SumobotTestScene" shape="rect" coords="845,56,1004,80"/>
+<area href="classWheelMotorTestScene.html" alt="WheelMotorTestScene" shape="rect" coords="1014,56,1173,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a05c05d536a4c4910680afbb3ae3ce235"><td class="memItemLeft" align="right" valign="top"><a id="a05c05d536a4c4910680afbb3ae3ce235"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (std::string description)</td></tr>
 <tr class="separator:a05c05d536a4c4910680afbb3ae3ce235"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81bce84217bfe6d5d70ec0e3d17bf10"><td class="memItemLeft" align="right" valign="top"><a id="af81bce84217bfe6d5d70ec0e3d17bf10"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (std::string description, <a class="el" href="classPhysicsWorld.html#aed2047f81385fc00206a43db5520c843">PhysicsWorld::Gravity</a> gravity)</td></tr>
-<tr class="separator:af81bce84217bfe6d5d70ec0e3d17bf10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d17bdc44172e0cbb6745587e7e6777"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScene.html#a10d17bdc44172e0cbb6745587e7e6777">Scene</a> (std::string description, <a class="el" href="classPhysicsWorld.html#aed2047f81385fc00206a43db5520c843">PhysicsWorld::Gravity</a> gravity, float physicsStepTime=0.001f)</td></tr>
+<tr class="separator:a10d17bdc44172e0cbb6745587e7e6777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a496f4469e32398fa68dd7cb98c1e61ea"><td class="memItemLeft" align="right" valign="top"><a id="a496f4469e32398fa68dd7cb98c1e61ea"></a>
 <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPhysicsWorld</b> () const</td></tr>
 <tr class="separator:a496f4469e32398fa68dd7cb98c1e61ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbea5a9dce733cf7ad5b954bb3dc20e9"><td class="memItemLeft" align="right" valign="top"><a id="acbea5a9dce733cf7ad5b954bb3dc20e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>onFixedUpdate</b> (double stepTime)</td></tr>
-<tr class="separator:acbea5a9dce733cf7ad5b954bb3dc20e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8715b05a66a18dd28010d45c453cb65"><td class="memItemLeft" align="right" valign="top"><a id="aa8715b05a66a18dd28010d45c453cb65"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updatePhysics</b> (float stepTime)</td></tr>
+<tr class="separator:aa8715b05a66a18dd28010d45c453cb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73b8dd5985a33420cf8b60a56d2bf769"><td class="memItemLeft" align="right" valign="top"><a id="a73b8dd5985a33420cf8b60a56d2bf769"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateControllers</b> ()</td></tr>
+<tr class="separator:a73b8dd5985a33420cf8b60a56d2bf769"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15d114fff09474c2a926c93475b9c5ce"><td class="memItemLeft" align="right" valign="top"><a id="a15d114fff09474c2a926c93475b9c5ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sceneObjectsOnFixedUpdate</b> ()</td></tr>
+<tr class="separator:a15d114fff09474c2a926c93475b9c5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aec3b184e6d14f74e2bc4ea7cb13d73"><td class="memItemLeft" align="right" valign="top"><a id="a9aec3b184e6d14f74e2bc4ea7cb13d73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateRenderables</b> ()</td></tr>
+<tr class="separator:a9aec3b184e6d14f74e2bc4ea7cb13d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf5d6637f27fb9a388a1acb4d55ff29c"><td class="memItemLeft" align="right" valign="top"><a id="aaf5d6637f27fb9a388a1acb4d55ff29c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)</td></tr>
 <tr class="separator:aaf5d6637f27fb9a388a1acb4d55ff29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -95,6 +118,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addObject</b> (<a cla
 <tr class="memitem:a634808bc37745969894bcfd6c4a8680b"><td class="memItemLeft" align="right" valign="top"><a id="a634808bc37745969894bcfd6c4a8680b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> () const</td></tr>
 <tr class="separator:a634808bc37745969894bcfd6c4a8680b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c2c1fbf97f8596241cecdcd34d212c7"><td class="memItemLeft" align="right" valign="top"><a id="a1c2c1fbf97f8596241cecdcd34d212c7"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getSecondsSinceStart</b> () const</td></tr>
+<tr class="separator:a1c2c1fbf97f8596241cecdcd34d212c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7902063cc8cf232398be69d86a80dc01"><td class="memItemLeft" align="right" valign="top"><a id="a7902063cc8cf232398be69d86a80dc01"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getPhysicsStepTime</b> () const</td></tr>
+<tr class="separator:a7902063cc8cf232398be69d86a80dc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -104,9 +133,50 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for scenes. All scenes must inherit this class. A <a class="el" href="classScene.html">Scene</a> provides the stage for the simulation and has a <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> and a list of <a class="el" href="classSceneObject.html">SceneObject</a>. Only one <a class="el" href="classScene.html">Scene</a> can be active at a time. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/scene/<a class="el" href="Scene_8h_source.html">Scene.h</a></li>
-<li>/home/niknil/workspace/c++/sumobot_simulator/src/engine/scene/Scene.cpp</li>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a10d17bdc44172e0cbb6745587e7e6777"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10d17bdc44172e0cbb6745587e7e6777">&#9670;&nbsp;</a></span>Scene()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Scene::Scene </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>description</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classPhysicsWorld.html#aed2047f81385fc00206a43db5520c843">PhysicsWorld::Gravity</a>&#160;</td>
+          <td class="paramname"><em>gravity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>physicsStepTime</em> = <code>0.001f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">physicsStepTime</td><td>Determines how many times per second the physics and logic are updated. Note, to avoid jittery behaviour, make this at least twice as large as the rendering rate (monitor's refresh rate). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/scene/<a class="el" href="Scene_8h_source.html">Scene.h</a></li>
+<li>src/scene/Scene.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

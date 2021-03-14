@@ -83,15 +83,23 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a05c05d536a4c4910680afbb3ae3ce235 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a05c05d536a4c4910680afbb3ae3ce235"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (std::string description)</td></tr>
 <tr class="separator:a05c05d536a4c4910680afbb3ae3ce235 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af81bce84217bfe6d5d70ec0e3d17bf10 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="af81bce84217bfe6d5d70ec0e3d17bf10"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (std::string description, <a class="el" href="classPhysicsWorld.html#aed2047f81385fc00206a43db5520c843">PhysicsWorld::Gravity</a> gravity)</td></tr>
-<tr class="separator:af81bce84217bfe6d5d70ec0e3d17bf10 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d17bdc44172e0cbb6745587e7e6777 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScene.html#a10d17bdc44172e0cbb6745587e7e6777">Scene</a> (std::string description, <a class="el" href="classPhysicsWorld.html#aed2047f81385fc00206a43db5520c843">PhysicsWorld::Gravity</a> gravity, float physicsStepTime=0.001f)</td></tr>
+<tr class="separator:a10d17bdc44172e0cbb6745587e7e6777 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a496f4469e32398fa68dd7cb98c1e61ea inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a496f4469e32398fa68dd7cb98c1e61ea"></a>
 <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getPhysicsWorld</b> () const</td></tr>
 <tr class="separator:a496f4469e32398fa68dd7cb98c1e61ea inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbea5a9dce733cf7ad5b954bb3dc20e9 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="acbea5a9dce733cf7ad5b954bb3dc20e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>onFixedUpdate</b> (double stepTime)</td></tr>
-<tr class="separator:acbea5a9dce733cf7ad5b954bb3dc20e9 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8715b05a66a18dd28010d45c453cb65 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="aa8715b05a66a18dd28010d45c453cb65"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updatePhysics</b> (float stepTime)</td></tr>
+<tr class="separator:aa8715b05a66a18dd28010d45c453cb65 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73b8dd5985a33420cf8b60a56d2bf769 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a73b8dd5985a33420cf8b60a56d2bf769"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateControllers</b> ()</td></tr>
+<tr class="separator:a73b8dd5985a33420cf8b60a56d2bf769 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15d114fff09474c2a926c93475b9c5ce inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a15d114fff09474c2a926c93475b9c5ce"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sceneObjectsOnFixedUpdate</b> ()</td></tr>
+<tr class="separator:a15d114fff09474c2a926c93475b9c5ce inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aec3b184e6d14f74e2bc4ea7cb13d73 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a9aec3b184e6d14f74e2bc4ea7cb13d73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateRenderables</b> ()</td></tr>
+<tr class="separator:a9aec3b184e6d14f74e2bc4ea7cb13d73 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf5d6637f27fb9a388a1acb4d55ff29c inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="aaf5d6637f27fb9a388a1acb4d55ff29c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)</td></tr>
 <tr class="separator:aaf5d6637f27fb9a388a1acb4d55ff29c inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -101,14 +109,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addObject</b> (<a cla
 <tr class="memitem:a634808bc37745969894bcfd6c4a8680b inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a634808bc37745969894bcfd6c4a8680b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> () const</td></tr>
 <tr class="separator:a634808bc37745969894bcfd6c4a8680b inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c2c1fbf97f8596241cecdcd34d212c7 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a1c2c1fbf97f8596241cecdcd34d212c7"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getSecondsSinceStart</b> () const</td></tr>
+<tr class="separator:a1c2c1fbf97f8596241cecdcd34d212c7 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7902063cc8cf232398be69d86a80dc01 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a7902063cc8cf232398be69d86a80dc01"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getPhysicsStepTime</b> () const</td></tr>
+<tr class="separator:a7902063cc8cf232398be69d86a80dc01 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classScene"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classScene')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classScene.html">Scene</a></td></tr>
 <tr class="memitem:aa5a1bb67d5b7a726c77d4d5f10dc45fd inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top"><a id="aa5a1bb67d5b7a726c77d4d5f10dc45fd"></a>
 std::unique_ptr&lt; <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_physicsWorld</b></td></tr>
 <tr class="separator:aa5a1bb67d5b7a726c77d4d5f10dc45fd inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/apps/testapp/scenes/<a class="el" href="DrawTestScene_8h_source.html">DrawTestScene.h</a></li>
-<li>src/apps/testapp/scenes/DrawTestScene.cpp</li>
+<li>testapp/scenes/<a class="el" href="DrawTestScene_8h_source.html">DrawTestScene.h</a></li>
+<li>testapp/scenes/DrawTestScene.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

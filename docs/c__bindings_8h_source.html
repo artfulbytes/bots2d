@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/app/controllers/Sumobot4WheelExample/c_bindings.h Source File</title>
+<title>Bots2D: testapp/controllers/Sumobot4WheelExample/c_bindings.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_98ff7954eb3842da01d2ae02361edfa5.html">app</a></li><li class="navelem"><a class="el" href="dir_2e963d66a772859f6e40548869e42b33.html">controllers</a></li><li class="navelem"><a class="el" href="dir_e6a560bfd0798ae2df9232de4c1093f0.html">Sumobot4WheelExample</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_f76a32a55138b4be174544b11bb1d1e1.html">testapp</a></li><li class="navelem"><a class="el" href="dir_8bc643aae6da8b33b18610988476b345.html">controllers</a></li><li class="navelem"><a class="el" href="dir_e9ceeea1c88e04dbd082fc5be36b5a0f.html">Sumobot4WheelExample</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,10 +72,13 @@ $(function() {
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef C_BINDINGS_H_</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define C_BINDINGS_H_</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keywordtype">void</span> setup(<span class="keywordtype">float</span> **<span class="keyword">const</span> voltageLinesArr, <span class="keywordtype">int</span> voltageLineCount);</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keywordtype">void</span> loop(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">typedef</span> float (*get_voltage_function)(<span class="keywordtype">int</span> idx, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">typedef</span> void (*set_voltage_function)(<span class="keywordtype">int</span> idx, float, <span class="keywordtype">void</span> *);</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* C_BINDINGS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordtype">void</span> setup(get_voltage_function get_voltage_fcn, set_voltage_function set_voltage_fcn, <span class="keywordtype">void</span> *userdata);</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">void</span> loop(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* C_BINDINGS_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

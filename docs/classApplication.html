@@ -63,13 +63,23 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classApplication-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">Application Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">Application Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="Application_8h_source.html">Application.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Application:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classApplication.png" usemap="#Application_map" alt=""/>
+  <map id="Application_map" name="Application_map">
+<area href="classBots2DTestApp.html" alt="Bots2DTestApp" shape="rect" coords="0,56,98,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -78,20 +88,53 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4705a113d5174f00577c16631c8aceca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68965449404743bf1add056784d6cf81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApplication.html#a68965449404743bf1add056784d6cf81">run</a> ()</td></tr>
 <tr class="separator:a68965449404743bf1add056784d6cf81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9222a062a62852a1786f72598b826120"><td class="memItemLeft" align="right" valign="top"><a id="a9222a062a62852a1786f72598b826120"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)=0</td></tr>
-<tr class="separator:a9222a062a62852a1786f72598b826120"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a465210623a55b25d517369a1cf6ad923"><td class="memItemLeft" align="right" valign="top"><a id="a465210623a55b25d517369a1cf6ad923"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onFixedUpdate</b> (double stepTime)=0</td></tr>
-<tr class="separator:a465210623a55b25d517369a1cf6ad923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a783dc61b7143c69cea1f294a77f85c78"><td class="memItemLeft" align="right" valign="top"><a id="a783dc61b7143c69cea1f294a77f85c78"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getAvgFps</b> () const</td></tr>
-<tr class="separator:a783dc61b7143c69cea1f294a77f85c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab73a64e840c8cde3d517cdadbab4433f"><td class="memItemLeft" align="right" valign="top"><a id="ab73a64e840c8cde3d517cdadbab4433f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyCallback</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)</td></tr>
+<tr class="separator:ab73a64e840c8cde3d517cdadbab4433f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1f6d2c6435f692c58382f22cd1471e"><td class="memItemLeft" align="right" valign="top"><a id="a5a1f6d2c6435f692c58382f22cd1471e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)</td></tr>
+<tr class="separator:a5a1f6d2c6435f692c58382f22cd1471e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad47262cae9b8137e9a4ecd1e39a52b68"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classApplication.html#ad47262cae9b8137e9a4ecd1e39a52b68">onFixedUpdate</a> ()</td></tr>
+<tr class="separator:ad47262cae9b8137e9a4ecd1e39a52b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a655ded9fb045e9e787ac5bc3afa9e4a7"><td class="memItemLeft" align="right" valign="top"><a id="a655ded9fb045e9e787ac5bc3afa9e4a7"></a>
+std::unique_ptr&lt; <a class="el" href="classSceneMenu.html">SceneMenu</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_sceneMenu</b></td></tr>
+<tr class="separator:a655ded9fb045e9e787ac5bc3afa9e4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classApplication.html">Application</a> base class. Sets up OpenGL and GLFW (window and event handling), and implements the main loop.</p>
 <p>You inherit this when you create your own <a class="el" href="classApplication.html">Application</a>, look at SimulatorTestApp for an example. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad47262cae9b8137e9a4ecd1e39a52b68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad47262cae9b8137e9a4ecd1e39a52b68">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Application::onFixedUpdate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Runs after every physics step </p>
+
+<p>Reimplemented in <a class="el" href="classBots2DTestApp.html#a6b53d3d1dc5633181dc06c852c108bb7">Bots2DTestApp</a>.</p>
+
+</div>
+</div>
 <a id="a68965449404743bf1add056784d6cf81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a68965449404743bf1add056784d6cf81">&#9670;&nbsp;</a></span>run()</h2>
 
@@ -106,13 +149,15 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>getAvgFps</b>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Starts the main loop </p>
+<p>Starts the main loop</p>
+<p>The simulator main loop. The physics/logic has a separate update rate from the rendering. The physics/logic is determined by the physics step time (set inside scene) while rendering is capped by VSync. Physics is updated by a fixed step time as per the general recommendation. The technique used here is inspired by the well-known blog post: <a href="https://gafferongames.com/post/fix_your_timestep/">https://gafferongames.com/post/fix_your_timestep/</a></p>
+<p>We do no interpolation for the rendering here, so the rendering will be jittery if the physics update rate is close to the rendering rate. Make the physics update rate at least twice as large to avoid this. </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/core/<a class="el" href="Application_8h_source.html">Application.h</a></li>
-<li>/home/niknil/workspace/c++/sumobot_simulator/src/engine/core/Application.cpp</li>
+<li>src/core/<a class="el" href="Application_8h_source.html">Application.h</a></li>
+<li>src/core/Application.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

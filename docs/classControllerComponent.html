@@ -89,14 +89,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5c0ead88b64c9191e6a91684e569ee60"><td class="memItemLeft" align="right" valign="top"><a id="a5c0ead88b64c9191e6a91684e569ee60"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b> (const <a class="el" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent)=0</td></tr>
 <tr class="separator:a5c0ead88b64c9191e6a91684e569ee60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb0cb0231420beee67256d05e1a02d36"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classControllerComponent.html#aeb0cb0231420beee67256d05e1a02d36">onFixedUpdate</a> (double stepTime)=0</td></tr>
-<tr class="separator:aeb0cb0231420beee67256d05e1a02d36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5165a0a65d161e6f88ae733085a00340"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classControllerComponent.html#a5165a0a65d161e6f88ae733085a00340">onFixedUpdate</a> ()=0</td></tr>
+<tr class="separator:a5165a0a65d161e6f88ae733085a00340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for components that implement control behaviour based on key events or pure logic. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aeb0cb0231420beee67256d05e1a02d36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb0cb0231420beee67256d05e1a02d36">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
+<a id="a5165a0a65d161e6f88ae733085a00340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5165a0a65d161e6f88ae733085a00340">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -107,8 +107,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b
         <tr>
           <td class="memname">virtual void ControllerComponent::onFixedUpdate </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>stepTime</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -118,16 +117,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onKeyEvent</b
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Called every simulation iteration (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
+<p>Called every physics step (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
 
-<p>Reimplemented from <a class="el" href="classComponent.html#a1e16a7dadf9d0ff02bb19ca34ec32bd7">Component</a>.</p>
+<p>Reimplemented from <a class="el" href="classComponent.html#a0268eefe137f7480aba3468a651f45ca">Component</a>.</p>
 
-<p>Implemented in <a class="el" href="classKeyboardController.html#a56723ff52fe577f6923d588f4e505874">KeyboardController</a>, and <a class="el" href="classMicrocontroller.html#ad9c5c00e8349225cc60fc7bf1f15d492">Microcontroller</a>.</p>
+<p>Implemented in <a class="el" href="classKeyboardController.html#a1ca07a0437e2743ea000613c4af89532">KeyboardController</a>, and <a class="el" href="classMicrocontroller.html#a552909108ddaa6c196c837487b6e8f54">Microcontroller</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/controllers/components/<a class="el" href="ControllerComponent_8h_source.html">ControllerComponent.h</a></li>
+<li>src/controllers/components/<a class="el" href="ControllerComponent_8h_source.html">ControllerComponent.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

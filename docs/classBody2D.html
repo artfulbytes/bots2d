@@ -104,8 +104,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac16999762c73055ecb9276744d9acd97"><td class="memItemLeft" align="right" valign="top"><a id="ac16999762c73055ecb9276744d9acd97"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Body2D</b> (const <a class="el" href="classPhysicsWorld.html">PhysicsWorld</a> &amp;world, <a class="el" href="classQuadTransform.html">QuadTransform</a> *transform, const <a class="el" href="structBody2D_1_1Specification.html">Specification</a> &amp;spec)</td></tr>
 <tr class="separator:ac16999762c73055ecb9276744d9acd97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0defeef34ef143c34438f3e18656c34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBody2D.html#ac0defeef34ef143c34438f3e18656c34">onFixedUpdate</a> (double stepTime) override</td></tr>
-<tr class="separator:ac0defeef34ef143c34438f3e18656c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add7536cc1290570df526b82e4d004ffb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBody2D.html#add7536cc1290570df526b82e4d004ffb">onFixedUpdate</a> () override</td></tr>
+<tr class="separator:add7536cc1290570df526b82e4d004ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1362bffc866cca6698c1cdcb1a91598"><td class="memItemLeft" align="right" valign="top"><a id="ac1362bffc866cca6698c1cdcb1a91598"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserData</b> (<a class="el" href="structBody2DUserData.html">Body2DUserData</a> *userData)</td></tr>
 <tr class="separator:ac1362bffc866cca6698c1cdcb1a91598"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,8 +161,8 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
 <div class="textblock"><p>Basic physics body class which creates a b2Body based on a transform. It synchronizes the Box2D changes (position+rotation) with the transform data every fixed update.</p>
 <p>Many of the functions are just simple wrappers around b2Body. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac0defeef34ef143c34438f3e18656c34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0defeef34ef143c34438f3e18656c34">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
+<a id="add7536cc1290570df526b82e4d004ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add7536cc1290570df526b82e4d004ffb">&#9670;&nbsp;</a></span>onFixedUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,8 +173,7 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
         <tr>
           <td class="memname">void Body2D::onFixedUpdate </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>stepTime</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -184,15 +183,15 @@ std::unique_ptr&lt; <a class="el" href="classPhysicsToTransformTranslator.html">
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Called every simulation iteration (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
+<p>Called every physics step (if assigned to a <a class="el" href="classScene.html">Scene</a> Object). </p>
 
-<p>Implements <a class="el" href="classPhysicsComponent.html#a246a7f67880df5d99478ddaf3d3eac79">PhysicsComponent</a>.</p>
+<p>Implements <a class="el" href="classPhysicsComponent.html#a6e25479eae98c4bc4debff3037c2429d">PhysicsComponent</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/niknil/workspace/c++/sumobot_simulator/include/engine/physics/components/<a class="el" href="Body2D_8h_source.html">Body2D.h</a></li>
-<li>/home/niknil/workspace/c++/sumobot_simulator/src/engine/physics/components/Body2D.cpp</li>
+<li>src/physics/components/<a class="el" href="Body2D_8h_source.html">Body2D.h</a></li>
+<li>src/physics/components/Body2D.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

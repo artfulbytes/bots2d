@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/engine/controllers/components/Microcontroller.h Source File</title>
+<title>Bots2D: src/controllers/components/Microcontroller.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a7f531b1c37460085cedd304cb8df01d.html">engine</a></li><li class="navelem"><a class="el" href="dir_6c190c55c329b6158b340785d25a4e53.html">controllers</a></li><li class="navelem"><a class="el" href="dir_505f7b93bac31911e11d0e94426bf150.html">components</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_bbd6674d859f4cefaacb708974cac240.html">controllers</a></li><li class="navelem"><a class="el" href="dir_8d53b589740cdb7a7d85bc961e638d91.html">components</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -87,49 +87,60 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            B0, B1, B2, B3, B4, B5, B6, B7,</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            Count</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        };</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">enum class</span> Type { Input, Output };</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        Type type;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordtype">float</span> *level = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    };</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">typedef</span> std::array&lt;VoltageLine, VoltageLine::Idx::Count&gt; VoltageLines;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classMicrocontroller.html#add1d85056291d076676d5446d5dc409f">Microcontroller</a>(VoltageLines &amp;voltageLines);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    ~<a class="code" href="classMicrocontroller.html">Microcontroller</a>();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> start();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMicrocontroller.html#ad9c5c00e8349225cc60fc7bf1f15d492">onFixedUpdate</a>(<span class="keywordtype">double</span> stepTime) <span class="keyword">override</span> <span class="keyword">final</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMicrocontroller.html#aca3c6d6bc8899bac7374c934e51048b0">onKeyEvent</a>(<span class="keyword">const</span> <a class="code" href="structEvent_1_1Key.html">Event::Key</a> &amp;keyEvent);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classMicrocontroller.html#afb55fcb15bb0a157296e343627952388">   57</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="classMicrocontroller.html#afb55fcb15bb0a157296e343627952388">m_microcontrollerVoltageLineLevels</a>[VoltageLine::Idx::Count];</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> microcontrollerUpdate() = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> microcontrollerLoop();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::thread m_thread;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::atomic&lt;bool&gt; m_running = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    VoltageLines m_simulatorVoltageLines;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::mutex m_voltageLinesMutex;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> transferVoltageLevelsSimulatorToMicrocontroller();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> transferVoltageLevelsMicrocontrollerToSimulator();</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">float</span> m_sharedVoltageLineLevels[VoltageLine::Idx::Count];</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="comment">/* Direction from the microcontroller&#39;s point of view (e.g. motor is output, a sensor is input) */</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">enum class</span> Type { Input, Output };</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        Type type;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">float</span> *level = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    };</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">typedef</span> std::array&lt;VoltageLine, VoltageLine::Idx::Count&gt; VoltageLines;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="classMicrocontroller.html#a8ec5ee0d861d8d5aeec92d8a6c4329fe">Microcontroller</a>(VoltageLines &amp;voltageLines, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> updateRateHz);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    ~<a class="code" href="classMicrocontroller.html">Microcontroller</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMicrocontroller.html#a0800cadece16c5b342f10d6076bab543">start</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMicrocontroller.html#a552909108ddaa6c196c837487b6e8f54">onFixedUpdate</a>() override final;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    virtual <span class="keywordtype">void</span> <a class="code" href="classMicrocontroller.html#aca3c6d6bc8899bac7374c934e51048b0">onKeyEvent</a>(const <a class="code" href="classEvent.html">Event</a>::Key &amp;keyEvent);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">/* C-callback function to set voltage level from controller code.</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">     * Accesses the member function getVoltageLevel by casting userdata. */</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    static <span class="keywordtype">float</span> get_voltage_level(<span class="keywordtype">int</span> idx, <span class="keywordtype">void</span> *userdata);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">float</span> getVoltageLevel(<span class="keywordtype">int</span> idx);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">/* C-callback function to set voltage level from controller code.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">     * Accesses the member function setVoltageLevel by casting userdata. */</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    static <span class="keywordtype">void</span> set_voltage_level(<span class="keywordtype">int</span> idx, <span class="keywordtype">float</span> level, <span class="keywordtype">void</span> *userdata);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> setVoltageLevel(<span class="keywordtype">int</span> idx, <span class="keywordtype">float</span> level);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;private:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    virtual <span class="keywordtype">void</span> microcontrollerUpdate() = 0;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> microcontrollerThreadFn();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* MICROCONTROLLER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    VoltageLines m_simulatorVoltageLines;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::thread m_thread;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::atomic&lt;<span class="keywordtype">bool</span>&gt; m_running = true;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">bool</span> m_physicsStarted = false;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">bool</span> m_microcontrollerStarted = false;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    const <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_loopSleepTime_ms = 10;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    std::mutex m_voltageLinesMutex;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span> transferVoltageLevelsSimulatorToMicrocontroller();</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">float</span> m_microcontrollerVoltageLineLevels[<a class="code" href="structMicrocontroller_1_1VoltageLine.html">VoltageLine</a>::Idx::Count] = {0};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* MICROCONTROLLER_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassControllerComponent_html"><div class="ttname"><a href="classControllerComponent.html">ControllerComponent</a></div><div class="ttdef"><b>Definition:</b> ControllerComponent.h:12</div></div>
-<div class="ttc" id="aclassMicrocontroller_html_afb55fcb15bb0a157296e343627952388"><div class="ttname"><a href="classMicrocontroller.html#afb55fcb15bb0a157296e343627952388">Microcontroller::m_microcontrollerVoltageLineLevels</a></div><div class="ttdeci">float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count]</div><div class="ttdef"><b>Definition:</b> Microcontroller.h:57</div></div>
-<div class="ttc" id="astructEvent_1_1Key_html"><div class="ttname"><a href="structEvent_1_1Key.html">Event::Key</a></div><div class="ttdef"><b>Definition:</b> Event.h:46</div></div>
-<div class="ttc" id="aclassMicrocontroller_html_aca3c6d6bc8899bac7374c934e51048b0"><div class="ttname"><a href="classMicrocontroller.html#aca3c6d6bc8899bac7374c934e51048b0">Microcontroller::onKeyEvent</a></div><div class="ttdeci">virtual void onKeyEvent(const Event::Key &amp;keyEvent)</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:77</div></div>
-<div class="ttc" id="aclassMicrocontroller_html_ad9c5c00e8349225cc60fc7bf1f15d492"><div class="ttname"><a href="classMicrocontroller.html#ad9c5c00e8349225cc60fc7bf1f15d492">Microcontroller::onFixedUpdate</a></div><div class="ttdeci">void onFixedUpdate(double stepTime) override final</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:62</div></div>
+<div class="ttc" id="aclassMicrocontroller_html_aca3c6d6bc8899bac7374c934e51048b0"><div class="ttname"><a href="classMicrocontroller.html#aca3c6d6bc8899bac7374c934e51048b0">Microcontroller::onKeyEvent</a></div><div class="ttdeci">virtual void onKeyEvent(const Event::Key &amp;keyEvent)</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:78</div></div>
+<div class="ttc" id="aclassEvent_html"><div class="ttname"><a href="classEvent.html">Event</a></div><div class="ttdef"><b>Definition:</b> Event.h:8</div></div>
+<div class="ttc" id="aclassMicrocontroller_html_a0800cadece16c5b342f10d6076bab543"><div class="ttname"><a href="classMicrocontroller.html#a0800cadece16c5b342f10d6076bab543">Microcontroller::start</a></div><div class="ttdeci">void start()</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:28</div></div>
 <div class="ttc" id="aclassMicrocontroller_html"><div class="ttname"><a href="classMicrocontroller.html">Microcontroller</a></div><div class="ttdef"><b>Definition:</b> Microcontroller.h:19</div></div>
+<div class="ttc" id="aclassMicrocontroller_html_a8ec5ee0d861d8d5aeec92d8a6c4329fe"><div class="ttname"><a href="classMicrocontroller.html#a8ec5ee0d861d8d5aeec92d8a6c4329fe">Microcontroller::Microcontroller</a></div><div class="ttdeci">Microcontroller(VoltageLines &amp;voltageLines, unsigned int updateRateHz)</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:12</div></div>
+<div class="ttc" id="aclassMicrocontroller_html_a552909108ddaa6c196c837487b6e8f54"><div class="ttname"><a href="classMicrocontroller.html#a552909108ddaa6c196c837487b6e8f54">Microcontroller::onFixedUpdate</a></div><div class="ttdeci">void onFixedUpdate() override final</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:59</div></div>
 <div class="ttc" id="astructMicrocontroller_1_1VoltageLine_html"><div class="ttname"><a href="structMicrocontroller_1_1VoltageLine.html">Microcontroller::VoltageLine</a></div><div class="ttdef"><b>Definition:</b> Microcontroller.h:27</div></div>
-<div class="ttc" id="aclassMicrocontroller_html_add1d85056291d076676d5446d5dc409f"><div class="ttname"><a href="classMicrocontroller.html#add1d85056291d076676d5446d5dc409f">Microcontroller::Microcontroller</a></div><div class="ttdeci">Microcontroller(VoltageLines &amp;voltageLines)</div><div class="ttdef"><b>Definition:</b> Microcontroller.cpp:11</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

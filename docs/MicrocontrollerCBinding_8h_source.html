@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bots2D: /home/niknil/workspace/c++/sumobot_simulator/include/engine/controllers/components/MicrocontrollerCBinding.h Source File</title>
+<title>Bots2D: src/controllers/components/MicrocontrollerCBinding.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a7f531b1c37460085cedd304cb8df01d.html">engine</a></li><li class="navelem"><a class="el" href="dir_6c190c55c329b6158b340785d25a4e53.html">controllers</a></li><li class="navelem"><a class="el" href="dir_505f7b93bac31911e11d0e94426bf150.html">components</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_bbd6674d859f4cefaacb708974cac240.html">controllers</a></li><li class="navelem"><a class="el" href="dir_8d53b589740cdb7a7d85bc961e638d91.html">components</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -74,26 +74,26 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;Microcontroller.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">typedef</span> void (*setup_function)(<span class="keywordtype">float</span> **<span class="keyword">const</span>, int);</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">typedef</span> void (*loop_function)(void);</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classMicrocontrollerCBinding.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a> : <span class="keyword">public</span> <a class="code" href="classMicrocontroller.html">Microcontroller</a></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="classMicrocontrollerCBinding.html#a285a12d56c202ce1521ac3d9b2974d2a">MicrocontrollerCBinding</a>(Microcontroller::VoltageLines &amp;voltageLines, setup_function setupFcn, loop_function loopFcn);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a>() = 0;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">void</span> microcontrollerUpdate() <span class="keyword">override</span> <span class="keyword">final</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    loop_function m_loopFcn = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">float</span> *m_voltageLinesCArray[VoltageLine::Idx::Count];</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">typedef</span> void (*loop_function)(void);</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">typedef</span> float (*get_voltage_function)(int, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">typedef</span> void (*set_voltage_function)(int, float, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">typedef</span> void (*setup_function)(get_voltage_function, set_voltage_function, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classMicrocontrollerCBinding.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a> : <span class="keyword">public</span> <a class="code" href="classMicrocontroller.html">Microcontroller</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a>(Microcontroller::VoltageLines &amp;voltageLines, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> updateRateHz, setup_function setupFcn, loop_function loopFcn);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a>() = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> microcontrollerUpdate() <span class="keyword">override</span> <span class="keyword">final</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    loop_function m_loopFcn = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* MICROCONTROLLER_C_BINDING_H_ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassMicrocontrollerCBinding_html"><div class="ttname"><a href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a></div><div class="ttdef"><b>Definition:</b> MicrocontrollerCBinding.h:18</div></div>
+<div class="ttc" id="aclassMicrocontrollerCBinding_html"><div class="ttname"><a href="classMicrocontrollerCBinding.html">MicrocontrollerCBinding</a></div><div class="ttdef"><b>Definition:</b> MicrocontrollerCBinding.h:20</div></div>
 <div class="ttc" id="aclassMicrocontroller_html"><div class="ttname"><a href="classMicrocontroller.html">Microcontroller</a></div><div class="ttdef"><b>Definition:</b> Microcontroller.h:19</div></div>
-<div class="ttc" id="aclassMicrocontrollerCBinding_html_a285a12d56c202ce1521ac3d9b2974d2a"><div class="ttname"><a href="classMicrocontrollerCBinding.html#a285a12d56c202ce1521ac3d9b2974d2a">MicrocontrollerCBinding::MicrocontrollerCBinding</a></div><div class="ttdeci">MicrocontrollerCBinding(Microcontroller::VoltageLines &amp;voltageLines, setup_function setupFcn, loop_function loopFcn)</div><div class="ttdef"><b>Definition:</b> MicrocontrollerCBinding.cpp:3</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['application_92',['Application',['../classApplication.html',1,'']]]
+  ['application_76',['Application',['../classApplication.html',1,'']]],
+  ['assetshelper_77',['AssetsHelper',['../classAssetsHelper.html',1,'']]]
 ];
