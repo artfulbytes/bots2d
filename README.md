@@ -122,10 +122,12 @@ Bots2D is documented with Doxygen. You can generate the documentation with:
 ```
 doxygen docs/Doxyfile
 ```
-to ***docs/doxygen/***.
-You can also access it online [here](https://artfulbytes.github.io/bots2d/).
+to ***docs/***.
+You can also access it online [here](https://artfulbytes.github.io/bots2d/). If you
+want to push new updates to the online version, you should push the changes to the
+gh-branch (not master).
 
-There is also a lenghty blog post about it [here](https://www.artfulbytes.com/bots2d-blogpost).
+There is also a lenghty blog post about Bots2D [here](https://www.artfulbytes.com/bots2d-blogpost).
 
 ## Known issues
 * Rendering is slightly off (probably because of rounding error)
