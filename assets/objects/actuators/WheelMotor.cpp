@@ -96,9 +96,8 @@ void WheelMotor::updateForce()
     const float diameter = m_spec.diameter;
     const float angularSpeed = currentForwardSpeed / (3.14f * diameter);
     const float torqueApplied = m_spec.voltageInConstant * m_voltageIn - m_spec.angularSpeedConstant * angularSpeed;
-    const float rollingFriction = 0;
     /* Convert torque to force (t = r * F => F = t / r) */
-    const float forceToApply = (torqueApplied / (diameter / 2)) - rollingFriction;
+    const float forceToApply = (torqueApplied / (diameter / 2));
     m_body2D->setForce(currentForwardNormal, forceToApply);
 
     /* Apply sideway friction to mimic real wheel */
@@ -112,4 +111,15 @@ void WheelMotor::onFixedUpdate()
         setAnimation();
     }
     updateForce();
+}
+
+void WheelMotor::setSidewayFrictionConstant(float sidewayFrictionConstant)
+{
+    m_spec.sidewayFrictionConstant = sidewayFrictionConstant;
+}
+
+void WheelMotor::setFrictionCoefficient(float frictionCoefficient)
+{
+    m_spec.frictionCoefficient = frictionCoefficient;
+    m_body2D->setFrictionCoefficient(frictionCoefficient);
 }

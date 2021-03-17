@@ -5,21 +5,23 @@
 #include "components/Transforms.h"
 #include "components/RectComponent.h"
 #include "shapes/RectObject.h"
+#include "Scene.h"
 
 #include <iostream>
 
 PhysicsBot::PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &startPosition, const float startRotation) :
-    SceneObject(scene)
+    SceneObject(scene), m_frictionCoefficient(0.1f), m_bodyMass(0.4f), m_wheelMass(0.025f), m_wheelCount(4)
 {
-    Body2D::Specification mainBodySpec(true, true, 0.42f);
-    mainBodySpec.frictionCoefficient = 0.0f;
+    Body2D::Specification mainBodySpec(true, true, m_bodyMass, 0.0f);
     m_transformComponent = std::make_unique<RectTransform>(startPosition, size, startRotation);
     const auto transform = static_cast<RectTransform *>(m_transformComponent.get());
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, mainBodySpec);
     m_renderableComponent = std::make_unique<RectComponent>(transform, glm::vec4{1.0f,1.0f,1.0f,1.0f});
+    m_body = static_cast<Body2D *>(m_physicsComponent.get());
 
     auto wheelColor = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};
-    Body2D::Specification wheelSpec(true, true, 0.125f);
+    Body2D::Specification wheelSpec(true, true, getLoadedWheelMass());
+    wheelSpec.frictionCoefficient = m_frictionCoefficient;
     glm::vec2 wheelSize{0.015, 0.02};
     glm::vec2 wheelPosFrontRight{((size.x + 0.015f) / 2.0f), size.y/4.0f};
     glm::vec2 wheelPosBackRight{((size.x + 0.015f) / 2.0f), -size.y/4.0f};
@@ -34,7 +36,6 @@ PhysicsBot::PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &sta
     static_cast<Body2D *>(m_physicsComponent.get())->attachBodyWithRevoluteJoint(wheelPosBackLeft, m_backLeftWheel->getBody());
     static_cast<Body2D *>(m_physicsComponent.get())->attachBodyWithRevoluteJoint(wheelPosFrontRight, m_frontRightWheel->getBody());
     static_cast<Body2D *>(m_physicsComponent.get())->attachBodyWithRevoluteJoint(wheelPosBackRight, m_backRightWheel->getBody());
-
 }
 
 PhysicsBot::~PhysicsBot()
@@ -53,16 +54,55 @@ void PhysicsBot::onFixedUpdate()
     setMotorForce(frontRightWheelBody, m_frontRightVoltage);
     setMotorForce(backRightWheelBody, m_backRightVoltage);
 
-    glm::vec2 lateralImpulseFrontLeft = -frontLeftWheelBody->getLateralVelocity() * 1500.0f;
-    frontLeftWheelBody->setLinearImpulse(lateralImpulseFrontLeft);
-    glm::vec2 lateralImpulseBackLeft = -backLeftWheelBody->getLateralVelocity() * 1500.0f;
-    backLeftWheelBody->setLinearImpulse(lateralImpulseBackLeft);
-    glm::vec2 lateralImpulseFrontRight = -frontRightWheelBody->getLateralVelocity() * 1500.0f;
-    frontLeftWheelBody->setLinearImpulse(lateralImpulseFrontRight);
-    glm::vec2 lateralImpulseBackRight = -backRightWheelBody->getLateralVelocity() * 1500.0f;
-    backRightWheelBody->setLinearImpulse(lateralImpulseBackRight);
+    const float epsilon = 0.001f;
+    /* Only do callbacks every 10 ms (100 times per second) */
+    const auto millisecondsSinceStart = m_scene->getMillisecondsSinceStart();
+    if (millisecondsSinceStart - m_lastCallbackTime > 10) {
+        const auto forwardSpeed = getForwardSpeed();
+        if (fabs(forwardSpeed) > (epsilon + fabs(m_recordedTopSpeed))) {
+            m_recordedTopSpeed = fabs(forwardSpeed);
+        }
+        if (fabs(forwardSpeed) < (epsilon / 10.0f)) {
+            m_lastStandStillTime = millisecondsSinceStart;
+        }
 
-    /* TODO: The sideway friction should depend on the weight of the bot */
+        /* Are we at top speed? */
+        const bool atTopSpeed = fabs(forwardSpeed - m_recordedTopSpeed) < epsilon;
+        if (atTopSpeed) {
+            float accelerationToTopSpeed = 1000.0f * fabs(forwardSpeed) / (millisecondsSinceStart - m_lastStandStillTime);
+            const bool atNewTopSpeed = fabs(forwardSpeed) > (fabs(m_bestAccelerationRecordedAtSpeed) + epsilon);
+            if (atNewTopSpeed) {
+                m_bestAccelerationToCurrentTopSpeed = accelerationToTopSpeed;
+                m_timeToTopSpeed = (millisecondsSinceStart - m_lastStandStillTime) / 1000.0f;
+                m_bestAccelerationRecordedAtSpeed = fabs(forwardSpeed);
+            } else {
+                const bool newAccelerationIsBetter = accelerationToTopSpeed > m_bestAccelerationToCurrentTopSpeed;
+                if (newAccelerationIsBetter) {
+                    m_bestAccelerationToCurrentTopSpeed = accelerationToTopSpeed;
+                    m_timeToTopSpeed = (millisecondsSinceStart - m_lastStandStillTime) / 1000.0f;
+                }
+            }
+        }
+
+        if (m_onForwardSpeedChanged) {
+            m_onForwardSpeedChanged(forwardSpeed);
+        }
+
+        if (m_onTopSpeedChanged) {
+            m_onTopSpeedChanged(m_recordedTopSpeed);
+        }
+
+        if (m_onAccelerationToTopSpeedChanged) {
+            m_onAccelerationToTopSpeedChanged(m_bestAccelerationToCurrentTopSpeed);
+        }
+
+        const float forwardAcceleration = 1000.0f * (forwardSpeed - m_lastForwardSpeed) / (millisecondsSinceStart - m_lastCallbackTime);
+        if (m_onForwardAccelerationChanged) {
+            m_onForwardAccelerationChanged(forwardAcceleration);
+        }
+        m_lastForwardSpeed = forwardSpeed;
+        m_lastCallbackTime = millisecondsSinceStart;
+    }
 }
 
 void PhysicsBot::setVoltageFrontLeft(float voltage)
@@ -125,8 +165,68 @@ void PhysicsBot::setMotorForce(Body2D *body2D, float voltageIn)
     body2D->setForce(currentForwardNormal, forceToApply);
 
     /* Apply sideway friction to mimic real wheel */
-    #if 0
-    glm::vec2 lateralCancelingImpulse = -m_body2D->getLateralVelocity() * m_spec.sidewayFrictionConstant;
-    m_body2D->setLinearImpulse(lateralCancelingImpulse);
-    #endif
+    glm::vec2 lateralCancelingImpulse = -body2D->getLateralVelocity() * m_sidewayFrictionConstant;
+    /* TODO: The sideway friction should depend on the weight of the bot */
+    body2D->setLinearImpulse(lateralCancelingImpulse);
+}
+
+void PhysicsBot::setSidewayFrictionConstant(float sidewayFrictionConstant)
+{
+    m_sidewayFrictionConstant = sidewayFrictionConstant;
+}
+
+void PhysicsBot::setFrictionCoefficient(float frictionCoefficient)
+{
+    m_frictionCoefficient = frictionCoefficient;
+    m_frontLeftWheel->getBody()->setFrictionCoefficient(frictionCoefficient);
+    m_backLeftWheel->getBody()->setFrictionCoefficient(frictionCoefficient);
+    m_frontRightWheel->getBody()->setFrictionCoefficient(frictionCoefficient);
+    m_backRightWheel->getBody()->setFrictionCoefficient(frictionCoefficient);
+}
+
+void PhysicsBot::setTotalMass(float mass)
+{
+    assert(mass > 0.0f);
+    m_wheelMass = (mass * 0.2f) / m_wheelCount;
+    m_bodyMass = mass - (m_wheelMass * m_wheelCount);
+    assert(fabs(mass - getTotalMass()) < 0.001f);
+    m_frontLeftWheel->getBody()->setMass(m_wheelMass);
+    m_frontRightWheel->getBody()->setMass(m_wheelMass);
+    m_backLeftWheel->getBody()->setMass(m_wheelMass);
+    m_backRightWheel->getBody()->setMass(m_wheelMass);
+    m_body->setMass(m_bodyMass);
+}
+
+float PhysicsBot::getForwardSpeed() const
+{
+    return m_body->getForwardSpeed();
+}
+
+void PhysicsBot::setForwardSpeedCallback(std::function<void(float)> onForwardSpeedChanged)
+{
+    m_onForwardSpeedChanged = onForwardSpeedChanged;
+}
+
+void PhysicsBot::setForwardAccelerationCallback(std::function<void(float)> onForwardAccelerationChanged)
+{
+    m_onForwardAccelerationChanged = onForwardAccelerationChanged;
+}
+
+void PhysicsBot::setTopSpeedCallback(std::function<void(float)> onTopSpeedChanged)
+{
+    m_onTopSpeedChanged = onTopSpeedChanged;
+}
+
+void PhysicsBot::setAccelerationToTopSpeedCallback(std::function<void(float)> onAccelerationToTopSpeedChanged)
+{
+    m_onAccelerationToTopSpeedChanged = onAccelerationToTopSpeedChanged;
+}
+
+void PhysicsBot::resetRecordedValues()
+{
+    m_recordedTopSpeed = 0.0f;
+    m_topSpeedAcceleration = 0.0f;
+    m_bestAccelerationToCurrentTopSpeed = 0.0f;
+    m_bestAccelerationRecordedAtSpeed = 0.0f;
+    m_timeToTopSpeed = 0.0f;
 }

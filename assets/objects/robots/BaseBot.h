@@ -56,6 +56,8 @@ public:
     float *getVoltageLine(RangeSensorIndex rangeSensorIndex) const;
     float *getVoltageLine(LineDetectorIndex lineDetectorIndex) const;
     virtual void setDebug(bool enabled);
+    void setWheelFrictionCoefficient(float frictionCoefficient);
+    void setWheelSidewayFrictionConstant(float sidewayFrictionConstant);
 
 private:
     void createBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);

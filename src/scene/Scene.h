@@ -38,6 +38,7 @@ public:
     void addMenu(ImGuiMenu *menu);
     std::string getDescription() const { return m_description; }
     unsigned int getSecondsSinceStart() const;
+    unsigned int getMillisecondsSinceStart() const;
     float getPhysicsStepTime() const { return m_physicsStepTime; }
 
 protected:

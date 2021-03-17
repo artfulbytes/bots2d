@@ -30,6 +30,7 @@ float PhysicsWorld::scaleLength(float unscaledLength)
 
 float PhysicsWorld::scaleLengthNoAssert(float unscaledLength)
 {
+    assert(unscaledLength >= 0.0f);
     return unscaledLength * lengthScaleFactor;
 }
 
@@ -83,11 +84,13 @@ float PhysicsWorld::scaleAcceleration(float unscaledAcceleration)
 
 float PhysicsWorld::scaleMass(float unscaledMass)
 {
+    assert(unscaledMass >= 0.0f);
     return unscaledMass * massScaleFactor;
 }
 
 float PhysicsWorld::unscaleMass(float scaledMass)
 {
+    assert(scaledMass >= 0.0f);
     return scaledMass / massScaleFactor;
 }
 
@@ -103,6 +106,7 @@ float PhysicsWorld::unscaleForce(float scaledForce)
 
 float PhysicsWorld::normalForce(float unscaledMass)
 {
+    assert(unscaledMass >= 0.0f);
     return unscaledMass * gravitationConstant * forceScaleFactor;
 }
 

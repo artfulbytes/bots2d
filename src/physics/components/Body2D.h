@@ -58,14 +58,18 @@ public:
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getMass() const;
+    void setMass(float mass);
+    void setFrictionCoefficient(float frictionCoefficient);
 
 private:
     /**
-     * In top view gravity mode, the gravity is set to 0. This mimics friction with a b2FrictionJoint.
+     * In top view gravity mode, the gravity is set to 0.
+     * We use b2FrictionJoint as a workaround for friction.
      */
     void addTopViewFriction(float normalForce, float frictionCoefficient);
     float getTopViewFrictionForce(float stepTime) const;
 
+    float m_topViewFrictionCoefficient = 0.0f;
     b2FrictionJoint *m_topViewFrictionJoint = nullptr;
     b2Body *m_body = nullptr;
     b2Body *m_frictionBody = nullptr;

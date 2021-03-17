@@ -39,11 +39,11 @@ void ImGuiOverlay::render()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ImGuiOverlay::begin(std::string name, float x, float y)
+void ImGuiOverlay::begin(std::string name, float x, float y, float width, float height)
 {
     ImGui::SetNextWindowPos({x, y});
-    ImGui::SetNextWindowSize(ImVec2(250, 450), ImGuiCond_Once);
-    ImGui::Begin(name.c_str());
+    ImGui::SetNextWindowSize(ImVec2(width, height), ImGuiCond_Once);
+    ImGui::Begin(name.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize);
 }
 
 void ImGuiOverlay::end()
@@ -61,3 +61,15 @@ void ImGuiOverlay::text(std::string text)
     ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 230);
     ImGui::Text(text.c_str());
 }
+
+void ImGuiOverlay::checkbox(std::string name, bool *set)
+{
+    ImGui::Checkbox(name.c_str(), set);
+}
+
+void ImGuiOverlay::sliderFloat(std::string name, float *value, float min, float max)
+{
+    ImGui::SliderFloat(name.c_str(), value, min, max);
+}
+
+/* TODO: Colored text: ImGui::TextColored(ImVec4(1,1,0,1), "Important Stuff"); */

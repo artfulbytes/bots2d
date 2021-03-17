@@ -294,6 +294,20 @@ float Body2D::getMass() const
     return PhysicsWorld::unscaleMass(m_body->GetMass());
 }
 
+void Body2D::setMass(float mass)
+{
+    assert(m_body);
+    b2MassData massData;
+    m_body->GetMassData(&massData);
+    massData.mass = PhysicsWorld::scaleMass(mass);
+    m_body->SetMassData(&massData);
+
+    /* Must also update top view friction */
+    if (m_topViewFrictionJoint != nullptr) {
+        setFrictionCoefficient(m_topViewFrictionCoefficient);
+    }
+}
+
 void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
 {
     b2BodyDef frictionBodyDef;
@@ -304,11 +318,21 @@ void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
     jointDef.bodyA = m_frictionBody;
     jointDef.bodyB = m_body;
     jointDef.maxForce = normalForce * frictionCoefficient;
+    m_topViewFrictionCoefficient = frictionCoefficient;
 
     /* Don't use torque friction, it just causes weird physics behaviour */
     jointDef.maxTorque = 0.0f;
     /* No need to explicitly delete joint, it's deleted when the attached body is deleted */
     m_topViewFrictionJoint = static_cast<b2FrictionJoint *>(m_world->CreateJoint(&jointDef));
+}
+
+void Body2D::setFrictionCoefficient(float frictionCoefficient)
+{
+    assert(m_topViewFrictionJoint != nullptr);
+    assert(0.0f <= frictionCoefficient && frictionCoefficient <= 1.0f);
+    float normalForce = PhysicsWorld::normalForce(getMass());
+    m_topViewFrictionJoint->SetMaxForce(normalForce * frictionCoefficient);
+    m_topViewFrictionCoefficient = frictionCoefficient;
 }
 
 float Body2D::getTopViewFrictionForce(float stepTime) const

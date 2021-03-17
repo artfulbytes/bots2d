@@ -138,3 +138,19 @@ float *BaseBot::getVoltageLine(BaseBot::LineDetectorIndex lineDetectorIndex) con
 void BaseBot::onFixedUpdate()
 {
 }
+
+void BaseBot::setWheelFrictionCoefficient(float frictionCoefficient)
+{
+    for (auto &wheelMotor : m_wheelMotors)
+    {
+        wheelMotor.second->setFrictionCoefficient(frictionCoefficient);
+    }
+}
+
+void BaseBot::setWheelSidewayFrictionConstant(float sidewayFrictionConstant)
+{
+    for (auto &wheelMotor: m_wheelMotors)
+    {
+        wheelMotor.second->setSidewayFrictionConstant(sidewayFrictionConstant);
+    }
+}

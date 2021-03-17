@@ -32,7 +32,7 @@ void SceneMenu::setWarningMessage(std::string message)
 
 void SceneMenu::render()
 {
-    ImGuiOverlay::begin("Scene menu", 15.0f, 15.0f);
+    ImGuiOverlay::begin("Scene menu", 15.0f, 15.0f, 230.0f, 450.0f);
     for (auto& scene : m_scenes)
     {
         if (ImGuiOverlay::button(scene.first.c_str())) {

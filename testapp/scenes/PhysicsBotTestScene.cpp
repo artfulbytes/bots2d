@@ -1,7 +1,9 @@
 #include "PhysicsBotTestScene.h"
 #include "components/KeyboardController.h"
 #include "robots/PhysicsBot.h"
-
+#include "ImGuiMenu.h"
+#include <sstream>
+#include <iomanip>
 
 namespace {
 class PhysicsBotController : public KeyboardController
@@ -84,6 +86,71 @@ PhysicsBotTestScene::PhysicsBotTestScene() :
     m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
     m_keyboardController = std::make_unique<PhysicsBotController>(m_physicsBot.get());
     m_physicsBot->setController(m_keyboardController.get());
+    m_tuningMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
+    auto physicsBot = m_physicsBot.get();
+    m_tuningMenu->addLabel("Friction");
+    m_tuningMenu->addSlider("Sideway fric. const.", 0.0f, 1000.0f, physicsBot->getSidewayFrictionConstant(),
+        [physicsBot](float value){ physicsBot->setSidewayFrictionConstant(value); }
+    );
+    m_tuningMenu->addSlider("Wheel friction coeff.", 0.0f, 1.0f, physicsBot->getFrictionCoefficient(),
+        [physicsBot](float value){ physicsBot->setFrictionCoefficient(value); }
+    );
+    m_tuningMenu->addLabel("Mass");
+    m_tuningMenu->addSlider("Physics bot", 0.01f, 10.0f, physicsBot->getTotalMass(),
+        [physicsBot](float value){ physicsBot->setTotalMass(value); }
+    );
+
+    m_tuningMenu->addLabel("");
+
+    std::function<void(std::string)> setSpeedText;
+    m_tuningMenu->addLabel("Speed: ", &setSpeedText);
+    physicsBot->setForwardSpeedCallback([setSpeedText](float forwardSpeed){
+        if (fabs(forwardSpeed) < 0.001f) {
+            forwardSpeed = 0.0f;
+        }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << forwardSpeed;
+        std::string speedString = ss.str();
+        setSpeedText("Speed: " + speedString + " m/s");
+    });
+
+    std::function<void(std::string)> setAccelerationText;
+    m_tuningMenu->addLabel("Acceleration: ", &setAccelerationText);
+    physicsBot->setForwardAccelerationCallback([setAccelerationText](float forwardAcceleration){
+        if (fabs(forwardAcceleration) < 0.001f) {
+            forwardAcceleration = 0.0f;
+        }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << forwardAcceleration;
+        std::string accelerationString = ss.str();
+        setAccelerationText("Acceleration: " + accelerationString + " m/s^2");
+    });
+
+    std::function<void(std::string)> setTopSpeedText;
+    m_tuningMenu->addLabel("Top speed: ", &setTopSpeedText);
+    physicsBot->setTopSpeedCallback([setTopSpeedText](float topSpeed){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << topSpeed;
+        std::string topSpeedString = ss.str();
+        setTopSpeedText("Top speed: " + topSpeedString + " m/s");
+    });
+
+    std::function<void(std::string)> setAccToTopSpeedText;
+    m_tuningMenu->addLabel("Acc. to top speed: ", &setAccToTopSpeedText);
+    physicsBot->setAccelerationToTopSpeedCallback([setAccToTopSpeedText](float accToTopSpeed){
+        if (accToTopSpeed > 1000000.0f) {
+            accToTopSpeed = 0.0f;
+        }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << accToTopSpeed;
+        std::string accToTopSpeedString = ss.str();
+        setAccToTopSpeedText("Acc. top speed: " + accToTopSpeedString + " m/s^2");
+    });
+
+    m_tuningMenu->addButton("Reset recorded values", [physicsBot](){
+        physicsBot->resetRecordedValues();
+    });
+
 }
 
 PhysicsBotTestScene::~PhysicsBotTestScene()
