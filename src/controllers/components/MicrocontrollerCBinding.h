@@ -6,7 +6,8 @@
 typedef void (*loop_function)(void);
 typedef float (*get_voltage_function)(int, void *);
 typedef void (*set_voltage_function)(int, float, void *);
-typedef void (*setup_function)(get_voltage_function, set_voltage_function, void *);
+typedef void (*physics_sleep_function)(int, void *);
+typedef void (*setup_function)(get_voltage_function, set_voltage_function, physics_sleep_function, void *);
 
 /**
  * Base class for providing C-bindings to the controller code.
@@ -19,7 +20,7 @@ typedef void (*setup_function)(get_voltage_function, set_voltage_function, void 
 class MicrocontrollerCBinding : public Microcontroller
 {
 public:
-    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, unsigned int updateRateHz, setup_function setupFcn, loop_function loopFcn);
+    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn);
     virtual ~MicrocontrollerCBinding() = 0;
 
 private:

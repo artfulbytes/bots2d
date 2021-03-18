@@ -9,15 +9,17 @@ namespace {
     const unsigned int startupTime_ms = 500;
 }
 
-Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines, unsigned int updateRateHz) :
-    m_simulatorVoltageLines(voltageLines),
-    m_loopSleepTime_ms(1000 / updateRateHz)
+Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines) :
+    m_simulatorVoltageLines(voltageLines)
 {
 }
 
 Microcontroller::~Microcontroller()
 {
     m_running = false;
+    m_sleepSteps = 0;
+    /* Make sure we signal in case the thread is sleeping */
+    m_conditionWake.notify_one();
     if (m_thread.joinable()) {
         m_thread.join();
     } else {
@@ -56,9 +58,22 @@ void Microcontroller::transferVoltageLevelsSimulatorToMicrocontroller()
 
 /* Called by the simulator update loop, keep it short to avoid affecting
  * the frame rate. */
-void Microcontroller::onFixedUpdate()
+void Microcontroller::onFixedUpdate(float stepTime)
 {
     m_physicsStarted = true;
+
+    /* Check if controller code has requested to sleep for X physics steps,
+     * and if it has, count the steps and wake it up afterwards */
+    std::unique_lock<std::mutex> uniqueLock(m_mutexSleepSteps);
+    m_currentStepTime = stepTime;
+    if (m_sleepSteps > 0) {
+        m_sleepSteps--;
+        if (m_sleepSteps == 0) {
+            m_conditionWake.notify_one();
+        }
+    }
+    uniqueLock.unlock();
+
     transferVoltageLevelsSimulatorToMicrocontroller();
     if (!m_thread.joinable() && m_microcontrollerStarted) {
         start();
@@ -71,7 +86,6 @@ void Microcontroller::microcontrollerThreadFn()
     std::this_thread::sleep_for(std::chrono::milliseconds(startupTime_ms));
     while (m_running) {
         microcontrollerUpdate();
-        std::this_thread::sleep_for(std::chrono::milliseconds(m_loopSleepTime_ms));
     }
 }
 
@@ -111,4 +125,16 @@ void Microcontroller::set_voltage_level(int idx, float level, void *userdata)
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
     assert(userdata != nullptr);
     microcontroller->setVoltageLevel(idx, level);
+}
+
+void Microcontroller::physicsSleep(int sleep_ms) {
+    std::unique_lock<std::mutex> uniqueLock(m_mutexSleepSteps);
+    m_sleepSteps = sleep_ms / (m_currentStepTime * 1000);
+    m_conditionWake.wait(uniqueLock, [this] { return m_sleepSteps == 0; });
+}
+
+void Microcontroller::physics_sleep(int sleep_ms, void *userdata) {
+    Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
+    assert(userdata != nullptr);
+    microcontroller->physicsSleep(sleep_ms);
 }

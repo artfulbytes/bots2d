@@ -40,10 +40,10 @@ void SceneObject::updatePhysics()
     }
 }
 
-void SceneObject::updateController()
+void SceneObject::updateController(float stepTime)
 {
     if (m_controllerComponent) {
-        m_controllerComponent->onFixedUpdate();
+        m_controllerComponent->onFixedUpdate(stepTime);
     }
 }
 

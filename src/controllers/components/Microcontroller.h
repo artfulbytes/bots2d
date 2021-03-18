@@ -6,6 +6,7 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
+#include <condition_variable>
 
 /**
  * Base class for mimicking a real microcontroller.
@@ -40,12 +41,8 @@ public:
     /**
      * \param voltageLines List of voltage lines that may be connected to "electrical" objects.
      * Users must manually keep track of which voltage lines are connected to what objects.
-     * \param updateRateHz How many times per second the loop should run at maximum. Note
-     * any sleep inside the controller code will of course affect the update rate. There is
-     * also no point in running it faster than the physics update rate because the voltage
-     * lines are only transferred every physics step.
      */
-    Microcontroller(VoltageLines &voltageLines, unsigned int updateRateHz);
+    Microcontroller(VoltageLines &voltageLines);
     ~Microcontroller();
 
     /**
@@ -53,7 +50,7 @@ public:
      */
     void start();
 
-    void onFixedUpdate() override final;
+    void onFixedUpdate(float stepTime) override final;
 
     /**
      * Microcontroller should typically not handle key events, but don't make this method final,
@@ -71,6 +68,16 @@ public:
     static void set_voltage_level(int idx, float level, void *userdata);
     void setVoltageLevel(int idx, float level);
 
+    /* C-callback function that calculates and sleeps for the number of physics steps contained
+     * in sleep_ms milliseconds.
+     *
+     * NOTE: The precision is determined by how small the physics step time is.
+     *       A smaller step time means better precision.
+     * NOTE: The controller code SHOULD use this function and NOT the OS sleep function.
+     */
+    void physicsSleep(int sleep_ms);
+    static void physics_sleep(int sleep_ms, void *userdata);
+
 private:
     /** This is the main controller loop; it runs in a separate thread */
     virtual void microcontrollerUpdate() = 0;
@@ -84,7 +91,6 @@ private:
     std::atomic<bool> m_running = true;
     bool m_physicsStarted = false;
     bool m_microcontrollerStarted = false;
-    const unsigned int m_loopSleepTime_ms = 10;
 
     /**
      * To give the simulator loop and microcontroller loop freedom to access the voltage lines whenever
@@ -94,6 +100,18 @@ private:
     std::mutex m_voltageLinesMutex;
     void transferVoltageLevelsSimulatorToMicrocontroller();
     float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count] = {0};
+
+    /**
+     * To make the sleep behaviour of the controller consistent with the physics, we should
+     * sleep for a certain number of physics steps. This results in a much more reliable sleep behaviour
+     * compared to using the OS sleep function, because the OS sleep function has no guarantee for how
+     * long it takes for a sleeping thread to wake up. This also enables us to consistently slow down and
+     * speed up the simulation.
+     */
+    std::condition_variable m_conditionWake;
+    unsigned int m_sleepSteps = 0;
+    std::mutex m_mutexSleepSteps;
+    float m_currentStepTime = 0.0f;
 };
 
 

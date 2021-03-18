@@ -29,7 +29,7 @@ public:
     virtual ~Scene();
     PhysicsWorld *getPhysicsWorld() const;
     void updatePhysics(float stepTime);
-    void updateControllers();
+    void updateControllers(float stepTime);
     void sceneObjectsOnFixedUpdate();
     void render();
     void onKeyEvent(const Event::Key &keyEvent);

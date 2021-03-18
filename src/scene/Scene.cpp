@@ -41,10 +41,10 @@ void Scene::updatePhysics(float stepTime)
     }
 }
 
-void Scene::updateControllers()
+void Scene::updateControllers(float stepTime)
 {
     for (auto obj : m_objects) {
-        obj->updateController();
+        obj->updateController(stepTime);
     }
 }
 

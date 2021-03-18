@@ -17,8 +17,8 @@ public:
     const float maxVoltage = 6.0f;
 
     void setDrive(Drive drive) {
-        float leftVoltage = 0.0f;
-        float rightVoltage = 0.0f;
+        float leftVoltage = maxVoltage;
+        float rightVoltage = maxVoltage;
         switch (drive) {
             case Drive::Stop:
                 leftVoltage = rightVoltage = 0.0f;
@@ -30,15 +30,14 @@ public:
                 leftVoltage = rightVoltage = -maxVoltage;
                 break;
             case Drive::Left:
-                leftVoltage = -maxVoltage * 0.6f;
-                rightVoltage = maxVoltage * 0.6f;
+                leftVoltage = -maxVoltage;
+                rightVoltage = maxVoltage;
                 break;
             case Drive::Right:
-                leftVoltage = maxVoltage * 0.6f;
-                rightVoltage = -maxVoltage * 0.6f;
+                leftVoltage = maxVoltage;
+                rightVoltage = -maxVoltage;
                 break;
         }
-
         *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) = leftVoltage;
         *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) = leftVoltage;
         *m_sumobot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) = rightVoltage;
@@ -76,9 +75,6 @@ public:
             }
         }
     }
-    void onFixedUpdate() override
-    {
-    }
 private:
     Sumobot *m_sumobot = nullptr;
 };
@@ -103,9 +99,10 @@ void SumobotTestScene::createBackground()
 }
 
 SumobotTestScene::SumobotTestScene() :
-    Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView, (1/500.0f))
+    Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView, (1/1000.0f))
 {
     createBackground();
+    m_sumobotMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
 
     const Dohyo::Specification dohyoSpec =
     {
@@ -116,13 +113,11 @@ SumobotTestScene::SumobotTestScene() :
     m_dohyo = std::make_unique<Dohyo>(this, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
-                                               glm::vec2{0.15f, 0.15f}, 4.71f);
-#if 0
-    m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
-    m_fourWheelBot->setController(m_keyboardController.get());
-#endif
+                                               glm::vec2{0.25f, 0.0f}, 4.71f);
     m_fourWheelBotOpponent = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                        glm::vec2{-0.15f, 0.15f}, 4.71f);
+    m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBotOpponent.get());
+    m_fourWheelBotOpponent->setController(m_keyboardController.get());
     Microcontroller::VoltageLines voltageLines;
     voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
     voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
@@ -137,7 +132,7 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::B2] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Front) };
     voltageLines[Microcontroller::VoltageLine::B3] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontRight) };
     voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
-    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines, 500);
+    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
     m_microcontroller->start();
     m_fourWheelBot->setDebug(true);

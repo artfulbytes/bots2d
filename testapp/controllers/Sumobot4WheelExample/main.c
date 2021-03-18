@@ -51,17 +51,24 @@ typedef enum line_detection {
 void *userdata_ptr = NULL;
 get_voltage_function get_voltage_func_ptr = NULL;
 set_voltage_function set_voltage_func_ptr = NULL;
+sleep_function sleep_func_ptr = NULL;
 state_t currentState = SEARCH;
 
 #define VOLTAGE_LINE_DETECTED (0.0f)
 #define MAX_VOLTAGE_RANGE_SENSOR (1.0f)
 #define MAX_VOLTAGE_MOTOR (6.0f);
 
-void setup(get_voltage_function get_voltage_fcn, set_voltage_function set_voltage_fcn, void *userdata)
+void setup(get_voltage_function get_voltage_fcn, set_voltage_function set_voltage_fcn, sleep_function sleep_fcn, void *userdata)
 {
+    sleep_func_ptr = sleep_fcn;
     get_voltage_func_ptr= get_voltage_fcn;
     set_voltage_func_ptr = set_voltage_fcn;
     userdata_ptr = userdata;
+}
+
+void sleep_ms(uint32_t sleep_ms)
+{
+    sleep_func_ptr(sleep_ms, userdata_ptr);
 }
 
 float get_voltage(voltage_idx_t idx)
@@ -183,11 +190,6 @@ bool enemy_out_of_ring() {
     //return enemy_detected_in_front() && line_detected_in_front();
 }
 
-void msleep(uint32_t sleep_time)
-{
-    usleep(1000 * sleep_time);
-}
-
 /* TODO: The commands should be in terms of rough rotate angles instead... (sleep times may differ between targets...) */
 void retreat_manuever(line_detection_t line_detection)
 {
@@ -196,47 +198,39 @@ void retreat_manuever(line_detection_t line_detection)
         break;
     case LINE_DETECTION_FRONT_LEFT:
         set_drive(REVERSE);
-        msleep(300);
-        set_drive(ROTATE_RIGHT);
-        msleep(200);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_FRONT_RIGHT:
         set_drive(REVERSE);
-        msleep(300);
-        set_drive(ROTATE_LEFT);
-        msleep(200);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_BACK_LEFT:
         set_drive(FORWARD);
-        msleep(300);
-        set_drive(ROTATE_RIGHT);
-        msleep(200);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_BACK_RIGHT:
         set_drive(FORWARD);
-        msleep(300);
-        set_drive(ROTATE_LEFT);
-        msleep(200);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_FRONT:
         set_drive(REVERSE);
-        msleep(300);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_BACK:
         set_drive(FORWARD);
-        msleep(300);
+        sleep_ms(300);
         break;
     case LINE_DETECTION_LEFT:
         set_drive(ROTATE_RIGHT);
-        msleep(200);
+        sleep_ms(100);
         set_drive(FORWARD);
-        msleep(200);
+        sleep_ms(150);
         break;
     case LINE_DETECTION_RIGHT:
         set_drive(ROTATE_LEFT);
-        msleep(200);
+        sleep_ms(100);
         set_drive(FORWARD);
-        msleep(200);
+        sleep_ms(150);
         break;
     }
 }
@@ -244,6 +238,7 @@ void retreat_manuever(line_detection_t line_detection)
 
 void loop()
 {
+    sleep_ms(1); // Sleep a bit to offload the host CPU :)
     state_t nextState = currentState;
     line_detection_t line_detection = get_line_detection();
     switch (currentState)
@@ -258,7 +253,7 @@ void loop()
             set_drive(STOP);
             break;
         }
-        set_drive(FORWARD);
+        set_drive(ROTATE_RIGHT);
         /* Enemy in front -> go to attack? */
         /* Enemy on left side? -> rotate right */
         /* Enemy on right side? -> rotate left */
@@ -279,8 +274,6 @@ void loop()
         break;
     case RETREAT:
         /* Should handle having an enemy and a line detected... */
-        //set_drive(REVERSE);
-        //msleep(200);
         retreat_manuever(line_detection);
         /* Can we avoid retrieving line here again? */
         line_detection = get_line_detection();

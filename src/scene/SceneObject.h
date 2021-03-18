@@ -30,7 +30,7 @@ public:
     void setController(ControllerComponent *controller);
     void updateRenderable();
     void updatePhysics();
-    void updateController();
+    void updateController(float stepTime);
     virtual void onFixedUpdate();
     virtual void onKeyEvent(const Event::Key &keyEvent);
 

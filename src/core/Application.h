@@ -37,7 +37,7 @@ protected:
 private:
     bool isStepTimeTooSmall() const;
     void updatePhysics(float stepTime);
-    void updateLogic();
+    void updateLogic(float stepTime);
     void updateAndRenderSceneMenu();
     void render();
 

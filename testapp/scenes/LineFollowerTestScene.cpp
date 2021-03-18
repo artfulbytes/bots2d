@@ -69,8 +69,9 @@ namespace {
                 }
             }
         }
-        void onFixedUpdate() override
+        void onFixedUpdate(float stepTime) override
         {
+            (void)stepTime;
         }
     private:
         LineFollower *m_lineFollower = nullptr;

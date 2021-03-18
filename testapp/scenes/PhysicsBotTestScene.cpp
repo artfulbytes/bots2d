@@ -72,9 +72,6 @@ public:
             }
         }
     }
-    void onFixedUpdate() override
-    {
-    }
 private:
     PhysicsBot *m_physicsBot = nullptr;
 };
@@ -86,6 +83,7 @@ PhysicsBotTestScene::PhysicsBotTestScene() :
     m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
     m_keyboardController = std::make_unique<PhysicsBotController>(m_physicsBot.get());
     m_physicsBot->setController(m_keyboardController.get());
+
     m_tuningMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
     auto physicsBot = m_physicsBot.get();
     m_tuningMenu->addLabel("Friction");

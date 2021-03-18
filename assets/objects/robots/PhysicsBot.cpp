@@ -70,7 +70,7 @@ void PhysicsBot::onFixedUpdate()
         const bool atTopSpeed = fabs(forwardSpeed - m_recordedTopSpeed) < epsilon;
         if (atTopSpeed) {
             float accelerationToTopSpeed = 1000.0f * fabs(forwardSpeed) / (millisecondsSinceStart - m_lastStandStillTime);
-            const bool atNewTopSpeed = fabs(forwardSpeed) > (fabs(m_bestAccelerationRecordedAtSpeed) + epsilon);
+            const bool atNewTopSpeed = fabs(forwardSpeed) > (fabs(m_bestAccelerationRecordedAtSpeed) + 0.01f);
             if (atNewTopSpeed) {
                 m_bestAccelerationToCurrentTopSpeed = accelerationToTopSpeed;
                 m_timeToTopSpeed = (millisecondsSinceStart - m_lastStandStillTime) / 1000.0f;

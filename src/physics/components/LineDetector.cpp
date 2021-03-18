@@ -33,7 +33,7 @@ float *LineDetector::getVoltageLine()
 
 void LineDetector::onFixedUpdate()
 {
-    const bool detected = m_userData.contactCount > 0;
+    const bool detected = m_userData.contactCount.load() > 0;
     m_detectVoltage = detected ? 3.3f : 0.0f;
     const bool debugDraw = m_transform != nullptr;
     if (debugDraw) {

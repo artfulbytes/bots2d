@@ -9,7 +9,7 @@
 class MicrocontrollerSumobot4WheelExample : public MicrocontrollerCBinding
 {
 public:
-    MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLines &voltageLines, unsigned int updateRateHz);
+    MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLines &voltageLines);
     ~MicrocontrollerSumobot4WheelExample() {}
 };
 

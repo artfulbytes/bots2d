@@ -29,9 +29,6 @@ namespace {
                 }
             }
         }
-        void onFixedUpdate() override
-        {
-        }
     private:
         WheelMotor *m_wheelMotor = nullptr;
     };

@@ -164,10 +164,10 @@ void Application::updatePhysics(float stepTime)
     }
 }
 
-void Application::updateLogic()
+void Application::updateLogic(float stepTime)
 {
     if (m_currentScene) {
-        m_currentScene->updateControllers();
+        m_currentScene->updateControllers(stepTime);
         m_currentScene->sceneObjectsOnFixedUpdate();
     }
 }
@@ -263,7 +263,7 @@ void Application::run()
             {
                 stepsTaken++;
                 updatePhysics(m_currentScene->getPhysicsStepTime());
-                updateLogic();
+                updateLogic(m_currentScene->getPhysicsStepTime());
                 accumulator -= m_currentScene->getPhysicsStepTime();
             }
         }
