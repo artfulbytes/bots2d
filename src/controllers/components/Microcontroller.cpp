@@ -5,10 +5,6 @@
 #include <thread>
 #include <iostream>
 
-namespace {
-    const unsigned int startupTime_ms = 500;
-}
-
 Microcontroller::Microcontroller(Microcontroller::VoltageLines &voltageLines) :
     m_simulatorVoltageLines(voltageLines)
 {
@@ -18,7 +14,7 @@ Microcontroller::~Microcontroller()
 {
     m_running = false;
     m_sleepSteps = 0;
-    /* Make sure we signal in case the thread is sleeping */
+    /* Make sure we signal in case the thread is blocking */
     m_conditionWake.notify_one();
     if (m_thread.joinable()) {
         m_thread.join();
@@ -82,10 +78,16 @@ void Microcontroller::onFixedUpdate(float stepTime)
 
 void Microcontroller::microcontrollerThreadFn()
 {
-    /* Give it some start up time to prevent buggy physics behaviour */
-    std::this_thread::sleep_for(std::chrono::milliseconds(startupTime_ms));
-    while (m_running) {
-        microcontrollerUpdate();
+    /* To make the main function behave more like a real main function, we allow
+     * it to contain an endless loop. But a thread with an endless loop can't be
+     * terminated, and will normally cause the program to hang when we join the thread.
+     * As a workaround (similar to the one used by Boost), check the m_running
+     * variable in several functions and throw an exception if it's false. Note,
+     * for this to work, the main function must call get/set voltage or sleep
+     * regularly. */
+    try {
+        main();
+    } catch (int e) {
     }
 }
 
@@ -101,6 +103,9 @@ float Microcontroller::getVoltageLevel(int idx)
     assert(idx <= VoltageLine::Idx::Count);
     float level = m_microcontrollerVoltageLineLevels[idx];
     m_voltageLinesMutex.unlock();
+    if (!m_running) {
+        throw 0;
+    }
     return level;
 }
 
@@ -118,6 +123,9 @@ void Microcontroller::setVoltageLevel(int idx, float level)
     assert(idx <= VoltageLine::Idx::Count);
     m_microcontrollerVoltageLineLevels[idx] = level;
     m_voltageLinesMutex.unlock();
+    if (!m_running) {
+        throw 0;
+    }
 }
 
 void Microcontroller::set_voltage_level(int idx, float level, void *userdata)
@@ -131,6 +139,9 @@ void Microcontroller::physicsSleep(int sleep_ms) {
     std::unique_lock<std::mutex> uniqueLock(m_mutexSleepSteps);
     m_sleepSteps = sleep_ms / (m_currentStepTime * 1000);
     m_conditionWake.wait(uniqueLock, [this] { return m_sleepSteps == 0; });
+    if (!m_running) {
+        throw 0;
+    }
 }
 
 void Microcontroller::physics_sleep(int sleep_ms, void *userdata) {

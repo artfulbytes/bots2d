@@ -1,15 +1,21 @@
 #include "components/MicrocontrollerCBinding.h"
 
-MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, setup_function setupFcn, loop_function loopFcn) :
-    Microcontroller(voltageLines),
-    m_loopFcn(loopFcn)
-{
-    setupFcn(get_voltage_level, set_voltage_level, physics_sleep, this);
+extern "C" {
+#include "microcontroller_c_functions.h"
+#include "microcontroller_c_setup.h"
 }
 
-void MicrocontrollerCBinding::microcontrollerUpdate()
+
+MicrocontrollerCBinding::MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, main_function mainFcn) :
+    Microcontroller(voltageLines),
+    m_mainFcn(mainFcn)
 {
-    m_loopFcn();
+    setup(get_voltage_level, set_voltage_level, physics_sleep, this);
+}
+
+void MicrocontrollerCBinding::main()
+{
+    m_mainFcn();
 }
 
 MicrocontrollerCBinding::~MicrocontrollerCBinding()

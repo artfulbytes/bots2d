@@ -243,8 +243,10 @@ void Application::run()
 {
     double currentTime = glfwGetTime();
     double accumulator = 0.0;
-    int stepsTaken = 0;
-
+    unsigned int stepsTaken = 0;
+    unsigned int skipPhysicsUpdate = 5;
+    unsigned int elapsedTime = 0;
+    unsigned int lastElapsedTime = 0;
     while (!glfwWindowShouldClose(m_window))
     {
         double newTime = glfwGetTime();
@@ -255,10 +257,22 @@ void Application::run()
         }
         currentTime = newTime;
 
-        accumulator += frameTime;
+        /* The frame time spikes every time we change the scene. Since we use the frame time
+         * to determine how many physics steps we take, it means that the number of physics
+         * steps also spikes. To counter this, detect when the scene changes and skip updating
+         * the physics for a couple of frames. */
+        if (m_currentScene) {
+            elapsedTime = m_currentScene->getMillisecondsSinceStart();
+            bool changedScene = elapsedTime < lastElapsedTime || lastElapsedTime == 0;
+            lastElapsedTime = elapsedTime;
+            if (changedScene) {
+                skipPhysicsUpdate = 5;
+                accumulator = 0;
+            }
+        }
 
         stepsTaken = 0;
-        if (m_currentScene != nullptr) {
+        if (m_currentScene != nullptr && !skipPhysicsUpdate) {
             while (accumulator >= m_currentScene->getPhysicsStepTime())
             {
                 stepsTaken++;
@@ -266,6 +280,10 @@ void Application::run()
                 updateLogic(m_currentScene->getPhysicsStepTime());
                 accumulator -= m_currentScene->getPhysicsStepTime();
             }
+            accumulator += frameTime;
+        }
+        if (skipPhysicsUpdate > 0) {
+            skipPhysicsUpdate--;
         }
         glfwPollEvents();
         render();

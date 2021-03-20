@@ -11,10 +11,11 @@
 /**
  * Base class for mimicking a real microcontroller.
  *
- * The microcontroller's update loop is offloaded to a separate thread to prevent the simulator's
- * update rate from depending on the microcontroller's update rate.
+ * The execution of the microcontroller is offloaded to a separate thread to prevent
+ * the simulator's update rate from depending on the microcontroller's update rate
+ * (or vice versa).
  *
- * This class must be inherited, and inherited classes must implement microcontrollerUpdate.
+ * This class must be inherited and the inheritor must implement main.
  */
 class Microcontroller : public ControllerComponent
 {
@@ -23,7 +24,8 @@ public:
      * A voltage line simulates a real voltage line with a pointer
      * to a float value, which represents the voltage level. This pointer
      * enables sharing the value between a microcontroller and an "electrical"
-     * object such as a motor or sensor.
+     * object such as a motor or sensor. In other words, it's how the microcontroller
+     * control output (e.g. motor) and read input (sensor).
      */
     struct VoltageLine {
         enum Idx {
@@ -54,7 +56,7 @@ public:
 
     /**
      * Microcontroller should typically not handle key events, but don't make this method final,
-     * because it's useful to override it for debugging.
+     * because it can be useful to override it when debugging.
      */
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
@@ -79,8 +81,8 @@ public:
     static void physics_sleep(int sleep_ms, void *userdata);
 
 private:
-    /** This is the main controller loop; it runs in a separate thread */
-    virtual void microcontrollerUpdate() = 0;
+    /** This is the controller main function; it runs in a separate thread */
+    virtual void main() = 0;
 
     /** Thread function that runs the microcontroller loop */
     void microcontrollerThreadFn();

@@ -57,6 +57,7 @@ target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/transf
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/scene)
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/physics)
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/controllers)
+target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/controllers/components)
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/external/glm)
 
 # Include bots2d and build it as a static lib

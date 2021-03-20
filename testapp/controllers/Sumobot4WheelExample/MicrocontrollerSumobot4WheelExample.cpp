@@ -1,10 +1,10 @@
 #include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
 
 extern "C" {
-#include "Sumobot4WheelExample/c_bindings.h"
+#include "Sumobot4WheelExample/main_function.h"
 }
 
 MicrocontrollerSumobot4WheelExample::MicrocontrollerSumobot4WheelExample(Microcontroller::VoltageLines &voltageLines) :
-    MicrocontrollerCBinding(voltageLines, setup, loop)
+    MicrocontrollerCBinding(voltageLines, _main)
 {
 }

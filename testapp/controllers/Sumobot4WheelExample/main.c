@@ -1,6 +1,6 @@
-#include "Sumobot4WheelExample/c_bindings.h"
+#include "Sumobot4WheelExample/main_function.h"
+#include "microcontroller_c_functions.h"
 #include <unistd.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -48,38 +48,11 @@ typedef enum line_detection {
     LINE_DETECTION_RIGHT,
 } line_detection_t;
 
-void *userdata_ptr = NULL;
-get_voltage_function get_voltage_func_ptr = NULL;
-set_voltage_function set_voltage_func_ptr = NULL;
-sleep_function sleep_func_ptr = NULL;
-state_t currentState = SEARCH;
 
 #define VOLTAGE_LINE_DETECTED (0.0f)
 #define MAX_VOLTAGE_RANGE_SENSOR (1.0f)
 #define MAX_VOLTAGE_MOTOR (6.0f);
 
-void setup(get_voltage_function get_voltage_fcn, set_voltage_function set_voltage_fcn, sleep_function sleep_fcn, void *userdata)
-{
-    sleep_func_ptr = sleep_fcn;
-    get_voltage_func_ptr= get_voltage_fcn;
-    set_voltage_func_ptr = set_voltage_fcn;
-    userdata_ptr = userdata;
-}
-
-void sleep_ms(uint32_t sleep_ms)
-{
-    sleep_func_ptr(sleep_ms, userdata_ptr);
-}
-
-float get_voltage(voltage_idx_t idx)
-{
-    return get_voltage_func_ptr(idx, userdata_ptr);
-}
-
-void set_voltage(voltage_idx_t idx, float level)
-{
-    set_voltage_func_ptr(idx, level, userdata_ptr);
-}
 
 line_detection_t get_line_detection()
 {
@@ -235,59 +208,62 @@ void retreat_manuever(line_detection_t line_detection)
     }
 }
 
+state_t currentState = SEARCH;
 
-void loop()
+void _main()
 {
-    sleep_ms(1); // Sleep a bit to offload the host CPU :)
-    state_t nextState = currentState;
-    line_detection_t line_detection = get_line_detection();
-    switch (currentState)
-    {
-    case SEARCH:
-        if (line_detection != LINE_DETECTION_NONE) {
-            nextState = RETREAT;
+    while(true) {
+        sleep_ms(1); // Sleep a bit to offload the host CPU :)
+        state_t nextState = currentState;
+        line_detection_t line_detection = get_line_detection();
+        switch (currentState)
+        {
+        case SEARCH:
+            if (line_detection != LINE_DETECTION_NONE) {
+                nextState = RETREAT;
+                break;
+            }
+            if (enemy_detected_in_front()) {
+                nextState = ATTACK;
+                set_drive(STOP);
+                break;
+            }
+            set_drive(ROTATE_RIGHT);
+            /* Enemy in front -> go to attack? */
+            /* Enemy on left side? -> rotate right */
+            /* Enemy on right side? -> rotate left */
+            /* No enemy? -> rotate right */
+            break;
+        case ATTACK:
+            if (line_detection != LINE_DETECTION_NONE) {
+                nextState = RETREAT;
+                set_drive(STOP);
+                break;
+            }
+            if (enemy_detected_in_front()) {
+                set_drive(FORWARD);
+            } else {
+                set_drive(STOP);
+                nextState = SEARCH;
+            }
+            break;
+        case RETREAT:
+            /* Should handle having an enemy and a line detected... */
+            retreat_manuever(line_detection);
+            /* Can we avoid retrieving line here again? */
+            line_detection = get_line_detection();
+            if (line_detection == LINE_DETECTION_NONE) {
+                nextState = SEARCH;
+            }
             break;
         }
-        if (enemy_detected_in_front()) {
-            nextState = ATTACK;
-            set_drive(STOP);
-            break;
-        }
-        set_drive(ROTATE_RIGHT);
-        /* Enemy in front -> go to attack? */
-        /* Enemy on left side? -> rotate right */
-        /* Enemy on right side? -> rotate left */
-        /* No enemy? -> rotate right */
-        break;
-    case ATTACK:
-        if (line_detection != LINE_DETECTION_NONE) {
-            nextState = RETREAT;
-            set_drive(STOP);
-            break;
-        }
-        if (enemy_detected_in_front()) {
-            set_drive(FORWARD);
-        } else {
-            set_drive(STOP);
-            nextState = SEARCH;
-        }
-        break;
-    case RETREAT:
-        /* Should handle having an enemy and a line detected... */
-        retreat_manuever(line_detection);
-        /* Can we avoid retrieving line here again? */
-        line_detection = get_line_detection();
-        if (line_detection == LINE_DETECTION_NONE) {
-            nextState = SEARCH;
-        }
-        break;
-    }
-    (void)nextState;
+        (void)nextState;
 
-    if (enemy_out_of_ring()) {
-    }
+        if (enemy_out_of_ring()) {
+        }
 
-    if (nextState != currentState) {
-        currentState = nextState;
+        if (nextState != currentState) {
+            currentState = nextState;
+        }
     }
 }
