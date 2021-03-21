@@ -1,4 +1,4 @@
-#include "bodies/GenericBody.h"
+#include "bodies/SimpleBotBody.h"
 #include "PhysicsWorld.h"
 #include "components/Transforms.h"
 #include "components/Body2D.h"
@@ -10,60 +10,60 @@
 
 #include <iostream>
 
-GenericBody::GenericBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation) :
+SimpleBotBody::SimpleBotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation) :
     SceneObject(scene)
 {
     assert(m_physicsWorld->getGravityType() == PhysicsWorld::Gravity::TopView);
     switch (spec.shape) {
-    case GenericBody::Shape::Rectangle:
+    case SimpleBotBody::Shape::Rectangle:
         createRectangleBody(spec, startPosition, startRotation);
         break;
-    case GenericBody::Shape::Circle:
+    case SimpleBotBody::Shape::Circle:
         createCircleBody(spec, startPosition, startRotation);
         break;
     }
 }
 
-GenericBody::~GenericBody()
+SimpleBotBody::~SimpleBotBody()
 {
 }
 
-glm::vec2 GenericBody::getPosition() const
+glm::vec2 SimpleBotBody::getPosition() const
 {
     return m_body2D->getPosition();
 }
 
-float GenericBody::getRotation() const
+float SimpleBotBody::getRotation() const
 {
     return m_body2D->getRotation();
 }
 
-float GenericBody::getForwardSpeed() const
+float SimpleBotBody::getForwardSpeed() const
 {
     return m_body2D->getForwardSpeed();
 }
 
-void GenericBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
+void SimpleBotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     m_transformComponent = std::make_unique<RectTransform>(startPosition, glm::vec2{ spec.width, spec.length }, startRotation);
     const auto transform = static_cast<RectTransform *>(m_transformComponent.get());
 
     switch(spec.textureType) {
-    case GenericBody::TextureType::SumobotPlated:
+    case SimpleBotBody::TextureType::SumobotPlated:
         m_renderableComponent = std::make_unique<RectComponent>(transform, "sumobot_body_plated.png");
         break;
-    case GenericBody::TextureType::SumobotCircuited:
+    case SimpleBotBody::TextureType::SumobotCircuited:
         m_renderableComponent = std::make_unique<RectComponent>(transform, "sumobot_body_circuited.png");
         break;
-    case GenericBody::TextureType::SumobotRoundRed:
-    case GenericBody::TextureType::SumobotRoundBlack:
+    case SimpleBotBody::TextureType::SumobotRoundRed:
+    case SimpleBotBody::TextureType::SumobotRoundBlack:
         assert(0);
         std::cout << "Can't use round texture for rectangle shape" << std::endl;
         break;
-    case GenericBody::TextureType::LineFollowerPlated:
+    case SimpleBotBody::TextureType::LineFollowerPlated:
         m_renderableComponent = std::make_unique<RectComponent>(transform, "line_follower_plated.png");
         break;
-    case GenericBody::TextureType::None:
+    case SimpleBotBody::TextureType::None:
         glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
         m_renderableComponent = std::make_unique<RectComponent>(transform, color);
         break;
@@ -75,25 +75,25 @@ void GenericBody::createRectangleBody(const Specification &spec, const glm::vec2
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
-void GenericBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
+void SimpleBotBody::createCircleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     m_transformComponent = std::make_unique<CircleTransform>(startPosition, (spec.width / 2.0f), startRotation);
     const auto transform = static_cast<CircleTransform *>(m_transformComponent.get());
 
     switch(spec.textureType) {
-    case GenericBody::TextureType::SumobotPlated:
-    case GenericBody::TextureType::SumobotCircuited:
-    case GenericBody::TextureType::LineFollowerPlated:
+    case SimpleBotBody::TextureType::SumobotPlated:
+    case SimpleBotBody::TextureType::SumobotCircuited:
+    case SimpleBotBody::TextureType::LineFollowerPlated:
         assert(0);
         std::cout << "Can't use rectangular texture for round shape" << std::endl;
         break;
-    case GenericBody::TextureType::SumobotRoundRed:
+    case SimpleBotBody::TextureType::SumobotRoundRed:
         m_renderableComponent = std::make_unique<RectComponent>(transform, "sumobot_body_round_red.png");
         break;
-    case GenericBody::TextureType::SumobotRoundBlack:
+    case SimpleBotBody::TextureType::SumobotRoundBlack:
         m_renderableComponent = std::make_unique<RectComponent>(transform, "sumobot_body_round_black.png");
         break;
-    case GenericBody::TextureType::None:
+    case SimpleBotBody::TextureType::None:
         glm::vec4 color(0.0f, 0.0f, 1.0f, 1.0f);
         m_renderableComponent = std::make_unique<CircleComponent>(transform, color);
         break;
@@ -105,21 +105,31 @@ void GenericBody::createCircleBody(const Specification &spec, const glm::vec2 &s
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
 
-void GenericBody::attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition)
+void SimpleBotBody::attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition)
 {
     m_body2D->attachBodyWithRevoluteJoint(relativePosition, wheelMotor->getBody());
 }
 
-void GenericBody::attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition)
+void SimpleBotBody::attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition)
 {
     m_body2D->attachBodyWithWeldJoint(relativePosition, rangeSensorObject->getBody());
 }
 
-void GenericBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition)
+void SimpleBotBody::attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition)
 {
     m_body2D->attachBodyWithWeldJoint(relativePosition, lineDetectorObject->getBody());
 }
 
-void GenericBody::onFixedUpdate()
+void SimpleBotBody::onFixedUpdate()
 {
+}
+
+void SimpleBotBody::setMass(float mass)
+{
+    m_body2D->setMass(mass);
+}
+
+float SimpleBotBody::getMass() const
+{
+    return m_body2D->getMass();
 }

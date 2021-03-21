@@ -77,13 +77,8 @@ private:
 };
 }
 
-PhysicsBotTestScene::PhysicsBotTestScene() :
-    Scene("Scene for experimenting with vehicle physics", PhysicsWorld::Gravity::TopView)
+void PhysicsBotTestScene::createTuningMenu()
 {
-    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
-    m_keyboardController = std::make_unique<PhysicsBotController>(m_physicsBot.get());
-    m_physicsBot->setController(m_keyboardController.get());
-
     m_tuningMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
     auto physicsBot = m_physicsBot.get();
     m_tuningMenu->addLabel("Friction");
@@ -125,12 +120,12 @@ PhysicsBotTestScene::PhysicsBotTestScene() :
     });
 
     std::function<void(std::string)> setTopSpeedText;
-    m_tuningMenu->addLabel("Top speed: ", &setTopSpeedText);
+    m_tuningMenu->addLabel("Recorded top speed: ", &setTopSpeedText);
     physicsBot->setTopSpeedCallback([setTopSpeedText](float topSpeed){
         std::stringstream ss;
         ss << std::fixed << std::setprecision(2) << topSpeed;
         std::string topSpeedString = ss.str();
-        setTopSpeedText("Top speed: " + topSpeedString + " m/s");
+        setTopSpeedText("Recorded top speed: " + topSpeedString + " m/s");
     });
 
     std::function<void(std::string)> setAccToTopSpeedText;
@@ -148,7 +143,15 @@ PhysicsBotTestScene::PhysicsBotTestScene() :
     m_tuningMenu->addButton("Reset recorded values", [physicsBot](){
         physicsBot->resetRecordedValues();
     });
+}
 
+PhysicsBotTestScene::PhysicsBotTestScene() :
+    Scene("Scene for experimenting with vehicle physics", PhysicsWorld::Gravity::TopView)
+{
+    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
+    m_keyboardController = std::make_unique<PhysicsBotController>(m_physicsBot.get());
+    m_physicsBot->setController(m_keyboardController.get());
+    createTuningMenu();
 }
 
 PhysicsBotTestScene::~PhysicsBotTestScene()

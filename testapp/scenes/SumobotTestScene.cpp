@@ -8,6 +8,8 @@
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
 #include "ImGuiMenu.h"
+#include <sstream>
+#include <iomanip>
 
 namespace {
 class SumobotController : public KeyboardController
@@ -98,11 +100,99 @@ void SumobotTestScene::createBackground()
                                                            glm::vec2{ backgroundWidth / 2.0f, backgroundHeight }, 0.0f);
 }
 
+/* TODO: Break out into a separate class for better reuse? */
+void SumobotTestScene::createTuningMenu()
+{
+    m_tuningMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
+    m_tuningMenu->addLabel("Sumobot 4W");
+    auto fourWheelBot = m_fourWheelBotOpponent.get();
+    m_tuningMenu->addSlider("Sideway fric. const.", 0.0f, 100.0f, fourWheelBot->getWheelSidewayFrictionConstant(),
+        [fourWheelBot](float value){ fourWheelBot->setWheelSidewayFrictionConstant(value); }
+    );
+    m_tuningMenu->addSlider("Wheel friction coeff.", 0.0f, 1.0f, fourWheelBot->getWheelFrictionCoefficient(),
+        [fourWheelBot](float value){ fourWheelBot->setWheelFrictionCoefficient(value); }
+    );
+    m_tuningMenu->addSlider("Wheel mass", 0.01f, 0.5f, fourWheelBot->getWheelMass(),
+        [fourWheelBot](float value){ fourWheelBot->setWheelMass(value); }
+    );
+    m_tuningMenu->addSlider("Body mass", 0.1f, 1.0f, fourWheelBot->getBodyMass(),
+        [fourWheelBot](float value){ fourWheelBot->setBodyMass(value); }
+    );
+    m_tuningMenu->addSlider("Max motor voltage", 1.0f, 12.0f, fourWheelBot->getMotorMaxVoltage(),
+        [fourWheelBot](float value){ fourWheelBot->setMotorMaxVoltage(value); }
+    );
+    m_tuningMenu->addSlider("Motor voltage in constant", 0.001f, 0.03f, fourWheelBot->getMotorVoltageInConstant(),
+        [fourWheelBot](float value){ fourWheelBot->setMotorVoltageInConstant(value); }
+    );
+    m_tuningMenu->addSlider("Motor angular speed constant", 0.0005f, 0.03f, fourWheelBot->getMotorAngularSpeedConstant(),
+        [fourWheelBot](float value){ fourWheelBot->setMotorAngularSpeedConstant(value); }
+    );
+
+    std::function<void(std::string)> setSpeedText;
+    m_tuningMenu->addLabel("Speed: ", &setSpeedText);
+    fourWheelBot->setForwardSpeedCallback([setSpeedText](float forwardSpeed){
+        if (fabs(forwardSpeed) < 0.001f) {
+            forwardSpeed = 0.0f;
+        }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << forwardSpeed;
+        std::string speedString = ss.str();
+        setSpeedText("Speed: " + speedString + " m/s");
+    });
+
+    std::function<void(std::string)> setTopSpeedText;
+    m_tuningMenu->addLabel("Top speed: ", &setTopSpeedText);
+    fourWheelBot->setTopSpeedCallback([setTopSpeedText](float topSpeed){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << topSpeed;
+        std::string topSpeedString = ss.str();
+        setTopSpeedText("Top speed: " + topSpeedString + " m/s");
+    });
+
+    std::function<void(std::string)> setAccelerationText;
+    m_tuningMenu->addLabel("Acceleration: ", &setAccelerationText);
+    fourWheelBot->setForwardAccelerationCallback([setAccelerationText](float forwardAcceleration){
+        if (fabs(forwardAcceleration) < 0.001f) {
+            forwardAcceleration = 0.0f;
+        }
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << forwardAcceleration;
+        std::string accelerationString = ss.str();
+        setAccelerationText("Acceleration: " + accelerationString + " m/s^2");
+    });
+
+    std::function<void(std::string)> setTimeToTopSpeedText;
+    m_tuningMenu->addLabel("Top speed time: ", &setTimeToTopSpeedText);
+    fourWheelBot->setTimeToTopSpeedCallback([setTimeToTopSpeedText](float timeToTopSpeed){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << timeToTopSpeed;
+        std::string timeToTopSpeedString = ss.str();
+        setTimeToTopSpeedText("Top speed time: " + timeToTopSpeedString + " s");
+    });
+
+    std::function<void(std::string)> setTopSpeedAccelerationText;
+    m_tuningMenu->addLabel("Top speed acc.: ", &setTopSpeedAccelerationText);
+    fourWheelBot->setTopSpeedAccelerationCallback([setTopSpeedAccelerationText](float topSpeedAcceleration){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << topSpeedAcceleration;
+        std::string topSpeedAccelerationString = ss.str();
+        setTopSpeedAccelerationText("Top speed acc.: " + topSpeedAccelerationString + " m/s^2");
+    });
+
+    std::function<void(std::string)> setTopAccelerationText;
+    m_tuningMenu->addLabel("Top acceleration: ", &setTopAccelerationText);
+    fourWheelBot->setTopAccelerationCallback([setTopAccelerationText](float topAcceleration){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(2) << topAcceleration;
+        std::string topAccelerationString = ss.str();
+        setTopAccelerationText("Top acceleration: " + topAccelerationString + " m/s^2");
+    });
+}
+
 SumobotTestScene::SumobotTestScene() :
     Scene("Test different types of mini-class sumobots", PhysicsWorld::Gravity::TopView, (1/1000.0f))
 {
     createBackground();
-    m_sumobotMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
 
     const Dohyo::Specification dohyoSpec =
     {
@@ -134,7 +224,7 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
     m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
-    m_microcontroller->start();
+    //m_microcontroller->start();
     m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
                                                        glm::vec2{-0.25f, 0.0f}, 1.5f);
@@ -142,6 +232,7 @@ SumobotTestScene::SumobotTestScene() :
                                                         glm::vec2{0.2f, -0.2f}, 3.0f);
     m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),
                                                       glm::vec2{-0.15f, -0.15f}, 1.0f);
+    createTuningMenu();
 }
 
 SumobotTestScene::~SumobotTestScene()

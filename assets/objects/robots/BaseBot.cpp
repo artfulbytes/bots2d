@@ -2,8 +2,9 @@
 
 #include "sensors/LineDetectorObject.h"
 #include "components/KeyboardController.h"
-#include <glm/gtx/rotate_vector.hpp>
+#include "Scene.h"
 
+#include <glm/gtx/rotate_vector.hpp>
 #include <iostream>
 
 void BaseBot::sanityCheckSpec(const BaseBot::Specification &spec)
@@ -39,9 +40,9 @@ BaseBot::~BaseBot()
 
 void BaseBot::createBody(const BaseBot::Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
-    const GenericBody::Specification bodySpec(spec.bodyLength, spec.bodyWidth, spec.bodyMass,
+    const SimpleBotBody::Specification bodySpec(spec.bodyLength, spec.bodyWidth, spec.bodyMass,
                                               spec.bodyShape, spec.bodyTexture);
-    m_body = std::make_unique<GenericBody>(m_scene, bodySpec, startPosition, startRotation);
+    m_body = std::make_unique<SimpleBotBody>(m_scene, bodySpec, startPosition, startRotation);
 }
 
 void BaseBot::createWheelMotors(const BaseBot::Specification &spec)
@@ -137,6 +138,65 @@ float *BaseBot::getVoltageLine(BaseBot::LineDetectorIndex lineDetectorIndex) con
 
 void BaseBot::onFixedUpdate()
 {
+    /* Only do callbacks every 10 ms (100 times per second) */
+    const auto millisecondsSinceStart = m_scene->getMillisecondsSinceStart();
+    const float epsilon = 0.01f;
+    if (millisecondsSinceStart - m_lastCallbackTime > 10) {
+        const auto forwardSpeed = getForwardSpeed();
+        bool newTopSpeed = false;
+        if (fabs(forwardSpeed) > (epsilon + fabs(m_recordedTopSpeed))) {
+            newTopSpeed = true;
+            m_recordedTopSpeed = fabs(forwardSpeed);
+        }
+        if (fabs(forwardSpeed) < (epsilon / 10.0f)) {
+            m_lastStandStillTime = millisecondsSinceStart;
+            m_wasAtStandStill = true;
+        }
+
+        const bool atTopSpeed = fabs(forwardSpeed - m_recordedTopSpeed) < epsilon && forwardSpeed > epsilon;
+        bool justReachedTopSpeed = false;
+        if (atTopSpeed && !m_wasAtTopSpeed) {
+            justReachedTopSpeed = true;
+        }
+        m_wasAtTopSpeed = atTopSpeed;
+
+        if (newTopSpeed || (justReachedTopSpeed && m_wasAtStandStill)) {
+            m_timeToReachTopSpeed = (millisecondsSinceStart - m_lastStandStillTime) / 1000.0f;
+            m_topSpeedAcceleration = forwardSpeed / m_timeToReachTopSpeed;
+            m_wasAtStandStill = false;
+        }
+
+        const float forwardAcceleration = 1000.0f * (forwardSpeed - m_lastForwardSpeed) / (millisecondsSinceStart - m_lastCallbackTime);
+        if (forwardAcceleration > 0 && forwardAcceleration > (epsilon + m_recordedTopAcceleration)) {
+            m_recordedTopAcceleration = fabs(forwardAcceleration);
+        }
+
+        if (m_onForwardAccelerationChanged) {
+            m_onForwardAccelerationChanged(forwardAcceleration);
+        }
+
+        if (m_onTopSpeedChanged) {
+            m_onTopSpeedChanged(m_recordedTopSpeed);
+        }
+        if (m_onForwardSpeedChanged) {
+            m_onForwardSpeedChanged(forwardSpeed);
+        }
+
+        if (m_onTimeToTopSpeedChanged) {
+            m_onTimeToTopSpeedChanged(m_timeToReachTopSpeed);
+        }
+
+        if (m_onTopSpeedAccelerationChanged) {
+            m_onTopSpeedAccelerationChanged(m_topSpeedAcceleration);
+        }
+
+        if (m_onTopAccelerationChanged) {
+            m_onTopAccelerationChanged(m_recordedTopAcceleration);
+        }
+
+        m_lastForwardSpeed = forwardSpeed;
+        m_lastCallbackTime = millisecondsSinceStart;
+    }
 }
 
 void BaseBot::setWheelFrictionCoefficient(float frictionCoefficient)
@@ -153,4 +213,111 @@ void BaseBot::setWheelSidewayFrictionConstant(float sidewayFrictionConstant)
     {
         wheelMotor.second->setSidewayFrictionConstant(sidewayFrictionConstant);
     }
+}
+
+float BaseBot::getWheelFrictionCoefficient() const
+{
+    return m_wheelMotors.begin()->second->getFrictionCoefficient();
+}
+
+float BaseBot::getWheelSidewayFrictionConstant() const
+{
+    return m_wheelMotors.begin()->second->getSidewayFrictionConstant();
+}
+
+void BaseBot::setWheelMass(float mass)
+{
+    for (auto &wheelMotor : m_wheelMotors) {
+        wheelMotor.second->setMass(mass);
+    }
+}
+
+void BaseBot::setBodyMass(float mass)
+{
+    m_body->setMass(mass);
+    const auto wheelCount = m_wheelMotors.size();
+    for (auto &wheelMotor : m_wheelMotors) {
+        wheelMotor.second->setLoadedMass(mass / wheelCount);
+    }
+}
+
+float BaseBot::getBodyMass() const
+{
+    return m_body->getMass();
+}
+
+float BaseBot::getWheelMass() const
+{
+    return m_wheelMotors.begin()->second->getMass();
+}
+
+void BaseBot::setMotorMaxVoltage(float maxVoltage)
+{
+    for (auto &wheelMotor : m_wheelMotors) {
+        wheelMotor.second->setMaxVoltage(maxVoltage);
+    }
+}
+
+void BaseBot::setMotorAngularSpeedConstant(float angularSpeedConstant)
+{
+    for (auto &wheelMotor : m_wheelMotors) {
+        wheelMotor.second->setAngularSpeedConstant(angularSpeedConstant);
+    }
+}
+
+void BaseBot::setMotorVoltageInConstant(float voltageInConstant)
+{
+    for (auto &wheelMotor : m_wheelMotors) {
+        wheelMotor.second->setVoltageInConstant(voltageInConstant);
+    }
+}
+
+float BaseBot::getMotorVoltageInConstant() const
+{
+    return m_wheelMotors.begin()->second->getVoltageInConstant();
+}
+
+float BaseBot::getMotorMaxVoltage() const
+{
+    return m_wheelMotors.begin()->second->getMaxVoltage();
+}
+
+float BaseBot::getMotorAngularSpeedConstant() const
+{
+    return m_wheelMotors.begin()->second->getAngularSpeedConstant();
+}
+
+float BaseBot::getForwardSpeed() const
+{
+    return m_body->getForwardSpeed();
+}
+
+void BaseBot::setForwardSpeedCallback(std::function<void(float)> onForwardSpeedChanged)
+{
+    m_onForwardSpeedChanged = onForwardSpeedChanged;
+}
+
+void BaseBot::setTopSpeedCallback(std::function<void(float)> onTopSpeedChanged)
+{
+    m_onTopSpeedChanged = onTopSpeedChanged;
+}
+
+void BaseBot::setForwardAccelerationCallback(std::function<void(float)> onForwardAccelerationChanged)
+{
+    m_onForwardAccelerationChanged = onForwardAccelerationChanged;
+}
+
+void BaseBot::setTimeToTopSpeedCallback(std::function<void(float)> onTimeToTopSpeedChanged)
+{
+    m_onTimeToTopSpeedChanged = onTimeToTopSpeedChanged;
+}
+
+void BaseBot::setTopSpeedAccelerationCallback(std::function<void(float)> onTopSpeedAccelerationChanged)
+{
+    m_onTopSpeedAccelerationChanged = onTopSpeedAccelerationChanged;
+}
+
+void BaseBot::setTopAccelerationCallback(std::function<void(float)> onTopAccelerationChanged)
+{
+    m_onTopAccelerationChanged = onTopAccelerationChanged;
 }

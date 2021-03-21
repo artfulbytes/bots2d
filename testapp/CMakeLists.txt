@@ -10,7 +10,7 @@ set (BOTS2D_ASSETS
     ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/CircleObject.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/shapes/LineObject.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/actuators/WheelMotor.cpp
-    ${BOTS2D_RELATIVE_PATH}/assets/objects/bodies/GenericBody.cpp
+    ${BOTS2D_RELATIVE_PATH}/assets/objects/bodies/SimpleBotBody.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/BaseBot.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/PhysicsBot.cpp
     ${BOTS2D_RELATIVE_PATH}/assets/objects/robots/Sumobot.cpp

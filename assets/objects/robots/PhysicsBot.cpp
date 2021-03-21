@@ -66,7 +66,6 @@ void PhysicsBot::onFixedUpdate()
             m_lastStandStillTime = millisecondsSinceStart;
         }
 
-        /* Are we at top speed? */
         const bool atTopSpeed = fabs(forwardSpeed - m_recordedTopSpeed) < epsilon;
         if (atTopSpeed) {
             float accelerationToTopSpeed = 1000.0f * fabs(forwardSpeed) / (millisecondsSinceStart - m_lastStandStillTime);
@@ -225,7 +224,6 @@ void PhysicsBot::setAccelerationToTopSpeedCallback(std::function<void(float)> on
 void PhysicsBot::resetRecordedValues()
 {
     m_recordedTopSpeed = 0.0f;
-    m_topSpeedAcceleration = 0.0f;
     m_bestAccelerationToCurrentTopSpeed = 0.0f;
     m_bestAccelerationRecordedAtSpeed = 0.0f;
     m_timeToTopSpeed = 0.0f;

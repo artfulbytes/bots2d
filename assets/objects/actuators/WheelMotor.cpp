@@ -123,3 +123,65 @@ void WheelMotor::setFrictionCoefficient(float frictionCoefficient)
     m_spec.frictionCoefficient = frictionCoefficient;
     m_body2D->setFrictionCoefficient(frictionCoefficient);
 }
+
+float WheelMotor::getFrictionCoefficient() const
+{
+    return m_spec.frictionCoefficient;
+}
+
+float WheelMotor::getSidewayFrictionConstant() const
+{
+    return m_spec.sidewayFrictionConstant;
+}
+
+void WheelMotor::setLoadedMass(float loadedMass) {
+    assert(loadedMass >= 0);
+
+    m_spec.loadedMass = loadedMass;
+    m_body2D->setMass(m_spec.wheelMass + m_spec.loadedMass);
+}
+
+void WheelMotor::setMass(float mass) {
+    assert(mass >= 0);
+
+    m_spec.wheelMass = mass;
+    m_body2D->setMass(m_spec.wheelMass + m_spec.loadedMass);
+}
+
+float WheelMotor::getMass() const
+{
+    return m_body2D->getMass();
+}
+
+void WheelMotor::setMaxVoltage(float maxVoltage)
+{
+    assert(maxVoltage >= 0);
+    m_spec.maxVoltage = maxVoltage;
+}
+
+void WheelMotor::setAngularSpeedConstant(float angularSpeedConstant)
+{
+    assert(angularSpeedConstant >= 0);
+    m_spec.angularSpeedConstant = angularSpeedConstant;
+}
+
+void WheelMotor::setVoltageInConstant(float voltageInConstant)
+{
+    assert(voltageInConstant >= 0);
+    m_spec.voltageInConstant = voltageInConstant;
+}
+
+float WheelMotor::getVoltageInConstant() const
+{
+    return m_spec.voltageInConstant;
+}
+
+float WheelMotor::getMaxVoltage() const
+{
+    return m_spec.maxVoltage;
+}
+
+float WheelMotor::getAngularSpeedConstant() const
+{
+    return m_spec.angularSpeedConstant;
+}

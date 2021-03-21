@@ -72,9 +72,20 @@ public:
     void setDutyCycle(float dutyCycle);
     void setFrictionCoefficient(float frictionCoefficient);
     void setSidewayFrictionConstant(float sidewayFrictionConstant);
+    float getFrictionCoefficient() const;
+    float getSidewayFrictionConstant() const;
     void onFixedUpdate() override;
     float *getVoltageLine();
     const Body2D *getBody() const { return m_body2D; }
+    void setLoadedMass(float loadedMass);
+    void setMass(float mass);
+    float getMass() const;
+    void setMaxVoltage(float maxVoltage);
+    void setAngularSpeedConstant(float angularSpeedConstant);
+    void setVoltageInConstant(float voltageInConstant);
+    float getVoltageInConstant() const;
+    float getMaxVoltage() const;
+    float getAngularSpeedConstant() const;
 
 private:
     void setAnimation();

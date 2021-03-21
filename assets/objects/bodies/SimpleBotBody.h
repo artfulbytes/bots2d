@@ -1,5 +1,5 @@
-#ifndef SUMOBOT_BODY_H_
-#define SUMOBOT_BODY_H_
+#ifndef SIMPLE_BOT_BODY_H_
+#define SIMPLE_BOT_BODY_H_
 
 #include "SceneObject.h"
 #include <glm/glm.hpp>
@@ -11,16 +11,15 @@ class RangeSensorObject;
 class LineDetectorObject;
 
 /**
- * General robot body to be used along with other scene objects in a SceneObject
- * implementing a full robot. Dimensions are adjustable, and motors
- * and sensors can be attached to it.
+ * Simple robot body (cirular/rectangular) that should be used with other scene objects
+ * to compose a full robot. Dimensions are adjustable, and motors and sensors can be attached to it.
  *
  * Note: It doesn't introduce any friction with the ground, instead that friction has
  *       to be introduced by the wheels. But it does introduce rotational inertia (all
  *       bodies in Box2D have inertia). Consequently, we mimic the real world better.
  *
  */
-class GenericBody : public SceneObject
+class SimpleBotBody : public SceneObject
 {
 public:
     enum class Shape { Rectangle, Circle };
@@ -41,8 +40,8 @@ public:
         TextureType textureType = TextureType::None;
     };
 
-    GenericBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
-    ~GenericBody();
+    SimpleBotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
+    ~SimpleBotBody();
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getForwardSpeed() const;
@@ -50,6 +49,8 @@ public:
     void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
     void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
     void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);
+    void setMass(float mass);
+    float getMass() const;
 
 private:
     void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);
@@ -58,4 +59,4 @@ private:
     Body2D *m_body2D = nullptr;
 };
 
-#endif /* SUMOBOT_BODY_H_ */
+#endif /* SIMPLE_BOT_BODY_H_ */

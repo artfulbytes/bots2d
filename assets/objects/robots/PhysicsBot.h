@@ -9,7 +9,7 @@
 class RectObject;
 class Body2D;
 
-/* TODO: Comment */
+/* Test bot to play with the physics dynamics more directly */
 class PhysicsBot : public SceneObject
 {
 public:
@@ -69,7 +69,6 @@ private:
     float m_lastForwardSpeed = 0.0f;
     float m_recordedTopSpeed = 0.0f;
     float m_lastStandStillTime = 0.0f;
-    float m_topSpeedAcceleration = 0.0f;
     float m_bestAccelerationToCurrentTopSpeed = 0.0f;
     float m_bestAccelerationRecordedAtSpeed = 0.0f;
     float m_timeToTopSpeed = 0.0f;

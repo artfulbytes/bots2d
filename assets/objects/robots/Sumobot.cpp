@@ -16,8 +16,8 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00528f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
-            GenericBody::Shape::Rectangle,
-            GenericBody::TextureType::SumobotCircuited,
+            SimpleBotBody::Shape::Rectangle,
+            SimpleBotBody::TextureType::SumobotCircuited,
             WheelMotor::TextureType::Green,
             {
                 { Sumobot::WheelMotorIndex::FrontLeft,  {-(0.07f + 0.015f) / 2,  0.1f / 5} },
@@ -51,8 +51,8 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
-            GenericBody::Shape::Rectangle,
-            GenericBody::TextureType::SumobotPlated,
+            SimpleBotBody::Shape::Rectangle,
+            SimpleBotBody::TextureType::SumobotPlated,
             WheelMotor::TextureType::Orange,
             {
                 { Sumobot::WheelMotorIndex::Left,   {-(0.06f + 0.02f) / 2, -0.1f / 5} },
@@ -84,8 +84,8 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
-            GenericBody::Shape::Circle,
-            GenericBody::TextureType::SumobotRoundBlack,
+            SimpleBotBody::Shape::Circle,
+            SimpleBotBody::TextureType::SumobotRoundBlack,
             WheelMotor::TextureType::Red,
             {
                 { Sumobot::WheelMotorIndex::Left,  {-(0.075f + 0.0125f) / 2,  0.0f} },
@@ -115,8 +115,8 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
-            GenericBody::Shape::Circle,
-            GenericBody::TextureType::SumobotRoundRed,
+            SimpleBotBody::Shape::Circle,
+            SimpleBotBody::TextureType::SumobotRoundRed,
             WheelMotor::TextureType::Green,
             {
                 { Sumobot::WheelMotorIndex::Left,  {-(0.075f + 0.0125f) / 2,  0.0f} },

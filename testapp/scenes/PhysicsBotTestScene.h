@@ -13,6 +13,7 @@ public:
     ~PhysicsBotTestScene();
 
 private:
+    void createTuningMenu();
     std::unique_ptr<ImGuiMenu> m_tuningMenu;
     std::unique_ptr<KeyboardController> m_keyboardController;
     std::unique_ptr<PhysicsBot> m_physicsBot;
