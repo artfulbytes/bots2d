@@ -224,7 +224,8 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
     m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
-    //m_microcontroller->start();
+    m_microcontroller->start();
+
     m_fourWheelBot->setDebug(true);
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
                                                        glm::vec2{-0.25f, 0.0f}, 1.5f);

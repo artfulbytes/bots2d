@@ -1,13 +1,25 @@
 #ifndef MICROCONTROLLER_H_
 #define MICROCONTROLLER_H_
 
+/* These are C-callback functions. */
+#ifdef __cplusplus
+extern "C" {
+#endif
+float get_voltage_level(int idx, void *userdata);
+void set_voltage_level(int idx, float level, void *userdata);
+void physics_sleep(int sleep_ms, void *userdata);
+#ifdef __cplusplus
+}
+#endif
+
+/* This header is shared between C++ and C */
+#ifdef __cplusplus
 #include "ControllerComponent.h"
 #include <array>
 #include <atomic>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-
 /**
  * Base class for mimicking a real microcontroller.
  *
@@ -60,17 +72,18 @@ public:
      */
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
-    /* C-callback function to set voltage level from controller code.
-     * Accesses the member function getVoltageLevel by casting userdata. */
-    static float get_voltage_level(int idx, void *userdata);
+    /**
+     * Get voltage level for voltage line at index idx.
+     */
     float getVoltageLevel(int idx);
 
-    /* C-callback function to set voltage level from controller code.
-     * Accesses the member function setVoltageLevel by casting userdata. */
-    static void set_voltage_level(int idx, float level, void *userdata);
+    /**
+     * Set voltage level of voltage line at index idx
+     */
     void setVoltageLevel(int idx, float level);
 
-    /* C-callback function that calculates and sleeps for the number of physics steps contained
+    /**
+     * Calculates and sleeps for the number of physics steps contained
      * in sleep_ms milliseconds.
      *
      * NOTE: The precision is determined by how small the physics step time is.
@@ -78,7 +91,6 @@ public:
      * NOTE: The controller code SHOULD use this function and NOT the OS sleep function.
      */
     void physicsSleep(int sleep_ms);
-    static void physics_sleep(int sleep_ms, void *userdata);
 
 private:
     /** This is the controller main function; it runs in a separate thread */
@@ -95,12 +107,13 @@ private:
     bool m_microcontrollerStarted = false;
 
     /**
-     * To give the simulator loop and microcontroller loop freedom to access the voltage lines whenever
-     * they want while avoiding race conditions, each loop access its own array of voltage lines. The
-     * values are copied (safely with a mutex) between them every simulator iteration.
+     * Since the simulator and microcontroller code runs in separate threads, we must separate the voltage
+     * lines to avoid race conditions. Do this by creating a separate voltage level array that the microcontroller
+     * can write freely to, and synchronize it (safely with mutex) with the Simulator's voltage lines every
+     * simulation iteration.
      */
     std::mutex m_voltageLinesMutex;
-    void transferVoltageLevelsSimulatorToMicrocontroller();
+    void transferVoltageLevels();
     float m_microcontrollerVoltageLineLevels[VoltageLine::Idx::Count] = {0};
 
     /**
@@ -115,6 +128,6 @@ private:
     std::mutex m_mutexSleepSteps;
     float m_currentStepTime = 0.0f;
 };
-
+#endif /* __cplusplus */
 
 #endif /* MICROCONTROLLER_H_ */

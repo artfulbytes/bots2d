@@ -54,12 +54,12 @@ typedef enum line_detection {
 #define MAX_VOLTAGE_MOTOR (6.0f);
 
 
-line_detection_t get_line_detection()
+line_detection_t get_line_detection(void *userdata)
 {
-    bool frontLeft = get_voltage(VOLTAGE_FRONT_LEFT_LINE_DETECTOR) > VOLTAGE_LINE_DETECTED;
-    bool frontRight = get_voltage(VOLTAGE_FRONT_RIGHT_LINE_DETECTOR) > VOLTAGE_LINE_DETECTED;
-    bool backLeft = get_voltage(VOLTAGE_BACK_LEFT_LINE_DETECTOR) > VOLTAGE_LINE_DETECTED;
-    bool backRight = get_voltage(VOLTAGE_BACK_LEFT_LINE_DETECTOR) > VOLTAGE_LINE_DETECTED;
+    bool frontLeft = get_voltage_ud(VOLTAGE_FRONT_LEFT_LINE_DETECTOR, userdata) > VOLTAGE_LINE_DETECTED;
+    bool frontRight = get_voltage_ud(VOLTAGE_FRONT_RIGHT_LINE_DETECTOR, userdata) > VOLTAGE_LINE_DETECTED;
+    bool backLeft = get_voltage_ud(VOLTAGE_BACK_LEFT_LINE_DETECTOR, userdata) > VOLTAGE_LINE_DETECTED;
+    bool backRight = get_voltage_ud(VOLTAGE_BACK_LEFT_LINE_DETECTOR, userdata) > VOLTAGE_LINE_DETECTED;
 
     if (frontLeft) {
         if (frontRight) {
@@ -87,27 +87,27 @@ line_detection_t get_line_detection()
     return LINE_DETECTION_NONE;
 }
 
-bool enemy_detected_in_front()
+bool enemy_detected_in_front(void *userdata)
 {
-    return get_voltage(VOLTAGE_FRONT_RANGE_SENSOR) < MAX_VOLTAGE_RANGE_SENSOR;
+    return get_voltage_ud(VOLTAGE_FRONT_RANGE_SENSOR, userdata) < MAX_VOLTAGE_RANGE_SENSOR;
 }
 
-void set_motor_power(motor_t motor, int power)
+void set_motor_power(motor_t motor, int power, void *userdata)
 {
     assert(-100 <= power && power <= 100);
     float motor_voltage = ((float)power / 100.0f) * MAX_VOLTAGE_MOTOR;
     switch (motor) {
     case MOTOR_FRONT_LEFT:
-        set_voltage(VOLTAGE_FRONT_LEFT_MOTOR, motor_voltage);
+        set_voltage_ud(VOLTAGE_FRONT_LEFT_MOTOR, motor_voltage, userdata);
         break;
     case MOTOR_BACK_LEFT:
-        set_voltage(VOLTAGE_BACK_LEFT_MOTOR, motor_voltage);
+        set_voltage_ud(VOLTAGE_BACK_LEFT_MOTOR, motor_voltage, userdata);
         break;
     case MOTOR_FRONT_RIGHT:
-        set_voltage(VOLTAGE_FRONT_RIGHT_MOTOR, motor_voltage);
+        set_voltage_ud(VOLTAGE_FRONT_RIGHT_MOTOR, motor_voltage, userdata);
         break;
     case MOTOR_BACK_RIGHT:
-        set_voltage(VOLTAGE_BACK_RIGHT_MOTOR, motor_voltage);
+        set_voltage_ud(VOLTAGE_BACK_RIGHT_MOTOR, motor_voltage, userdata);
         break;
     }
 }
@@ -121,39 +121,39 @@ typedef enum drive
     ROTATE_RIGHT
 } drive_t;
 
-void set_drive(drive_t drive)
+void set_drive(drive_t drive, void *userdata)
 {
     switch (drive)
     {
     case STOP:
-        set_motor_power(MOTOR_FRONT_LEFT, 0);
-        set_motor_power(MOTOR_BACK_LEFT, 0);
-        set_motor_power(MOTOR_FRONT_RIGHT, 0);
-        set_motor_power(MOTOR_BACK_RIGHT, 0);
+        set_motor_power(MOTOR_FRONT_LEFT, 0, userdata);
+        set_motor_power(MOTOR_BACK_LEFT, 0, userdata);
+        set_motor_power(MOTOR_FRONT_RIGHT, 0, userdata);
+        set_motor_power(MOTOR_BACK_RIGHT, 0, userdata);
         break;
     case FORWARD:
-        set_motor_power(MOTOR_FRONT_LEFT, 100);
-        set_motor_power(MOTOR_BACK_LEFT, 100);
-        set_motor_power(MOTOR_FRONT_RIGHT, 100);
-        set_motor_power(MOTOR_BACK_RIGHT, 100);
+        set_motor_power(MOTOR_FRONT_LEFT, 100, userdata);
+        set_motor_power(MOTOR_BACK_LEFT, 100, userdata);
+        set_motor_power(MOTOR_FRONT_RIGHT, 100, userdata);
+        set_motor_power(MOTOR_BACK_RIGHT, 100, userdata);
         break;
     case REVERSE:
-        set_motor_power(MOTOR_FRONT_LEFT, -100);
-        set_motor_power(MOTOR_BACK_LEFT, -100);
-        set_motor_power(MOTOR_FRONT_RIGHT, -100);
-        set_motor_power(MOTOR_BACK_RIGHT, -100);
+        set_motor_power(MOTOR_FRONT_LEFT, -100, userdata);
+        set_motor_power(MOTOR_BACK_LEFT, -100, userdata);
+        set_motor_power(MOTOR_FRONT_RIGHT, -100, userdata);
+        set_motor_power(MOTOR_BACK_RIGHT, -100, userdata);
         break;
     case ROTATE_LEFT:
-        set_motor_power(MOTOR_FRONT_LEFT, -50);
-        set_motor_power(MOTOR_BACK_LEFT, -50);
-        set_motor_power(MOTOR_FRONT_RIGHT, 50);
-        set_motor_power(MOTOR_BACK_RIGHT, 50);
+        set_motor_power(MOTOR_FRONT_LEFT, -50, userdata);
+        set_motor_power(MOTOR_BACK_LEFT, -50, userdata);
+        set_motor_power(MOTOR_FRONT_RIGHT, 50, userdata);
+        set_motor_power(MOTOR_BACK_RIGHT, 50, userdata);
         break;
     case ROTATE_RIGHT:
-        set_motor_power(MOTOR_FRONT_LEFT, 50);
-        set_motor_power(MOTOR_BACK_LEFT, 50);
-        set_motor_power(MOTOR_FRONT_RIGHT, -50);
-        set_motor_power(MOTOR_BACK_RIGHT, -50);
+        set_motor_power(MOTOR_FRONT_LEFT, 50, userdata);
+        set_motor_power(MOTOR_BACK_LEFT, 50, userdata);
+        set_motor_power(MOTOR_FRONT_RIGHT, -50, userdata);
+        set_motor_power(MOTOR_BACK_RIGHT, -50, userdata);
         break;
     }
 }
@@ -164,58 +164,59 @@ bool enemy_out_of_ring() {
 }
 
 /* TODO: The commands should be in terms of rough rotate angles instead... (sleep times may differ between targets...) */
-void retreat_manuever(line_detection_t line_detection)
+void retreat_manuever(line_detection_t line_detection, void *userdata)
 {
     switch (line_detection) {
     case LINE_DETECTION_NONE:
         break;
     case LINE_DETECTION_FRONT_LEFT:
-        set_drive(REVERSE);
-        sleep_ms(300);
+        set_drive(REVERSE, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_FRONT_RIGHT:
-        set_drive(REVERSE);
-        sleep_ms(300);
+        set_drive(REVERSE, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_BACK_LEFT:
-        set_drive(FORWARD);
-        sleep_ms(300);
+        set_drive(FORWARD, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_BACK_RIGHT:
-        set_drive(FORWARD);
-        sleep_ms(300);
+        set_drive(FORWARD, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_FRONT:
-        set_drive(REVERSE);
-        sleep_ms(300);
+        set_drive(REVERSE, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_BACK:
-        set_drive(FORWARD);
-        sleep_ms(300);
+        set_drive(FORWARD, userdata);
+        sleep_ms_ud(300, userdata);
         break;
     case LINE_DETECTION_LEFT:
-        set_drive(ROTATE_RIGHT);
-        sleep_ms(100);
-        set_drive(FORWARD);
-        sleep_ms(150);
+        set_drive(ROTATE_RIGHT, userdata);
+        sleep_ms_ud(100, userdata);
+        set_drive(FORWARD, userdata);
+        sleep_ms_ud(150, userdata);
         break;
     case LINE_DETECTION_RIGHT:
-        set_drive(ROTATE_LEFT);
-        sleep_ms(100);
-        set_drive(FORWARD);
-        sleep_ms(150);
+        set_drive(ROTATE_LEFT, userdata);
+        sleep_ms_ud(100, userdata);
+        set_drive(FORWARD, userdata);
+        sleep_ms_ud(150, userdata);
         break;
     }
 }
 
-state_t currentState = SEARCH;
 
-void _main()
+void _main(void *userdata)
 {
+    state_t currentState = SEARCH;
     while(true) {
-        sleep_ms(1); // Sleep a bit to offload the host CPU :)
+        sleep_ms_ud(1, userdata); // Sleep a bit to offload the host CPU :)
         state_t nextState = currentState;
-        line_detection_t line_detection = get_line_detection();
+        line_detection_t line_detection = get_line_detection(userdata);
+
         switch (currentState)
         {
         case SEARCH:
@@ -223,12 +224,12 @@ void _main()
                 nextState = RETREAT;
                 break;
             }
-            if (enemy_detected_in_front()) {
+            if (enemy_detected_in_front(userdata)) {
                 nextState = ATTACK;
-                set_drive(STOP);
+                set_drive(STOP, userdata);
                 break;
             }
-            set_drive(ROTATE_RIGHT);
+            set_drive(ROTATE_RIGHT, userdata);
             /* Enemy in front -> go to attack? */
             /* Enemy on left side? -> rotate right */
             /* Enemy on right side? -> rotate left */
@@ -237,21 +238,21 @@ void _main()
         case ATTACK:
             if (line_detection != LINE_DETECTION_NONE) {
                 nextState = RETREAT;
-                set_drive(STOP);
+                set_drive(STOP, userdata);
                 break;
             }
-            if (enemy_detected_in_front()) {
-                set_drive(FORWARD);
+            if (enemy_detected_in_front(userdata)) {
+                set_drive(FORWARD, userdata);
             } else {
-                set_drive(STOP);
+                set_drive(STOP, userdata);
                 nextState = SEARCH;
             }
             break;
         case RETREAT:
             /* Should handle having an enemy and a line detected... */
-            retreat_manuever(line_detection);
+            retreat_manuever(line_detection, userdata);
             /* Can we avoid retrieving line here again? */
-            line_detection = get_line_detection();
+            line_detection = get_line_detection(userdata);
             if (line_detection == LINE_DETECTION_NONE) {
                 nextState = SEARCH;
             }

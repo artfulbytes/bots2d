@@ -35,7 +35,7 @@ void Microcontroller::start()
     }
 }
 
-void Microcontroller::transferVoltageLevelsSimulatorToMicrocontroller()
+void Microcontroller::transferVoltageLevels()
 {
     m_voltageLinesMutex.lock();
     for (int i = 0; i < Microcontroller::VoltageLine::Idx::Count; i++) {
@@ -70,7 +70,7 @@ void Microcontroller::onFixedUpdate(float stepTime)
     }
     uniqueLock.unlock();
 
-    transferVoltageLevelsSimulatorToMicrocontroller();
+    transferVoltageLevels();
     if (!m_thread.joinable() && m_microcontrollerStarted) {
         start();
     }
@@ -109,8 +109,9 @@ float Microcontroller::getVoltageLevel(int idx)
     return level;
 }
 
-float Microcontroller::get_voltage_level(int idx, void *userdata)
+float get_voltage_level(int idx, void *userdata)
 {
+    assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
     assert(userdata != nullptr);
     return microcontroller->getVoltageLevel(idx);
@@ -128,8 +129,9 @@ void Microcontroller::setVoltageLevel(int idx, float level)
     }
 }
 
-void Microcontroller::set_voltage_level(int idx, float level, void *userdata)
+void set_voltage_level(int idx, float level, void *userdata)
 {
+    assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
     assert(userdata != nullptr);
     microcontroller->setVoltageLevel(idx, level);
@@ -144,7 +146,8 @@ void Microcontroller::physicsSleep(int sleep_ms) {
     }
 }
 
-void Microcontroller::physics_sleep(int sleep_ms, void *userdata) {
+void physics_sleep(int sleep_ms, void *userdata) {
+    assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
     assert(userdata != nullptr);
     microcontroller->physicsSleep(sleep_ms);
