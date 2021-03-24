@@ -3,7 +3,7 @@
 #include "components/RectComponent.h"
 #include "components/Body2D.h"
 #include "components/KeyboardController.h"
-#include "Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.h"
+#include "Sumobot4WheelExample/CMicrocontrollerSumobot4WExample.h"
 #include "robots/Sumobot.h"
 #include "shapes/RectObject.h"
 #include "playgrounds/Dohyo.h"
@@ -222,7 +222,7 @@ SumobotTestScene::SumobotTestScene() :
     voltageLines[Microcontroller::VoltageLine::B2] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Front) };
     voltageLines[Microcontroller::VoltageLine::B3] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontRight) };
     voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
-    m_microcontroller = std::make_unique<MicrocontrollerSumobot4WheelExample>(voltageLines);
+    m_microcontroller = std::make_unique<CMicrocontrollerSumobot4WExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
     m_microcontroller->start();
 

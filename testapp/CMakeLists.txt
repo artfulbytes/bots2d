@@ -33,7 +33,7 @@ set (BOTS2D_TEST_SCENES
 
 set (BOTS2D_TEST_CONTROLLERS
     controllers/Sumobot4WheelExample/main.c
-    controllers/Sumobot4WheelExample/MicrocontrollerSumobot4WheelExample.cpp
+    controllers/Sumobot4WheelExample/CMicrocontrollerSumobot4WExample.cpp
 )
 
 set (BOTS2D_TEST_FILES

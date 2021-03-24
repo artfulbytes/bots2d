@@ -1,5 +1,5 @@
-#ifndef MICROCONTROLLER_C_BINDING_H_
-#define MICROCONTROLLER_C_BINDING_H_
+#ifndef C_MICROCONTROLLER_H_
+#define C_MICROCONTROLLER_H_
 
 #include "Microcontroller.h"
 
@@ -17,20 +17,20 @@ typedef void (*main_function_userdata)(void *);
  * time, you can't define your "state" variables outside your functions, because
  * they will overwrite each other. You must define them inside your main function.
  */
-class MicrocontrollerCBinding : public Microcontroller
+class CMicrocontroller : public Microcontroller
 {
 public:
     /**
      * To pass a main function without userdata argument. ONLY one such microcontroller
      * can run at a time!
      */
-    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, main_function mainFcn);
+    CMicrocontroller(Microcontroller::VoltageLines &voltageLines, main_function mainFcn);
     /**
      * To pass a main function with userdata argument. Use this if you simulate multiple
      * C microcontrollers at a time.
      */
-    MicrocontrollerCBinding(Microcontroller::VoltageLines &voltageLines, main_function_userdata mainFcn);
-    virtual ~MicrocontrollerCBinding() = 0;
+    CMicrocontroller(Microcontroller::VoltageLines &voltageLines, main_function_userdata mainFcn);
+    virtual ~CMicrocontroller() = 0;
 
 private:
     void main() override final;
@@ -38,4 +38,4 @@ private:
     main_function_userdata m_mainFcnUserdata = nullptr;
 };
 
-#endif /* MICROCONTROLLER_C_BINDING_H_ */
+#endif /* C_MICROCONTROLLER_H_ */

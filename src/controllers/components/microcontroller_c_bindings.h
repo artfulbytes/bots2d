@@ -1,13 +1,12 @@
-#ifndef MICROCONTROLLER_C_FUNCTIONS_H_
-#define MICROCONTROLLER_C_FUNCTIONS_H_
+#ifndef MICROCONTROLLER_C_BINDINGS_H_
+#define MICROCONTROLLER_C_BINDINGS_H_
 
 #include <stdint.h>
 
 /**
  * Helper functions that lets a microcontroller written in C communicate
- * with the rest of the simulator. If your microcontroller class derives
- * from MicrocontrollerCBinding, you MUST use these functions. Include this
- * in the C-file of your simulated microcontroller.
+ * with the rest of the simulator. A C microcontroller MUST use these
+ * functions. Include this file in the C-file of your C microcontroller.
  *
  * If you only simulate a single C microcontroller, then you can use the
  * functions without passing userdata. But if you simulate multiple ones,
@@ -51,4 +50,4 @@ float get_voltage_ud(int idx, void *userdata);
 void set_voltage_ud(int idx, float level, void *userdata);
 
 
-#endif /* MICROCONTROLLER_C_FUNCTIONS_H_ */
+#endif /* MICROCONTROLLER_C_BINDINGS_H_ */

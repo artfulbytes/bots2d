@@ -12,7 +12,7 @@ class Body2D;
 /**
  * A wheel with a built-in DC-motor. The DC-motor is modeled with basic DC-motor
  * equations computing torque/force from a voltage input. Tune voltageInConstant and angularSpeedConstant
- * for different acceleration and top speed (see tools/dc_motor_plot.py)
+ * for different acceleration and top speed.
  *
  * NOTE: Currently, top-view only!
  * Physics note: The model is simplified. As with a real DC motor, the force is larger when

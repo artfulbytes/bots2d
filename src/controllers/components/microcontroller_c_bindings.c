@@ -1,4 +1,4 @@
-#include "microcontroller_c_functions.h"
+#include "microcontroller_c_bindings.h"
 #include "microcontroller_c_setup.h"
 #include "components/Microcontroller.h"
 #include <stddef.h>

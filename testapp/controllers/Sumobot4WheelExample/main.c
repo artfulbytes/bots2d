@@ -1,5 +1,5 @@
 #include "Sumobot4WheelExample/main_function.h"
-#include "microcontroller_c_functions.h"
+#include "microcontroller_c_bindings.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
