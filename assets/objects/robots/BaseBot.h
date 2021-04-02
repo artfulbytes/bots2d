@@ -68,6 +68,7 @@ public:
     void setMotorMaxVoltage(float maxVoltage);
     void setMotorAngularSpeedConstant(float angularSpeedConstant);
     void setMotorVoltageInConstant(float voltageInConstant);
+    glm::vec2 getAbsoluteWheelPosition(WheelMotorIndex wheelMotorIndex) const;
     float getMotorVoltageInConstant() const;
     float getMotorMaxVoltage() const;
     float getMotorAngularSpeedConstant() const;
@@ -78,6 +79,8 @@ public:
     void setTimeToTopSpeedCallback(std::function<void(float)> onTimeToTopSpeedChanged);
     void setTopSpeedAccelerationCallback(std::function<void(float)> onTopSpeedAccelerationChanged);
     void setTopAccelerationCallback(std::function<void(float)> onTopAccelerationChanged);
+    void enableMotor(BaseBot::WheelMotorIndex wheelMotorIndex);
+    void disableMotor(BaseBot::WheelMotorIndex wheelMotorIndex);
 
 private:
     void createBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);

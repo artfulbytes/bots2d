@@ -67,10 +67,10 @@ void WheelMotor::setAnimation()
 {
     assert(m_animation);
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
-    if (currentForwardSpeed > 0.02f || m_voltageIn > 0.0f) {
+    if (m_enabled && (currentForwardSpeed > 0.02f || m_voltageIn > 0.0f)) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Backward);
-    } else if (currentForwardSpeed < -0.02f || m_voltageIn < 0.0f) {
+    } else if (m_enabled && (currentForwardSpeed < -0.02f || m_voltageIn < 0.0f)) {
         m_animation->setFramesBetweenUpdates(0);
         m_animation->setDirection(SpriteAnimation::Direction::Forward);
     } else {
@@ -92,6 +92,10 @@ float *WheelMotor::getVoltageLine()
 void WheelMotor::updateForce()
 {
     const glm::vec2 currentForwardNormal = m_body2D->getForwardNormal();
+    if (!m_enabled) {
+        m_body2D->setForce(currentForwardNormal, 0.0f);
+        return;
+    }
     const float currentForwardSpeed = m_body2D->getForwardSpeed();
     const float diameter = m_spec.diameter;
     const float angularSpeed = currentForwardSpeed / (3.14f * diameter);
@@ -184,4 +188,14 @@ float WheelMotor::getMaxVoltage() const
 float WheelMotor::getAngularSpeedConstant() const
 {
     return m_spec.angularSpeedConstant;
+}
+
+void WheelMotor::enable()
+{
+    m_enabled = true;
+}
+
+void WheelMotor::disable()
+{
+    m_enabled = false;
 }

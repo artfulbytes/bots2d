@@ -14,6 +14,7 @@ class SumobotTestScene : public Scene
 public:
     SumobotTestScene();
     ~SumobotTestScene();
+    virtual void onFixedUpdate() override;
 
 private:
     struct Background {

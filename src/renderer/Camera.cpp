@@ -34,7 +34,7 @@ void Camera::reset()
 {
     cameraPosition.x = windowWidth / 2.0f;
     cameraPosition.y = windowHeight / 2.0f;
-    zoomFactor = 1.0f;
+    zoomFactor = 1.0f / (zoomStepSize * zoomStepSize);
     Renderer::setCameraPosition(cameraPosition, zoomFactor);
 }
 

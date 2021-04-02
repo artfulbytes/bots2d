@@ -167,6 +167,7 @@ void Application::updatePhysics(float stepTime)
 void Application::updateLogic(float stepTime)
 {
     if (m_currentScene) {
+        m_currentScene->onFixedUpdate();
         m_currentScene->updateControllers(stepTime);
         m_currentScene->sceneObjectsOnFixedUpdate();
     }

@@ -15,13 +15,6 @@
  * controller that made the call.
  */
 
-/**
- * Sleeps for X number of physics steps until roughly sleep_ms milliseconds
- * have passed (more accurate if physics step time is smaller).
- *
- * NOTE: If you need to sleep in your microcontroller code you should use
- * THIS function, and not the OS sleep function! */
-void sleep_ms(uint32_t sleep_ms);
 
 /**
  * Get voltage level for the voltage line connected to index idx.
@@ -32,22 +25,42 @@ float get_voltage(int idx);
  */
 void set_voltage(int idx, float level);
 
+/**
+ * Sleeps for X number of physics steps until roughly sleep_ms milliseconds
+ * have passed (more accurate if physics step time is smaller).
+ *
+ * NOTE: If you need to sleep in your microcontroller code you should use
+ * THIS function, and not the OS sleep function! */
+void sleep_ms(uint32_t ms);
 
 /**
- * Same behaviour as sleep_ms, but can be used if multiple microcontroller C
- * bindings should run at the same time.
+ * Get time elapsed from the number of physics steps taken.
  */
-void sleep_ms_ud(uint32_t sleep_ms, void *userdata);
+uint32_t ms_elapsed();
+
 /**
- * Same behaviour as get_voltage, but can be used if multiple microcontroller C
- * bindings should run at the same time.
+ * Same behaviour as get_voltage, but should be used when running multiple
+ * C microcontrollers at the same time.
  */
 float get_voltage_ud(int idx, void *userdata);
+
 /**
- * Same behaviour as set_voltage, but can be used if multiple microcontroller C
- * bindings should run at the same time.
+ * Same behaviour as set_voltage, but should be used when running multiple
+ * C microcontrollers at the same time.
  */
 void set_voltage_ud(int idx, float level, void *userdata);
+
+/**
+ * Same behaviour as sleep_ms, but should be used when running multiple
+ * C microcontrollers at the same time.
+ */
+void sleep_ms_ud(uint32_t ms, void *userdata);
+
+/**
+ * Same behaviour as ms_elapsed_ud, but should be used when running multiple
+ * C microcontrollers at the same time.
+ */
+uint32_t ms_elapsed_ud(void *userdata);
 
 
 #endif /* MICROCONTROLLER_C_BINDINGS_H_ */

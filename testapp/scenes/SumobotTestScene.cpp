@@ -10,6 +10,7 @@
 #include "ImGuiMenu.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 namespace {
 class SumobotController : public KeyboardController
@@ -77,9 +78,43 @@ public:
             }
         }
     }
+    void onFixedUpdate(float stepTime) override
+    {
+        (void)stepTime;
+    }
 private:
     Sumobot *m_sumobot = nullptr;
 };
+}
+
+void SumobotTestScene::onFixedUpdate()
+{
+    /* Disable motors as they go out of the dohyo */
+    const auto frontLeftWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::FrontLeft);
+    const auto frontRightWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::FrontRight);
+    const auto backLeftWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::BackLeft);
+    const auto backRightWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::BackRight);
+    float outsideRadius = 0.38f;
+    if (glm::length(frontLeftWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::FrontLeft);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::FrontLeft);
+    }
+    if (glm::length(frontRightWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::FrontRight);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::FrontRight);
+    }
+    if (glm::length(backLeftWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::BackLeft);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::BackLeft);
+    }
+    if (glm::length(backRightWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::BackRight);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::BackRight);
+    }
 }
 
 void SumobotTestScene::createBackground()
@@ -105,7 +140,7 @@ void SumobotTestScene::createTuningMenu()
 {
     m_tuningMenu = std::make_unique<ImGuiMenu>(this, "Tuning menu", 250.0f, 15.0f, 400.0f, 300.0f);
     m_tuningMenu->addLabel("Sumobot 4W");
-    auto fourWheelBot = m_fourWheelBotOpponent.get();
+    auto fourWheelBot = m_fourWheelBot.get();
     m_tuningMenu->addSlider("Sideway fric. const.", 0.0f, 100.0f, fourWheelBot->getWheelSidewayFrictionConstant(),
         [fourWheelBot](float value){ fourWheelBot->setWheelSidewayFrictionConstant(value); }
     );
@@ -121,7 +156,7 @@ void SumobotTestScene::createTuningMenu()
     m_tuningMenu->addSlider("Max motor voltage", 1.0f, 12.0f, fourWheelBot->getMotorMaxVoltage(),
         [fourWheelBot](float value){ fourWheelBot->setMotorMaxVoltage(value); }
     );
-    m_tuningMenu->addSlider("Motor voltage in constant", 0.001f, 0.03f, fourWheelBot->getMotorVoltageInConstant(),
+    m_tuningMenu->addSlider("Motor voltage in constant", 0.001f, 0.06f, fourWheelBot->getMotorVoltageInConstant(),
         [fourWheelBot](float value){ fourWheelBot->setMotorVoltageInConstant(value); }
     );
     m_tuningMenu->addSlider("Motor angular speed constant", 0.0005f, 0.03f, fourWheelBot->getMotorAngularSpeedConstant(),
@@ -204,10 +239,6 @@ SumobotTestScene::SumobotTestScene() :
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
                                                glm::vec2{0.25f, 0.0f}, 4.71f);
-    m_fourWheelBotOpponent = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
-                                                       glm::vec2{-0.15f, 0.15f}, 4.71f);
-    m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBotOpponent.get());
-    m_fourWheelBotOpponent->setController(m_keyboardController.get());
     Microcontroller::VoltageLines voltageLines;
     voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
     voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
@@ -225,14 +256,24 @@ SumobotTestScene::SumobotTestScene() :
     m_microcontroller = std::make_unique<CMicrocontrollerSumobot4WExample>(voltageLines);
     m_fourWheelBot->setController(m_microcontroller.get());
     m_microcontroller->start();
-
     m_fourWheelBot->setDebug(true);
+    //m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
+    //m_fourWheelBot->setController(m_keyboardController.get());
+    m_fourWheelBotOpponent = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::FourWheel),
+                                                       glm::vec2{-0.15f, 0.15f}, 4.71f);
+    m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBotOpponent.get());
+    m_fourWheelBotOpponent->setController(m_keyboardController.get());
+#if 0
+#endif
+
+#if 0
     m_twoWheelRectangleBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRectangle),
                                                        glm::vec2{-0.25f, 0.0f}, 1.5f);
     m_twoWheelRoundBlackBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundBlack),
                                                         glm::vec2{0.2f, -0.2f}, 3.0f);
     m_twoWheelRoundRedBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::TwoWheelRoundRed),
                                                       glm::vec2{-0.15f, -0.15f}, 1.0f);
+#endif
     createTuningMenu();
 }
 

@@ -3,6 +3,7 @@
 #include "sensors/LineDetectorObject.h"
 #include "components/KeyboardController.h"
 #include "Scene.h"
+#include "components/Body2D.h"
 
 #include <glm/gtx/rotate_vector.hpp>
 #include <iostream>
@@ -274,16 +275,19 @@ void BaseBot::setMotorVoltageInConstant(float voltageInConstant)
 
 float BaseBot::getMotorVoltageInConstant() const
 {
+    /* All motors have the same value, just pick the first one */
     return m_wheelMotors.begin()->second->getVoltageInConstant();
 }
 
 float BaseBot::getMotorMaxVoltage() const
 {
+    /* All motors have the same value, just pick the first one */
     return m_wheelMotors.begin()->second->getMaxVoltage();
 }
 
 float BaseBot::getMotorAngularSpeedConstant() const
 {
+    /* All motors have the same value, just pick the first one */
     return m_wheelMotors.begin()->second->getAngularSpeedConstant();
 }
 
@@ -320,4 +324,34 @@ void BaseBot::setTopSpeedAccelerationCallback(std::function<void(float)> onTopSp
 void BaseBot::setTopAccelerationCallback(std::function<void(float)> onTopAccelerationChanged)
 {
     m_onTopAccelerationChanged = onTopAccelerationChanged;
+}
+
+glm::vec2 BaseBot::getAbsoluteWheelPosition(BaseBot::WheelMotorIndex wheelMotorIndex) const
+{
+    auto wheelMotorItr = m_wheelMotors.find(wheelMotorIndex);
+    if (wheelMotorItr == m_wheelMotors.end()) {
+        std::cout << "Wheel motor not found!" << std::endl;
+        assert(0);
+    }
+    return wheelMotorItr->second->getBody()->getPosition();
+}
+
+void BaseBot::enableMotor(BaseBot::WheelMotorIndex wheelMotorIndex)
+{
+    auto wheelMotorItr = m_wheelMotors.find(wheelMotorIndex);
+    if (wheelMotorItr == m_wheelMotors.end()) {
+        std::cout << "Wheel motor not found!" << std::endl;
+        assert(0);
+    }
+    wheelMotorItr->second->enable();
+}
+
+void BaseBot::disableMotor(BaseBot::WheelMotorIndex wheelMotorIndex)
+{
+    auto wheelMotorItr = m_wheelMotors.find(wheelMotorIndex);
+    if (wheelMotorItr == m_wheelMotors.end()) {
+        std::cout << "Wheel motor not found!" << std::endl;
+        assert(0);
+    }
+    wheelMotorItr->second->disable();
 }

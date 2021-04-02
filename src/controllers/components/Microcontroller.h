@@ -1,13 +1,15 @@
 #ifndef MICROCONTROLLER_H_
 #define MICROCONTROLLER_H_
 
+#include <stdint.h>
 /* These are C-callback functions. */
 #ifdef __cplusplus
 extern "C" {
 #endif
-float get_voltage_level(int idx, void *userdata);
-void set_voltage_level(int idx, float level, void *userdata);
-void physics_sleep(int sleep_ms, void *userdata);
+float get_voltage_cb(int idx, void *userdata);
+void set_voltage_cb(int idx, float level, void *userdata);
+void ms_sleep_cb(uint32_t sleep_ms, void *userdata);
+uint32_t ms_elapsed_cb(void *userdata);
 #ifdef __cplusplus
 }
 #endif
@@ -73,7 +75,7 @@ public:
     virtual void onKeyEvent(const Event::Key &keyEvent);
 
     /**
-     * Get voltage level for voltage line at index idx.
+     * Get voltage level for voltage line at index idx
      */
     float getVoltageLevel(int idx);
 
@@ -90,7 +92,12 @@ public:
      *       A smaller step time means better precision.
      * NOTE: The controller code SHOULD use this function and NOT the OS sleep function.
      */
-    void physicsSleep(int sleep_ms);
+    void msSleep(int sleep_ms);
+
+    /**
+     * Get the time elapsed from the number of physics steps taken
+     */
+    uint32_t msElapsed();
 
 private:
     /** This is the controller main function; it runs in a separate thread */
@@ -125,7 +132,8 @@ private:
      */
     std::condition_variable m_conditionWake;
     unsigned int m_sleepSteps = 0;
-    std::mutex m_mutexSleepSteps;
+    unsigned int m_stepsTaken = 0;
+    std::mutex m_mutexSteps;
     float m_currentStepTime = 0.0f;
 };
 #endif /* __cplusplus */

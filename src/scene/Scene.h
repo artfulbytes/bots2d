@@ -35,6 +35,7 @@ public:
     void onKeyEvent(const Event::Key &keyEvent);
     void addObject(SceneObject *sceneObject);
     void removeObject(SceneObject *sceneObject);
+    virtual void onFixedUpdate() {};
     void addMenu(ImGuiMenu *menu);
     std::string getDescription() const { return m_description; }
     unsigned int getSecondsSinceStart() const;

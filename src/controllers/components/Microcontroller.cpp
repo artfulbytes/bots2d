@@ -60,7 +60,7 @@ void Microcontroller::onFixedUpdate(float stepTime)
 
     /* Check if controller code has requested to sleep for X physics steps,
      * and if it has, count the steps and wake it up afterwards */
-    std::unique_lock<std::mutex> uniqueLock(m_mutexSleepSteps);
+    std::unique_lock<std::mutex> uniqueLock(m_mutexSteps);
     m_currentStepTime = stepTime;
     if (m_sleepSteps > 0) {
         m_sleepSteps--;
@@ -68,7 +68,9 @@ void Microcontroller::onFixedUpdate(float stepTime)
             m_conditionWake.notify_one();
         }
     }
+    m_stepsTaken++;
     uniqueLock.unlock();
+
 
     transferVoltageLevels();
     if (!m_thread.joinable() && m_microcontrollerStarted) {
@@ -82,8 +84,8 @@ void Microcontroller::microcontrollerThreadFn()
      * it to contain an endless loop. But a thread with an endless loop can't be
      * terminated, and will normally cause the program to hang when we join the thread.
      * As a workaround (similar to the one used by Boost), check the m_running
-     * variable in several functions and throw an exception if it's false. Note,
-     * for this to work, the main function must call get/set voltage or sleep
+     * variable in the C callback functions and throw an exception if it's false. Note,
+     * for this to work, the main function must call the C callback functions
      * regularly. */
     try {
         main();
@@ -109,11 +111,10 @@ float Microcontroller::getVoltageLevel(int idx)
     return level;
 }
 
-float get_voltage_level(int idx, void *userdata)
+float get_voltage_cb(int idx, void *userdata)
 {
     assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
-    assert(userdata != nullptr);
     return microcontroller->getVoltageLevel(idx);
 }
 
@@ -129,16 +130,16 @@ void Microcontroller::setVoltageLevel(int idx, float level)
     }
 }
 
-void set_voltage_level(int idx, float level, void *userdata)
+void set_voltage_cb(int idx, float level, void *userdata)
 {
     assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
-    assert(userdata != nullptr);
     microcontroller->setVoltageLevel(idx, level);
 }
 
-void Microcontroller::physicsSleep(int sleep_ms) {
-    std::unique_lock<std::mutex> uniqueLock(m_mutexSleepSteps);
+void Microcontroller::msSleep(int sleep_ms)
+{
+    std::unique_lock<std::mutex> uniqueLock(m_mutexSteps);
     m_sleepSteps = sleep_ms / (m_currentStepTime * 1000);
     m_conditionWake.wait(uniqueLock, [this] { return m_sleepSteps == 0; });
     if (!m_running) {
@@ -146,9 +147,25 @@ void Microcontroller::physicsSleep(int sleep_ms) {
     }
 }
 
-void physics_sleep(int sleep_ms, void *userdata) {
+void ms_sleep_cb(uint32_t sleep_ms, void *userdata)
+{
     assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
-    assert(userdata != nullptr);
-    microcontroller->physicsSleep(sleep_ms);
+    microcontroller->msSleep(sleep_ms);
+}
+
+uint32_t ms_elapsed_cb(void *userdata)
+{
+    assert(userdata);
+    Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
+    return microcontroller->msElapsed();
+}
+
+uint32_t Microcontroller::msElapsed()
+{
+    if (!m_running) {
+        throw 0;
+    }
+    std::unique_lock<std::mutex> uniqueLock(m_mutexSteps);
+    return 1000 * m_stepsTaken * m_currentStepTime;
 }

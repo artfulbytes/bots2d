@@ -40,9 +40,11 @@ public:
             voltageInConstant(voltageInConstant), angularSpeedConstant(angularSpeedConstant),
             maxVoltage(maxVoltage), frictionCoefficient(frictionCoefficient), sidewayFrictionConstant(sidewayFrictionConstant),
             width(width), diameter(diameter), wheelMass(wheelMass), loadedMass(loadedMass), textureType(textureType) {}
-        /** voltageInConstant = (Torque constant * Voltage constant) / Motor resistance */
+        /** voltageInConstant = (Torque constant * Voltage constant) / Motor resistance.
+         * Tweak this for lower/higher top speed */
         float voltageInConstant = 0.00628f;
-        /** angularSpeedConstant = Torque constant / Motor resistance */
+        /** angularSpeedConstant = Torque constant / Motor resistance.
+         * Tweak this for slower/faster acceleration */
         float angularSpeedConstant = 0.00178f;
         /** Max voltage that can be applied to the voltage line */
         float maxVoltage = 6.0f;
@@ -86,6 +88,8 @@ public:
     float getVoltageInConstant() const;
     float getMaxVoltage() const;
     float getAngularSpeedConstant() const;
+    void enable();
+    void disable();
 
 private:
     void setAnimation();
@@ -96,6 +100,7 @@ private:
     float m_voltageIn = 0.0f;
     std::unique_ptr<SpriteAnimation> m_animation;
     Body2D *m_body2D = nullptr;
+    bool m_enabled = true;
 };
 
 #endif /* WHEEL_MOTOR_H_ */
