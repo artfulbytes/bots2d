@@ -1,6 +1,6 @@
-#include "Sumobot4WheelExample/mini-sumobot/drivers/motor.h"
+#include "NsumoController/nsumo/drivers/motor.h"
 #include "microcontroller_c_bindings.h"
-#include "Sumobot4WheelExample/voltage_lines.h"
+#include "NsumoController/voltage_lines.h"
 #include <assert.h>
 
 #define MAX_VOLTAGE_MOTOR (6.0f);
