@@ -34,6 +34,11 @@ set (BOTS2D_TEST_SCENES
 set (BOTS2D_TEST_CONTROLLERS
     controllers/Sumobot4WheelExample/main.c
     controllers/Sumobot4WheelExample/CMicrocontrollerSumobot4WExample.cpp
+    controllers/Sumobot4WheelExample/motor.c
+    controllers/Sumobot4WheelExample/mini-sumobot/drive.c
+    controllers/Sumobot4WheelExample/mini-sumobot/line_detection.c
+    controllers/Sumobot4WheelExample/mini-sumobot/state_machine.c
+    controllers/Sumobot4WheelExample/mini-sumobot/enemy_detection.c
 )
 
 set (BOTS2D_TEST_FILES

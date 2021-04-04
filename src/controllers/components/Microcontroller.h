@@ -9,7 +9,7 @@ extern "C" {
 float get_voltage_cb(int idx, void *userdata);
 void set_voltage_cb(int idx, float level, void *userdata);
 void ms_sleep_cb(uint32_t sleep_ms, void *userdata);
-uint32_t ms_elapsed_cb(void *userdata);
+uint32_t time_ms_cb(void *userdata);
 #ifdef __cplusplus
 }
 #endif
@@ -97,7 +97,7 @@ public:
     /**
      * Get the time elapsed from the number of physics steps taken
      */
-    uint32_t msElapsed();
+    uint32_t timeMs();
 
 private:
     /** This is the controller main function; it runs in a separate thread */

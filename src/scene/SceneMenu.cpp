@@ -30,6 +30,16 @@ void SceneMenu::setWarningMessage(std::string message)
     m_warningMessage = message;
 }
 
+void SceneMenu::setCurrentScene(std::string sceneName)
+{
+    for (auto &scene : m_scenes) {
+        if (scene.first == sceneName) {
+            m_currentScene = scene.second();
+            Camera::reset();
+        }
+    }
+}
+
 void SceneMenu::render()
 {
     ImGuiOverlay::begin("Scene menu", 15.0f, 15.0f, 230.0f, 450.0f);

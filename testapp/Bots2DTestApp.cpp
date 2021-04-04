@@ -18,6 +18,7 @@ Bots2DTestApp::Bots2DTestApp() :
     m_sceneMenu->registerScene<PhysicsBotTestScene>("PhysicsBotTest");
     m_sceneMenu->registerScene<SumobotTestScene>("SumobotTest");
     m_sceneMenu->registerScene<LineFollowerTestScene>("LineFollowerTest");
+    m_sceneMenu->setCurrentScene("SumobotTest");
 }
 
 Bots2DTestApp::~Bots2DTestApp()

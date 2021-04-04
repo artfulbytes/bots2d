@@ -154,14 +154,14 @@ void ms_sleep_cb(uint32_t sleep_ms, void *userdata)
     microcontroller->msSleep(sleep_ms);
 }
 
-uint32_t ms_elapsed_cb(void *userdata)
+uint32_t time_ms_cb(void *userdata)
 {
     assert(userdata);
     Microcontroller *microcontroller = static_cast<Microcontroller*>(userdata);
-    return microcontroller->msElapsed();
+    return microcontroller->timeMs();
 }
 
-uint32_t Microcontroller::msElapsed()
+uint32_t Microcontroller::timeMs()
 {
     if (!m_running) {
         throw 0;

@@ -36,7 +36,7 @@ void sleep_ms(uint32_t ms);
 /**
  * Get time elapsed from the number of physics steps taken.
  */
-uint32_t ms_elapsed();
+uint32_t time_ms(void);
 
 /**
  * Same behaviour as get_voltage, but should be used when running multiple
@@ -57,10 +57,10 @@ void set_voltage_ud(int idx, float level, void *userdata);
 void sleep_ms_ud(uint32_t ms, void *userdata);
 
 /**
- * Same behaviour as ms_elapsed_ud, but should be used when running multiple
+ * Same behaviour as time_ms_ud, but should be used when running multiple
  * C microcontrollers at the same time.
  */
-uint32_t ms_elapsed_ud(void *userdata);
+uint32_t time_ms_ud(void *userdata);
 
 
 #endif /* MICROCONTROLLER_C_BINDINGS_H_ */

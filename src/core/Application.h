@@ -33,6 +33,7 @@ public:
 
 protected:
     std::unique_ptr<SceneMenu> m_sceneMenu;
+    void setCurrentScene();
 
 private:
     bool isStepTimeTooSmall() const;

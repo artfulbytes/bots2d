@@ -1,1 +1,1 @@
-void _main(void *userdata);
+void _main();

@@ -24,6 +24,7 @@ public:
     {
         m_scenes.push_back(std::make_pair(name, []() { return new T(); }));
     }
+    void setCurrentScene(std::string sceneName);
     void setFps(unsigned int fps);
     void setAvgPhysicsSteps(unsigned int avgPhysicsSteps);
     void setWarningMessage(std::string message);
