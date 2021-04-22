@@ -39,6 +39,7 @@ set (BOTS2D_TEST_CONTROLLERS
     controllers/NsumoController/nsumo/line_detection.c
     controllers/NsumoController/nsumo/state_machine.c
     controllers/NsumoController/nsumo/enemy_detection.c
+    controllers/NsumoController/nsumo/trace.c
 )
 
 set (BOTS2D_TEST_FILES
