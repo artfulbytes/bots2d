@@ -27,7 +27,7 @@ WheelMotor::WheelMotor(Scene *scene, const Specification &spec, WheelMotor::Orie
         m_renderableComponent = std::make_unique<RectComponent>(transform, glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
     }
 
-    Body2D::Specification bodySpec(true, true, spec.wheelMass + spec.loadedMass, spec.frictionCoefficient);
+    Body2D::Specification bodySpec(true, true, spec.wheelMass + spec.loadedMass, spec.frictionCoefficient, 0.0f);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }

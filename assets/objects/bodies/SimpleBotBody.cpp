@@ -43,6 +43,11 @@ float SimpleBotBody::getForwardSpeed() const
     return m_body2D->getForwardSpeed();
 }
 
+float SimpleBotBody::getAngularSpeed() const
+{
+    return m_body2D->getForwardSpeed();
+}
+
 void SimpleBotBody::createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     m_transformComponent = std::make_unique<RectTransform>(startPosition, glm::vec2{ spec.width, spec.length }, startRotation);
@@ -70,7 +75,7 @@ void SimpleBotBody::createRectangleBody(const Specification &spec, const glm::ve
     }
 
     /* (The friction is added to the wheels, not the body) */
-    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f);
+    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f, spec.angularDamping);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
@@ -100,7 +105,7 @@ void SimpleBotBody::createCircleBody(const Specification &spec, const glm::vec2 
     }
 
     /* (The friction is added to the wheels, not the body) */
-    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f);
+    Body2D::Specification bodySpec(true, true, spec.mass, 0.0f, spec.angularDamping);
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, bodySpec);
     m_body2D = static_cast<Body2D *>(m_physicsComponent.get());
 }
@@ -132,4 +137,9 @@ void SimpleBotBody::setMass(float mass)
 float SimpleBotBody::getMass() const
 {
     return m_body2D->getMass();
+}
+
+void SimpleBotBody::setAngularDamping(float damping) const
+{
+    m_body2D->setAngularDamping(damping);
 }

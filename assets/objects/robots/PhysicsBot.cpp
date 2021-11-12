@@ -12,7 +12,7 @@
 PhysicsBot::PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &startPosition, const float startRotation) :
     SceneObject(scene), m_frictionCoefficient(0.1f), m_bodyMass(0.4f), m_wheelMass(0.025f), m_wheelCount(4)
 {
-    Body2D::Specification mainBodySpec(true, true, m_bodyMass, 0.0f);
+    Body2D::Specification mainBodySpec(true, true, m_bodyMass, 0.0f, 0.0f);
     m_transformComponent = std::make_unique<RectTransform>(startPosition, size, startRotation);
     const auto transform = static_cast<RectTransform *>(m_transformComponent.get());
     m_physicsComponent = std::make_unique<Body2D>(*m_physicsWorld, transform, mainBodySpec);

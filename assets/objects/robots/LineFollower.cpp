@@ -17,6 +17,7 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             3.0f,          /* Motor max voltage */
+            0.0f,        /* Angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::LineFollowerPlated,
             WheelMotor::TextureType::Orange,

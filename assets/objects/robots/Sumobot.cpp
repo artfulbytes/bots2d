@@ -16,6 +16,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.019f,      /* Motor voltage in constant */
             0.006f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            500.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::SumobotCircuited,
             WheelMotor::TextureType::Green,
@@ -51,6 +52,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::SumobotPlated,
             WheelMotor::TextureType::Orange,
@@ -84,6 +86,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Circle,
             SimpleBotBody::TextureType::SumobotRoundBlack,
             WheelMotor::TextureType::Red,
@@ -115,6 +118,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Circle,
             SimpleBotBody::TextureType::SumobotRoundRed,
             WheelMotor::TextureType::Green,

@@ -40,6 +40,7 @@ public:
         float motorVoltageInConstant;
         float motorAngularSpeedConstant;
         float motorMaxVoltage;
+        float angularDamping;
         SimpleBotBody::Shape bodyShape;
         SimpleBotBody::TextureType bodyTexture;
         WheelMotor::TextureType wheelTexture;
@@ -73,14 +74,18 @@ public:
     float getMotorMaxVoltage() const;
     float getMotorAngularSpeedConstant() const;
     float getForwardSpeed() const;
+    void setTimeMovingCallback(std::function<void(float)> onTimeMoving) const;
     void setTopSpeedCallback(std::function<void(float)> onTopSpeedChanged);
     void setForwardSpeedCallback(std::function<void(float)> onForwardSpeedChanged);
     void setForwardAccelerationCallback(std::function<void(float)> onForwardAccelerationChanged);
     void setTimeToTopSpeedCallback(std::function<void(float)> onTimeToTopSpeedChanged);
     void setTopSpeedAccelerationCallback(std::function<void(float)> onTopSpeedAccelerationChanged);
     void setTopAccelerationCallback(std::function<void(float)> onTopAccelerationChanged);
+    void setTimeMovingCallback(std::function<void(float)> onTimeMovingChanged);
     void enableMotor(BaseBot::WheelMotorIndex wheelMotorIndex);
     void disableMotor(BaseBot::WheelMotorIndex wheelMotorIndex);
+    float getAngularDamping() const;
+    void setAngularDamping(float angularDamping);
 
 private:
     void createBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);
@@ -98,7 +103,9 @@ private:
     std::function<void(float)> m_onTimeToTopSpeedChanged = nullptr;
     std::function<void(float)> m_onTopSpeedAccelerationChanged = nullptr;
     std::function<void(float)> m_onTopAccelerationChanged = nullptr;
-    float m_lastStandStillTime = 0.0f;
+    std::function<void(float)> m_onTimeMovingChanged = nullptr;
+    float m_lastFwdStandStillTime = 0.0f;
+    float m_lastRotStandStillTime = 0.0f;
     float m_recordedTopSpeed = 0.0f;
     float m_recordedTopAcceleration = 0.0f;
     float m_timeToReachTopSpeed = 0.0f;
@@ -107,6 +114,7 @@ private:
     float m_lastForwardSpeed = 0.0f;
     bool m_wasAtTopSpeed = false;
     bool m_wasAtStandStill = false;
+    bool m_wasAtRotStandStill = false;
 };
 
 #endif /* BASE_BOT_H_ */

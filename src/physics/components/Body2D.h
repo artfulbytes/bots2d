@@ -25,8 +25,9 @@ class Body2D : public PhysicsComponent
 public:
     struct Specification {
         Specification() {}
-        Specification(bool dynamic, bool collision, float mass, float frictionCoefficient) :
-            dynamic(dynamic), collision(collision), mass(mass), frictionCoefficient(frictionCoefficient) {}
+        Specification(bool dynamic, bool collision, float mass, float frictionCoefficient, float angularDamping) :
+            dynamic(dynamic), collision(collision), mass(mass), frictionCoefficient(frictionCoefficient),
+            angularDamping(angularDamping) {}
         Specification(bool dynamic, bool collision, float mass) :
             dynamic(dynamic), collision(collision), mass(mass) {}
         /** Set body as dynamic (moveable) or static (still) */
@@ -36,6 +37,9 @@ public:
         float mass = 1.0f;
         /** This determines how easy it is to push the body (ONLY for top view) */
         float frictionCoefficient = 0.0f;
+        /** Damps the angular velocity (note, for values above 1.0f, the damping
+            becomes sensitive to time step according to box2d docs) **/
+        float angularDamping;
     };
 
     Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float rotation, float radius,
@@ -53,6 +57,7 @@ public:
     void setForce(const glm::vec2 &vec, float magnitude);
     void setLinearImpulse(const glm::vec2 &vec);
     float getForwardSpeed() const;
+    float getAngularSpeed() const;
     glm::vec2 getLateralVelocity() const;
     glm::vec2 getForwardNormal() const;
     glm::vec2 getPosition() const;
@@ -60,6 +65,7 @@ public:
     float getMass() const;
     void setMass(float mass);
     void setFrictionCoefficient(float frictionCoefficient);
+    void setAngularDamping(float angularDamping);
 
 private:
     /**
