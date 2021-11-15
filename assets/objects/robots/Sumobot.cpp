@@ -5,6 +5,42 @@
 namespace {
 const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlueprints
 ({
+        { Sumobot::Blueprint::Nsumo,
+        {
+            0.07f, 0.1f,   /* Body width, length */
+            0.42f,         /* Body mass */
+            0.015f, 0.03f, /* Wheel width, diameter */
+            0.02f,         /* Wheel mass */
+            0.15f,          /* Coloumb friction coefficient */
+            25.0f,        /* Wheel sideway friction constant */
+            0.016f,      /* Motor voltage in constant */
+            0.012f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
+            40.0f,      /* Body angular damping */
+            SimpleBotBody::Shape::Rectangle,
+            SimpleBotBody::TextureType::SumobotPlated,
+            WheelMotor::TextureType::Orange,
+            {
+                { Sumobot::WheelMotorIndex::FrontLeft,  {-(0.07f + 0.015f) / 2,  0.1f / 5} },
+                { Sumobot::WheelMotorIndex::FrontRight, { (0.07f + 0.015f) / 2,  0.1f / 5} },
+                { Sumobot::WheelMotorIndex::BackLeft,   {-(0.07f + 0.015f) / 2, -0.1f / 4} },
+                { Sumobot::WheelMotorIndex::BackRight,  { (0.07f + 0.015f) / 2, -0.1f / 4} },
+            },
+            {
+                { Sumobot::RangeSensorIndex::Left,       {-0.035f, 0.00f}, { 4.71f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.05f}, { 6.08f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.05f}, { 0.0f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.05f}, { 0.20f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::Right,      { 0.035f, 0.00f}, { 1.57f, 0.0f, 0.8f }},
+            },
+            {
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.035f,  0.05f} },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.035f,  0.05f} },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.035f, -0.05f} },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.035f, -0.05f} },
+            }
+        }
+    },
     { Sumobot::Blueprint::FourWheel,
         {
             0.07f, 0.1f,   /* Body width, length */

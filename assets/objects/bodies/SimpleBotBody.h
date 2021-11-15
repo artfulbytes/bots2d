@@ -56,7 +56,7 @@ public:
     void setMass(float mass);
     float getMass() const;
     void setAngularDamping(float damping) const;
-    float getAngularDamping() const { return 500.0f; };
+    float getAngularDamping() const;
 
 private:
     void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);

@@ -321,6 +321,11 @@ void Body2D::setAngularDamping(float damping)
     m_body->SetAngularDamping(damping);
 }
 
+float Body2D::getAngularDamping() const
+{
+    return m_body->GetAngularDamping();
+}
+
 void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)
 {
     b2BodyDef frictionBodyDef;

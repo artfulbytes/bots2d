@@ -143,3 +143,8 @@ void SimpleBotBody::setAngularDamping(float damping) const
 {
     m_body2D->setAngularDamping(damping);
 }
+
+float SimpleBotBody::getAngularDamping() const
+{
+    return m_body2D->getAngularDamping();
+}

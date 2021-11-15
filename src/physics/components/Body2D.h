@@ -66,6 +66,7 @@ public:
     void setMass(float mass);
     void setFrictionCoefficient(float frictionCoefficient);
     void setAngularDamping(float angularDamping);
+    float getAngularDamping() const;
 
 private:
     /**
