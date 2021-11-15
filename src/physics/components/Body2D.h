@@ -39,7 +39,7 @@ public:
         float frictionCoefficient = 0.0f;
         /** Damps the angular velocity (note, for values above 1.0f, the damping
             becomes sensitive to time step according to box2d docs) **/
-        float angularDamping;
+        float angularDamping = 0.0f;
     };
 
     Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float rotation, float radius,

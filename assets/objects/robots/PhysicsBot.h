@@ -68,7 +68,7 @@ private:
     unsigned int m_lastCallbackTime = 0;
     float m_lastForwardSpeed = 0.0f;
     float m_recordedTopSpeed = 0.0f;
-    float m_lastStandStillTime = 0.0f;
+    unsigned int m_lastStandStillTime = 0;
     float m_bestAccelerationToCurrentTopSpeed = 0.0f;
     float m_bestAccelerationRecordedAtSpeed = 0.0f;
     float m_timeToTopSpeed = 0.0f;

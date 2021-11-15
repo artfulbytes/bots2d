@@ -230,9 +230,9 @@ void SumobotTestScene::createTuningMenu()
 
     std::function<void(std::string)> setTimeMovingText;
     m_tuningMenu->addLabel("Time moving: ", &setTimeMovingText);
-    fourWheelBot->setTimeMovingCallback([setTimeMovingText](float timeMoved){
+    fourWheelBot->setTimeMovingCallback([setTimeMovingText](unsigned int timeMoving){
         std::stringstream ss;
-        ss << std::fixed << std::setprecision(2) << timeMoved;
+        ss << std::fixed << std::setprecision(2) << timeMoving;
         std::string timeMovedString = ss.str();
         setTimeMovingText("Time moving: " + timeMovedString + " ms");
     });

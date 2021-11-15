@@ -48,7 +48,7 @@ void BaseBot::createBody(const BaseBot::Specification &spec, const glm::vec2 &st
 
 void BaseBot::createWheelMotors(const BaseBot::Specification &spec)
 {
-    const int wheelCount = spec.wheelMotorTuples.size();
+    const auto wheelCount = spec.wheelMotorTuples.size();
     const float loadedMass = spec.bodyMass / wheelCount;
     const WheelMotor::Specification wheelSpec(spec.motorVoltageInConstant, spec.motorAngularSpeedConstant,
                                               spec.motorMaxVoltage, spec.wheelFrictionCoefficient, spec.wheelSidewayFrictionConstant,
@@ -345,7 +345,7 @@ void BaseBot::setTopAccelerationCallback(std::function<void(float)> onTopAcceler
     m_onTopAccelerationChanged = onTopAccelerationChanged;
 }
 
-void BaseBot::setTimeMovingCallback(std::function<void(float)> onTimeMovingChanged)
+void BaseBot::setTimeMovingCallback(std::function<void(unsigned int)> onTimeMovingChanged)
 {
     m_onTimeMovingChanged = onTimeMovingChanged;
 }

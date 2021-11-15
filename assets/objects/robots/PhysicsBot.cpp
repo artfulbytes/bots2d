@@ -27,10 +27,10 @@ PhysicsBot::PhysicsBot(Scene *scene, const glm::vec2 &size, const glm::vec2 &sta
     glm::vec2 wheelPosBackRight{((size.x + 0.015f) / 2.0f), -size.y/4.0f};
     glm::vec2 wheelPosFrontLeft{-((size.x + 0.015f) / 2.0f), size.y/4.0f};
     glm::vec2 wheelPosBackLeft{-((size.x + 0.015f) / 2.0f), -size.y/4.0f};
-    m_frontLeftWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosFrontLeft, wheelSize, 0);
-    m_backLeftWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosBackLeft, wheelSize, 0);
-    m_frontRightWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosFrontRight, wheelSize, 0);
-    m_backRightWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosBackRight, wheelSize, 0);
+    m_frontLeftWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosFrontLeft, wheelSize, 0.0f);
+    m_backLeftWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosBackLeft, wheelSize, 0.0f);
+    m_frontRightWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosFrontRight, wheelSize, 0.0f);
+    m_backRightWheel = std::make_unique<RectObject>(scene, wheelColor, &wheelSpec, wheelPosBackRight, wheelSize, 0.0f);
 
     static_cast<Body2D *>(m_physicsComponent.get())->attachBodyWithRevoluteJoint(wheelPosFrontLeft, m_frontLeftWheel->getBody());
     static_cast<Body2D *>(m_physicsComponent.get())->attachBodyWithRevoluteJoint(wheelPosBackLeft, m_backLeftWheel->getBody());

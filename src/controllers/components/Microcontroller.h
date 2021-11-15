@@ -49,7 +49,7 @@ public:
         };
         /* Direction from the microcontroller's point of view (e.g. motor is output, a sensor is input) */
         enum class Type { Input, Output };
-        Type type;
+        Type type = Type::Input;
         float *level = nullptr;
     };
     typedef std::array<VoltageLine, VoltageLine::Idx::Count> VoltageLines;

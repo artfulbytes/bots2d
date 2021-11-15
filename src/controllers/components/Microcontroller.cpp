@@ -90,6 +90,7 @@ void Microcontroller::microcontrollerThreadFn()
     try {
         main();
     } catch (int e) {
+        (void)e;
     }
 }
 
@@ -140,7 +141,7 @@ void set_voltage_cb(int idx, float level, void *userdata)
 void Microcontroller::msSleep(int sleep_ms)
 {
     std::unique_lock<std::mutex> uniqueLock(m_mutexSteps);
-    m_sleepSteps = sleep_ms / (m_currentStepTime * 1000);
+    m_sleepSteps = static_cast<unsigned int>(sleep_ms / (m_currentStepTime * 1000));
     m_conditionWake.wait(uniqueLock, [this] { return m_sleepSteps == 0; });
     if (!m_running) {
         throw 0;
@@ -167,5 +168,5 @@ uint32_t Microcontroller::timeMs()
         throw 0;
     }
     std::unique_lock<std::mutex> uniqueLock(m_mutexSteps);
-    return 1000 * m_stepsTaken * m_currentStepTime;
+    return static_cast<uint32_t>(1000 * m_stepsTaken * m_currentStepTime);
 }
