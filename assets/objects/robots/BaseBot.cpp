@@ -91,7 +91,8 @@ void BaseBot::createSensors(const BaseBot::Specification &spec)
         const auto index = std::get<0>(lineDetectorTuple);
         const auto relativePosition = std::get<1>(lineDetectorTuple);
         const auto absolutePosition = m_body->getPosition() + glm::rotate(relativePosition, m_body->getRotation());
-        m_lineDetectors[index] = std::make_unique<LineDetectorObject>(m_scene, false, absolutePosition);
+        const auto lineDetectorSpec = std::get<2>(lineDetectorTuple);
+        m_lineDetectors[index] = std::make_unique<LineDetectorObject>(m_scene, lineDetectorSpec, false, absolutePosition);
         m_body->attachSensor(m_lineDetectors[index].get(), relativePosition);
     }
 }

@@ -202,8 +202,9 @@ Body2D::~Body2D()
     }
 }
 
-void Body2D::onFixedUpdate()
+void Body2D::onFixedUpdate(float stepTime)
 {
+    (void)stepTime;
     if (nullptr == m_translator) {
         return;
     }

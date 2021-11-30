@@ -7,9 +7,11 @@ namespace {
     constexpr float drawRadiusDetected = 10 * drawRadiusUndetected;
 }
 
-LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition) :
+LineDetector::LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition,
+                           float updateRateSeconds) :
     PhysicsComponent(world),
-    m_transform(transform)
+    m_transform(transform),
+    m_updateRateSeconds(updateRateSeconds)
 {
     /* Represent as tiny body */
     const Body2D::Specification bodySpec { true, false, 0.001f };
@@ -31,8 +33,13 @@ float *LineDetector::getVoltageLine()
     return &m_detectVoltage;
 }
 
-void LineDetector::onFixedUpdate()
+void LineDetector::onFixedUpdate(float stepTime)
 {
+    if (m_updateRateSeconds && m_timeSinceLastUpdate < m_updateRateSeconds) {
+        m_timeSinceLastUpdate += stepTime;
+        return;
+    }
+    m_timeSinceLastUpdate = 0.0f;
     const bool detected = m_userData.contactCount.load() > 0;
     m_detectVoltage = detected ? 3.3f : 0.0f;
     const bool debugDraw = m_transform != nullptr;

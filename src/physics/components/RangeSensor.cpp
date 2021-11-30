@@ -9,13 +9,15 @@ namespace {
 }
 
 RangeSensor::RangeSensor(const PhysicsWorld &world, LineTransform *transform,
-                         const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance) :
+                         const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance,
+                         float updateRateSecond) :
     PhysicsComponent(world),
     m_lineTransform(transform),
     m_relativeAngle(angle),
     m_minDistance(minDistance),
     m_maxDistance(maxDistance),
-    m_detectedDistance(m_maxDistance)
+    m_detectedDistance(m_maxDistance),
+    m_updateRateSecond(updateRateSecond)
 {
     /* Create tiny body for attaching and keeping track of ray cast start position */
     const Body2D::Specification bodySpec { true, false, 0.001f };
@@ -31,8 +33,14 @@ Body2D *RangeSensor::getBody() const
     return m_body2D.get();
 }
 
-void RangeSensor::onFixedUpdate()
+void RangeSensor::onFixedUpdate(float stepTime)
 {
+    if (m_updateRateSecond && m_timeSinceLastUpdate < m_updateRateSecond) {
+        m_timeSinceLastUpdate += stepTime;
+        return;
+    }
+
+    m_timeSinceLastUpdate = 0.0f;
     const float rayAngleEnd = m_relativeAngle - m_body2D->getRotation();
     const glm::vec2 bodyPosition = m_body2D->getPosition();
 

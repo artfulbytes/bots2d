@@ -26,9 +26,9 @@ void sleep_ms(uint32_t ms)
     ms_sleep_cb(ms, userdata_ptr);
 }
 
-uint32_t time_ms()
+uint32_t millis()
 {
-    return time_ms_cb(userdata_ptr);
+    return millis_cb(userdata_ptr);
 }
 
 float get_voltage_ud(int idx, void *userdata)
@@ -46,7 +46,7 @@ void sleep_ms_ud(uint32_t ms, void *userdata)
     ms_sleep_cb(ms, userdata);
 }
 
-uint32_t time_ms_ud(void *userdata)
+uint32_t millis_ud(void *userdata)
 {
-    return time_ms_cb(userdata);
+    return millis_cb(userdata);
 }

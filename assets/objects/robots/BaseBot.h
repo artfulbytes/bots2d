@@ -5,6 +5,7 @@
 #include "bodies/SimpleBotBody.h"
 #include "actuators/WheelMotor.h"
 #include "sensors/RangeSensorObject.h"
+#include "sensors/LineDetectorObject.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -12,7 +13,6 @@
 #include <functional>
 
 class WheelMotor;
-class LineDetectorObject;
 
 /**
  * Base class representing a general robot that can attach wheels and sensors.
@@ -46,7 +46,7 @@ public:
         WheelMotor::TextureType wheelTexture;
         std::vector<std::tuple<WheelMotorIndex, glm::vec2>> wheelMotorTuples;
         std::vector<std::tuple<RangeSensorIndex, glm::vec2, RangeSensorObject::Specification>> rangeSensorTuples;
-        std::vector<std::tuple<LineDetectorIndex, glm::vec2>> lineDetectorTuples;
+        std::vector<std::tuple<LineDetectorIndex, glm::vec2, LineDetectorObject::Specification>> lineDetectorTuples;
     };
     static void sanityCheckSpec(const Specification &spec);
 

@@ -29,10 +29,10 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
                 /* No range sensors */
             },
             {
-                { LineFollower::LineDetectorIndex::SecondFrontLeft,  {-0.010f,  0.045f} },
-                { LineFollower::LineDetectorIndex::FrontLeft,        {-0.005f,  0.045f} },
-                { LineFollower::LineDetectorIndex::FrontRight,       { 0.005f,  0.045f} },
-                { LineFollower::LineDetectorIndex::SecondFrontRight, { 0.010f,  0.045f} },
+                { LineFollower::LineDetectorIndex::SecondFrontLeft,  {-0.010f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::FrontLeft,        {-0.005f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::FrontRight,       { 0.005f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::SecondFrontRight, { 0.010f,  0.045f}, {0.0f} },
             }
         }
     },

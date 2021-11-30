@@ -13,7 +13,10 @@ class Body2D;
 class LineDetectorObject : public SceneObject
 {
 public:
-    LineDetectorObject(Scene *scene, bool debugDraw,
+    struct Specification {
+        const float updateRateSeconds = 0.0f;
+    };
+    LineDetectorObject(Scene *scene, const Specification &spec, bool debugDraw,
                        const glm::vec2 &startPosition = { 0.0f, 0.0f });
     ~LineDetectorObject();
     Body2D *getBody() const;

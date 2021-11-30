@@ -36,7 +36,7 @@ void Scene::updatePhysics(float stepTime)
     if (m_physicsWorld) {
         m_physicsWorld->step(stepTime);
         for (auto obj : m_objects) {
-            obj->updatePhysics();
+            obj->updatePhysics(stepTime);
         }
     }
 }
