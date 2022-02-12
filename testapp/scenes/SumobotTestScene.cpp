@@ -260,7 +260,7 @@ SumobotTestScene::SumobotTestScene() :
     m_dohyo = std::make_unique<Dohyo>(this, dohyoSpec, glm::vec2{ 0.0f, 0.0f });
 
     m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::Nsumo),
-                                               glm::vec2{0.275f, 0.0f}, 1.57f);
+                                               glm::vec2{0.31f, 0.0f}, 0.0f);
 #ifdef KEYBOARD_CONTROL
     m_keyboardController = std::make_unique<SumobotController>(m_fourWheelBot.get());
     m_fourWheelBot->setController(m_keyboardController.get());
@@ -305,6 +305,4 @@ SumobotTestScene::SumobotTestScene() :
     createTuningMenu();
 }
 
-SumobotTestScene::~SumobotTestScene()
-{
-}
+SumobotTestScene::~SumobotTestScene() { }
