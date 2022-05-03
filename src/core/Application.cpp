@@ -180,8 +180,11 @@ void Application::updateLogic(float stepTime)
  */
 bool Application::isStepTimeTooSmall() const
 {
+    if (m_currentScene == nullptr) {
+        return false;
+    }
     /* Let average stabilize after a new scene */
-    if (m_currentScene == nullptr && (m_currentScene->getSecondsSinceStart() < 2)) {
+    if (m_currentScene->getSecondsSinceStart() < 2) {
         return false;
     }
 
@@ -197,8 +200,8 @@ void Application::updateAndRenderSceneMenu()
     if (m_currentScene && m_currentScene->getSecondsSinceStart()) {
         const auto secondsNow = m_currentScene->getSecondsSinceStart();
         if (lastUpdateSeconds != secondsNow) {
-            m_sceneMenu->setFps(m_fps);
-            m_sceneMenu->setAvgPhysicsSteps(m_avgPhysicsSteps);
+            m_sceneMenu->setFps(static_cast<unsigned int>(m_fps));
+            m_sceneMenu->setAvgPhysicsSteps(static_cast<unsigned int>(m_avgPhysicsSteps));
             if (isStepTimeTooSmall()) {
                 m_sceneMenu->setWarningMessage("Physics step time too small!");
             } else if ((1 / m_currentScene->getPhysicsStepTime()) < 2 * m_fps) {
@@ -253,8 +256,8 @@ void Application::run()
         double newTime = glfwGetTime();
         double frameTime = newTime - currentTime;
         if (stepsTaken > 0) {
-            m_fps = 1.0f / frameTime;
-            m_avgPhysicsSteps = m_avgPhysicsSteps + ((stepsTaken / frameTime) - m_avgPhysicsSteps) / sampleCount;
+            m_fps = static_cast<float>(1.0f / frameTime);
+            m_avgPhysicsSteps = static_cast<float>(m_avgPhysicsSteps + ((stepsTaken / frameTime) - m_avgPhysicsSteps) / sampleCount);
         }
         currentTime = newTime;
 

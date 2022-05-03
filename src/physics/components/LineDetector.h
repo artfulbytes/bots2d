@@ -15,9 +15,10 @@ class CircleTransform;
 class LineDetector : public PhysicsComponent
 {
 public:
-    LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition);
+    LineDetector(const PhysicsWorld &world, CircleTransform *transform, const glm::vec2 &startPosition,
+                 float updateRateSeconds = 0.0f);
     ~LineDetector();
-    void onFixedUpdate() override;
+    void onFixedUpdate(float stepTime) override;
     Body2D *getBody() const;
     /** Retrieve a pointer to the voltage line where the value is > 0 when detected and 0 when not detected. */
     float *getVoltageLine();
@@ -27,6 +28,8 @@ private:
     Body2DUserData m_userData = { 0, 0, BodyId::LineDetector };
     CircleTransform * const m_transform = nullptr;
     float m_detectVoltage = 0.0f;
+    float m_updateRateSeconds = 0.0f;
+    float m_timeSinceLastUpdate = 0.0f;
 };
 
 #endif /* LINE_DETECTOR_H_ */

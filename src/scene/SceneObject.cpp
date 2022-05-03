@@ -33,10 +33,10 @@ void SceneObject::updateRenderable()
     }
 }
 
-void SceneObject::updatePhysics()
+void SceneObject::updatePhysics(float stepTime)
 {
     if (m_physicsComponent) {
-        m_physicsComponent->onFixedUpdate();
+        m_physicsComponent->onFixedUpdate(stepTime);
     }
 }
 

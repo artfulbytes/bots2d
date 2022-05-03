@@ -6,7 +6,7 @@
 
 #include <glm/glm.hpp>
 
-LineDetectorObject::LineDetectorObject(Scene *scene, bool debugDrawEnabled,
+LineDetectorObject::LineDetectorObject(Scene *scene, const Specification &spec, bool debugDrawEnabled,
                                        const glm::vec2 &startPosition) :
     SceneObject(scene)
 {
@@ -16,7 +16,7 @@ LineDetectorObject::LineDetectorObject(Scene *scene, bool debugDrawEnabled,
     glm::vec4 color(1.0f, 0.5f, 0.0f, 1.0f);
     m_renderableComponent = std::make_unique<CircleComponent>(circleTransform, color);
     m_renderableComponent->setEnabled(debugDrawEnabled);
-    m_physicsComponent = std::make_unique<LineDetector>(*m_physicsWorld, circleTransform, startPosition);
+    m_physicsComponent = std::make_unique<LineDetector>(*m_physicsWorld, circleTransform, startPosition, spec.updateRateSeconds);
     m_lineDetector = static_cast<LineDetector *>(m_physicsComponent.get());
 }
 

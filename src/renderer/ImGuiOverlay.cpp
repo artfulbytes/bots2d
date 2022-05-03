@@ -59,7 +59,7 @@ bool ImGuiOverlay::button(std::string name)
 void ImGuiOverlay::text(std::string text)
 {
     ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 230);
-    ImGui::Text(text.c_str());
+    ImGui::Text("%s", text.c_str());
 }
 
 void ImGuiOverlay::checkbox(std::string name, bool *set)

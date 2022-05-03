@@ -36,7 +36,7 @@ void Scene::updatePhysics(float stepTime)
     if (m_physicsWorld) {
         m_physicsWorld->step(stepTime);
         for (auto obj : m_objects) {
-            obj->updatePhysics();
+            obj->updatePhysics(stepTime);
         }
     }
 }
@@ -94,11 +94,11 @@ void Scene::addMenu(ImGuiMenu *menu)
 unsigned int Scene::getSecondsSinceStart() const
 {
     const auto timeNow = std::chrono::system_clock::now();
-    return std::chrono::duration<double>(timeNow - m_startTime).count();
+    return static_cast<unsigned int>(std::chrono::duration<double>(timeNow - m_startTime).count());
 }
 
 unsigned int Scene::getMillisecondsSinceStart() const
 {
     const auto timeNow = std::chrono::system_clock::now();
-    return std::chrono::duration<double, std::milli>(timeNow - m_startTime).count();
+    return static_cast<unsigned int>(std::chrono::duration<double, std::milli>(timeNow - m_startTime).count());
 }

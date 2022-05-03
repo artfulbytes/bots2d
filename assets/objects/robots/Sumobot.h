@@ -18,7 +18,7 @@
 class Sumobot : public BaseBot
 {
 public:
-    enum class Blueprint { FourWheel, TwoWheelRectangle, TwoWheelRoundBlack, TwoWheelRoundRed };
+    enum class Blueprint { Nsumo, FourWheel, TwoWheelRectangle, TwoWheelRoundBlack, TwoWheelRoundRed };
     static const Specification &getBlueprintSpec(Blueprint blueprint);
 
     Sumobot(Scene *scene, const Specification &spec,

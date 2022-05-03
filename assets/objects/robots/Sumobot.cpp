@@ -5,6 +5,42 @@
 namespace {
 const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlueprints
 ({
+        { Sumobot::Blueprint::Nsumo,
+        {
+            0.07f, 0.1f,   /* Body width, length */
+            0.42f,         /* Body mass */
+            0.015f, 0.03f, /* Wheel width, diameter */
+            0.02f,         /* Wheel mass */
+            0.15f,          /* Coloumb friction coefficient */
+            25.0f,        /* Wheel sideway friction constant */
+            0.016f,      /* Motor voltage in constant */
+            0.012f,      /* Angular speed constant */
+            6.0f,          /* Motor max voltage */
+            40.0f,      /* Body angular damping */
+            SimpleBotBody::Shape::Rectangle,
+            SimpleBotBody::TextureType::SumobotPlated,
+            WheelMotor::TextureType::Orange,
+            {
+                { Sumobot::WheelMotorIndex::FrontLeft,  {-(0.07f + 0.015f) / 2,  0.1f / 5} },
+                { Sumobot::WheelMotorIndex::FrontRight, { (0.07f + 0.015f) / 2,  0.1f / 5} },
+                { Sumobot::WheelMotorIndex::BackLeft,   {-(0.07f + 0.015f) / 2, -0.1f / 4} },
+                { Sumobot::WheelMotorIndex::BackRight,  { (0.07f + 0.015f) / 2, -0.1f / 4} },
+            },
+            {
+                { Sumobot::RangeSensorIndex::Left,       {-0.035f, 0.00f}, { 4.71f, 0.0f, 0.8f, 0.03f }},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.05f}, { 6.08f, 0.0f, 0.8f, 0.03f }},
+                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.05f}, { 0.0f, 0.0f, 0.8f, 0.03f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.05f}, { 0.20f, 0.0f, 0.8f, 0.03f }},
+                { Sumobot::RangeSensorIndex::Right,      { 0.035f, 0.00f}, { 1.57f, 0.0f, 0.8f, 0.03f }},
+            },
+            {
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.035f,  0.05f}, { 0.01f } },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.035f,  0.05f}, { 0.01f } },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.035f, -0.05f}, { 0.01f } },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.035f, -0.05f}, { 0.01f } },
+            }
+        }
+    },
     { Sumobot::Blueprint::FourWheel,
         {
             0.07f, 0.1f,   /* Body width, length */
@@ -16,6 +52,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.019f,      /* Motor voltage in constant */
             0.006f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            500.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::SumobotCircuited,
             WheelMotor::TextureType::Green,
@@ -26,17 +63,17 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
                 { Sumobot::WheelMotorIndex::BackRight,  { (0.07f + 0.015f) / 2, -0.1f / 4} },
             },
             {
-                { Sumobot::RangeSensorIndex::Left,       {-0.035f, 0.00f}, { 4.71f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.05f}, { 6.08f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.05f}, { 0.0f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.05f}, { 0.20f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::Right,      { 0.035f, 0.00f}, { 1.57f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::Left,       {-0.035f, 0.00f}, { 4.71f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.05f}, { 6.08f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.05f}, { 0.0f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.05f}, { 0.20f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::Right,      { 0.035f, 0.00f}, { 1.57f, 0.0f, 0.8f, 0.0f }},
             },
             {
-                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.035f,  0.05f} },
-                { Sumobot::LineDetectorIndex::FrontRight, { 0.035f,  0.05f} },
-                { Sumobot::LineDetectorIndex::BackLeft,   {-0.035f, -0.05f} },
-                { Sumobot::LineDetectorIndex::BackRight,  { 0.035f, -0.05f} },
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.035f,  0.05f}, {0.0f } },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.035f,  0.05f}, {0.0f } },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.035f, -0.05f}, {0.0f } },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.035f, -0.05f}, {0.0f } },
             }
         }
     },
@@ -51,6 +88,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::SumobotPlated,
             WheelMotor::TextureType::Orange,
@@ -59,17 +97,17 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
                 { Sumobot::WheelMotorIndex::Right,  { (0.06f + 0.02f) / 2, -0.1f / 5} },
             },
             {
-                { Sumobot::RangeSensorIndex::Left,       {-0.03f, 0.01f}, { 4.71f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.03f}, { 0.0f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::Right,      { 0.03f, 0.01f}, { 1.57f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::Left,       {-0.03f, 0.01f}, { 4.71f, 0.0f, 0.8f, 0.0f}},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.03f}, { 0.0f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::Right,      { 0.03f, 0.01f}, { 1.57f, 0.0f, 0.8f, 0.0f }},
             },
             {
-                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.029f,  0.04f} },
-                { Sumobot::LineDetectorIndex::FrontRight, { 0.029f,  0.04f} },
-                { Sumobot::LineDetectorIndex::BackLeft,   {-0.029f, -0.04f} },
-                { Sumobot::LineDetectorIndex::BackRight,  { 0.029f, -0.04f} },
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.029f,  0.04f}, {0.0f} },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.029f,  0.04f}, {0.0f} },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.029f, -0.04f}, {0.0f} },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.029f, -0.04f}, {0.0f} },
             }
         }
     },
@@ -84,6 +122,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Circle,
             SimpleBotBody::TextureType::SumobotRoundBlack,
             WheelMotor::TextureType::Red,
@@ -92,15 +131,15 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
                 { Sumobot::WheelMotorIndex::Right, { (0.075f + 0.0125f) / 2,  0.0f} },
             },
             {
-                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.04f}, { 0.0f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::Front,      { 0.000f, 0.04f}, { 0.0f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f, 0.0f }},
             },
             {
-                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.0275f,  0.0275f} },
-                { Sumobot::LineDetectorIndex::FrontRight, { 0.0275f,  0.0275f} },
-                { Sumobot::LineDetectorIndex::BackLeft,   {-0.0275f, -0.0275f} },
-                { Sumobot::LineDetectorIndex::BackRight,  { 0.0275f, -0.0275f} },
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.0275f,  0.0275f }, {0.0f} },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.0275f,  0.0275f }, {0.0f} },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.0275f, -0.0275f }, {0.0f} },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.0275f, -0.0275f }, {0.0f} },
             }
         }
     },
@@ -115,6 +154,7 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
             0.00500f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             6.0f,          /* Motor max voltage */
+            0.0f,      /* Body angular damping */
             SimpleBotBody::Shape::Circle,
             SimpleBotBody::TextureType::SumobotRoundRed,
             WheelMotor::TextureType::Green,
@@ -123,14 +163,14 @@ const std::unordered_map<Sumobot::Blueprint, Sumobot::Specification> sumobotBlue
                 { Sumobot::WheelMotorIndex::Right, { (0.075f + 0.0125f) / 2,  0.0f} },
             },
             {
-                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f }},
-                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f }},
+                { Sumobot::RangeSensorIndex::FrontLeft,  {-0.025f, 0.03f}, { 6.08f, 0.0f, 0.8f, 0.0f }},
+                { Sumobot::RangeSensorIndex::FrontRight, { 0.025f, 0.03f}, { 0.20f, 0.0f, 0.8f, 0.0f }},
             },
             {
-                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.0275f,  0.0275f} },
-                { Sumobot::LineDetectorIndex::FrontRight, { 0.0275f,  0.0275f} },
-                { Sumobot::LineDetectorIndex::BackLeft,   {-0.0275f, -0.0275f} },
-                { Sumobot::LineDetectorIndex::BackRight,  { 0.0275f, -0.0275f} },
+                { Sumobot::LineDetectorIndex::FrontLeft,  {-0.0275f,  0.0275f }, { 0.0f } },
+                { Sumobot::LineDetectorIndex::FrontRight, { 0.0275f,  0.0275f }, { 0.0f } },
+                { Sumobot::LineDetectorIndex::BackLeft,   {-0.0275f, -0.0275f }, { 0.0f } },
+                { Sumobot::LineDetectorIndex::BackRight,  { 0.0275f, -0.0275f }, { 0.0f } },
             }
         }
     },

@@ -73,6 +73,7 @@ Body2D::Body2D(const PhysicsWorld &world, RectTransform *transform, const Body2D
     fixtureDef.isSensor = !spec.collision;
     fixtureDef.density = scaledDensity;
     m_body->CreateFixture(&fixtureDef);
+    setAngularDamping(spec.angularDamping);
 
     m_translator = std::make_unique<RectTransformTranslator>(transform, m_body);
 
@@ -106,6 +107,7 @@ Body2D::Body2D(const PhysicsWorld &world, const glm::vec2 &startPosition, float 
     fixtureDef.isSensor = !spec.collision;
     fixtureDef.density = scaledDensity;
     m_body->CreateFixture(&fixtureDef);
+    setAngularDamping(spec.angularDamping);
 
     if (world.getGravityType() == PhysicsWorld::Gravity::TopView) {
         addTopViewFriction(normalForce, spec.frictionCoefficient);
@@ -151,6 +153,7 @@ Body2D::Body2D(const PhysicsWorld &world, HollowCircleTransform *transform, cons
         fixtureDef.isSensor = !spec.collision;
         m_body->CreateFixture(&fixtureDef);
     }
+    setAngularDamping(spec.angularDamping);
 
     /* Only static so no translation needed for now */
     m_translator = nullptr;
@@ -199,8 +202,9 @@ Body2D::~Body2D()
     }
 }
 
-void Body2D::onFixedUpdate()
+void Body2D::onFixedUpdate(float stepTime)
 {
+    (void)stepTime;
     if (nullptr == m_translator) {
         return;
     }
@@ -275,6 +279,11 @@ float Body2D::getForwardSpeed() const
     return PhysicsWorld::unscaleSpeed(scaledSpeed);
 }
 
+float Body2D::getAngularSpeed() const
+{
+    return m_body->GetAngularVelocity();
+}
+
 glm::vec2 Body2D::getLateralVelocity() const
 {
     b2Vec2 currentRightNormal = m_body->GetWorldVector( b2Vec2(1,0) );
@@ -306,6 +315,16 @@ void Body2D::setMass(float mass)
     if (m_topViewFrictionJoint != nullptr) {
         setFrictionCoefficient(m_topViewFrictionCoefficient);
     }
+}
+
+void Body2D::setAngularDamping(float damping)
+{
+    m_body->SetAngularDamping(damping);
+}
+
+float Body2D::getAngularDamping() const
+{
+    return m_body->GetAngularDamping();
 }
 
 void Body2D::addTopViewFriction(float normalForce, float frictionCoefficient)

@@ -13,6 +13,6 @@
 [submodule "external/stb"]
 	path = external/stb
 	url = https://github.com/nothings/stb
-[submodule "testapp/controllers/Sumobot4WheelExample/nsumo"]
-	path = testapp/controllers/Sumobot4WheelExample/nsumo
-	url = https://github.com/artfulbytes/nsumo.git
+[submodule "testapp/controllers/NsumoController/nsumo"]
+	path = testapp/controllers/NsumoController/nsumo
+	url = https://github.com/artfulbytes/nsumo_software.git

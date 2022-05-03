@@ -29,15 +29,18 @@ public:
     /* TODO: Make it possible to change center of mass */
     struct Specification {
         Specification(float length, float width, float mass,
-                      Shape shape, TextureType textureType) :
+                      Shape shape, TextureType textureType,
+                      float angularDamping) :
             length(length), width(width), mass(mass),
-            shape(shape), textureType(textureType) {}
+            shape(shape), textureType(textureType),
+            angularDamping(angularDamping) {}
         float length;
         /** Stores the width if rectangle shape and radius if round shape. */
         float width;
         float mass;
         Shape shape = Shape::Rectangle;
         TextureType textureType = TextureType::None;
+        float angularDamping = 0.0f;
     };
 
     SimpleBotBody(Scene *scene, const Specification &spec, const glm::vec2 &startPosition, float startRotation);
@@ -45,12 +48,15 @@ public:
     glm::vec2 getPosition() const;
     float getRotation() const;
     float getForwardSpeed() const;
+    float getAngularSpeed() const;
     void onFixedUpdate() override;
     void attachWheelMotor(const WheelMotor *wheelMotor, glm::vec2 relativePosition);
     void attachSensor(const RangeSensorObject *rangeSensorObject, glm::vec2 relativePosition);
     void attachSensor(const LineDetectorObject *lineDetectorObject, glm::vec2 relativePosition);
     void setMass(float mass);
     float getMass() const;
+    void setAngularDamping(float damping) const;
+    float getAngularDamping() const;
 
 private:
     void createRectangleBody(const Specification &spec, const glm::vec2 &startPosition, float startRotation);

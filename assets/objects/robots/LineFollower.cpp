@@ -17,6 +17,7 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
             0.00628f,      /* Motor voltage in constant */
             0.00178f,      /* Angular speed constant */
             3.0f,          /* Motor max voltage */
+            0.0f,        /* Angular damping */
             SimpleBotBody::Shape::Rectangle,
             SimpleBotBody::TextureType::LineFollowerPlated,
             WheelMotor::TextureType::Orange,
@@ -28,10 +29,10 @@ const std::unordered_map<LineFollower::Blueprint, LineFollower::Specification> l
                 /* No range sensors */
             },
             {
-                { LineFollower::LineDetectorIndex::SecondFrontLeft,  {-0.010f,  0.045f} },
-                { LineFollower::LineDetectorIndex::FrontLeft,        {-0.005f,  0.045f} },
-                { LineFollower::LineDetectorIndex::FrontRight,       { 0.005f,  0.045f} },
-                { LineFollower::LineDetectorIndex::SecondFrontRight, { 0.010f,  0.045f} },
+                { LineFollower::LineDetectorIndex::SecondFrontLeft,  {-0.010f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::FrontLeft,        {-0.005f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::FrontRight,       { 0.005f,  0.045f}, {0.0f} },
+                { LineFollower::LineDetectorIndex::SecondFrontRight, { 0.010f,  0.045f}, {0.0f} },
             }
         }
     },

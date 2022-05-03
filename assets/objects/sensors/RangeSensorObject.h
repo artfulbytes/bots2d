@@ -17,6 +17,7 @@ public:
         const float relativeAngle = 0.0f;
         const float minDistance = 0.0f;
         const float maxDistance = 0.0f;
+        const float updateRateSeconds = 0.0f;
     };
     RangeSensorObject(Scene *scene, const Specification &spec, bool debugDrawEnabled,
                       const glm::vec2 startPosition = { 0.0f, 0.0f });

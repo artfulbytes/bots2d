@@ -24,8 +24,8 @@ public:
     LineTransform() {}
     LineTransform(const glm::vec2 &start, const glm::vec2 &end, float width) :
         start(start), end(end), width(width) {}
-    glm::vec2 start;
-    glm::vec2 end;
+    glm::vec2 start = {0, 0};
+    glm::vec2 end = {0, 0};
     float width = 0.0f;
 };
 
@@ -56,7 +56,7 @@ public:
     CircleTransform(const glm::vec2 &position, float radius, float rotation) :
         position(position), radius(radius), rotation(rotation) {}
     ~CircleTransform() {}
-    glm::vec2 position;
+    glm::vec2 position { 0, 0 };
     float radius = 0.0f;
     float rotation = 0.0f;
 };

@@ -13,9 +13,10 @@ class RangeSensor : public PhysicsComponent
 {
 public:
     RangeSensor(const PhysicsWorld &world, LineTransform *transform,
-                const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance);
+                const glm::vec2 &startPosition, float angle, float minDistance, float maxDistance,
+                float updateRateSecond = 0.0f);
     ~RangeSensor();
-    void onFixedUpdate() override;
+    void onFixedUpdate(float stepTime) override;
     /** Retrieve distance in metrics */
     float getDistance() const;
     Body2D *getBody() const;
@@ -35,6 +36,8 @@ private:
 
     float m_distanceVoltage = 0.0f;
     float m_detectedDistance = 0.0f;
+    float m_timeSinceLastUpdate = 0.0f;
+    float m_updateRateSecond = 0.0f;
 };
 
 #endif /* RANGE_SENSOR_H_ */

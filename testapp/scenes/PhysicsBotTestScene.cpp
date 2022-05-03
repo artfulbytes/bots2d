@@ -148,7 +148,7 @@ void PhysicsBotTestScene::createTuningMenu()
 PhysicsBotTestScene::PhysicsBotTestScene() :
     Scene("Scene for experimenting with vehicle physics", PhysicsWorld::Gravity::TopView)
 {
-    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0);
+    m_physicsBot = std::make_unique<PhysicsBot>(this, glm::vec2{0.1f,0.1f}, glm::vec2{0,0}, 0.0f);
     m_keyboardController = std::make_unique<PhysicsBotController>(m_physicsBot.get());
     m_physicsBot->setController(m_keyboardController.get());
     createTuningMenu();

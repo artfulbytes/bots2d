@@ -17,7 +17,8 @@ RangeSensorObject::RangeSensorObject(Scene *scene, const Specification &spec, bo
     m_renderableComponent->setEnabled(debugDrawEnabled);
     m_physicsComponent = std::make_unique<RangeSensor>(*m_physicsWorld, transform,
                                                        startPosition, spec.relativeAngle,
-                                                       spec.minDistance, spec.maxDistance);
+                                                       spec.minDistance, spec.maxDistance,
+                                                       spec.updateRateSeconds);
     m_rangeSensor = static_cast<RangeSensor *>(m_physicsComponent.get());
 }
 

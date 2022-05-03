@@ -37,9 +37,15 @@ set (BOTS2D_TEST_CONTROLLERS
     controllers/NsumoController/motor.c
     controllers/NsumoController/nsumo/drive.c
     controllers/NsumoController/nsumo/line_detection.c
-    controllers/NsumoController/nsumo/state_machine.c
+    controllers/NsumoController/nsumo/detection_history.c
+    controllers/NsumoController/nsumo/state_machine/state_machine.c
+    controllers/NsumoController/nsumo/state_machine/state_retreat.c
+    controllers/NsumoController/nsumo/state_machine/state_attack.c
+    controllers/NsumoController/nsumo/state_machine/state_search.c
     controllers/NsumoController/nsumo/enemy_detection.c
     controllers/NsumoController/nsumo/trace.c
+    controllers/NsumoController/nsumo/test.c
+    controllers/NsumoController/nsumo/timer.c
 )
 
 set (BOTS2D_TEST_FILES
@@ -55,6 +61,9 @@ add_executable(bots2dtest
 )
 
 target_include_directories(bots2dtest PRIVATE scenes)
+target_include_directories(bots2dtest PRIVATE controllers/NsumoController/nsumo/)
+target_include_directories(bots2dtest PRIVATE controllers/NsumoController/nsumo/drivers)
+target_include_directories(bots2dtest PRIVATE controllers/NsumoController/nsumo/state_machine)
 target_include_directories(bots2dtest PRIVATE controllers)
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/assets/objects)
 target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/src/core)
@@ -69,6 +78,8 @@ target_include_directories(bots2dtest PRIVATE ${BOTS2D_RELATIVE_PATH}/external/g
 # Include bots2d and build it as a static lib
 add_subdirectory(${BOTS2D_RELATIVE_PATH} build)
 target_link_libraries(bots2dtest PRIVATE bots2d)
+
+target_compile_definitions(bots2dtest PRIVATE BUILD_TEST)
 
 set_target_properties(bots2dtest PROPERTIES
 	CXX_STANDARD 17

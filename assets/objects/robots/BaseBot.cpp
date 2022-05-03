@@ -42,13 +42,13 @@ BaseBot::~BaseBot()
 void BaseBot::createBody(const BaseBot::Specification &spec, const glm::vec2 &startPosition, float startRotation)
 {
     const SimpleBotBody::Specification bodySpec(spec.bodyLength, spec.bodyWidth, spec.bodyMass,
-                                              spec.bodyShape, spec.bodyTexture);
+                                              spec.bodyShape, spec.bodyTexture, spec.angularDamping);
     m_body = std::make_unique<SimpleBotBody>(m_scene, bodySpec, startPosition, startRotation);
 }
 
 void BaseBot::createWheelMotors(const BaseBot::Specification &spec)
 {
-    const int wheelCount = spec.wheelMotorTuples.size();
+    const auto wheelCount = spec.wheelMotorTuples.size();
     const float loadedMass = spec.bodyMass / wheelCount;
     const WheelMotor::Specification wheelSpec(spec.motorVoltageInConstant, spec.motorAngularSpeedConstant,
                                               spec.motorMaxVoltage, spec.wheelFrictionCoefficient, spec.wheelSidewayFrictionConstant,
@@ -91,7 +91,8 @@ void BaseBot::createSensors(const BaseBot::Specification &spec)
         const auto index = std::get<0>(lineDetectorTuple);
         const auto relativePosition = std::get<1>(lineDetectorTuple);
         const auto absolutePosition = m_body->getPosition() + glm::rotate(relativePosition, m_body->getRotation());
-        m_lineDetectors[index] = std::make_unique<LineDetectorObject>(m_scene, false, absolutePosition);
+        const auto lineDetectorSpec = std::get<2>(lineDetectorTuple);
+        m_lineDetectors[index] = std::make_unique<LineDetectorObject>(m_scene, lineDetectorSpec, false, absolutePosition);
         m_body->attachSensor(m_lineDetectors[index].get(), relativePosition);
     }
 }
@@ -150,7 +151,7 @@ void BaseBot::onFixedUpdate()
             m_recordedTopSpeed = fabs(forwardSpeed);
         }
         if (fabs(forwardSpeed) < (epsilon / 10.0f)) {
-            m_lastStandStillTime = millisecondsSinceStart;
+            m_lastFwdStandStillTime = millisecondsSinceStart;
             m_wasAtStandStill = true;
         }
 
@@ -162,7 +163,7 @@ void BaseBot::onFixedUpdate()
         m_wasAtTopSpeed = atTopSpeed;
 
         if (newTopSpeed || (justReachedTopSpeed && m_wasAtStandStill)) {
-            m_timeToReachTopSpeed = (millisecondsSinceStart - m_lastStandStillTime) / 1000.0f;
+            m_timeToReachTopSpeed = (millisecondsSinceStart - m_lastFwdStandStillTime) / 1000.0f;
             m_topSpeedAcceleration = forwardSpeed / m_timeToReachTopSpeed;
             m_wasAtStandStill = false;
         }
@@ -193,6 +194,25 @@ void BaseBot::onFixedUpdate()
 
         if (m_onTopAccelerationChanged) {
             m_onTopAccelerationChanged(m_recordedTopAcceleration);
+        }
+
+
+        if (m_onTimeMovingChanged) {
+            // It's enough to check angular speed (it's also > 0 when driving forward)
+            const bool isMoving = fabs(m_body->getAngularSpeed()) > (epsilon / 1000);
+
+            if (isMoving) {
+                if (m_wasAtRotStandStill) {
+                    m_lastRotStandStillTime = millisecondsSinceStart;
+                    m_wasAtRotStandStill = false;
+                }
+            } else  {
+                m_wasAtRotStandStill = true;
+            }
+            const auto lastStandStillTime = m_lastRotStandStillTime;
+            if (isMoving) {
+                m_onTimeMovingChanged(millisecondsSinceStart - lastStandStillTime);
+            }
         }
 
         m_lastForwardSpeed = forwardSpeed;
@@ -326,6 +346,11 @@ void BaseBot::setTopAccelerationCallback(std::function<void(float)> onTopAcceler
     m_onTopAccelerationChanged = onTopAccelerationChanged;
 }
 
+void BaseBot::setTimeMovingCallback(std::function<void(unsigned int)> onTimeMovingChanged)
+{
+    m_onTimeMovingChanged = onTimeMovingChanged;
+}
+
 glm::vec2 BaseBot::getAbsoluteWheelPosition(BaseBot::WheelMotorIndex wheelMotorIndex) const
 {
     auto wheelMotorItr = m_wheelMotors.find(wheelMotorIndex);
@@ -354,4 +379,14 @@ void BaseBot::disableMotor(BaseBot::WheelMotorIndex wheelMotorIndex)
         assert(0);
     }
     wheelMotorItr->second->disable();
+}
+
+float BaseBot::getAngularDamping() const
+{
+    return m_body->getAngularDamping();
+}
+
+void BaseBot::setAngularDamping(float angularDamping)
+{
+    m_body->setAngularDamping(angularDamping);
 }
