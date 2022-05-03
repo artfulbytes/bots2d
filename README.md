@@ -86,7 +86,17 @@ Bots2D is built with CMake. Look at ***testapp/*** for an example of how to use 
 in your application.
 
 #### Build testapp on Linux
+On Ubuntu 20.04, you may have to install the following packages:
+```
+sudo apt install mesa-common-dev \
+libxi-dev \
+libxcursor-dev \
+libxinerama-dev \
+libxrandr-dev \
+libx11-dev
+```
 
+Then run:
 ```
 cd testapp/
 mkdir build

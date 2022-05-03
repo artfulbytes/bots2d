@@ -15,4 +15,4 @@
 	url = https://github.com/nothings/stb
 [submodule "testapp/controllers/NsumoController/nsumo"]
 	path = testapp/controllers/NsumoController/nsumo
-	url = https://github.com/artfulbytes/nsumo.git
+	url = https://github.com/artfulbytes/nsumo_software.git
