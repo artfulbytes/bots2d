@@ -31,6 +31,7 @@ set (NSUMOAPP_CONTROLLERS
     controllers/NsumoController/nsumo/src/app/drive.c
     controllers/NsumoController/nsumo/src/app/enemy.c
     controllers/NsumoController/nsumo/src/app/timer.c
+    controllers/NsumoController/nsumo/src/app/input_history.c
     controllers/NsumoController/nsumo/src/app/state_machine.c
     controllers/NsumoController/nsumo/src/app/state_retreat.c
     controllers/NsumoController/nsumo/src/app/state_attack.c
