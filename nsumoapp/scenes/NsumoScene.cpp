@@ -2,6 +2,7 @@
 #include "components/KeyboardController.h"
 #include "robots/Sumobot.h"
 #include "playgrounds/Dohyo.h"
+#include "NsumoController/NsumoMicrocontroller.h"
 
 namespace {
 
@@ -81,6 +82,32 @@ private:
 
 void NsumoScene::onFixedUpdate()
 {
+    // Disable motors as they go out of the dohyo
+    const auto frontLeftWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::FrontLeft);
+    const auto frontRightWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::FrontRight);
+    const auto backLeftWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::BackLeft);
+    const auto backRightWheelPos = m_fourWheelBot->getAbsoluteWheelPosition(Sumobot::WheelMotorIndex::BackRight);
+    float outsideRadius = 0.38f;
+    if (glm::length(frontLeftWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::FrontLeft);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::FrontLeft);
+    }
+    if (glm::length(frontRightWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::FrontRight);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::FrontRight);
+    }
+    if (glm::length(backLeftWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::BackLeft);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::BackLeft);
+    }
+    if (glm::length(backRightWheelPos) > outsideRadius) {
+        m_fourWheelBot->disableMotor(Sumobot::WheelMotorIndex::BackRight);
+    } else {
+        m_fourWheelBot->enableMotor(Sumobot::WheelMotorIndex::BackRight);
+    }
 }
 
 NsumoScene::NsumoScene() :
@@ -102,6 +129,28 @@ NsumoScene::NsumoScene() :
     m_keyboardController =
         std::make_unique<SumobotController>(m_fourWheelBotOpponent.get());
     m_fourWheelBotOpponent->setController(m_keyboardController.get());
+
+    m_fourWheelBot = std::make_unique<Sumobot>(this, Sumobot::getBlueprintSpec(Sumobot::Blueprint::Nsumo),
+                                           glm::vec2{0.31f, 0.0f}, 0.0f);
+    m_fourWheelBot->setDebug(true);
+    Microcontroller::VoltageLines voltageLines;
+    // Assignment must match voltage_idx_e in voltage_lines.h
+    voltageLines[Microcontroller::VoltageLine::A0] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::A1] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackLeft) };
+    voltageLines[Microcontroller::VoltageLine::A2] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::A3] = { Microcontroller::VoltageLine::Type::Output, m_fourWheelBot->getVoltageLine(Sumobot::WheelMotorIndex::BackRight) };
+    voltageLines[Microcontroller::VoltageLine::A4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::A5] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackLeft) };
+    voltageLines[Microcontroller::VoltageLine::A6] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::A7] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::LineDetectorIndex::BackRight) };
+    voltageLines[Microcontroller::VoltageLine::B0] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Left) };
+    voltageLines[Microcontroller::VoltageLine::B1] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontLeft) };
+    voltageLines[Microcontroller::VoltageLine::B2] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Front) };
+    voltageLines[Microcontroller::VoltageLine::B3] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::FrontRight) };
+    voltageLines[Microcontroller::VoltageLine::B4] = { Microcontroller::VoltageLine::Type::Input, m_fourWheelBot->getVoltageLine(Sumobot::RangeSensorIndex::Right) };
+    m_microcontroller = std::make_unique<NsumoMicrocontroller>(voltageLines);
+    m_fourWheelBot->setController(m_microcontroller.get());
+    m_microcontroller->start();
 }
 
 NsumoScene::~NsumoScene()

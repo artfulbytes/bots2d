@@ -22,9 +22,33 @@ set (NSUMOAPP_SCENES
     scenes/NsumoScene.cpp
 )
 
+set (NSUMOAPP_CONTROLLERS
+    controllers/NsumoController/main.c
+    controllers/NsumoController/NsumoMicrocontroller.cpp
+    controllers/NsumoController/nsumo/src/common/enum_to_string.c
+    controllers/NsumoController/nsumo/src/common/ring_buffer.c
+    controllers/NsumoController/nsumo/src/app/line.c
+    controllers/NsumoController/nsumo/src/app/drive.c
+    controllers/NsumoController/nsumo/src/app/enemy.c
+    controllers/NsumoController/nsumo/src/app/timer.c
+    controllers/NsumoController/nsumo/src/app/state_machine.c
+    controllers/NsumoController/nsumo/src/app/state_retreat.c
+    controllers/NsumoController/nsumo/src/app/state_attack.c
+    controllers/NsumoController/nsumo/src/app/state_search.c
+    controllers/NsumoController/nsumo/src/app/state_wait.c
+    controllers/NsumoController/nsumo/src/app/state_manual.c
+    controllers/NsumoController/nsumo_simulated/tb6612fng.c
+    controllers/NsumoController/nsumo_simulated/qre1113.c
+    controllers/NsumoController/nsumo_simulated/vl53l0x.c
+    controllers/NsumoController/nsumo_simulated/trace.c
+    controllers/NsumoController/nsumo_simulated/assert_handler.c
+    controllers/NsumoController/nsumo_simulated/ir_remote.c
+)
+
 set (NSUMOAPP_FILES
     ${NSUMOAPP_ASSETS}
     ${NSUMOAPP_SCENES}
+    ${NSUMOAPP_CONTROLLERS}
     NsumoApp.cpp
     main.cpp
 )
@@ -34,6 +58,8 @@ add_executable(nsumoapp
 )
 
 target_include_directories(nsumoapp PRIVATE scenes)
+target_include_directories(nsumoapp PRIVATE controllers/NsumoController/nsumo/src)
+target_include_directories(nsumoapp PRIVATE controllers)
 target_include_directories(nsumoapp PRIVATE ${BOTS2D_RELATIVE_PATH}/assets/objects)
 target_include_directories(nsumoapp PRIVATE ${BOTS2D_RELATIVE_PATH}/src/core)
 target_include_directories(nsumoapp PRIVATE ${BOTS2D_RELATIVE_PATH}/src/renderer)
