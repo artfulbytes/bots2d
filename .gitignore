@@ -2,3 +2,5 @@ Makefile
 build/
 tools/*svg
 docs/doxygen
+.cache
+compile_commands.json
